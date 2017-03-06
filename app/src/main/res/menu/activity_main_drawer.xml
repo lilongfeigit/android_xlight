@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_glance"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Glance首页" />
+        <item
+            android:id="@+id/nav_control"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Control规则" />
+        <item
+            android:id="@+id/nav_scenario"
+            android:icon="@drawable/ic_lightbulb_outline_black_24dp"
+            android:title="Scenario场景" />
+        <item
+            android:id="@+id/nav_schedule"
+            android:icon="@drawable/ic_add_alarm_black_24dp"
+            android:title="Schedule报表" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Settings设置" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="Help帮助" />
+    </group>
+
+    <item android:title="Manage" android:visible="false">
+        <menu>
+            <item
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="Settings" />
+            <item
+                android:icon="@drawable/ic_help_black_24dp"
+                android:title="Help" />
+        </menu>
+    </item>
+
+</menu>

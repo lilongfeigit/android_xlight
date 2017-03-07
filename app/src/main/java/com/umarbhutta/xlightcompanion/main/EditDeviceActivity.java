@@ -29,6 +29,8 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
 import com.umarbhutta.xlightcompanion.control.ControlFragment;
+import com.umarbhutta.xlightcompanion.scenario.AddScenarioActivity;
+import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
 
 import java.util.ArrayList;
@@ -124,63 +126,64 @@ public class EditDeviceActivity extends AppCompatActivity {
         colorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ChromaDialog.Builder()
-                        .initialColor(ContextCompat.getColor(EditDeviceActivity.this, R.color.colorAccent))
-                        .colorMode(ColorMode.RGB) // There's also ARGB and HSV
-                        .onColorSelected(new ColorSelectListener() {
-                            @Override
-                            public void onColorSelected(int color) {
-                                Log.e(TAG, "int: " + color);
-                                colorHex = String.format("%06X", (0xFFFFFF & color));
-                                Log.e(TAG, "HEX: #" + colorHex);
-
-                                int br = 65;
-                                int ww = 0;
-                                int c = (int) Long.parseLong(colorHex, 16);
-                                int r = (c >> 16) & 0xFF;
-                                int g = (c >> 8) & 0xFF;
-                                int b = (c >> 0) & 0xFF;
-                                Log.e(TAG, "RGB: " + r + "," + g + "," + b);
-
-                                colorHex = "#" + colorHex;
-                                colorTextView.setText(colorHex);
-                                colorTextView.setTextColor(Color.parseColor(colorHex));
-
-                                //send message to Particle based on which rings have been selected
-                                if ((ring1 && ring2 && ring3) || (!ring1 && !ring2 && !ring3)) {
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_ALL, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_ALL, state, br, ww, r, g, b);
-                                } else if (ring1 && ring2) {
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
-                                } else if (ring2 && ring3) {
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
-                                } else if (ring1 && ring3) {
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
-                                } else if (ring1) {
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
-                                } else if (ring2) {
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
-                                } else if (ring3) {
-                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
-                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
-                                } else {
-                                    //do nothing
-                                }
-                            }
-                        })
-                        .create()
-                        .show(getSupportFragmentManager(), "dialog");
+                onFabPressed();
+//                new ChromaDialog.Builder()
+//                        .initialColor(ContextCompat.getColor(EditDeviceActivity.this, R.color.colorAccent))
+//                        .colorMode(ColorMode.RGB) // There's also ARGB and HSV
+//                        .onColorSelected(new ColorSelectListener() {
+//                            @Override
+//                            public void onColorSelected(int color) {
+//                                Log.e(TAG, "int: " + color);
+//                                colorHex = String.format("%06X", (0xFFFFFF & color));
+//                                Log.e(TAG, "HEX: #" + colorHex);
+//
+//                                int br = 65;
+//                                int ww = 0;
+//                                int c = (int) Long.parseLong(colorHex, 16);
+//                                int r = (c >> 16) & 0xFF;
+//                                int g = (c >> 8) & 0xFF;
+//                                int b = (c >> 0) & 0xFF;
+//                                Log.e(TAG, "RGB: " + r + "," + g + "," + b);
+//
+//                                colorHex = "#" + colorHex;
+//                                colorTextView.setText(colorHex);
+//                                colorTextView.setTextColor(Color.parseColor(colorHex));
+//
+//                                //send message to Particle based on which rings have been selected
+//                                if ((ring1 && ring2 && ring3) || (!ring1 && !ring2 && !ring3)) {
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_ALL, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_ALL, state, br, ww, r, g, b);
+//                                } else if (ring1 && ring2) {
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
+//                                } else if (ring2 && ring3) {
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
+//                                } else if (ring1 && ring3) {
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
+//                                } else if (ring1) {
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
+//                                } else if (ring2) {
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
+//                                } else if (ring3) {
+//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
+//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
+//                                } else {
+//                                    //do nothing
+//                                }
+//                            }
+//                        })
+//                        .create()
+//                        .show(getSupportFragmentManager(), "dialog");
             }
         });
 
@@ -371,5 +374,9 @@ public class EditDeviceActivity extends AppCompatActivity {
         }
 
         deviceRingLabel.setText(label);
+    }
+    private void onFabPressed() {
+        Intent intent = new Intent(EditDeviceActivity.this, ColorSelectActivity.class);
+        startActivityForResult(intent, 1);
     }
 }

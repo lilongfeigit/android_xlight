@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,12 +32,15 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/edt_bg"
+                android:hint="wwww.xxxx@xxx.com"
                 android:layout_marginTop="10dp" />
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
+                android:layout_gravity="center"
                 android:background="@color/accent_color"
                 android:text="完 成"
                 android:textColor="@color/white" />
@@ -52,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/logo" />
+                android:src="@drawable/code" />
 
             <TextView
                 android:layout_width="match_parent"

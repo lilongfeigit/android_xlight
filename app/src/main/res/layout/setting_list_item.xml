@@ -11,12 +11,18 @@
 
     <TextView
         android:id="@+id/tv_setting_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:fontFamily="sans-serif-light"
         android:text="个人中心"
+        android:gravity="center|left"
+        style="@style/SettingsItem"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/textDarkGrey"/>
-
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/icon_left_arrow"/>
 
 </LinearLayout>

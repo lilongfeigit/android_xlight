@@ -55,8 +55,8 @@
     </style>
     <!--修改密码界面属性-->
     <style name="ModifyPassword">
-        <item name="android:layout_marginLeft">20dp</item>
-        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
         <item name="android:background">@drawable/edt_bg</item>
     </style>
 </resources>

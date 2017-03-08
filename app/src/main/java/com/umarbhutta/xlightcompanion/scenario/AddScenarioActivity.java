@@ -1,17 +1,23 @@
 package com.umarbhutta.xlightcompanion.scenario;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,11 +40,14 @@ public class AddScenarioActivity extends AppCompatActivity {
     private int c = 0, cw = 0, ww = 0, r = 0, g = 0, b = 0;
     private String colorHex, scenarioName, scenarioInfo, scenarioFilter;
 
+    private LinearLayout linear;
+    private LayoutInflater mInflater;
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_scenario);
-
+        mInflater = LayoutInflater.from(this);
         //hide nav bar
         getSupportActionBar().hide();
 
@@ -56,6 +65,8 @@ public class AddScenarioActivity extends AppCompatActivity {
         addButton = (Button) findViewById(R.id.addButton);
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         backImageView = (ImageView) findViewById(R.id.backImageView);
+
+        linear = (LinearLayout) findViewById(R.id.ll_horizontal_scrollview);
 
         filterSpinner = (Spinner) findViewById(R.id.filterSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -140,10 +151,26 @@ public class AddScenarioActivity extends AppCompatActivity {
                 finish();
             }
         });
+        initScenario();
     }
 
     private void onFabPressed() {
         Intent intent = new Intent(AddScenarioActivity.this, ColorSelectActivity.class);
         startActivityForResult(intent, 1);
+    }
+    private void initScenario() {
+
+        for (int i = 0; i < 4; i++) {
+            View view;
+            if(i==0){
+                view = mInflater.inflate(R.layout.add_scenario_zdy_item,
+                        linear, false);
+            }else{
+                view = mInflater.inflate(R.layout.add_scenario_item,
+                        linear, false);
+            }
+
+            linear.addView(view);
+        }
     }
 }

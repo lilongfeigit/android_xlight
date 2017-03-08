@@ -22,9 +22,10 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
 
-    public ScenarioListAdapter(Context context){
-        this.mContext=context;
+    public ScenarioListAdapter(Context context) {
+        this.mContext = context;
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scenario_list_item, parent, false);
@@ -45,6 +46,9 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
         private TextView scenarioIndex, scenarioTitle, scenarioDescription;
         private ImageView scenarioDelete;
 
+        private ImageView scenarioIcon;
+        private TextView scenarioText;
+
         public ScenarioListViewHolder(View itemView) {
             super(itemView);
             scenarioIndex = (TextView) itemView.findViewById(R.id.scenarioIndex);
@@ -55,6 +59,9 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
             scenarioDelete.setOnClickListener(this);
+
+            scenarioIcon = (ImageView) itemView.findViewById(R.id.icon_scenario);
+            scenarioText = (TextView) itemView.findViewById(R.id.text_scenario);
         }
 
         public void bindView(int position) {
@@ -62,6 +69,21 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
             scenarioIndex.setText(displayNum + "");
             scenarioTitle.setText(ScenarioFragment.name.get(position));
             scenarioDescription.setText(ScenarioFragment.info.get(position));
+            switch (position){
+                case 0:
+                    scenarioIcon.setImageResource(R.drawable.icon_book);
+                    scenarioText.setText("读书");
+                    break;
+                case 1:
+                    scenarioIcon.setImageResource(R.drawable.icon_tv);
+                    scenarioText.setText("看电视");
+                    break;
+                case 2:
+                    scenarioText.setText("睡觉");
+                    break;
+                default:
+                    break;
+            }
 
             //如果设置了回调，就设置点击事件
 //            if (mOnItemClickListener != null){
@@ -90,10 +112,11 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
 
         @Override
         public boolean onLongClick(View view) {
-            Toast.makeText(mContext,"删除", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "删除", Toast.LENGTH_SHORT).show();
             return true;
         }
     }
+
     private void onFabPressed(View view) {
         Intent intent = new Intent(mContext, AddScenarioNewActivity.class);
         mContext.startActivity(intent);

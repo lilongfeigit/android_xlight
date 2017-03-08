@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/edt_bg"
         android:drawableLeft="@drawable/icon_user"
+        android:layout_marginTop="50dp"
         android:paddingLeft="6dp"
         android:drawablePadding="10dp"
         android:gravity="center_vertical"

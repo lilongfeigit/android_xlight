@@ -175,7 +175,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
+                        android:thumb="@null"
+                        android:track="@null"
+                        android:drawableRight="@drawable/switch_selector"
                         android:layout_weight="1" />
+
 
                 </LinearLayout>
 

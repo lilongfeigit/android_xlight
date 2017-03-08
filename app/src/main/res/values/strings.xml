@@ -5,4 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <!--登陆-->
+    <string name="login_text_user">请输入账号</string>
+    <string name="login_text_password">请输入密码</string>
+    <string name="login_text_forget">忘记密码？</string>
+    <string name="login_text_register">新用户注册</string>
+    <string name="login_text">LOGIN</string>
 </resources>

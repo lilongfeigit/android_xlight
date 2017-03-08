@@ -25,4 +25,9 @@
 
     <color name="white">#ffffff</color>
     <color name="blue_sky">#0000FF</color>
+    <!--登陆界面-->
+    <color name="btn_login_color">#4a4a4a</color>
+    <color name="edit_login_color">#9b9b9b</color>
+
+
 </resources>

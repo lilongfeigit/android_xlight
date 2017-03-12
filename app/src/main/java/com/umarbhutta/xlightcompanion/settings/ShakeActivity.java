@@ -22,6 +22,7 @@ public class ShakeActivity extends AppCompatActivity {
 
     private LinearLayout llBack;
     private TextView btnSure;
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,5 +62,7 @@ public class ShakeActivity extends AppCompatActivity {
                 //TODO 确定提交按钮
             }
         });
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("摇一摇");
     }
 }

@@ -47,6 +47,7 @@ import me.priyesh.chroma.ColorSelectListener;
  */
 
 public class EditDeviceActivity extends AppCompatActivity {
+    private TextView tvTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +91,8 @@ public class EditDeviceActivity extends AppCompatActivity {
                 //TODO 确定提交按钮
             }
         });
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("编辑设备");
 
         scenarioSpinner = (Spinner) findViewById(R.id.scenarioSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout

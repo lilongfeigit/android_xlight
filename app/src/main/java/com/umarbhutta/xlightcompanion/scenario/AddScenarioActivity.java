@@ -41,6 +41,7 @@ public class AddScenarioActivity extends AppCompatActivity {
     private String colorHex, scenarioName, scenarioInfo, scenarioFilter;
 
     private LinearLayout llBack;
+    private TextView tvTitle;
 
     private LinearLayout linear;
     private LayoutInflater mInflater;
@@ -69,7 +70,8 @@ public class AddScenarioActivity extends AppCompatActivity {
         backImageView = (ImageView) findViewById(R.id.backImageView);
 
         linear = (LinearLayout) findViewById(R.id.ll_horizontal_scrollview);
-
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("添加场景");
         filterSpinner = (Spinner) findViewById(R.id.filterSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> filterAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, MainActivity.filterNames);

@@ -2,11 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -14,22 +17,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="账号" />
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="账号"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_user_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="peter" />
+            android:layout_toLeftOf="@+id/iv_head_img"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="peter"
+            android:textSize="16sp" />
 
         <ImageView
-
-            android:visibility="gone"
             android:id="@+id/iv_head_img"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/logo" />
+            android:gravity="center"
+            android:src="@drawable/logo"
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

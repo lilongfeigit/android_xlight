@@ -20,6 +20,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private LinearLayout llBack;
     private TextView btnSure;
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("登录");
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

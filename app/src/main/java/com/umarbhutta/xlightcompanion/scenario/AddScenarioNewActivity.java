@@ -41,7 +41,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private int scenarioBrightness = 0;
     private int c = 0, cw = 0, ww = 0, r = 0, g = 0, b = 0;
     private String colorHex, scenarioName, scenarioInfo, scenarioFilter;
-
+    private TextView tvTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +58,8 @@ public class AddScenarioNewActivity extends AppCompatActivity {
 //        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         //finally change the color
 //        window.setStatusBarColor(this.getResources().getColor(R.color.colorAccent));
-
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("添加场景");
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         addButton = (Button) findViewById(R.id.addButton);
@@ -106,7 +107,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         colorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 弹出选择颜色的页面
+                //弹出选择颜色的页面
                 onFabPressed();
                 //以前的
 //                new ChromaDialog.Builder()

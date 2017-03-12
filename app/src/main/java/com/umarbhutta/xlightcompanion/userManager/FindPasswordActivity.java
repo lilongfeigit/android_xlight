@@ -17,6 +17,7 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
 
     private LinearLayout llBack;
     private TextView btnSure;
+    private TextView tvTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,8 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 //TODO 确定提交按钮
             }
         });
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("找回密码");
     }
     @Override
     public void onClick(View view) {

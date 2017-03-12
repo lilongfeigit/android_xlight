@@ -4,50 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/ll_top_edit"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/holo_blue_light"
-        android:gravity="center_horizontal">
-
-        <LinearLayout
-            android:id="@+id/ll_back"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/back" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="返回"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvEditSure"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:paddingRight="10dp"
-            android:text="确定"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-
-    </RelativeLayout>
+    <include layout="@layout/top_layout" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/settingFastBindingView"

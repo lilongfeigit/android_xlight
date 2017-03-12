@@ -19,6 +19,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
 
     private LinearLayout llBack;
     private TextView btnSure;
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
                 //TODO 确定提交按钮
             }
         });
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("注册");
     }
     @Override
     public void onClick(View view) {

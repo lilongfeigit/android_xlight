@@ -20,6 +20,7 @@ import com.umarbhutta.xlightcompanion.R;
 public class UserResProtocalActivity extends AppCompatActivity {
 
     private LinearLayout llBack;
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class UserResProtocalActivity extends AppCompatActivity {
                 finish();
             }
         });
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("用户协议");
         //启用支持javascript
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -79,7 +82,7 @@ public class UserResProtocalActivity extends AppCompatActivity {
                 webView.goBack();//返回上一页面
                 return true;
             } else {
-                System.exit(0);//退出程序
+//                System.exit(0);//退出程序
             }
         }
         return super.onKeyDown(keyCode, event);

@@ -1,5 +1,10 @@
 package com.umarbhutta.xlightcompanion.okHttp;
 
+import com.umarbhutta.xlightcompanion.Tools.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -34,7 +39,7 @@ public abstract class BaseHttp {
      *
      * @param url
      */
-    public void getData(String url) {
+    protected void getData(String url) {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -50,7 +55,7 @@ public abstract class BaseHttp {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                okOnResponse(response.body().toString());
+                okOnResponse(response.body().string());
             }
         });
     }
@@ -61,7 +66,7 @@ public abstract class BaseHttp {
      * @param url
      * @param jsonParam
      */
-    public void postData(String url, String jsonParam) {
+    protected void postData(String url, String jsonParam) {
         OkHttpClient okHttpClient = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, jsonParam);
@@ -81,7 +86,15 @@ public abstract class BaseHttp {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                okOnResponse(response.body().toString());
+                Logger.i("result = " + response.body().string());
+                try {
+                    JSONObject object = new JSONObject(response.body().toString());
+                } catch (JSONException e) {
+                    Logger.i("出现异常了e");
+                    e.printStackTrace();
+                }
+
+                okOnResponse(response.body().toString().trim());
             }
         });
     }

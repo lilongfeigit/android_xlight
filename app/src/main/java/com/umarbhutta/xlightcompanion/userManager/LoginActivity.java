@@ -3,24 +3,33 @@ package com.umarbhutta.xlightcompanion.userManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.scenario.AddScenarioActivity;
-import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
+import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.okHttp.model.LoginParam;
+import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 
 /**
  * Created by Administrator on 2017/3/4.
  * login
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, HttpUtils.OnHttpRequestCallBack {
 
     private LinearLayout llBack;
     private TextView btnSure;
     private TextView tvTitle;
+    private EditText et_user_account;
+    private EditText et_user_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +42,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initViews() {
-       findViewById(R.id.btn_login).setOnClickListener(this);
+        et_user_account = (EditText) findViewById(R.id.et_user_account);
+        et_user_password = (EditText) findViewById(R.id.et_user_password);
+        findViewById(R.id.btn_login).setOnClickListener(this);
         findViewById(R.id.tv_forget_password).setOnClickListener(this);
         findViewById(R.id.tv_new_user_res).setOnClickListener(this);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
@@ -56,10 +67,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_login:
-                //TODO
-                finish();
+                login();
                 break;
             case R.id.tv_forget_password:
                 //TODO
@@ -71,8 +81,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
     private void onFabPressed(Class activity) {
-        Intent intent = new Intent(LoginActivity.this,activity);
+        Intent intent = new Intent(LoginActivity.this, activity);
         startActivityForResult(intent, 1);
+    }
+
+    private void login() {
+        String et_user_accountStr = et_user_account.getText().toString();
+        String et_user_passwordStr = et_user_password.getText().toString();
+
+        if (TextUtils.isEmpty(et_user_accountStr)) {
+            ToastUtil.showToast(this, getString(R.string.account_is_null));
+            return;
+        }
+
+        if (TextUtils.isEmpty(et_user_passwordStr)) {
+            ToastUtil.showToast(this, getString(R.string.password_is_null));
+            return;
+        }
+
+        LoginParam param = new LoginParam(et_user_accountStr, et_user_passwordStr);
+
+        Gson gson = new Gson();
+        String paramStr = gson.toJson(param);
+
+        HttpUtils.getInstance().requestInfo(false, NetConfig.URL_LOGIN, paramStr, LoginResult.class, this);
+    }
+
+    @Override
+    public void onHttpRequestSuccess(Object result) {
+        LoginResult info = (LoginResult) result;
+        Logger.i("login result = " + info);
+    }
+
+    @Override
+    public void onHttpRequestFail(int code, String errMsg) {
+        Logger.i("login fail = ");
     }
 }

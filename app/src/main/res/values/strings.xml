@@ -11,4 +11,8 @@
     <string name="login_text_forget">忘记密码？</string>
     <string name="login_text_register">新用户注册</string>
     <string name="login_text">LOGIN</string>
+    <string name="account_is_null">账号不能为空</string>
+    <string name="password_is_null">密码不能为空</string>
+    <string name="confirm_pwd_is_null">请输入确认密码</string>
+    <string name="twice_pwd_not_same">两次密码不一致</string>
 </resources>

@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.umarbhutta.xlightcompanion"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -37,4 +37,5 @@ dependencies {
     compile 'io.particle:devicesetup:0.3.6'
     compile 'me.priyesh:chroma:1.0.2'
     compile 'com.larswerkman:HoloColorPicker:1.5'
+    compile 'com.google.code.gson:gson:2.2.1'
 }

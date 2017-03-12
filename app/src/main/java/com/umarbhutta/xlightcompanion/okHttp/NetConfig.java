@@ -5,4 +5,8 @@ package com.umarbhutta.xlightcompanion.okHttp;
  */
 
 public class NetConfig {
+    /**
+     * 数据解析错误
+     */
+    public static final int ERROR_PARSE = -100;
 }

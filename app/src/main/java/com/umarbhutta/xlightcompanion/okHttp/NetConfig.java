@@ -15,6 +15,7 @@ public class NetConfig {
      * 数据解析错误
      */
     public static final int ERROR_PARSE = -100;
+    public static final String ERROR_PARSE_MSG = "数据解析异常";
 
 
     /**

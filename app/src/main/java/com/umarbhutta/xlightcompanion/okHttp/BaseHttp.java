@@ -1,10 +1,5 @@
 package com.umarbhutta.xlightcompanion.okHttp;
 
-import com.umarbhutta.xlightcompanion.Tools.Logger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -86,18 +81,9 @@ public abstract class BaseHttp {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Logger.i("result = " + response.body().string());
-                try {
-                    JSONObject object = new JSONObject(response.body().toString());
-                } catch (JSONException e) {
-                    Logger.i("出现异常了e");
-                    e.printStackTrace();
-                }
-
-                okOnResponse(response.body().toString().trim());
+                String result = response.body().string();
+                okOnResponse(result);
             }
         });
     }
-
-
 }

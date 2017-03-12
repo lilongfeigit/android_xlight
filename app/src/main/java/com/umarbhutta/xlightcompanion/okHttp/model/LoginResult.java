@@ -1,12 +1,13 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by guangbinw on 2017/3/12.
  */
 
-public class LoginResult {
+public class LoginResult implements Serializable{
     public List<LoginResult> data;
 
     public int code;

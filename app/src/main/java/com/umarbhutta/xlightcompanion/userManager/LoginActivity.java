@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginParam;
@@ -110,9 +111,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onHttpRequestSuccess(Object result) {
-        LoginResult info = (LoginResult) result;
-        Logger.i("login result = " + info);
+    public void onHttpRequestSuccess(final Object result) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LoginResult info = (LoginResult) result;
+                if (info.code == 1) {   //登录成功
+                    ToastUtil.showToast(LoginActivity.this, getString(R.string.login_success));
+                    UserUtils.saveUserInfo(LoginActivity.this, info.data.get(0));
+                    finish();
+                } else if (info.code == 0) {  //登录失败，提示服务端返回的信息
+                    ToastUtil.showToast(LoginActivity.this, info.msg);
+                } else {
+                    ToastUtil.showToast(LoginActivity.this, getString(R.string.net_error));
+                }
+            }
+        });
+
+
     }
 
     @Override

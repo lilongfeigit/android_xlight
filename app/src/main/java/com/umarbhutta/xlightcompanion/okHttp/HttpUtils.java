@@ -2,9 +2,6 @@ package com.umarbhutta.xlightcompanion.okHttp;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by guangbinw on 2017/3/12.
  */
@@ -40,7 +37,6 @@ public class HttpUtils extends BaseHttp {
         } else {
             postData(url, jsonParam);
         }
-
     }
 
     @Override
@@ -56,16 +52,16 @@ public class HttpUtils extends BaseHttp {
         try {
             if (null != mOnHttpRequestCallBack) {
                 if (null != mClass) {
-                    JSONObject object = new JSONObject(result);
                     Object responseResult = null;
-                    responseResult = gson.fromJson(String.valueOf(object), mClass);
+                    responseResult = gson.fromJson(result, mClass);
                     mOnHttpRequestCallBack.onHttpRequestSuccess(responseResult);
                 } else {
                     mOnHttpRequestCallBack.onHttpRequestSuccess(result);
                 }
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            mOnHttpRequestCallBack.onHttpRequestFail(NetConfig.ERROR_PARSE, NetConfig.ERROR_PARSE_MSG);
         }
     }
 

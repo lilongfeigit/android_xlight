@@ -117,9 +117,22 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onHttpRequestSuccess(Object result) {
-        RegisteResult info = (RegisteResult) result;
-        Logger.i("login result = " + info);
+    public void onHttpRequestSuccess(final Object result) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                RegisteResult info = (RegisteResult) result;
+                if (info.code == 0) {
+                    ToastUtil.showToast(RegisteredActivity.this, info.msg);
+                } else if (1 == info.code) {
+                    ToastUtil.showToast(RegisteredActivity.this, getString(R.string.registe_success));
+                    finish();
+                } else {
+                    ToastUtil.showToast(RegisteredActivity.this, getString(R.string.net_error));
+                }
+            }
+        });
+
     }
 
     @Override

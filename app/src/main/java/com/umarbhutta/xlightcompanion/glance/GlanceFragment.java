@@ -71,17 +71,19 @@ public class GlanceFragment extends Fragment {
             roomHumidity.setText(MainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         }
     }
+
     private final MyDataReceiver m_DataReceiver = new MyDataReceiver();
 
     @Override
     public void onDestroyView() {
         devicesRecyclerView.setAdapter(null);
         MainActivity.m_mainDevice.removeDataEventHandler(m_handlerGlance);
-        if( MainActivity.m_mainDevice.getEnableEventBroadcast() ) {
+        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
             getContext().unregisterReceiver(m_DataReceiver);
         }
         super.onDestroyView();
     }
+
     private Dialog mSelectDialog = null;
 
     @Nullable
@@ -140,17 +142,17 @@ public class GlanceFragment extends Fragment {
         icoSleet = Bitmap.createBitmap(weatherIcons, ICON_WIDTH * 5, ICON_HEIGHT * 3, ICON_WIDTH, ICON_HEIGHT);
         icoWind = Bitmap.createBitmap(weatherIcons, 0, ICON_HEIGHT * 3, ICON_WIDTH, ICON_HEIGHT);
         icoFog = Bitmap.createBitmap(weatherIcons, 0, ICON_HEIGHT * 2, ICON_WIDTH, ICON_HEIGHT);
-        icoCloudy = Bitmap.createBitmap(weatherIcons, ICON_WIDTH , ICON_HEIGHT * 5, ICON_WIDTH, ICON_HEIGHT);
+        icoCloudy = Bitmap.createBitmap(weatherIcons, ICON_WIDTH, ICON_HEIGHT * 5, ICON_WIDTH, ICON_HEIGHT);
         icoPartlyCloudyDay = Bitmap.createBitmap(weatherIcons, ICON_WIDTH, ICON_HEIGHT, ICON_WIDTH, ICON_HEIGHT);
         icoPartlyCloudyNight = Bitmap.createBitmap(weatherIcons, ICON_WIDTH * 2, ICON_HEIGHT, ICON_WIDTH, ICON_HEIGHT);
 
-        if( MainActivity.m_mainDevice.getEnableEventBroadcast() ) {
+        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
             intentFilter.setPriority(3);
             getContext().registerReceiver(m_DataReceiver, intentFilter);
         }
 
-        if( MainActivity.m_mainDevice.getEnableEventSendMessage() ) {
+        if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
             m_handlerGlance = new Handler() {
                 public void handleMessage(Message msg) {
                     int intValue = msg.getData().getInt("DHTt", -255);
@@ -225,21 +227,22 @@ public class GlanceFragment extends Fragment {
 
         return view;
     }
+
     private View.OnClickListener btnlistener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_choose_add_wifi_device: // 扫描设备添加
-                    Toast.makeText(getActivity(),"扫描设备添加",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "扫描设备添加", Toast.LENGTH_SHORT).show();
                     break;
                 //扫描二维码添加
                 case R.id.btn_choose_scan_add_device:
-                    Toast.makeText(getActivity(),"扫描二维码添加",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "扫描二维码添加", Toast.LENGTH_SHORT).show();
                     break;
                 // 输入口令添加
                 case R.id.btn_choose_add_line_device:
-                    Toast.makeText(getActivity(),"输入口令添加",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "输入口令添加", Toast.LENGTH_SHORT).show();
                     break;
                 // 取消
                 case R.id.btn_cancel:
@@ -274,7 +277,7 @@ public class GlanceFragment extends Fragment {
         weatherDetails.setTemp(currently.getDouble("temperature"));
         weatherDetails.setIcon(currently.getString("icon"));
         weatherDetails.setApparentTemp(currently.getDouble("apparentTemperature"));
-        weatherDetails.setHumidity((int)(currently.getDouble("humidity") * 100 + 0.5));
+        weatherDetails.setHumidity((int) (currently.getDouble("humidity") * 100 + 0.5));
 
         return weatherDetails;
     }
@@ -317,25 +320,25 @@ public class GlanceFragment extends Fragment {
     }
 
     public Bitmap getWeatherIcon(final String iconName) {
-        if( iconName.equalsIgnoreCase("clear-day") ) {
+        if (iconName.equalsIgnoreCase("clear-day")) {
             return icoClearDay;
-        } else if( iconName.equalsIgnoreCase("clear-night") ) {
+        } else if (iconName.equalsIgnoreCase("clear-night")) {
             return icoClearNight;
-        } else if( iconName.equalsIgnoreCase("rain") ) {
+        } else if (iconName.equalsIgnoreCase("rain")) {
             return icoRain;
-        } else if( iconName.equalsIgnoreCase("snow") ) {
+        } else if (iconName.equalsIgnoreCase("snow")) {
             return icoSnow;
-        } else if( iconName.equalsIgnoreCase("sleet") ) {
+        } else if (iconName.equalsIgnoreCase("sleet")) {
             return icoSleet;
-        } else if( iconName.equalsIgnoreCase("wind") ) {
+        } else if (iconName.equalsIgnoreCase("wind")) {
             return icoWind;
-        } else if( iconName.equalsIgnoreCase("fog") ) {
+        } else if (iconName.equalsIgnoreCase("fog")) {
             return icoFog;
-        } else if( iconName.equalsIgnoreCase("cloudy") ) {
+        } else if (iconName.equalsIgnoreCase("cloudy")) {
             return icoCloudy;
-        } else if( iconName.equalsIgnoreCase("partly-cloudy-day") ) {
+        } else if (iconName.equalsIgnoreCase("partly-cloudy-day")) {
             return icoPartlyCloudyDay;
-        } else if( iconName.equalsIgnoreCase("partly-cloudy-night") ) {
+        } else if (iconName.equalsIgnoreCase("partly-cloudy-night")) {
             return icoPartlyCloudyNight;
         } else {
             return icoDefault;

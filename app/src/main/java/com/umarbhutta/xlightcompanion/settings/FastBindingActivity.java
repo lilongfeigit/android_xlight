@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
@@ -16,10 +19,16 @@ import java.util.List;
  */
 
 public class FastBindingActivity extends AppCompatActivity {
+
+    private LinearLayout llBack;
+    private TextView btnSure;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fast_bingding);
+        //hide nav bar
+        getSupportActionBar().hide();
         initViews();
     }
 
@@ -39,5 +48,19 @@ public class FastBindingActivity extends AppCompatActivity {
         faseBings.add("扫描二维码");
         faseBings.add("输入口令码");
         mFastBindingAdapter.notifyDataSetChanged();
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btnSure = (TextView) findViewById(R.id.tvEditSure);
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 确定提交按钮
+            }
+        });
     }
 }

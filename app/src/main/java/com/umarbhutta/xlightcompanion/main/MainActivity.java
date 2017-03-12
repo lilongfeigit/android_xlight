@@ -8,12 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
@@ -41,14 +44,17 @@ public class MainActivity extends AppCompatActivity
     public static final String[] filterNames = {"Breathe", "Music Match", "Flash"};
 
     public static xltDevice m_mainDevice;
+    private TextView tv_center_title;
+    private Button btnRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tv_center_title = (TextView) findViewById(R.id.tv_center_title);
+        btnRight = (Button) findViewById(R.id.btnRight);
         setSupportActionBar(toolbar);
-
         // Check Bluetooth
         BLEAdapter.init(this);
         if (BLEAdapter.IsSupported() && !BLEAdapter.IsEnabled()) {
@@ -90,6 +96,15 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        //右边菜单按钮
+        btnRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 跳转到选择的主设备列表页面
+                onFabPressed(DeviceListActivity.class);
+            }
+        });
+
         displayView(R.id.nav_glance);
         navigationView.getMenu().getItem(0).setChecked(true);
     }
@@ -113,27 +128,33 @@ public class MainActivity extends AppCompatActivity
 
         switch (viewId) {
             case R.id.nav_glance:
+                btnRight.setVisibility(View.VISIBLE);
                 fragment = new GlanceFragment();//首页
                 title = "Glance首页";
                 break;
             case R.id.nav_control:
+                btnRight.setVisibility(View.GONE);
                 fragment = new ControlFragment();//规则
                 title = "Control规则";
                 break;
             case R.id.nav_schedule:
+                btnRight.setVisibility(View.GONE);
 //                fragment = new ScheduleFragment();//时间表
                 fragment = new ReportFragment();//报表
                 title = "Report报表";
                 break;
             case R.id.nav_scenario:
+                btnRight.setVisibility(View.GONE);
                 fragment = new ScenarioFragment();//场景
                 title = "Scenario场景";
                 break;
             case R.id.nav_settings:
+                btnRight.setVisibility(View.GONE);
                 fragment = new SettingFragment();//设置
                 title = "Setting设置";
                 break;
             case R.id.nav_help:
+                btnRight.setVisibility(View.GONE);
                 fragment = new HelpFragment();//帮助
                 title = "Help帮助";
                 break;
@@ -147,8 +168,12 @@ public class MainActivity extends AppCompatActivity
 
         // set the toolbar title
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
+//            getSupportActionBar().setTitle(title);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
         }
+        tv_center_title.setText(title);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -168,7 +193,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -180,7 +205,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //TODO  跳转到选择的主设备列表页面
+            // 跳转到选择的主设备列表页面
             onFabPressed(DeviceListActivity.class);
             return true;
         }

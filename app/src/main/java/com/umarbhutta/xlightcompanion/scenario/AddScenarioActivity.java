@@ -40,6 +40,8 @@ public class AddScenarioActivity extends AppCompatActivity {
     private int c = 0, cw = 0, ww = 0, r = 0, g = 0, b = 0;
     private String colorHex, scenarioName, scenarioInfo, scenarioFilter;
 
+    private LinearLayout llBack;
+
     private LinearLayout linear;
     private LayoutInflater mInflater;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -75,6 +77,14 @@ public class AddScenarioActivity extends AppCompatActivity {
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the scenarioAdapter to the spinner
         filterSpinner.setAdapter(filterAdapter);
+
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         colorTextView.setOnClickListener(new View.OnClickListener() {
             @Override

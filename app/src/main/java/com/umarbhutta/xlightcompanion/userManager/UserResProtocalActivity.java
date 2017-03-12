@@ -3,10 +3,13 @@ package com.umarbhutta.xlightcompanion.userManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 
@@ -15,6 +18,9 @@ import com.umarbhutta.xlightcompanion.R;
  */
 
 public class UserResProtocalActivity extends AppCompatActivity {
+
+    private LinearLayout llBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +32,13 @@ public class UserResProtocalActivity extends AppCompatActivity {
 
     private void initViews() {
         webView = (WebView) findViewById(R.id.web_user_protocal);
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         //启用支持javascript
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);

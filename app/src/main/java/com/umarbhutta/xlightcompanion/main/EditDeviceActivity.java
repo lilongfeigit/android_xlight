@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +43,7 @@ import me.priyesh.chroma.ColorSelectListener;
 
 /**
  * Created by Administrator on 2017/3/5.
+ * 设置灯
  */
 
 public class EditDeviceActivity extends AppCompatActivity {
@@ -48,6 +51,10 @@ public class EditDeviceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_control);
+        mInflater = LayoutInflater.from(this);
+
+        //hide nav bar
+        getSupportActionBar().hide();
 
         scenarioDropdown = new ArrayList<>(ScenarioFragment.name);
         scenarioDropdown.add(0, "None");
@@ -68,6 +75,21 @@ public class EditDeviceActivity extends AppCompatActivity {
         powerLabel = (TextView) findViewById(R.id.powerLabel);
         colorLabel = (TextView) findViewById(R.id.colorLabel);
         lightImageView = (ImageView) findViewById(R.id.lightImageView);
+        linear = (LinearLayout) findViewById(R.id.ll_horizontal_scrollview);
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btnSure = (TextView) findViewById(R.id.tvEditSure);
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 确定提交按钮
+            }
+        });
 
         scenarioSpinner = (Spinner) findViewById(R.id.scenarioSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -269,8 +291,7 @@ public class EditDeviceActivity extends AppCompatActivity {
                 updateDeviceRingLabel();
             }
         });
-
-
+        initScenario();//初始化场景
     }
 
     private static final String TAG = ControlFragment.class.getSimpleName();
@@ -290,6 +311,12 @@ public class EditDeviceActivity extends AppCompatActivity {
     private ToggleButton ring1Button, ring2Button, ring3Button;
     private TextView deviceRingLabel, powerLabel, brightnessLabel, cctLabel, colorLabel;
     private ImageView lightImageView;
+
+    private LinearLayout llBack;
+    private TextView btnSure;
+    private LinearLayout linear;
+
+    private LayoutInflater mInflater;
 
     private ArrayList<String> scenarioDropdown;
 
@@ -378,5 +405,20 @@ public class EditDeviceActivity extends AppCompatActivity {
     private void onFabPressed() {
         Intent intent = new Intent(EditDeviceActivity.this, ColorSelectActivity.class);
         startActivityForResult(intent, 1);
+    }
+    private void initScenario() {
+
+        for (int i = 0; i < 4; i++) {
+            View view;
+            if(i==0){
+                view = mInflater.inflate(R.layout.add_scenario_zdy_item,
+                        linear, false);
+            }else{
+                view = mInflater.inflate(R.layout.add_scenario_item,
+                        linear, false);
+            }
+
+            linear.addView(view);
+        }
     }
 }

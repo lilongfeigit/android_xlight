@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +35,9 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private ImageView backImageView;
     private Spinner filterSpinner;
 
+    private LinearLayout llBack;
+    private TextView btnSure;
+
     private int scenarioBrightness = 0;
     private int c = 0, cw = 0, ww = 0, r = 0, g = 0, b = 0;
     private String colorHex, scenarioName, scenarioInfo, scenarioFilter;
@@ -43,8 +47,8 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_scenario_new);
 
-        //hide nav bar
-//        getSupportActionBar().hide();
+//        hide nav bar
+        getSupportActionBar().hide();
 
         //change status bar color to accent
 //        Window window = this.getWindow();
@@ -58,6 +62,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         addButton = (Button) findViewById(R.id.addButton);
+
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         backImageView = (ImageView) findViewById(R.id.backImageView);
 
@@ -68,6 +73,35 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the scenarioAdapter to the spinner
         filterSpinner.setAdapter(filterAdapter);
+
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btnSure = (TextView) findViewById(R.id.tvEditSure);
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 确定提交按钮
+                //send info back to ScenarioFragment
+                scenarioName = nameEditText.getText().toString();
+
+                scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
+
+                //SEND TO PARTICLE CLOUD FOR ALL RINGS
+                MainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+
+                //send data to update the list
+                Intent returnIntent = getIntent();
+                returnIntent.putExtra(ScenarioFragment.SCENARIO_NAME, scenarioName);
+                returnIntent.putExtra(ScenarioFragment.SCENARIO_INFO, scenarioInfo);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        });
 
         colorTextView.setOnClickListener(new View.OnClickListener() {
             @Override

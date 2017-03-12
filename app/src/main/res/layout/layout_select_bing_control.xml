@@ -14,10 +14,10 @@
         android:id="@+id/btn_choose_add_wifi_device"
         android:layout_width="fill_parent"
         android:layout_height="40dip"
-        android:background="@drawable/btn_done_selector"
+        android:background="@android:color/holo_blue_light"
         android:gravity="center"
         android:text="扫描设备添加（适用于初次绑定设备）"
-        android:textColor="#ffffff"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
 
     <Button
@@ -25,20 +25,20 @@
         android:layout_width="fill_parent"
         android:layout_height="40dip"
         android:layout_marginTop="12dip"
-        android:background="@drawable/btn_done_selector"
+        android:background="@android:color/holo_blue_light"
         android:gravity="center"
         android:text="扫描二维码添加"
-        android:textColor="#ffffff"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
     <Button
         android:id="@+id/btn_choose_add_line_device"
         android:layout_width="fill_parent"
         android:layout_height="40dip"
         android:layout_marginTop="12dip"
-        android:background="@drawable/btn_done_selector"
+        android:background="@android:color/holo_blue_light"
         android:gravity="center"
         android:text="输入口令添加"
-        android:textColor="#ffffff"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
 
     <Button
@@ -46,10 +46,10 @@
         android:layout_width="fill_parent"
         android:layout_height="40dip"
         android:layout_marginTop="12dip"
-        android:background="@drawable/btn_done_selector"
+        android:background="@android:color/holo_blue_light"
         android:gravity="center"
         android:text="取消"
-        android:textColor="#888888"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
 
 </LinearLayout>

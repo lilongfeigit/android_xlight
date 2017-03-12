@@ -4,11 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/top_layout" />
+
     <WebView
         android:id="@+id/helpWebview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/llBottom" />
+        android:layout_above="@+id/llBottom"
+        android:layout_below="@+id/ll_top_edit" />
 
     <RelativeLayout
         android:id="@+id/llBottom"
@@ -23,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
             android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/icon_arrow_right" />
 
 

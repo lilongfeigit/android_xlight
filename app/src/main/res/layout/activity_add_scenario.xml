@@ -3,14 +3,58 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/ll_top_edit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/holo_blue_light"
+        android:gravity="center_horizontal">
 
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="返回"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvEditSure"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:fontFamily="sans-serif-medium"
+            android:visibility="gone"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:text="确定"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/mainLightsLL"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/ll_top_edit"
         android:background="@color/colorAccent"
         android:gravity="center_horizontal"
         android:orientation="vertical">
@@ -32,6 +76,7 @@
         android:layout_below="@+id/mainLightsLL"
         android:background="@color/textDarkGrey"
         android:minHeight="?attr/actionBarSize"
+        android:visibility="gone"
         android:paddingLeft="20dp">
 
         <LinearLayout
@@ -54,12 +99,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:scrollbars="none"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/backImageView"
         android:layout_below="@id/toolbar"
-        android:layout_marginStart="10dp">
+        android:layout_marginStart="10dp"
+        android:orientation="vertical"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,7 +115,7 @@
                 android:id="@+id/nameLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/toolbar"
+                android:layout_below="@id/mainLightsLL"
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
                 android:paddingLeft="30dp"
@@ -134,10 +179,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="8dp"
-                    android:thumb="@null"
-                    android:track="@null"
                     android:drawableRight="@drawable/switch_selector"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:thumb="@null"
+                    android:track="@null" />
 
             </RelativeLayout>
 
@@ -176,8 +221,8 @@
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    android:layout_below="@+id/tv_scenario">
+                    android:layout_below="@+id/tv_scenario"
+                    android:scrollbars="none">
 
                     <LinearLayout
                         android:id="@+id/ll_horizontal_scrollview"
@@ -377,7 +422,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/ll_top_edit"
+        android:visibility="gone"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -388,7 +434,6 @@
 
     <Button
         android:id="@+id/addDeviceButton"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -401,7 +446,8 @@
         android:scaleY=".8"
         android:src="@drawable/go_back"
         android:text="确定"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -16,6 +16,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:paddingLeft="15dp"
+        android:paddingBottom="5dp"
         android:src="@drawable/ic_account_circle" />
 
     <LinearLayout
@@ -42,7 +44,8 @@
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
+        android:background="@drawable/btn_login"
         android:text="login"
         android:textColor="@color/white" />
 

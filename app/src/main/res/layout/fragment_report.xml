@@ -4,14 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/top_layout" />
-
     <WebView
         android:id="@+id/helpWebview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/llBottom"
-        android:layout_below="@+id/ll_top_edit" />
+        android:layout_above="@+id/llBottom" />
 
     <RelativeLayout
         android:id="@+id/llBottom"

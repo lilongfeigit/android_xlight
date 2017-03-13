@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
@@ -23,7 +24,7 @@ import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
 import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.control.ControlFragment;
+import com.umarbhutta.xlightcompanion.control.ControlRuleFragment;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
 import com.umarbhutta.xlightcompanion.help.HelpFragment;
@@ -113,7 +114,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 // 跳转到选择的主设备列表页面
-                onFabPressed(DeviceListActivity.class);
+                if(type==0){
+                    onFabPressed(DeviceListActivity.class);
+                }else{
+                    //TODO 添加规则页面
+//                    onFabPressed(DeviceListActivity.class);
+                    Toast.makeText(getApplicationContext(),"添加规则",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -134,28 +142,34 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private int type=0;
     public void displayView(int viewId) {
         Fragment fragment = null;
         String title = getString(R.string.app_name);
-
         switch (viewId) {
             case R.id.nav_glance:
+                type=0;
                 btnRight.setVisibility(View.VISIBLE);
+                btnRight.setBackground(getDrawable(R.drawable.home_setting));
                 fragment = new GlanceFragment();//首页
                 title = "Glance首页";
                 break;
             case R.id.nav_control:
-                btnRight.setVisibility(View.GONE);
-                fragment = new ControlFragment();//规则
+                type=1;
+                btnRight.setVisibility(View.VISIBLE);
+                btnRight.setBackground(getDrawable(R.drawable.control_add));
+                fragment = new ControlRuleFragment();//规则
                 title = "Control规则";
                 break;
             case R.id.nav_schedule:
+                type=0;
                 btnRight.setVisibility(View.GONE);
 //                fragment = new ScheduleFragment();//时间表
                 fragment = new ReportFragment();//报表
                 title = "Report报表";
                 break;
             case R.id.nav_scenario:
+                type=0;
                 btnRight.setVisibility(View.GONE);
                 fragment = new ScenarioFragment();//场景
                 title = "Scenario场景";
@@ -166,6 +180,7 @@ public class MainActivity extends AppCompatActivity
                 title = "Setting设置";
                 break;
             case R.id.nav_help:
+                type=0;
                 btnRight.setVisibility(View.GONE);
                 fragment = new HelpFragment();//帮助
                 title = "Help帮助";

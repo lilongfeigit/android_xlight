@@ -113,7 +113,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
         Gson gson = new Gson();
         String paramStr = gson.toJson(param);
 
-        HttpUtils.getInstance().requestInfo(false, NetConfig.URL_REGISTER, paramStr, RegisteResult.class, this);
+        HttpUtils.getInstance().postRequestInfo(NetConfig.URL_REGISTER, paramStr, RegisteResult.class, this);
     }
 
     @Override

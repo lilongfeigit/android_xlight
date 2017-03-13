@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Gson gson = new Gson();
         String paramStr = gson.toJson(param);
 
-        HttpUtils.getInstance().requestInfo(false, NetConfig.URL_LOGIN, paramStr, LoginResult.class, this);
+        HttpUtils.getInstance().postRequestInfo(NetConfig.URL_LOGIN, paramStr, LoginResult.class, this);
     }
 
     @Override

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.main.MainActivity;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class SettingFragment extends Fragment {
 
     private List<String> settingStr = new ArrayList<String>();
 
-//    public static String[] settingStr = {"个人信息","修改密码","摇一摇","用户邀请","快速绑定","退出登录"};
+    //    public static String[] settingStr = {"个人信息","修改密码","摇一摇","用户邀请","快速绑定","退出登录"};
     SettingListAdapter settingListAdapter;
     RecyclerView settingRecyclerView;
 
@@ -37,7 +37,7 @@ public class SettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
 
         settingRecyclerView = (RecyclerView) view.findViewById(R.id.settingRecyclerView);
-        settingListAdapter = new SettingListAdapter(getActivity(),settingStr);
+        settingListAdapter = new SettingListAdapter(getActivity(), settingStr);
         settingRecyclerView.setAdapter(settingListAdapter);
 
         //set LayoutManager for recycler view
@@ -57,8 +57,8 @@ public class SettingFragment extends Fragment {
         settingListAdapter.setmOnItemClickListener(new SettingListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(),position+"",Toast.LENGTH_SHORT).show();
-                switch (position){
+                Toast.makeText(getActivity(), position + "", Toast.LENGTH_SHORT).show();
+                switch (position) {
                     case 0://个人信息
                         onFabPressed(UserMsgModifyActivity.class);
                         break;
@@ -75,14 +75,24 @@ public class SettingFragment extends Fragment {
                         onFabPressed(FastBindingActivity.class);
                         break;
                     case 5://退出登录
+                        logout();
                         break;
                 }
             }
         });
         return view;
     }
+
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(getContext(), activity);
         startActivity(intent);
     }
+
+    /**
+     * 退出登录
+     */
+    private void logout() {
+        UserUtils.saveUserInfo(getActivity(), null);
+    }
+
 }

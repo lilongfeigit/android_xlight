@@ -7,7 +7,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
 
     <application
         android:name=".App"
@@ -30,7 +32,7 @@
         <activity
             android:name=".main.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".schedule.AddScheduleActivity"
             android:screenOrientation="portrait" />
@@ -48,7 +50,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".scenario.ColorSelectActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentFullScreenTheme"/>
         <activity
             android:name=".userManager.LoginActivity"
             android:screenOrientation="portrait" />

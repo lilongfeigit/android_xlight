@@ -4,27 +4,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_glance"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/home"
             android:title="Glance首页" />
         <item
             android:id="@+id/nav_control"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/home_nav_control"
             android:title="Control规则" />
         <item
             android:id="@+id/nav_scenario"
-            android:icon="@drawable/ic_lightbulb_outline_black_24dp"
+            android:icon="@drawable/home_scenario"
             android:title="Scenario场景" />
         <item
             android:id="@+id/nav_schedule"
-            android:icon="@drawable/ic_add_alarm_black_24dp"
+            android:icon="@drawable/home_schedule"
             android:title="Schedule报表" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings_black_24dp"
+            android:icon="@drawable/home_setting"
             android:title="Settings设置" />
         <item
             android:id="@+id/nav_help"
-            android:icon="@drawable/ic_help_black_24dp"
+            android:icon="@drawable/home_help"
             android:title="Help帮助" />
     </group>
 

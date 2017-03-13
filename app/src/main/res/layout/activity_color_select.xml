@@ -1,56 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_light"
-    android:gravity="center"
     android:orientation="vertical">
 
     <com.larswerkman.holocolorpicker.ColorPicker
         android:id="@+id/picker"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/btn_login_color" />
 
     <com.larswerkman.holocolorpicker.SVBar
         android:id="@+id/svbar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <com.larswerkman.holocolorpicker.OpacityBar
         android:id="@+id/opacitybar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <com.larswerkman.holocolorpicker.SaturationBar
         android:id="@+id/saturationbar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <com.larswerkman.holocolorpicker.ValueBar
         android:id="@+id/valuebar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btn_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_blue_light"
+            android:background="@color/btn_login_color"
             android:text="关闭"
             android:textColor="@color/white" />
 
         <Button
+            android:id="@+id/btn_sure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_blue_light"
-            android:text="确定"
             android:layout_marginLeft="30dp"
+            android:background="@color/btn_login_color"
+            android:text="确定"
             android:textColor="@color/white" />
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

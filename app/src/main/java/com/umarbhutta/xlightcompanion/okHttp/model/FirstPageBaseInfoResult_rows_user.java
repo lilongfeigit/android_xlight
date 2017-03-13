@@ -1,0 +1,38 @@
+package com.umarbhutta.xlightcompanion.okHttp.model;
+
+/**
+ * Created by guangbinw on 2017/3/13.
+ */
+
+public class FirstPageBaseInfoResult_rows_user {
+    public int id;
+    public String username;
+    public String password;
+    public String salt;
+    public String firstname;
+    public String lastname;
+    public String email;
+    public String image;
+    public int channelcode;
+    public String createdAt;
+    public String updatedAt;
+    public int usergroupId;
+
+    @Override
+    public String toString() {
+        return "FirstPageBaseInfoResult_rows_user{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", image='" + image + '\'' +
+                ", channelcode=" + channelcode +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", usergroupId=" + usergroupId +
+                '}';
+    }
+}

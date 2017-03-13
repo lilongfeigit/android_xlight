@@ -18,21 +18,27 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
 import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.ControlRuleFragment;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
 import com.umarbhutta.xlightcompanion.help.HelpFragment;
+import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderOptions;
+import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 import com.umarbhutta.xlightcompanion.report.ReportFragment;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
 import com.umarbhutta.xlightcompanion.settings.SettingFragment;
+import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
+import com.umarbhutta.xlightcompanion.views.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     //constants for testing lists
     public static final String[] deviceNames = {"Living Room", "Bedroom", "Basement Kitchen"};
@@ -45,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     public static xltDevice m_mainDevice;
     private TextView tv_center_title;
     private Button btnRight;
+    private CircleImageView userIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,16 +91,23 @@ public class MainActivity extends AppCompatActivity
         //NavigationView 的获取头部控件
         View headerView = navigationView.getHeaderView(0);
 
-        headerView.findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO
-//                LinearLayout llPerName = (LinearLayout)findViewById(R.id.llPerName);
-//                btn_login.setVisibility(View.GONE);
-////                llPerName.setVisibility(View.VISIBLE);
-                onFabPressed(LoginActivity.class);
-            }
-        });
+        TextView user_nameTv = (TextView) headerView.findViewById(R.id.user_name);
+        Button btnLogin = (Button) headerView.findViewById(R.id.btn_login);
+        CircleImageView userIcon = (CircleImageView) headerView.findViewById(R.id.userIcon);
+        userIcon.setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
+
+        if (UserUtils.isLogin(this)) {
+            LoginResult userInfo = UserUtils.getUserInfo(this);
+            user_nameTv.setVisibility(View.VISIBLE);
+            btnLogin.setVisibility(View.GONE);
+            user_nameTv.setText(userInfo.username);
+            ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
+        } else {
+            user_nameTv.setVisibility(View.GONE);
+            btnLogin.setVisibility(View.VISIBLE);
+        }
+
 
         //右边菜单按钮
         btnRight.setOnClickListener(new View.OnClickListener() {
@@ -232,5 +246,20 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         displayView(item.getItemId());
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_login:
+//                LinearLayout llPerName = (LinearLayout)findViewById(R.id.llPerName);
+//                btn_login.setVisibility(View.GONE);
+////                llPerName.setVisibility(View.VISIBLE);
+                onFabPressed(LoginActivity.class);
+                break;
+            case R.id.userIcon:
+                onFabPressed(UserMsgModifyActivity.class);
+                break;
+        }
     }
 }

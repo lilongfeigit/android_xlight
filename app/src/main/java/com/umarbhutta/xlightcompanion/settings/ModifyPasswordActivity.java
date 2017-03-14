@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.settings;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.CommentResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.ModifyPwdParam;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -29,6 +31,7 @@ public class ModifyPasswordActivity extends AppCompatActivity implements HttpUti
     private EditText et_old_passwordTv;
     private EditText et_new_passwordTv;
     private EditText et_new_password_againTv;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,9 @@ public class ModifyPasswordActivity extends AppCompatActivity implements HttpUti
             return;
         }
 
+
+        dialog = ProgressDialogUtils.showProgressDialog(this, getString(R.string.commit_img));
+
         ModifyPwdParam param = new ModifyPwdParam(et_old_passwordTvStr, et_new_passwordTvStr);
 
         Gson gson = new Gson();
@@ -101,18 +107,32 @@ public class ModifyPasswordActivity extends AppCompatActivity implements HttpUti
     }
 
     @Override
-    public void onHttpRequestSuccess(Object result) {
-        CommentResult info = (CommentResult) result;
-        if (info.code == 1) {
-            ToastUtil.showToast(this, getString(R.string.modify_pwd_success));
-            finish();
-        } else {
-            ToastUtil.showToast(this, info.msg);
-        }
+    public void onHttpRequestSuccess(final Object result) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+                CommentResult info = (CommentResult) result;
+                if (info.code == 1) {
+                    ToastUtil.showToast(ModifyPasswordActivity.this, getString(R.string.modify_pwd_success));
+                    finish();
+                } else {
+                    ToastUtil.showToast(ModifyPasswordActivity.this, info.msg);
+                }
+            }
+        });
+
     }
 
     @Override
     public void onHttpRequestFail(int code, String errMsg) {
-        ToastUtil.showToast(this, R.string.net_error);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+                ToastUtil.showToast(ModifyPasswordActivity.this, R.string.net_error);
+            }
+        });
+
     }
 }

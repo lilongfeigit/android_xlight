@@ -23,4 +23,5 @@
     <string name="input_new_pwd_again">请确认新密码</string>
     <string name="two_pwd_not_same">两次密码不一致</string>
     <string name="modify_pwd_success">密码修改成功</string>
+    <string name="commit_img">提交中。。。</string>
 </resources>

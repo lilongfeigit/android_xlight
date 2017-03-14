@@ -121,6 +121,39 @@ public abstract class BaseHttp {
                 okOnResponse(result);
             }
         });
+    }
+
+    /**
+     * Delete请求
+     *
+     * @param url
+     * @param jsonParam
+     */
+    protected void deleteData(String url, String jsonParam) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, jsonParam);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .delete(body)
+                .build();
+
+        Call call = okHttpClient.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                okOnError(call.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                Logger.i("result = " + result);
+                okOnResponse(result);
+            }
+        });
 
 
     }

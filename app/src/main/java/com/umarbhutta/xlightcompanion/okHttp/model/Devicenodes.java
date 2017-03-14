@@ -1,42 +1,42 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.util.List;
+
 /**
  * Created by guangbinw on 2017/3/13.
  */
 
-public class FirstPageBaseInfoResult_rows_devicenodes_devicerings {
+public class Devicenodes {
     public int id;
-    public int devicenodeId;
     public int deviceId;
+    public String devicenodename;
     public int nodeno;
-    public String ringname;
-    public int ringno;
     public String ison;
     public int brightness;
-    public int R;
-    public int G;
-    public int B;
-    public int W;
+    public int cct;
+    public String scenarioId;
     public String createdAt;
     public String updatedAt;
+    //    public List<String> sensorsdata;
+    public List<Devicerings> devicerings;
+    public List<Ruleconditions> ruleconditions;
 
     @Override
     public String toString() {
-        return "FirstPageBaseInfoResult_rows_devicenodes_devicerings{" +
+        return "Devicenodes{" +
                 "id=" + id +
-                ", devicenodeId=" + devicenodeId +
                 ", deviceId=" + deviceId +
+                ", devicenodename='" + devicenodename + '\'' +
                 ", nodeno=" + nodeno +
-                ", ringname='" + ringname + '\'' +
-                ", ringno=" + ringno +
                 ", ison='" + ison + '\'' +
                 ", brightness=" + brightness +
-                ", R=" + R +
-                ", G=" + G +
-                ", B=" + B +
-                ", W=" + W +
+                ", cct=" + cct +
+                ", scenarioId='" + scenarioId + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
+//                ", sensorsdata=" + sensorsdata +
+                ", devicerings=" + devicerings +
+                ", ruleconditions=" + ruleconditions +
                 '}';
     }
 }

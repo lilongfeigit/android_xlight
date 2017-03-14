@@ -6,7 +6,7 @@ import java.util.List;
  * Created by guangbinw on 2017/3/13.
  */
 
-public class FirstPageBaseInfoResult_rows {
+public class Rows {
     public int id;
     public String devicename;
     public int userId;
@@ -19,14 +19,14 @@ public class FirstPageBaseInfoResult_rows {
     public String updatedAt;
     public int devicegroupId;
 
-    public FirstPageBaseInfoResult_rows_devicegroup devicegroup;
-    public FirstPageBaseInfoResult_rows_user user;
-    public List<FirstPageBaseInfoResult_rows_devicenodes> devicenodes;
+    public Devicegroup devicegroup;
+    public DeviceUser user;
+    public List<Devicenodes> devicenodes;
 
 
     @Override
     public String toString() {
-        return "FirstPageBaseInfoResult_rows{" +
+        return "Rows{" +
                 "id=" + id +
                 ", devicename='" + devicename + '\'' +
                 ", userId=" + userId +

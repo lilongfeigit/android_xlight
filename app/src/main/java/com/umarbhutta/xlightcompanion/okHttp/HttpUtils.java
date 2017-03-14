@@ -2,6 +2,8 @@ package com.umarbhutta.xlightcompanion.okHttp;
 
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 /**
  * Created by guangbinw on 2017/3/12.
  */
@@ -71,6 +73,23 @@ public class HttpUtils extends BaseHttp {
 
     }
 
+    /**
+     * delete请求
+     *
+     * @param url                    请求地址
+     * @param jsonParam              请求参数json形式
+     * @param mClass                 请求结果直接解析成指定的对象，填null为不做任何处理返回字符串
+     * @param mOnHttpRequestCallBack 用于接受服务器返回数据
+     */
+    public void deleteRequestInfo(String url, String jsonParam, Class mClass, OnHttpRequestCallBack mOnHttpRequestCallBack) {
+
+        this.mClass = mClass;
+        this.mOnHttpRequestCallBack = mOnHttpRequestCallBack;
+
+        deleteData(url, jsonParam);
+
+    }
+
     @Override
     public void okOnError(String errResult) {
         if (null != mOnHttpRequestCallBack) {
@@ -80,20 +99,35 @@ public class HttpUtils extends BaseHttp {
 
     @Override
     public void okOnResponse(String result) {
-
         try {
             if (null != mOnHttpRequestCallBack) {
-                if (null != mClass) {
-                    Object responseResult = null;
-                    responseResult = gson.fromJson(result, mClass);
-                    mOnHttpRequestCallBack.onHttpRequestSuccess(responseResult);
+
+
+                JSONObject jsonObject = new JSONObject(result);
+                int code = jsonObject.getInt("code");
+                String msg = jsonObject.getString("msg");
+
+                if (1 == code) {
+                    if (null != mClass) {
+                        Object responseResult = null;
+                        responseResult = gson.fromJson(result, mClass);
+                        mOnHttpRequestCallBack.onHttpRequestSuccess(responseResult);
+                    } else {
+                        mOnHttpRequestCallBack.onHttpRequestSuccess(result);
+                    }
                 } else {
-                    mOnHttpRequestCallBack.onHttpRequestSuccess(result);
+                    if (null != mOnHttpRequestCallBack) {
+                        mOnHttpRequestCallBack.onHttpRequestFail(code, msg);
+                    }
                 }
+
+
             }
         } catch (Exception e) {
             e.printStackTrace();
-            mOnHttpRequestCallBack.onHttpRequestFail(NetConfig.ERROR_PARSE, NetConfig.ERROR_PARSE_MSG);
+            if (null != mOnHttpRequestCallBack) {
+                mOnHttpRequestCallBack.onHttpRequestFail(NetConfig.ERROR_PARSE, NetConfig.ERROR_PARSE_MSG);
+            }
         }
     }
 

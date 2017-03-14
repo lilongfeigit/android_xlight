@@ -4,7 +4,7 @@ package com.umarbhutta.xlightcompanion.okHttp.model;
  * Created by guangbinw on 2017/3/13.
  */
 
-public class FirstPageBaseInfoResult_rows_devicenodes_ruleconditions {
+public class Ruleconditions {
     public int id;
     public String ruleconditionname;
     public int ruleId;
@@ -24,7 +24,7 @@ public class FirstPageBaseInfoResult_rows_devicenodes_ruleconditions {
 
     @Override
     public String toString() {
-        return "FirstPageBaseInfoResult_rows_devicenodes_ruleconditions{" +
+        return "Ruleconditions{" +
                 "id=" + id +
                 ", ruleconditionname='" + ruleconditionname + '\'' +
                 ", ruleId=" + ruleId +

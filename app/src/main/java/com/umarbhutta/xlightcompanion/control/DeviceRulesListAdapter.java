@@ -20,6 +20,8 @@ import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.schedule.AddScheduleActivity;
 
+import java.util.List;
+
 /**
  * Created by Umar Bhutta.
  * 规则适配器
@@ -27,9 +29,11 @@ import com.umarbhutta.xlightcompanion.schedule.AddScheduleActivity;
 public class DeviceRulesListAdapter extends RecyclerView.Adapter {
 
     private Context mActivity;
+    private List<String> mList;
 
-    public DeviceRulesListAdapter(Context activity){
+    public DeviceRulesListAdapter(Context activity,List<String> list){
         this.mActivity = activity;
+        this.mList = list;
     }
 
     private Handler m_handlerDeviceList;

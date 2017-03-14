@@ -23,6 +23,8 @@ import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 
+import java.util.ArrayList;
+
 /**
  * Created by Umar Bhutta.
  * 新的规则页面
@@ -58,8 +60,8 @@ public class ControlRuleFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_control_rule, container, false);
         //setup recycler view
         rulesRecyclerView = (RecyclerView) view.findViewById(R.id.rulesRecyclerView);
-        //create list adapter
-        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext());
+        //create list adapter TODO 填充数据
+        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(),new ArrayList<String>());
         //attach adapter to recycler view
         rulesRecyclerView.setAdapter(devicesListAdapter);
         //set LayoutManager for recycler view

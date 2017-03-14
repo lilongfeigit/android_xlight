@@ -86,6 +86,16 @@
         <activity
             android:name=".scenario.AddScenarioNewActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.AddControlRuleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.EntryConditionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.ControlRuseltActivity"
+            android:screenOrientation="portrait" />
+
 
         <receiver
             android:name=".Tools.DataReceiver"

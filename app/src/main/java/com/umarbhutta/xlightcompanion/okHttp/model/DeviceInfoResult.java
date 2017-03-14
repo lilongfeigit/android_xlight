@@ -4,23 +4,23 @@ import java.util.List;
 
 /**
  * Created by guangbinw on 2017/3/13.
- * 首页基本信息
+ * 设备信息
  */
 
-public class FirstPageBaseInfoResult {
+public class DeviceInfoResult {
 
     public int code;
     public String msg;
 
-    public FirstPageBaseInfoResult data;
+    public DeviceInfoResult data;
 
     public int count;
 
-    public List<FirstPageBaseInfoResult_rows> rows;
+    public List<Rows> rows;
 
     @Override
     public String toString() {
-        return "FirstPageBaseInfoResult{" +
+        return "DeviceInfoResult{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
                 ", data=" + data +

@@ -6,7 +6,7 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
-import com.umarbhutta.xlightcompanion.okHttp.model.FirstPageBaseInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 
 /**
  * Created by guangbinw on 2017/3/13.
@@ -32,12 +32,12 @@ public class RequestFirstPageInfo implements HttpUtils.OnHttpRequestCallBack {
         this.mOnRequestFirstPageInfoCallback = mOnRequestFirstPageInfoCallback;
         if (UserUtils.isLogin(context))
             HttpUtils.getInstance().postRequestInfo(NetConfig.URL_FIRST_PAGE_INFO + UserUtils.getUserInfo(context).getAccess_token(),
-                    null, FirstPageBaseInfoResult.class, this);
+                    null, DeviceInfoResult.class, this);
     }
 
     @Override
     public void onHttpRequestSuccess(Object result) {
-        FirstPageBaseInfoResult info = (FirstPageBaseInfoResult) result;
+        DeviceInfoResult info = (DeviceInfoResult) result;
 
         if (info.code == 1) {
             if (null != mOnRequestFirstPageInfoCallback) {
@@ -59,7 +59,7 @@ public class RequestFirstPageInfo implements HttpUtils.OnHttpRequestCallBack {
     }
 
     public interface OnRequestFirstPageInfoCallback {
-        void onRequestFirstPageInfoSuccess(FirstPageBaseInfoResult mFirstPageBaseInfoResult);
+        void onRequestFirstPageInfoSuccess(DeviceInfoResult mDeviceInfoResult);
 
         void onRequestFirstPageInfoFail(int code, String errMsg);
     }

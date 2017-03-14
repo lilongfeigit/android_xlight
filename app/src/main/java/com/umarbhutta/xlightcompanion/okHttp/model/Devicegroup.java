@@ -4,7 +4,7 @@ package com.umarbhutta.xlightcompanion.okHttp.model;
  * Created by guangbinw on 2017/3/13.
  */
 
-public class FirstPageBaseInfoResult_rows_devicegroup {
+public class Devicegroup {
     public int id;
     public String devicegroupname;
     public String createdAt;
@@ -12,7 +12,7 @@ public class FirstPageBaseInfoResult_rows_devicegroup {
 
     @Override
     public String toString() {
-        return "FirstPageBaseInfoResult_rows_devicegroup{" +
+        return "Devicegroup{" +
                 "id=" + id +
                 ", devicegroupname='" + devicegroupname + '\'' +
                 ", createdAt='" + createdAt + '\'' +

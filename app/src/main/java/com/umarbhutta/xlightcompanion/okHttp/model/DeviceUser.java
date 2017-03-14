@@ -4,7 +4,7 @@ package com.umarbhutta.xlightcompanion.okHttp.model;
  * Created by guangbinw on 2017/3/13.
  */
 
-public class FirstPageBaseInfoResult_rows_user {
+public class DeviceUser {
     public int id;
     public String username;
     public String password;
@@ -20,7 +20,7 @@ public class FirstPageBaseInfoResult_rows_user {
 
     @Override
     public String toString() {
-        return "FirstPageBaseInfoResult_rows_user{" +
+        return "DeviceUser{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

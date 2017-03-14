@@ -43,4 +43,32 @@ public class NetConfig {
      * 修改密码
      */
     public static final String URL_MODIFY_PWD = "http://123.207.166.211:8080/users/2/resetpassword?access_token=";
+    /**
+     * 解绑设备
+     */
+    public static final String URL_UNBIND_DEVICE = "http://127.0.0.1:8080/devices/";
+    /**
+     * 设置主设备
+     */
+    public static final String URL_SET_MAIN_DEVICE = "http://127.0.0.1:8080/devices/";
+    /**
+     * 设备详细信息
+     */
+    public static final String URL_DEVICE_DETAIL_INFO = "http://123.207.166.211:8080/devices/";
+    /**
+     * 设备规则列表
+     */
+    public static final String URL_DEVICE_RULES_LIST = "http://123.207.166.211:8080/rules/?access_token=";
+
+    /**
+     * 删除规则
+     */
+    public static final String URL_DELETE_RULE = "http://123.207.166.211:8080/rules/";
+
+    /**
+     * 启用、禁用规则
+     */
+    public static final String URL_RULE_SWITCH = "http://123.207.166.211:8080/rules/";
+
+
 }

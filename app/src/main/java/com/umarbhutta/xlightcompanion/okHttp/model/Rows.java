@@ -9,6 +9,12 @@ import java.util.List;
 public class Rows {
     public int id;
     public String devicename;
+    public String scenarioname;
+    public int brightness;
+    public int cct;
+    public int type;
+
+
     public int userId;
     public String iphoneidentify;
     public String androididentify;
@@ -22,6 +28,7 @@ public class Rows {
     public Devicegroup devicegroup;
     public DeviceUser user;
     public List<Devicenodes> devicenodes;
+    public List<Scenarionodes> scenarionodes;
 
 
     @Override
@@ -29,6 +36,10 @@ public class Rows {
         return "Rows{" +
                 "id=" + id +
                 ", devicename='" + devicename + '\'' +
+                ", scenarioname='" + scenarioname + '\'' +
+                ", brightness=" + brightness +
+                ", cct=" + cct +
+                ", type=" + type +
                 ", userId=" + userId +
                 ", iphoneidentify='" + iphoneidentify + '\'' +
                 ", androididentify='" + androididentify + '\'' +
@@ -41,6 +52,7 @@ public class Rows {
                 ", devicegroup=" + devicegroup +
                 ", user=" + user +
                 ", devicenodes=" + devicenodes +
+                ", scenarionodes=" + scenarionodes +
                 '}';
     }
 }

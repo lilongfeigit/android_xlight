@@ -21,6 +21,7 @@ public class RequestUnBindDevice implements HttpUtils.OnHttpRequestCallBack {
     }
 
     /**
+     * 解绑设备
      */
     public void unBindDevice(Context context, String deviceId, CommentRequstCallback mCommentRequstCallback) {
         this.context = context;

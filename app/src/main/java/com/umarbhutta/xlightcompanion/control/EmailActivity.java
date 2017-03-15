@@ -42,6 +42,7 @@ public class EmailActivity extends AppCompatActivity {
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
+        btnSure.setText("完成");
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("通知Email");
         btnSure.setOnClickListener(new View.OnClickListener() {

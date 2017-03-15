@@ -1,71 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include layout="@layout/top_layout" />
 
-    <RelativeLayout
-        android:id="@+id/llStartTime"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/tv1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="启动时间" />
+            android:text="您要通知的Email" />
 
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv1"
             android:paddingLeft="10dp"
             android:text="16:00" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center"
-            android:src="@drawable/icon_left_arrow" />
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/llWeek"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="20dp">
 
         <TextView
-            android:id="@+id/tv2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="重  复" />
+            android:text="邮件标题" />
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="16:00" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp">
 
         <TextView
-            android:id="@+id/tv_week"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv2"
-            android:paddingLeft="10dp"
-            android:text="周一、周二" />
+            android:layout_alignParentLeft="true"
+            android:text="邮件内容" />
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/et_context"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center"
-            android:src="@drawable/icon_left_arrow" />
-    </RelativeLayout>
+            android:paddingLeft="10dp"
+            android:text="16:00" />
+
+    </LinearLayout>
 </LinearLayout>

@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -24,6 +26,10 @@ import java.util.Arrays;
 
 public class SelectScenarioActivity extends AppCompatActivity {
 
+    private LinearLayout llBack;
+    private TextView btnSure;
+    private TextView tvTitle;
+
     private com.github.clans.fab.FloatingActionButton fab;
 
     public static String SCENARIO_NAME = "SCENARIO_NAME";
@@ -38,7 +44,27 @@ public class SelectScenarioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_scenario);
+        setContentView(R.layout.activity_select_scenario);
+
+        //hide nav bar
+        getSupportActionBar().hide();
+
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btnSure = (TextView) findViewById(R.id.tvEditSure);
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("选择场景");
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 确定提交按钮
+            }
+        });
 
         fab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab);
 

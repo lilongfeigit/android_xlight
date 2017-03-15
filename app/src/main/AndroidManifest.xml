@@ -103,7 +103,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".control.DialogActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentFullScreenTheme"/>
         <activity
             android:name=".control.SelectScenarioActivity"
             android:screenOrientation="portrait" />
@@ -114,7 +115,6 @@
             android:name=".control.AppNotifyActivity"
             android:screenOrientation="portrait" />
 
-
         <receiver
             android:name=".Tools.DataReceiver"
             android:enabled="true"
@@ -122,7 +122,7 @@
         <receiver
             android:name=".Tools.StatusReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true"/>
     </application>
 
 </manifest>

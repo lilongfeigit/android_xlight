@@ -21,7 +21,7 @@ public class TemControlActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timing);
+        setContentView(R.layout.activity_tem);
         //hide nav bar
         getSupportActionBar().hide();
 

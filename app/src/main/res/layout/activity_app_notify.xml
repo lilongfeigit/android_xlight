@@ -6,11 +6,11 @@
 
     <include layout="@layout/top_layout" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/llStartTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="20dp">
@@ -20,53 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="启动时间" />
+            android:text="您要的通知的内容" />
 
-        <TextView
+        <EditText
             android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv1"
             android:paddingLeft="10dp"
             android:text="16:00" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center"
-            android:src="@drawable/icon_left_arrow" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/llWeek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp">
-
-        <TextView
-            android:id="@+id/tv2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="重  复" />
-
-        <TextView
-            android:id="@+id/tv_week"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv2"
-            android:paddingLeft="10dp"
-            android:text="周一、周二" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center"
-            android:src="@drawable/icon_left_arrow" />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

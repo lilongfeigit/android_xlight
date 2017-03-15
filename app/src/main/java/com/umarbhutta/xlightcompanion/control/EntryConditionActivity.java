@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -30,7 +32,9 @@ import java.util.List;
 
 public class EntryConditionActivity extends AppCompatActivity {
 
-
+    private LinearLayout llBack;
+    private TextView btnSure;
+    private TextView tvTitle;
 
     private List<String> settingStr = new ArrayList<String>();
     private List<Integer> imgInter = new ArrayList<Integer>();
@@ -43,6 +47,8 @@ public class EntryConditionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+        //hide nav bar
+        getSupportActionBar().hide();
 
         settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
         entryConditionListAdapter = new EntryConditionListAdapter(this, settingStr,imgInter);
@@ -55,20 +61,37 @@ public class EntryConditionActivity extends AppCompatActivity {
         //divider lines
         settingRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btnSure = (TextView) findViewById(R.id.tvEditSure);
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("启动条件");
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 确定提交按钮
+            }
+        });
+
         settingStr.add("定时");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.rule_time);
         settingStr.add("亮度");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.rule_brightness);
         settingStr.add("检测到活动");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.rule_activity);
         settingStr.add("温度");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.rule_tem);
         settingStr.add("离家");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.rule_fromhome);
         settingStr.add("回家");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.rule_gohome);
         settingStr.add("气体");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.rule_gas);
 
         entryConditionListAdapter.notifyDataSetChanged();
         entryConditionListAdapter.setmOnItemClickListener(new EntryConditionListAdapter.OnItemClickListener() {
@@ -76,23 +99,26 @@ public class EntryConditionActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
                 switch (position) {
-                    case 0://个人信息
-                        onFabPressed(UserMsgModifyActivity.class);
+                    case 0://定时
+                        onFabPressed(TimingActivity.class);
                         break;
-                    case 1://修改密码
-                        onFabPressed(ModifyPasswordActivity.class);
+                    case 1://亮度
+                        onFabPressed(DialogActivity.class);
                         break;
-                    case 2://摇一摇
-                        onFabPressed(ShakeActivity.class);
+                    case 2://检测到活动
+                        onFabPressed(DialogActivity.class);
                         break;
-                    case 3://用户邀请
-                        onFabPressed(UserInvitationActivity.class);
+                    case 3://温度
+                        onFabPressed(TemControlActivity.class);
                         break;
-                    case 4://快速绑定
-                        onFabPressed(FastBindingActivity.class);
+                    case 4://离家
+                        onFabPressed(DialogActivity.class);
                         break;
-                    case 5://退出登录
-                        logout();
+                    case 5://回家
+                        onFabPressed(DialogActivity.class);
+                        break;
+                    case 6://气体
+                        onFabPressed(DialogActivity.class);
                         break;
                 }
             }

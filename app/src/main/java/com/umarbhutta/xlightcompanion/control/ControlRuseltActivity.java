@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.settings.FastBindingActivity;
 import com.umarbhutta.xlightcompanion.settings.ModifyPasswordActivity;
@@ -26,7 +29,9 @@ import java.util.List;
 
 public class ControlRuseltActivity extends AppCompatActivity {
 
-
+    private LinearLayout llBack;
+    private TextView btnSure;
+    private TextView tvTitle;
 
     private List<String> settingStr = new ArrayList<String>();
     private List<Integer> imgInter = new ArrayList<Integer>();
@@ -39,6 +44,8 @@ public class ControlRuseltActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+        //hide nav bar
+        getSupportActionBar().hide();
 
         settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
         controlResultListAdapter = new ControlResultListAdapter(this, settingStr,imgInter);
@@ -51,14 +58,32 @@ public class ControlRuseltActivity extends AppCompatActivity {
         //divider lines
         settingRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
+
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btnSure = (TextView) findViewById(R.id.tvEditSure);
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText("执行结果");
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 确定提交按钮
+            }
+        });
+
         settingStr.add("灯具控制");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.result_control);
         settingStr.add("场景切换（切换主设备场景）");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.result_scenario);
         settingStr.add("Email通知");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.result_email);
         settingStr.add("APP通知");
-        imgInter.add( R.drawable.add_scenario_bg);
+        imgInter.add( R.drawable.result_notify);
 
         controlResultListAdapter.notifyDataSetChanged();
         controlResultListAdapter.setmOnItemClickListener(new ControlResultListAdapter.OnItemClickListener() {
@@ -66,23 +91,17 @@ public class ControlRuseltActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
                 switch (position) {
-                    case 0://个人信息
-                        onFabPressed(UserMsgModifyActivity.class);
+                    case 0://灯具控制
+                        onFabPressed(EditDeviceActivity.class);
                         break;
-                    case 1://修改密码
-                        onFabPressed(ModifyPasswordActivity.class);
+                    case 1://场景切换
+                        onFabPressed(SelectScenarioActivity.class);
                         break;
-                    case 2://摇一摇
-                        onFabPressed(ShakeActivity.class);
+                    case 2://Email通知
+                        onFabPressed(EmailActivity.class);
                         break;
-                    case 3://用户邀请
-                        onFabPressed(UserInvitationActivity.class);
-                        break;
-                    case 4://快速绑定
-                        onFabPressed(FastBindingActivity.class);
-                        break;
-                    case 5://退出登录
-                        logout();
+                    case 3://APP通知
+                        onFabPressed(AppNotifyActivity.class);
                         break;
                 }
             }

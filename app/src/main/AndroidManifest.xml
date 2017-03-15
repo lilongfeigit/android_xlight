@@ -51,7 +51,7 @@
         <activity
             android:name=".scenario.ColorSelectActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TranslucentFullScreenTheme"/>
+            android:theme="@style/TranslucentFullScreenTheme" />
         <activity
             android:name=".userManager.LoginActivity"
             android:screenOrientation="portrait" />
@@ -94,6 +94,24 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".control.ControlRuseltActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.TimingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.TemControlActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.DialogActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.SelectScenarioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.EmailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.AppNotifyActivity"
             android:screenOrientation="portrait" />
 
 

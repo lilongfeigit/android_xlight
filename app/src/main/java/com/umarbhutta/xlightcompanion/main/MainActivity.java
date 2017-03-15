@@ -24,6 +24,7 @@ import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
 import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.control.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.ControlRuleFragment;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
@@ -118,8 +119,8 @@ public class MainActivity extends AppCompatActivity
                     onFabPressed(DeviceListActivity.class);
                 } else {
                     //TODO 添加规则页面
-//                    onFabPressed(DeviceListActivity.class);
-                    Toast.makeText(getApplicationContext(), "添加规则", Toast.LENGTH_SHORT).show();
+                    onFabPressed(AddControlRuleActivity.class);
+//                    Toast.makeText(getApplicationContext(),"添加规则",Toast.LENGTH_SHORT).show();
                 }
 
             }

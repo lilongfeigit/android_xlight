@@ -69,6 +69,30 @@ public class NetConfig {
      * 启用、禁用规则
      */
     public static final String URL_RULE_SWITCH = "http://123.207.166.211:8080/rules/";
+    /**
+     * 场景列表
+     */
+    public static final String URL_SCENE_LIST = "http://123.207.166.211:8080/scenarios/?access_token=";
+    /**
+     * 场景详细
+     */
+    public static final String URL_SCENE_DETAIL = "http://123.207.166.211:8080/scenarios/";
+    /**
+     * 添加场景
+     */
+    public static final String URL_ADD_SCENE = "http://123.207.166.211:8080/scenarios?access_token=";
+    /**
+     * 删除场景
+     */
+    public static final String URL_DELETE_SCENE = "http://123.207.166.211:8080/scenarios/";
+    /**
+     * 添加设备
+     */
+    public static final String URL_ADD_DEVICE = "http://123.207.166.211:8080/devices/?access_token=";
+    /**
+     * 忘记密码--发送验证码
+     */
+    public static final String URL_SEND_VERIFICATION_CODE = "http://123.207.166.211:8080/users/sendverificationcode";
 
 
 }

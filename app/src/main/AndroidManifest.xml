@@ -72,6 +72,9 @@
             android:name=".settings.ModifyPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".settings.ResetPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".settings.FastBindingActivity"
             android:screenOrientation="portrait" />
         <activity

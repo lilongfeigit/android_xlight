@@ -93,6 +93,10 @@ public class NetConfig {
      * 忘记密码--发送验证码
      */
     public static final String URL_SEND_VERIFICATION_CODE = "http://123.207.166.211:8080/users/sendverificationcode";
+    /**
+     * 重置密码
+     */
+    public static final String URL_RESET_PWD = "http://123.207.166.211:8080/users/updatepassword";
 
 
 }

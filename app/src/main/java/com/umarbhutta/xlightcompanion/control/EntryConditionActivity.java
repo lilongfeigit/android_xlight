@@ -2,13 +2,10 @@ package com.umarbhutta.xlightcompanion.control;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,12 +13,6 @@ import android.widget.Toast;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
-import com.umarbhutta.xlightcompanion.settings.FastBindingActivity;
-import com.umarbhutta.xlightcompanion.settings.ModifyPasswordActivity;
-import com.umarbhutta.xlightcompanion.settings.SettingListAdapter;
-import com.umarbhutta.xlightcompanion.settings.ShakeActivity;
-import com.umarbhutta.xlightcompanion.settings.UserInvitationActivity;
-import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +30,8 @@ public class EntryConditionActivity extends AppCompatActivity {
     private List<String> settingStr = new ArrayList<String>();
     private List<Integer> imgInter = new ArrayList<Integer>();
 
-    //    public static String[] settingStr = {"个人信息","修改密码","摇一摇","用户邀请","快速绑定","退出登录"};
+    public static ArrayList<String> listStr = new ArrayList<String>();
+
     EntryConditionListAdapter entryConditionListAdapter;
     RecyclerView settingRecyclerView;
 
@@ -84,6 +76,8 @@ public class EntryConditionActivity extends AppCompatActivity {
         imgInter.add( R.drawable.rule_brightness);
         settingStr.add("检测到活动");
         imgInter.add( R.drawable.rule_activity);
+        settingStr.add("检测到声音");
+        imgInter.add( R.drawable.rule_souce);
         settingStr.add("温度");
         imgInter.add( R.drawable.rule_tem);
         settingStr.add("离家");
@@ -97,35 +91,53 @@ public class EntryConditionActivity extends AppCompatActivity {
         entryConditionListAdapter.setmOnItemClickListener(new EntryConditionListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
                 switch (position) {
                     case 0://定时
-                        onFabPressed(TimingActivity.class);
+                        listStr.clear();
+                        onFabPressed(TimingActivity.class,listStr);
                         break;
                     case 1://亮度
-                        onFabPressed(DialogActivity.class);
+                        listStr.clear();
+                        onFabPressed(DialogActivity.class,listStr);
                         break;
                     case 2://检测到活动
-                        onFabPressed(DialogActivity.class);
+                        listStr.clear();
+                        listStr.add("活动一");
+                        listStr.add("活动二");
+                        listStr.add("活动三");
+                        listStr.add("活动四");
+                        onFabPressed(DialogActivity.class,listStr);
                         break;
-                    case 3://温度
-                        onFabPressed(TemControlActivity.class);
+                    case 3://检测到声音
+                        listStr.clear();
+                        listStr.add("声音一");
+                        listStr.add("声音二");
+                        listStr.add("声音三");
+                        listStr.add("声音四");
+                        onFabPressed(TemControlActivity.class,listStr);
                         break;
-                    case 4://离家
-                        onFabPressed(DialogActivity.class);
+                    case 4://温度
+                        listStr.clear();
+                        onFabPressed(TemControlActivity.class,listStr);
                         break;
-                    case 5://回家
-                        onFabPressed(DialogActivity.class);
+                    case 5://离家
+                        listStr.clear();
+                        onFabPressed(DialogActivity.class,listStr);
                         break;
-                    case 6://气体
-                        onFabPressed(DialogActivity.class);
+                    case 6://回家
+                        listStr.clear();
+                        onFabPressed(DialogActivity.class,listStr);
+                        break;
+                    case 7://气体
+                        listStr.clear();
+                        onFabPressed(DialogActivity.class,listStr);
                         break;
                 }
             }
         });
     }
 
-    private void onFabPressed(Class activity) {
+    private void onFabPressed(Class activity,ArrayList<String> listStr) {
         Intent intent = new Intent(this, activity);
         startActivity(intent);
     }

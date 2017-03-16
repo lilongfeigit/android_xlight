@@ -54,14 +54,14 @@ public class AddScenarioActivity extends AppCompatActivity {
         //hide nav bar
         getSupportActionBar().hide();
 
-        //change status bar color to accent
-        Window window = this.getWindow();
-        //clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        //finally change the color
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorAccent));
+////        change status bar color to accent
+//        Window window = this.getWindow();
+//        //clear FLAG_TRANSLUCENT_STATUS flag:
+//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        //add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//        //finally change the color
+//        window.setStatusBarColor(this.getResources().getColor(R.color.colorAccent));
 
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
         colorTextView = (TextView) findViewById(R.id.colorTextView);

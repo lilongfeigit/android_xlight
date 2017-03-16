@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_top_edit"
-        android:paddingLeft="20dp"
+        android:paddingLeft="32dp"
         android:paddingTop="10dp"
         android:text="全部场景"
         android:textSize="16sp" />

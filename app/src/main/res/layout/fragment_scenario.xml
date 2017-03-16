@@ -9,16 +9,27 @@
         android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="32dp"
         android:paddingTop="10dp"
-        android:text="全部场景" />
+        android:text="全部场景"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:visibility="gone"
+        android:background="@drawable/line" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/scenarioRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv"
+        android:layout_below="@+id/view"
         android:layout_marginTop="5dp" />
 
     <com.github.clans.fab.FloatingActionButton
@@ -28,6 +39,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:visibility="gone"
         android:layout_margin="20dp"
         android:src="@drawable/ic_add_white_24dp"
         fab:fab_colorNormal="@color/colorAccent"

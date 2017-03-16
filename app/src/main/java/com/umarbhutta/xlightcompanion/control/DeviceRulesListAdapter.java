@@ -119,9 +119,9 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
 
         public void bindView (int position) {
 //            rule_time_one.setText(MainActivity.deviceNames[position]);
-            rule_time_one.setText(MainActivity.deviceNames[position]);
-            rule_time_two.setText(MainActivity.deviceNames[position]);
-            ruleMsg.setText(MainActivity.deviceNames[position]);
+            rule_time_one.setText("09:00");
+            rule_time_two.setText("18:00");
+            ruleMsg.setText("卧室灯  开灯 亮度60 色温50");
 
             if (position == 0) {
                 // Main device

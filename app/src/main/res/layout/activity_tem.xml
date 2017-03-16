@@ -17,24 +17,34 @@
 
         <TextView
             android:id="@+id/tv1"
+            style="@style/SettingsItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="触发温度" />
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|left"
+            android:paddingLeft="5dp"
+            android:text="触发温度"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/tv_tem"
+            style="@style/SettingsItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv1"
-            android:paddingLeft="10dp"
-            android:text="35℃" />
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|left"
+            android:paddingLeft="5dp"
+            android:text="35℃"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
+            android:layout_margin="6dp"
             android:src="@drawable/icon_left_arrow" />
     </RelativeLayout>
 
@@ -49,17 +59,24 @@
 
         <TextView
             android:id="@+id/tv2"
+            style="@style/SettingsItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|left"
+            android:paddingLeft="5dp"
             android:text="状  态" />
 
         <TextView
             android:id="@+id/tv_more"
+            style="@style/SettingsItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv2"
-            android:paddingLeft="10dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|left"
+            android:paddingLeft="5dp"
             android:text="低于" />
 
         <ImageView
@@ -67,6 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
+            android:layout_margin="6dp"
             android:src="@drawable/icon_left_arrow" />
     </RelativeLayout>
 </LinearLayout>

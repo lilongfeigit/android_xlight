@@ -5,45 +5,56 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
         android:paddingRight="15dp"
-        android:paddingLeft="15dp">
+        android:paddingTop="10dp">
 
         <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
             android:layout_gravity="center"
-            android:src="@drawable/icon_light" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/home_device_list" />
 
         <TextView
             android:id="@+id/deviceName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/iv"
             android:fontFamily="sans-serif-light"
-            android:gravity="left|start"
-            android:text="Living Room"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/textColorPrimary" />
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:text="客厅灯"
+            android:textColor="@color/textDarkGrey" />
+
+        <TextView
+            android:id="@+id/devicePlan"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/deviceName"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:text="已启用计划"
+            android:textColor="@color/textDarkGrey" />
 
         <Switch
             android:id="@+id/deviceSwitch"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/switch_selector"
+            android:gravity="center"
+            android:paddingRight="22dp"
             android:thumb="@null"
-            android:track="@null"
-            android:drawableRight="@drawable/switch_selector"
-            android:paddingRight="22dp" />
+            android:track="@null" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

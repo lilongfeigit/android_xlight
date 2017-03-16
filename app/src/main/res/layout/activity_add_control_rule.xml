@@ -10,9 +10,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:orientation="vertical">
+        android:paddingRight="20dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -35,12 +36,15 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/btn_login_color" />
+            android:background="@color/btn_login_color"
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/lv_term"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:scrollbars="none" />
     </LinearLayout>
 
     <View
@@ -51,9 +55,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:orientation="vertical">
+        android:paddingRight="20dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -78,6 +83,7 @@
             android:id="@+id/lv_control"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical" />
     </LinearLayout>
 </LinearLayout>

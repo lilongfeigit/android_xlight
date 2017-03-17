@@ -97,6 +97,10 @@ public class NetConfig {
      * 重置密码
      */
     public static final String URL_RESET_PWD = "http://123.207.166.211:8080/users/updatepassword";
+    /**
+     * 创建规则
+     */
+    public static final String URL_CREATE_RULES = "http://123.207.166.211:8080/rules?access_token=";
 
 
 }

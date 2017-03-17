@@ -82,7 +82,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements HttpUtil
             return;
         }
 
-
         if (TextUtils.isEmpty(et_new_password_againTvStr)) {
             ToastUtil.showToast(this, "请输入验证码");
             return;

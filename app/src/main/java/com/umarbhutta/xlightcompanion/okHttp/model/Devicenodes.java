@@ -1,12 +1,13 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by guangbinw on 2017/3/13.
  */
 
-public class Devicenodes {
+public class Devicenodes implements Serializable{
     public int id;
     public int deviceId;
     public String devicenodename;

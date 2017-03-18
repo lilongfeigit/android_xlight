@@ -82,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
+            android:hint="自定义"
             android:textAlignment="textEnd" />
 
     </LinearLayout>
@@ -161,7 +162,7 @@
             android:textColor="@color/textColorPrimary" />
 
         <SeekBar
-            android:id="@+id/brightnessSeekBar"
+            android:id="@+id/colorTemperatureSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -202,10 +203,12 @@
             android:textColor="@color/textColorPrimary" />
 
         <SeekBar
-            android:id="@+id/colorTemperatureSeekBar"
+            android:id="@+id/brightnessSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:max="100"
+            android:progress="80"
             android:paddingRight="0dp" />
 
     </LinearLayout>

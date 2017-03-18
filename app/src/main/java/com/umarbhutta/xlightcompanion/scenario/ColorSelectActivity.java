@@ -1,10 +1,9 @@
 package com.umarbhutta.xlightcompanion.scenario;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.OpacityBar;
@@ -33,7 +32,7 @@ public class ColorSelectActivity extends AppCompatActivity {
      * init views
      */
     private void initViews() {
-        ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
+        final ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
         SVBar svBar = (SVBar) findViewById(R.id.svbar);
         OpacityBar opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
         SaturationBar saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
@@ -48,6 +47,10 @@ public class ColorSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO 确定，选择的颜色
+                Intent intent = new Intent();
+                intent.putExtra("color", picker.getColor());
+                setResult(1, intent);
+                finish();
             }
         });
 
@@ -56,10 +59,10 @@ public class ColorSelectActivity extends AppCompatActivity {
         picker.addSaturationBar(saturationBar);
         picker.addValueBar(valueBar);
 
-            //To get the color
+        //To get the color
         picker.getColor();
 
-         //To set the old selected color u can do it like this
+        //To set the old selected color u can do it like this
         picker.setOldCenterColor(picker.getColor());
         // adds listener to the colorpicker which is implemented
         //in the activity
@@ -67,7 +70,7 @@ public class ColorSelectActivity extends AppCompatActivity {
             @Override
             public void onColorChanged(int color) {
                 //TODO 颜色选择
-//                Toast.makeText(getApplicationContext(),"setOnColorChangedListener"+color,Toast.LENGTH_SHORT).show();
+//                Logger.i("颜色变化 = " + color);
             }
         });
 
@@ -78,23 +81,23 @@ public class ColorSelectActivity extends AppCompatActivity {
         opacityBar.setOnOpacityChangedListener(new OpacityBar.OnOpacityChangedListener() {
             @Override
             public void onOpacityChanged(int opacity) {
-            //TODO
-//                Toast.makeText(getApplicationContext(),"setOnOpacityChangedListener"+opacity,Toast.LENGTH_SHORT).show();
+                //TODO
+//                Logger.i("透明度颜色变化 = " + opacity);
             }
         });
 
         valueBar.setOnValueChangedListener(new ValueBar.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
-            //TODO 颜色值修改变化
-//                Toast.makeText(getApplicationContext(),"setOnValueChangedListener"+value,Toast.LENGTH_SHORT).show();
+                //TODO 颜色值修改变化
+//                Logger.i("颜色值修改变化 = " + value);
             }
         });
         saturationBar.setOnSaturationChangedListener(new SaturationBar.OnSaturationChangedListener() {
             @Override
             public void onSaturationChanged(int saturation) {
-            //TODO 颜色状态变化
-//                Toast.makeText(getApplicationContext(),"setOnSaturationChangedListener"+saturation,Toast.LENGTH_SHORT).show();
+                //TODO 颜色状态变化
+//                Logger.i("颜色状态变化 = " + saturation);
             }
         });
     }

@@ -14,16 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
-import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.AddControlRuleActivity;
@@ -34,12 +30,14 @@ import com.umarbhutta.xlightcompanion.help.HelpFragment;
 import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderOptions;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 import com.umarbhutta.xlightcompanion.report.ReportFragment;
-import com.umarbhutta.xlightcompanion.scenario.AddScenarioActivity;
+import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
 import com.umarbhutta.xlightcompanion.settings.SettingFragment;
 import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 import com.umarbhutta.xlightcompanion.views.CircleImageView;
+
+//import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         // Initialize SmartDevice SDK
         m_mainDevice = new xltDevice();
         m_mainDevice.Init(this);
-        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
+//        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
 
         // Set SmartDevice Event Notification Flag
         //m_mainDevice.setEnableEventSendMessage(false);
@@ -125,7 +123,8 @@ public class MainActivity extends AppCompatActivity
                     onFabPressed(AddControlRuleActivity.class);
 //                    Toast.makeText(getApplicationContext(),"添加规则",Toast.LENGTH_SHORT).show();
                 } else  if (type == 2){
-                    onFabPressed(AddScenarioActivity.class);
+//                    onFabPressed(AddScenarioActivity.class);
+                    onFabPressed(AddScenarioNewActivity.class);
                 }else{
                     onFabPressed(DeviceListActivity.class);
                 }

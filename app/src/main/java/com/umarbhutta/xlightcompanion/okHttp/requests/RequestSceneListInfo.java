@@ -5,7 +5,7 @@ import android.content.Context;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
-import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 
 /**
  * Created by guangbinw on 2017/3/14.
@@ -25,12 +25,12 @@ public class RequestSceneListInfo implements HttpUtils.OnHttpRequestCallBack {
      */
     public void getSceneListInfo(Context context, OnRequestFirstPageInfoCallback mOnRequestFirstPageInfoCallback) {
         this.mOnRequestFirstPageInfoCallback = mOnRequestFirstPageInfoCallback;
-        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_SCENE_LIST + UserUtils.getUserInfo(context).getAccess_token(), DeviceInfoResult.class, this);
+        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_SCENE_LIST + UserUtils.getUserInfo(context).getAccess_token(), SceneListResult.class, this);
     }
 
     @Override
     public void onHttpRequestSuccess(Object result) {
-        DeviceInfoResult info = (DeviceInfoResult) result;
+        SceneListResult info = (SceneListResult) result;
         if (null != mOnRequestFirstPageInfoCallback) {
             mOnRequestFirstPageInfoCallback.onRequestFirstPageInfoSuccess(info.data);
         }
@@ -44,7 +44,7 @@ public class RequestSceneListInfo implements HttpUtils.OnHttpRequestCallBack {
     }
 
     public interface OnRequestFirstPageInfoCallback {
-        void onRequestFirstPageInfoSuccess(DeviceInfoResult mDeviceInfoResult);
+        void onRequestFirstPageInfoSuccess(SceneListResult mDeviceInfoResult);
 
         void onRequestFirstPageInfoFail(int code, String errMsg);
     }

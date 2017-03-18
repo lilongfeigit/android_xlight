@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,9 +47,7 @@ public class ScenarioFragment extends Fragment {
         //setup recycler view
         scenarioRecyclerView = (RecyclerView) view.findViewById(R.id.scenarioRecyclerView);
         //create list adapter
-        scenarioListAdapter = new ScenarioListAdapter(getContext());
-        //attach adapter to recycler view
-        scenarioRecyclerView.setAdapter(scenarioListAdapter);
+        //TODO
         //set LayoutManager for recycler view
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         //attach LayoutManager to recycler view
@@ -76,6 +77,8 @@ public class ScenarioFragment extends Fragment {
 //            }
 //        });
 
+        getSceneList();
+
         return view;
     }
 
@@ -103,4 +106,31 @@ public class ScenarioFragment extends Fragment {
         Intent intent = new Intent(getContext(), AddScenarioActivity.class);
         startActivityForResult(intent, 1);
     }
+
+    private void getSceneList() {
+        RequestSceneListInfo.getInstance().getSceneListInfo(getActivity(), new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
+            @Override
+            public void onRequestFirstPageInfoSuccess(final SceneListResult mDeviceInfoResult) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        scenarioListAdapter = new ScenarioListAdapter(getContext(), mDeviceInfoResult);
+                        //attach adapter to recycler view
+                        scenarioRecyclerView.setAdapter(scenarioListAdapter);
+                    }
+                });
+            }
+
+            @Override
+            public void onRequestFirstPageInfoFail(int code, final String errMsg) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(getActivity(), errMsg);
+                    }
+                });
+            }
+        });
+    }
+
 }

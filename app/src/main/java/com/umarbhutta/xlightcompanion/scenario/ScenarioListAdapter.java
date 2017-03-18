@@ -7,13 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
-import com.umarbhutta.xlightcompanion.settings.UserMsgModifyAdapter;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 
 /**
  * Created by Umar Bhutta.
@@ -21,8 +20,16 @@ import com.umarbhutta.xlightcompanion.settings.UserMsgModifyAdapter;
 public class ScenarioListAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
+    private SceneListResult mSceneListResult;
+
 
     public ScenarioListAdapter(Context context) {
+        this.mSceneListResult = new SceneListResult();
+        this.mContext = context;
+    }
+
+    public ScenarioListAdapter(Context context, SceneListResult mSceneListResult) {
+        this.mSceneListResult = mSceneListResult;
         this.mContext = context;
     }
 
@@ -39,7 +46,7 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return ScenarioFragment.name.size();
+        return mSceneListResult.rows.size();
     }
 
     private class ScenarioListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -48,6 +55,8 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
 
         private ImageView scenarioIcon;
         private TextView scenarioText;
+        private int mPosition;
+        private Rows infos;
 
         public ScenarioListViewHolder(View itemView) {
             super(itemView);
@@ -65,25 +74,29 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position) {
-            int displayNum = position + 1;
-            scenarioIndex.setText(displayNum + "");
-            scenarioTitle.setText(ScenarioFragment.name.get(position));
-            scenarioDescription.setText(ScenarioFragment.info.get(position));
-            switch (position){
-                case 0:
-                    scenarioIcon.setImageResource(R.drawable.icon_book);
-                    scenarioText.setText("读书");
-                    break;
-                case 1:
-                    scenarioIcon.setImageResource(R.drawable.icon_tv);
-                    scenarioText.setText("看电视");
-                    break;
-                case 2:
-                    scenarioText.setText("睡觉");
-                    break;
-                default:
-                    break;
-            }
+
+            mPosition = position;
+            infos = mSceneListResult.rows.get(position);
+
+//            int displayNum = position + 1;
+//            scenarioIndex.setText(displayNum + "");
+//            scenarioTitle.setText(ScenarioFragment.name.get(position));
+//            scenarioDescription.setText(ScenarioFragment.info.get(position));
+            scenarioText.setText(infos.scenarioname);
+//            switch (position) {
+//                case 0:
+//                    scenarioIcon.setImageResource(R.drawable.icon_book);
+//                    break;
+//                case 1:
+//                    scenarioIcon.setImageResource(R.drawable.icon_tv);
+//                    scenarioText.setText("看电视");
+//                    break;
+//                case 2:
+//                    scenarioText.setText("睡觉");
+//                    break;
+//                default:
+//                    break;
+//            }
 
             //如果设置了回调，就设置点击事件
 //            if (mOnItemClickListener != null){
@@ -107,7 +120,7 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-            onFabPressed(v);
+            onFabPressed(v, infos);
         }
 
         @Override
@@ -117,8 +130,10 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void onFabPressed(View view) {
+    private void onFabPressed(View view, Rows infos) {
         Intent intent = new Intent(mContext, AddScenarioNewActivity.class);
+        intent.putExtra("from", "list");
+        intent.putExtra("infos", infos);
         mContext.startActivity(intent);
     }
 //    /** * ItemClick的回调接口 */

@@ -1,12 +1,13 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by guangbinw on 2017/3/13.
  */
 
-public class Rows {
+public class Rows implements Serializable{
     public int id;
     public String devicename;
     public String scenarioname;

@@ -2,13 +2,12 @@ package com.umarbhutta.xlightcompanion.okHttp.requests;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.okHttp.model.AddSceneParams;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by guangbinw on 2017/3/14.
@@ -27,29 +26,19 @@ public class RequestAddScene implements HttpUtils.OnHttpRequestCallBack {
      * 添加场景
      *
      * @param context
-     * @param scenarioname
-     * @param brightness
-     * @param cct
-     * @param type
+     * @param params
      * @param mCommentRequstCallback
      */
-    public void addScene(Context context, String scenarioname, int brightness, int cct, int type, CommentRequstCallback mCommentRequstCallback) {
+    public void addScene(Context context, AddSceneParams params, CommentRequstCallback mCommentRequstCallback) {
         this.context = context;
         this.mCommentRequstCallback = mCommentRequstCallback;
         if (UserUtils.isLogin(context)) {
 
-            try {
-                JSONObject object = new JSONObject();
-                object.put("scenarioname", scenarioname);
-                object.put("userId", UserUtils.getUserInfo(context).getId());
-                object.put("brightness", brightness);
-                object.put("cct", cct);
-                object.put("type", type);
-                HttpUtils.getInstance().postRequestInfo(NetConfig.URL_ADD_SCENE + UserUtils.getUserInfo(context).getAccess_token(),
-                        object.toString(), null, this);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            Gson gson = new Gson();
+            String paramStr = gson.toJson(params);
+
+            HttpUtils.getInstance().postRequestInfo(NetConfig.URL_ADD_SCENE + UserUtils.getUserInfo(context).getAccess_token(),
+                    paramStr, null, this);
 
         }
     }

@@ -1,10 +1,12 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.io.Serializable;
+
 /**
  * Created by guangbinw on 2017/3/13.
  */
 
-public class DeviceUser {
+public class DeviceUser implements Serializable{
     public int id;
     public String username;
     public String password;

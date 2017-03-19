@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -55,6 +56,15 @@ public class MainActivity extends AppCompatActivity
     private Button btnRight;
     private CircleImageView userIcon;
 
+    private TextView tv_userName,textView;
+    private Button btnLogin;
+    private  LinearLayout llPerName;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,23 +103,27 @@ public class MainActivity extends AppCompatActivity
         //NavigationView 的获取头部控件
         View headerView = navigationView.getHeaderView(0);
 
-        TextView user_nameTv = (TextView) headerView.findViewById(R.id.user_name);
-        Button btnLogin = (Button) headerView.findViewById(R.id.btn_login);
+//        user_nameTv = (TextView) headerView.findViewById(R.id.user_name);
+        llPerName = (LinearLayout) headerView.findViewById(R.id.llPerName);
+         tv_userName = (TextView) headerView.findViewById(R.id.tv_userName);
+          textView = (TextView) headerView.findViewById(R.id.textView);
+
+        btnLogin = (Button) headerView.findViewById(R.id.btn_login);
         CircleImageView userIcon = (CircleImageView) headerView.findViewById(R.id.userIcon);
         userIcon.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
 
-        if (UserUtils.isLogin(this)) {
+        if(UserUtils.isLogin(MainActivity.this)){
             LoginResult userInfo = UserUtils.getUserInfo(this);
-            user_nameTv.setVisibility(View.VISIBLE);
             btnLogin.setVisibility(View.GONE);
-            user_nameTv.setText(userInfo.username);
+            llPerName.setVisibility(View.VISIBLE);
+            tv_userName.setText(UserUtils.getUserInfo(MainActivity.this).getUsername());
+            textView.setText(UserUtils.getUserInfo(MainActivity.this).getEmail());
             ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
-        } else {
-            user_nameTv.setVisibility(View.GONE);
+        }else{
             btnLogin.setVisibility(View.VISIBLE);
+            llPerName.setVisibility(View.GONE);
         }
-
 
         //右边菜单按钮
         btnRight.setOnClickListener(new View.OnClickListener() {

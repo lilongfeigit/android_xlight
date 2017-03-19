@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,9 @@ import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeviceRulesInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioListAdapter;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -90,20 +94,33 @@ public class ControlRuleFragment extends Fragment {
         getControlRuleList();
         return view;
     }
+
     public DeviceInfoResult mDeviceInfoResult;
+
     private void getControlRuleList() {
-        RequestDeviceRulesInfo.getInstance().getRules(getActivity(),new RequestDeviceRulesInfo.OnRequestFirstPageInfoCallback(){
+        RequestDeviceRulesInfo.getInstance().getRules(getActivity(), new RequestDeviceRulesInfo.OnRequestFirstPageInfoCallback() {
 
             @Override
             public void onRequestFirstPageInfoSuccess(final DeviceInfoResult deviceInfoResult) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                       mDeviceInfoResult = deviceInfoResult;
-                        Logger.e(TAG,mDeviceInfoResult.toString());
-                        initList();
-                    }
-                });
+                try {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDeviceInfoResult = deviceInfoResult;
+                            Logger.e(TAG, mDeviceInfoResult.toString());
+                            if (mDeviceInfoResult.code == 0) {
+                                ToastUtil.showToast(getActivity(), "数据为空");
+                            } else if (mDeviceInfoResult.code == 1) {
+                                initList();
+                            } else {
+                                ToastUtil.showToast(getActivity(), mDeviceInfoResult.msg + "");
+                            }
+
+                        }
+                    });
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "Exception caught: " + e);
+                }
             }
 
             @Override
@@ -117,6 +134,7 @@ public class ControlRuleFragment extends Fragment {
             }
         });
     }
+
     private void initList() {
         DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(), mDeviceInfoResult);
         rulesRecyclerView.setAdapter(devicesListAdapter);

@@ -1,10 +1,12 @@
 package com.umarbhutta.xlightcompanion.control;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +18,8 @@ import android.widget.TextView;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
-import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
-import com.umarbhutta.xlightcompanion.schedule.AddScheduleActivity;
 
 /**
  * Created by Umar Bhutta.
@@ -30,7 +30,7 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
     private Context mActivity;
     private DeviceInfoResult mDeviceInfoResult;
 
-    public DeviceRulesListAdapter(Context activity,DeviceInfoResult deviceInfoResult){
+    public DeviceRulesListAdapter(Context activity, DeviceInfoResult deviceInfoResult) {
         this.mActivity = activity;
         this.mDeviceInfoResult = deviceInfoResult;
     }
@@ -42,16 +42,17 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if( m_mainSwitch != null ) {
+            if (m_mainSwitch != null) {
                 m_mainSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
             }
         }
     }
+
     private final MyStatusRuleReceiver m_StatusReceiver = new MyStatusRuleReceiver();
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        if( MainActivity.m_mainDevice.getEnableEventBroadcast() ) {
+        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
             intentFilter.setPriority(3);
             recyclerView.getContext().registerReceiver(m_StatusReceiver, intentFilter);
@@ -67,10 +68,10 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        if( m_handlerDeviceList != null ) {
+        if (m_handlerDeviceList != null) {
             MainActivity.m_mainDevice.removeDeviceEventHandler(m_handlerDeviceList);
         }
-        if( MainActivity.m_mainDevice.getEnableEventBroadcast() ) {
+        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
             recyclerView.getContext().unregisterReceiver(m_StatusReceiver);
         }
         super.onDetachedFromRecyclerView(recyclerView);
@@ -107,7 +108,7 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
-            mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, isChecked);
                     MainActivity.m_mainDevice.PowerSwitch(isChecked);
@@ -116,8 +117,8 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
             });
         }
 
-        public void bindView (int position) {
-            String devicename  = mDeviceInfoResult.rows.get(position).devicename;
+        public void bindView(int position) {
+            String devicename = mDeviceInfoResult.rows.get(position).devicename;
 //            rule_time_one.setText(MainActivity.deviceNames[position]);
             rule_time_one.setText("09:00");
             rule_time_two.setText("18:00");
@@ -128,7 +129,7 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
                 mDeviceSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
                 m_StatusReceiver.m_mainSwitch = mDeviceSwitch;
 
-                if( MainActivity.m_mainDevice.getEnableEventSendMessage() ) {
+                if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
                     m_handlerDeviceList = new Handler() {
                         public void handleMessage(Message msg) {
                             int intValue = msg.getData().getInt("State", -255);
@@ -144,19 +145,69 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-            //TODO 点击事件 跳转到编辑设备页面
-            onFabPressed(EditDeviceActivity.class);
+            //点击事件 跳转到编辑设备页面
+            onFabPressed(AddControlRuleActivity.class);
         }
 
         @Override
         public boolean onLongClick(View view) {
             //TODO 长按事件  长按删除设备
-            onFabPressed(AddScheduleActivity.class);
+//            showDeleteSceneDialog(position);
             return true;
         }
     }
+
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(mActivity, activity);
         mActivity.startActivity(intent);
     }
+
+    /**
+     * 删除规则
+     */
+    private void showDeleteSceneDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("删除规则提示");
+        builder.setMessage("确定删除此规则吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                deleteScene(position);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.show();
+    }
+//    private void deleteScene(final int position) {
+//        Rows mSceneInfo = mDeviceInfoResult.rows.get(position);
+//        RequestDeleteScene.getInstance().deleteScene(getActivity(), mSceneInfo.id, new CommentRequstCallback() {
+//            @Override
+//            public void onCommentRequstCallbackSuccess() {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ToastUtil.showToast(getActivity(), "删除成功");
+//                        mDeviceInfoResult.rows.remove(position);
+//                        scenarioListAdapter.notifyDataSetChanged();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onCommentRequstCallbackFail(int code, final String errMsg) {
+//                mActivity.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ToastUtil.showToast(mActivity, "" + errMsg);
+//                    }
+//                });
+//            }
+//        });
+//    }
 }

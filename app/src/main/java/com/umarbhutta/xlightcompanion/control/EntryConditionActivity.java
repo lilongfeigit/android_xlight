@@ -114,7 +114,7 @@ public class EntryConditionActivity extends AppCompatActivity {
                         listStr.add("声音二");
                         listStr.add("声音三");
                         listStr.add("声音四");
-                        onFabPressed(TemControlActivity.class,listStr);
+                        onFabPressed(DialogActivity.class,listStr);
                         break;
                     case 4://温度
                         listStr.clear();

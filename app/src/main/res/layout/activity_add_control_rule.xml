@@ -17,21 +17,39 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:orientation="horizontal">
 
-            <Spinner
+            <TextView
+                android:id="@+id/tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true" />
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:text="满足条件时" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/tv"
+                android:gravity="center_vertical"
+                android:scaleType="centerInside"
+                android:src="@drawable/arraw" />
 
             <ImageButton
                 android:id="@+id/ib_add_term"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/spling_control_add" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_no_data1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="未添加条件" />
 
         <View
             android:layout_width="match_parent"
@@ -62,22 +80,39 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:orientation="horizontal">
 
-            <Spinner
+            <TextView
+                android:id="@+id/tv1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true" />
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:text="将执行结果" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@+id/tv1"
+                android:scaleType="centerInside"
+                android:src="@drawable/arraw" />
 
             <ImageButton
                 android:id="@+id/ib_add_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/spling_control_add" />
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/tv_no_data2"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="未添加结果" />
 
         <ListView
             android:id="@+id/lv_control"

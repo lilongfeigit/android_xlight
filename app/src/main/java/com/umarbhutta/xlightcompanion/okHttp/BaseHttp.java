@@ -1,5 +1,7 @@
 package com.umarbhutta.xlightcompanion.okHttp;
 
+import android.text.TextUtils;
+
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 
 import java.io.IOException;
@@ -132,7 +134,10 @@ public abstract class BaseHttp {
     protected void deleteData(String url, String jsonParam) {
         OkHttpClient okHttpClient = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody body = RequestBody.create(JSON, jsonParam);
+        if (TextUtils.isEmpty(jsonParam)) {
+            jsonParam = "";
+        }
+        RequestBody body = RequestBody.create(JSON, "");
 
         Request request = new Request.Builder()
                 .url(url)

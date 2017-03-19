@@ -1,10 +1,12 @@
 package com.umarbhutta.xlightcompanion.scenario;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,8 +17,11 @@ import android.widget.Toast;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
+import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,24 +67,59 @@ public class ScenarioFragment extends Fragment {
             }
         });
 
-//        scenarioListAdapter.setmOnItemClickListener(new ScenarioListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                //TODO 点击
-//                Toast.makeText(getActivity(),position+"item",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        scenarioListAdapter.setmOnItemLongClickListener(new ScenarioListAdapter.OnItemLongClickListener() {
-//            @Override
-//            public void onItemLongClick(View view, int position) {
-//                //TODO 长按
-//                Toast.makeText(getActivity(),position+"long",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         getSceneList();
 
         return view;
+    }
+
+    /**
+     * 删除场景
+     */
+    private void showDeleteSceneDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("删除场景提示");
+        builder.setMessage("确定删除此场景吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteScene(position);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.show();
+    }
+
+    private void deleteScene(final int position) {
+        Rows mSceneInfo = mDeviceInfoResult.rows.get(position);
+        RequestDeleteScene.getInstance().deleteScene(getActivity(), mSceneInfo.id, new CommentRequstCallback() {
+            @Override
+            public void onCommentRequstCallbackSuccess() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(getActivity(), "删除成功");
+                        mDeviceInfoResult.rows.remove(position);
+                        scenarioListAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void onCommentRequstCallbackFail(int code, final String errMsg) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(getActivity(), "" + errMsg);
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -107,16 +147,17 @@ public class ScenarioFragment extends Fragment {
         startActivityForResult(intent, 1);
     }
 
+    public SceneListResult mDeviceInfoResult;
+
     private void getSceneList() {
         RequestSceneListInfo.getInstance().getSceneListInfo(getActivity(), new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
             @Override
-            public void onRequestFirstPageInfoSuccess(final SceneListResult mDeviceInfoResult) {
+            public void onRequestFirstPageInfoSuccess(final SceneListResult deviceInfoResult) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        scenarioListAdapter = new ScenarioListAdapter(getContext(), mDeviceInfoResult);
-                        //attach adapter to recycler view
-                        scenarioRecyclerView.setAdapter(scenarioListAdapter);
+                        mDeviceInfoResult = deviceInfoResult;
+                        initList();
                     }
                 });
             }
@@ -131,6 +172,17 @@ public class ScenarioFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private void initList() {
+        scenarioListAdapter = new ScenarioListAdapter(getContext(), mDeviceInfoResult);
+        scenarioListAdapter.setOnLongClickCallBack(new ScenarioListAdapter.OnLongClickCallBack() {
+            @Override
+            public void onLongClickCallBack(int position) {
+                showDeleteSceneDialog(position);
+            }
+        });
+        scenarioRecyclerView.setAdapter(scenarioListAdapter);
     }
 
 }

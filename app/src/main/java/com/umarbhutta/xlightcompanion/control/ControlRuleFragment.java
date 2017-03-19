@@ -6,20 +6,16 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
-import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
-import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 
@@ -58,17 +54,11 @@ public class ControlRuleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_control_rule, container, false);
-        //setup recycler view
         rulesRecyclerView = (RecyclerView) view.findViewById(R.id.rulesRecyclerView);
-        //create list adapter TODO 填充数据
-        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(),new ArrayList<String>());
-        //attach adapter to recycler view
+        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(), new ArrayList<String>());
         rulesRecyclerView.setAdapter(devicesListAdapter);
-        //set LayoutManager for recycler view
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        //attach LayoutManager to recycler view
         rulesRecyclerView.setLayoutManager(layoutManager);
-        //divider lines
         rulesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
         if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {

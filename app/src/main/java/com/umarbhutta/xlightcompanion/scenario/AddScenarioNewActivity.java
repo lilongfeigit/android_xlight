@@ -56,6 +56,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private int green = 255;
     private int blue = 0;
     private Rows mSceneInfo;
+    String from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,6 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("添加场景");
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         addButton = (Button) findViewById(R.id.addButton);
@@ -179,14 +179,20 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
+
         if (null != intent) {
-            String from = intent.getStringExtra("from");
+            from = intent.getStringExtra("from");
             if ("list".equals(from)) { //是从场景列表点击进来的
                 mSceneInfo = (Rows) intent.getSerializableExtra("infos");
                 initViewState();
             }
         }
 
+        if (!TextUtils.isEmpty(from) && "list".equals(from)) {
+            tvTitle.setText("编辑场景");
+        } else {
+            tvTitle.setText("添加场景");
+        }
 
     }
 

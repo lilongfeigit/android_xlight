@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
@@ -98,24 +97,6 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
 //                    break;
 //            }
 
-            //如果设置了回调，就设置点击事件
-//            if (mOnItemClickListener != null){
-//                itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        mOnItemClickListener.onItemClick(itemView,position);
-//                    }
-//                });
-//            }
-//            if (mOnItemLongClickListener != null){
-//                itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        mOnItemLongClickListener.onItemLongClick(itemView,position);
-//                    }
-//                });
-//            }
-
         }
 
         @Override
@@ -125,7 +106,9 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
 
         @Override
         public boolean onLongClick(View view) {
-            Toast.makeText(mContext, "删除", Toast.LENGTH_SHORT).show();
+            if (null != mOnLongClickCallBack) {
+                mOnLongClickCallBack.onLongClickCallBack(mPosition);
+            }
             return true;
         }
     }
@@ -136,24 +119,15 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
         intent.putExtra("infos", infos);
         mContext.startActivity(intent);
     }
-//    /** * ItemClick的回调接口 */
-//    public interface OnItemClickListener{
-//        void onItemClick(View view,int position);
-//    }
-//
-//    private ScenarioListAdapter.OnItemClickListener mOnItemClickListener;
-//
-//    public void setmOnItemClickListener(ScenarioListAdapter.OnItemClickListener mOnItemClickListener){
-//        this.mOnItemClickListener = mOnItemClickListener;
-//    }
-//    /** * ItemLongClick的回调接口 */
-//    public interface OnItemLongClickListener{
-//        void onItemLongClick(View view,int position);
-//    }
-//
-//    private ScenarioListAdapter.OnItemLongClickListener mOnItemLongClickListener;
-//
-//    public void setmOnItemLongClickListener(ScenarioListAdapter.OnItemLongClickListener mOnItemLongClickListener){
-//        this.mOnItemLongClickListener = mOnItemLongClickListener;
-//    }
+
+    private OnLongClickCallBack mOnLongClickCallBack;
+
+    public void setOnLongClickCallBack(OnLongClickCallBack mOnLongClickCallBack) {
+        this.mOnLongClickCallBack = mOnLongClickCallBack;
+    }
+
+    public interface OnLongClickCallBack {
+        void onLongClickCallBack(int position);
+    }
+
 }

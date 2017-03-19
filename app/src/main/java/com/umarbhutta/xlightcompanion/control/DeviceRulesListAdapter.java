@@ -18,9 +18,8 @@ import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
 import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.schedule.AddScheduleActivity;
-
-import java.util.List;
 
 /**
  * Created by Umar Bhutta.
@@ -29,11 +28,11 @@ import java.util.List;
 public class DeviceRulesListAdapter extends RecyclerView.Adapter {
 
     private Context mActivity;
-    private List<String> mList;
+    private DeviceInfoResult mDeviceInfoResult;
 
-    public DeviceRulesListAdapter(Context activity,List<String> list){
+    public DeviceRulesListAdapter(Context activity,DeviceInfoResult deviceInfoResult){
         this.mActivity = activity;
-        this.mList = list;
+        this.mDeviceInfoResult = deviceInfoResult;
     }
 
     private Handler m_handlerDeviceList;
@@ -118,6 +117,7 @@ public class DeviceRulesListAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView (int position) {
+            String devicename  = mDeviceInfoResult.rows.get(position).devicename;
 //            rule_time_one.setText(MainActivity.deviceNames[position]);
             rule_time_one.setText("09:00");
             rule_time_two.setText("18:00");

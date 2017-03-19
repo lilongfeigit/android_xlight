@@ -16,8 +16,15 @@ import android.view.ViewGroup;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeviceRulesInfo;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
+import com.umarbhutta.xlightcompanion.scenario.ScenarioListAdapter;
 
 import java.util.ArrayList;
 
@@ -55,8 +62,7 @@ public class ControlRuleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_control_rule, container, false);
         rulesRecyclerView = (RecyclerView) view.findViewById(R.id.rulesRecyclerView);
-        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(), new ArrayList<String>());
-        rulesRecyclerView.setAdapter(devicesListAdapter);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rulesRecyclerView.setLayoutManager(layoutManager);
         rulesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
@@ -81,6 +87,38 @@ public class ControlRuleFragment extends Fragment {
             intentFilter.setPriority(3);
             getContext().registerReceiver(m_DataReceiver, intentFilter);
         }
+        getControlRuleList();
         return view;
+    }
+    public DeviceInfoResult mDeviceInfoResult;
+    private void getControlRuleList() {
+        RequestDeviceRulesInfo.getInstance().getRules(getActivity(),new RequestDeviceRulesInfo.OnRequestFirstPageInfoCallback(){
+
+            @Override
+            public void onRequestFirstPageInfoSuccess(final DeviceInfoResult deviceInfoResult) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                       mDeviceInfoResult = deviceInfoResult;
+                        Logger.e(TAG,mDeviceInfoResult.toString());
+                        initList();
+                    }
+                });
+            }
+
+            @Override
+            public void onRequestFirstPageInfoFail(int code, final String errMsg) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(getActivity(), errMsg);
+                    }
+                });
+            }
+        });
+    }
+    private void initList() {
+        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(), mDeviceInfoResult);
+        rulesRecyclerView.setAdapter(devicesListAdapter);
     }
 }

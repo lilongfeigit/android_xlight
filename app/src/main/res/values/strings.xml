@@ -25,4 +25,7 @@
     <string name="modify_pwd_success">密码修改成功</string>
     <string name="commit_img">提交中。。。</string>
     <string name="login_first">请先登录</string>
+    <string name="internal_storage">内部存储</string>
+    <string name="pic_upload_fail_try_again">圖片上傳失敗，請重試!</string>
+    <string name="photo_set_fail">設置失敗，請重試</string>
 </resources>

@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
@@ -57,7 +56,6 @@ public class SettingFragment extends Fragment {
         settingListAdapter.setmOnItemClickListener(new SettingListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), position + "", Toast.LENGTH_SHORT).show();
                 switch (position) {
                     case 0://个人信息
                         onFabPressed(UserMsgModifyActivity.class);

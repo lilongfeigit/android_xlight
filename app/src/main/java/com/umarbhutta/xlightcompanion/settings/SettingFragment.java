@@ -49,8 +49,8 @@ public class SettingFragment extends Fragment {
         settingStr.add("个人信息");
         settingStr.add("修改密码");
         settingStr.add("摇一摇");
-        settingStr.add("用户邀请");
-        settingStr.add("快速绑定");
+//        settingStr.add("用户邀请");
+//        settingStr.add("快速绑定");
         settingStr.add("退出登录");
         settingListAdapter.notifyDataSetChanged();
         settingListAdapter.setmOnItemClickListener(new SettingListAdapter.OnItemClickListener() {
@@ -66,13 +66,13 @@ public class SettingFragment extends Fragment {
                     case 2://摇一摇
                         onFabPressed(ShakeActivity.class);
                         break;
-                    case 3://用户邀请
-                        onFabPressed(UserInvitationActivity.class);
-                        break;
-                    case 4://快速绑定
-                        onFabPressed(FastBindingActivity.class);
-                        break;
-                    case 5://退出登录
+//                    case 3://用户邀请
+//                        onFabPressed(UserInvitationActivity.class);
+//                        break;
+//                    case 4://快速绑定
+//                        onFabPressed(FastBindingActivity.class);
+//                        break;
+                    case 3://退出登录
                         logout();
                         break;
                 }

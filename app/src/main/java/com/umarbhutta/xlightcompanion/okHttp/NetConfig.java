@@ -101,6 +101,10 @@ public class NetConfig {
      * 创建规则
      */
     public static final String URL_CREATE_RULES = "http://123.207.166.211:8080/rules?access_token=";
+    /**
+     * 修改个人信息
+     */
+    public static final String URL_MODIFY_USER_INFO = "http://123.207.166.211:8080/users/";
 
 
 }

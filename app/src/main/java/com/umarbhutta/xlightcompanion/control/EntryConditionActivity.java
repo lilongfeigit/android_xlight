@@ -27,10 +27,12 @@ public class EntryConditionActivity extends AppCompatActivity {
     private TextView btnSure;
     private TextView tvTitle;
 
+    private int requestCode = 110;
+
     private List<String> settingStr = new ArrayList<String>();
     private List<Integer> imgInter = new ArrayList<Integer>();
 
-    public static ArrayList<String> listStr = new ArrayList<String>();
+    public ArrayList<String> listStr = new ArrayList<String>();
 
     EntryConditionListAdapter entryConditionListAdapter;
     RecyclerView settingRecyclerView;
@@ -98,6 +100,7 @@ public class EntryConditionActivity extends AppCompatActivity {
                         break;
                     case 1://亮度
                         listStr.clear();
+                        requestCode = 111;
                         onFabPressed(DialogActivity.class,listStr);
                         break;
                     case 2://检测到活动
@@ -106,6 +109,7 @@ public class EntryConditionActivity extends AppCompatActivity {
                         listStr.add("活动二");
                         listStr.add("活动三");
                         listStr.add("活动四");
+                        requestCode = 112;
                         onFabPressed(DialogActivity.class,listStr);
                         break;
                     case 3://检测到声音
@@ -114,22 +118,27 @@ public class EntryConditionActivity extends AppCompatActivity {
                         listStr.add("声音二");
                         listStr.add("声音三");
                         listStr.add("声音四");
+                        requestCode = 113;
                         onFabPressed(DialogActivity.class,listStr);
                         break;
                     case 4://温度
                         listStr.clear();
+                        requestCode = 114;
                         onFabPressed(TemControlActivity.class,listStr);
                         break;
                     case 5://离家
                         listStr.clear();
+                        requestCode = 115;
                         onFabPressed(DialogActivity.class,listStr);
                         break;
                     case 6://回家
                         listStr.clear();
+                        requestCode = 116;
                         onFabPressed(DialogActivity.class,listStr);
                         break;
                     case 7://气体
                         listStr.clear();
+                        requestCode = 117;
                         onFabPressed(DialogActivity.class,listStr);
                         break;
                 }
@@ -139,7 +148,8 @@ public class EntryConditionActivity extends AppCompatActivity {
 
     private void onFabPressed(Class activity,ArrayList<String> listStr) {
         Intent intent = new Intent(this, activity);
-        startActivity(intent);
+        intent.putStringArrayListExtra("DILOGLIST",listStr);
+        startActivityForResult(intent,requestCode);
     }
 
     /**

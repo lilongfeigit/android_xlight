@@ -58,7 +58,6 @@ public class ControlRuseltActivity extends AppCompatActivity {
         //divider lines
         settingRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
-
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +88,7 @@ public class ControlRuseltActivity extends AppCompatActivity {
         controlResultListAdapter.setmOnItemClickListener(new ControlResultListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
                 switch (position) {
                     case 0://灯具控制
                         onFabPressed(EditDeviceActivity.class);

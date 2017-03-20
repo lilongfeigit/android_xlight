@@ -52,6 +52,4 @@ public class RequestDeviceRulesInfo implements HttpUtils.OnHttpRequestCallBack {
 
         void onRequestFirstPageInfoFail(int code, String errMsg);
     }
-
-
 }

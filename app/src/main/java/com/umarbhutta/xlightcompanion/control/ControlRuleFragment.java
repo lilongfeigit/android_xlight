@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
@@ -23,14 +25,17 @@ import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteRuleDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeviceRulesInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
+import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioListAdapter;
 
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Umar Bhutta.
@@ -59,17 +64,26 @@ public class ControlRuleFragment extends Fragment {
         super.onDestroyView();
     }
 
-    private RecyclerView rulesRecyclerView;
+    private ListView rulesRecyclerView;
     private final MyStatusRuleReceiver m_DataReceiver = new MyStatusRuleReceiver();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_control_rule, container, false);
-        rulesRecyclerView = (RecyclerView) view.findViewById(R.id.rulesRecyclerView);
+        rulesRecyclerView = (ListView) view.findViewById(R.id.rulesRecyclerView);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rulesRecyclerView.setLayoutManager(layoutManager);
-        rulesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+//        List<String> strListResult = new ArrayList<String>();
+//            strListResult.add("卧室灯开");
+//            strListResult.add("卧室灯开");
+//            strListResult.add("卧室灯开");
+//            strListResult.add("卧室灯开");
+
+//        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(), strListResult);
+//        rulesRecyclerView.setAdapter(devicesListAdapter);
+
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+//        rulesRecyclerView.setLayoutManager(layoutManager);
+//        rulesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
         if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
             m_handlerGlance = new Handler() {
@@ -91,6 +105,25 @@ public class ControlRuleFragment extends Fragment {
             intentFilter.setPriority(3);
             getContext().registerReceiver(m_DataReceiver, intentFilter);
         }
+        rulesRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position,final long id) {
+                RequestDeleteRuleDevice.getInstance().deleteRule(getActivity(),mDeviceInfoResult.rows.get(position).id+"", new CommentRequstCallback() {
+                    @Override
+                    public void onCommentRequstCallbackSuccess() {
+                        //TODO
+                        ToastUtil.showToast(getActivity(),"删除成功position="+position+";id="+id);
+                    }
+
+                    @Override
+                    public void onCommentRequstCallbackFail(int code, String errMsg) {
+                        //TODO
+                        ToastUtil.showToast(getActivity(),"删除失败"+errMsg);
+                    }
+                });
+                return true;
+            }
+        });
         getControlRuleList();
         return view;
     }

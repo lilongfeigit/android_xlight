@@ -159,8 +159,5 @@ public abstract class BaseHttp {
                 okOnResponse(result);
             }
         });
-
-
     }
-
 }

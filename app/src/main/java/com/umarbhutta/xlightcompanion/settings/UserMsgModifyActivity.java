@@ -1,7 +1,11 @@
 package com.umarbhutta.xlightcompanion.settings;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,6 +16,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderOptions;
@@ -24,8 +29,19 @@ import com.umarbhutta.xlightcompanion.views.pickerview.lib.TimePickerUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -47,11 +63,69 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
     private String usernameResult;
     private String nickNameResult;
     private String sexResResult;
+    private final int WRITE_PERMISSION_REQ_CODE = 100;
+
+    public static final MediaType MEDIA_TYPE_MARKDOWN
+            = MediaType.parse("image/x-markdown; charset=utf-8");
 
     @Override
     public void selectPicResult(String picPath) {
         ToastUtil.showToast(this, "url = " + picPath);
+//        user_icon.setImageBitmap(BitmapFactory.decodeFile(picPath));
+        uploadPic(picPath);
     }
+
+    private void uploadPic(String picPath) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"lightscrop\";filename=\"lightscrop.jpg\""), RequestBody.create(MediaType.parse("image/png"), picPath)).build();
+
+        RequestBody body = builder.build();
+        Request request = new Request.Builder().url(NetConfig.URL_UPLOAD_IMG + UserUtils.getUserInfo(this).getAccess_token()).post(body).build();
+        OkHttpClient mOkHttpClient = new OkHttpClient();
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String jsonResult = response.body().string();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Logger.i("图片地址=" + jsonResult);
+                        try {
+                            JSONObject object = new JSONObject(jsonResult);
+                            if (object.has("filePath")) {
+                                String filePath = object.getString("filePath");
+                                ImageLoader.getInstance().displayImage(NetConfig.SERVER_ADDRESS + filePath, user_icon, ImageLoaderOptions.getImageLoaderOptions());
+                                LoginResult infos = UserUtils.getUserInfo(UserMsgModifyActivity.this);
+                                infos.image = NetConfig.SERVER_ADDRESS + filePath;
+                                UserUtils.saveUserInfo(UserMsgModifyActivity.this, infos);
+                            } else {
+                                ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
+                            }
+                        } catch (JSONException e) {
+                            ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                });
+            }
+        });
+
+
+    }
+
+    private boolean hasPermision = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +133,28 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         setContentView(R.layout.activity_user_msg_modify);
         getSupportActionBar().hide();
         initViews();
+        hasPermision = checkPublishPermission();
+    }
+
+
+    private boolean checkPublishPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> permissions = new ArrayList<>();
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
+                permissions.add(Manifest.permission.CAMERA);
+            }
+
+            if (permissions.size() != 0) {
+                ActivityCompat.requestPermissions(this,
+                        (String[]) permissions.toArray(new String[0]),
+                        WRITE_PERMISSION_REQ_CODE);
+                return false;
+            }
+        }
+        return true;
     }
 
     private UserMsgModifyAdapter mUserMsgModifyAdapter;
@@ -145,7 +241,6 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                         }
 
                         modifyUserInfo(type, input);
-
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), null)

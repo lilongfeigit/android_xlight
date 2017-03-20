@@ -101,24 +101,27 @@ public class HttpUtils extends BaseHttp {
     public void okOnResponse(String result) {
         try {
             if (null != mOnHttpRequestCallBack) {
-
-
                 JSONObject jsonObject = new JSONObject(result);
-                int code = jsonObject.getInt("code");
-                String msg = jsonObject.getString("msg");
 
-                if (1 == code) {
-                    if (null != mClass) {
-                        Object responseResult = null;
-                        responseResult = gson.fromJson(result, mClass);
-                        mOnHttpRequestCallBack.onHttpRequestSuccess(responseResult);
+                if (jsonObject.has("code")) {
+                    int code = jsonObject.getInt("code");
+                    String msg = jsonObject.getString("msg");
+
+                    if (1 == code) {
+                        if (null != mClass) {
+                            Object responseResult = null;
+                            responseResult = gson.fromJson(result, mClass);
+                            mOnHttpRequestCallBack.onHttpRequestSuccess(responseResult);
+                        } else {
+                            mOnHttpRequestCallBack.onHttpRequestSuccess(result);
+                        }
                     } else {
-                        mOnHttpRequestCallBack.onHttpRequestSuccess(result);
+                        if (null != mOnHttpRequestCallBack) {
+                            mOnHttpRequestCallBack.onHttpRequestFail(code, msg);
+                        }
                     }
-                } else {
-                    if (null != mOnHttpRequestCallBack) {
-                        mOnHttpRequestCallBack.onHttpRequestFail(code, msg);
-                    }
+                }else{
+                    mOnHttpRequestCallBack.onHttpRequestSuccess(result);
                 }
 
 

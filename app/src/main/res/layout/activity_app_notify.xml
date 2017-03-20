@@ -17,16 +17,22 @@
 
         <TextView
             android:id="@+id/tv1"
-            android:layout_width="wrap_content"
+            style="@style/SettingsItem"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="您要的通知的内容" />
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|left"
+            android:text="您要的通知的内容"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/tv_time"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/tv1"
+            android:background="@drawable/edit_bg"
             android:paddingLeft="10dp"
             android:text="16:00" />
     </LinearLayout>

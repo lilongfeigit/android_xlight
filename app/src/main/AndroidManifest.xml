@@ -112,6 +112,9 @@
             android:name=".control.SelectScenarioActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".control.DeviceControlSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".control.EmailActivity"
             android:screenOrientation="portrait" />
         <activity

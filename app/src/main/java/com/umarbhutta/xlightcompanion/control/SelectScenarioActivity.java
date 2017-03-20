@@ -12,7 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.AddScenarioActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioListAdapter;
 
@@ -35,11 +38,13 @@ public class SelectScenarioActivity extends AppCompatActivity {
     public static String SCENARIO_NAME = "SCENARIO_NAME";
     public static String SCENARIO_INFO = "SCENARIO_INFO";
 
-    public static ArrayList<String> name = new ArrayList<>(Arrays.asList("Preset 1", "Preset 2", "Turn off"));
+    public static ArrayList<String> name = new ArrayList<>(Arrays.asList("预设 1", "预设 2", "关闭"));
     public static ArrayList<String> info = new ArrayList<>(Arrays.asList("A bright, party room preset", "A relaxed atmosphere with yellow tones", "Turn the chandelier rings off"));
 
-    ScenarioListAdapter scenarioListAdapter;
+    ScenarioSelectListAdapter scenarioListAdapter;
     RecyclerView scenarioRecyclerView;
+
+    public SceneListResult mDeviceInfoResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +76,9 @@ public class SelectScenarioActivity extends AppCompatActivity {
         //setup recycler view
         scenarioRecyclerView = (RecyclerView) findViewById(R.id.scenarioRecyclerView);
         //create list adapter
-        scenarioListAdapter = new ScenarioListAdapter(this);
+//        scenarioListAdapter = new ScenarioSelectListAdapter(this);
         //attach adapter to recycler view
-        scenarioRecyclerView.setAdapter(scenarioListAdapter);
+//        scenarioRecyclerView.setAdapter(scenarioListAdapter);
         //set LayoutManager for recycler view
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         //attach LayoutManager to recycler view
@@ -102,7 +107,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
 //                Toast.makeText(getActivity(),position+"long",Toast.LENGTH_SHORT).show();
 //            }
 //        });
-
+        getSceneList();
     }
 
     @Override
@@ -129,5 +134,35 @@ public class SelectScenarioActivity extends AppCompatActivity {
     private void onFabPressed(View view) {
         Intent intent = new Intent(this, AddScenarioActivity.class);
         startActivityForResult(intent, 1);
+    }
+
+    private void getSceneList() {
+        RequestSceneListInfo.getInstance().getSceneListInfo(SelectScenarioActivity.this, new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
+            @Override
+            public void onRequestFirstPageInfoSuccess(final SceneListResult deviceInfoResult) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDeviceInfoResult = deviceInfoResult;
+                        initList();
+                    }
+                });
+            }
+
+            @Override
+            public void onRequestFirstPageInfoFail(int code, final String errMsg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(SelectScenarioActivity.this, errMsg);
+                    }
+                });
+            }
+        });
+    }
+
+    private void initList() {
+        scenarioListAdapter = new ScenarioSelectListAdapter(SelectScenarioActivity.this, mDeviceInfoResult);
+        scenarioRecyclerView.setAdapter(scenarioListAdapter);
     }
 }

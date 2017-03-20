@@ -16,15 +16,21 @@
 
         <TextView
             android:id="@+id/tv1"
+            style="@style/SettingsItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="您要通知的Email" />
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|left"
+            android:text="您要通知的Email"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/et_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_bg"
             android:paddingLeft="10dp"
             android:text="16:00" />
 
@@ -39,15 +45,21 @@
         android:paddingTop="20dp">
 
         <TextView
+            style="@style/SettingsItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="邮件标题" />
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|left"
+            android:text="邮件标题"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/et_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_bg"
             android:paddingLeft="10dp"
             android:text="16:00" />
 
@@ -62,15 +74,21 @@
         android:paddingTop="20dp">
 
         <TextView
+            style="@style/SettingsItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="邮件内容" />
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|left"
+            android:text="邮件内容"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/et_context"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_bg"
             android:paddingLeft="10dp"
             android:text="16:00" />
 

@@ -217,7 +217,7 @@ public class GlanceFragment extends Fragment {
                         } else {
                             alertUserAboutError();
                         }
-                    } catch (IOException | JSONException e) {
+                    } catch (IOException | JSONException | NullPointerException e) {
                         Log.e(TAG, "Exception caught: " + e);
                     }
                 }

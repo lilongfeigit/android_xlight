@@ -11,11 +11,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteRuleDevice;
+import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,8 @@ public class AddControlRuleActivity extends AppCompatActivity {
     private TextView tvTitle;
     private ImageButton ib_add_term, ib_add_result;
     private ListView lv_term, lv_control;
+
+    private TextView tv_no_data1,tv_no_data2;
 
     private List<String> termList,resultList;
 
@@ -65,6 +71,9 @@ public class AddControlRuleActivity extends AppCompatActivity {
         lv_term = (ListView) findViewById(R.id.lv_term);
         lv_control = (ListView) findViewById(R.id.lv_control);
 
+        tv_no_data1 = (TextView) findViewById(R.id.tv_no_data1);
+        tv_no_data2 = (TextView) findViewById(R.id.tv_no_data2);
+
         ib_add_term.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,12 +91,12 @@ public class AddControlRuleActivity extends AppCompatActivity {
 
         termList = new ArrayList<String>();
         resultList = new ArrayList<String>();
-        for(int i=0;i<5;i++){
-            termList.add("termList"+i);
-        }
-        for(int i=0;i<5;i++){
-            resultList.add("resultList"+i);
-        }
+//        for(int i=0;i<5;i++){
+//            termList.add("termList"+i);
+//        }
+//        for(int i=0;i<5;i++){
+//            resultList.add("resultList"+i);
+//        }
         lv_term.setAdapter(new TermAdapter(getApplicationContext(),termList));
         lv_control.setAdapter(new ResultAdapter(getApplicationContext(),resultList));
     }
@@ -128,7 +137,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
            ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
@@ -136,15 +145,24 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.item_term, null);
                 //通过上面layout得到的view来获取里面的具体控件
                 holder.tvStr = (TextView) convertView.findViewById(R.id.tv_str);
+                holder.imageView = (ImageButton) convertView.findViewById(R.id.ib_minus);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
             holder.tvStr.setText(mTermsList.get(position));
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //TODO
+                    ToastUtil.showToast(AddControlRuleActivity.this,"删除"+position);
+                }
+            });
             return convertView;
         }
         class ViewHolder{
             private TextView tvStr;
+            private ImageButton imageView;
         }
     }
     /**
@@ -178,7 +196,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
@@ -186,15 +204,24 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.item_result, null);
                 //通过上面layout得到的view来获取里面的具体控件
                 holder.tvStr = (TextView) convertView.findViewById(R.id.tv_result);
+                holder.imageView = (ImageButton) convertView.findViewById(R.id.ib_minus);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
             holder.tvStr.setText(mResultsList.get(position));
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //TODO
+                    ToastUtil.showToast(AddControlRuleActivity.this,"删除"+position);
+                }
+            });
             return convertView;
         }
         class ViewHolder{
             private TextView tvStr;
+            private ImageButton imageView;
         }
     }
 }

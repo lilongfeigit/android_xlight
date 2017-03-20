@@ -7,16 +7,6 @@
 
     <include layout="@layout/top_layout" />
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_top_edit"
-        android:paddingLeft="32dp"
-        android:paddingTop="10dp"
-        android:text="全部场景"
-        android:textSize="16sp" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/scenarioRecyclerView"
         android:layout_width="match_parent"

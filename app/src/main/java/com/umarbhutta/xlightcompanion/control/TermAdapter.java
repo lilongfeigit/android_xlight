@@ -1,12 +1,10 @@
 package com.umarbhutta.xlightcompanion.control;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -14,29 +12,27 @@ import com.umarbhutta.xlightcompanion.R;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/3/5.
+ * Created by Administrator on 2017/3/20.
  */
 
-public class DialogListAdapter extends BaseAdapter {
+public class TermAdapter extends BaseAdapter {
 
     private Context mActivity;
-    private List<String> mSettingStr;
-    private LayoutInflater inflate;
+    private List<String> strList;
 
-    public DialogListAdapter(Context activity, List<String> settingStr) {
+    public TermAdapter(Context activity, List<String> strList) {
         this.mActivity = activity;
-        this.mSettingStr = settingStr;
-        inflate = LayoutInflater.from(mActivity);
+        this.strList = strList;
     }
 
     @Override
     public int getCount() {
-        return mSettingStr.size();
+        return strList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mSettingStr.get(position);
+        return strList.get(position);
     }
 
     @Override
@@ -49,18 +45,18 @@ public class DialogListAdapter extends BaseAdapter {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView =inflate.inflate(R.layout.dialog_list_item, null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.term_list_item, parent, false);
             //通过上面layout得到的view来获取里面的具体控件
-            holder.tv_setting_name = (TextView) convertView.findViewById(R.id.tv_setting_name);
+            holder.tv_term = (TextView) convertView.findViewById(R.id.tv_term);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_setting_name.setText(mSettingStr.get(position));
+        holder.tv_term.setText(strList.get(position));
         return convertView;
     }
 
     class ViewHolder {
-        private TextView tv_setting_name;
+        private TextView tv_term;
     }
 }

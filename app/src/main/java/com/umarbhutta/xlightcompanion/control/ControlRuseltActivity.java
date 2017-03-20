@@ -8,17 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
-import com.umarbhutta.xlightcompanion.settings.FastBindingActivity;
-import com.umarbhutta.xlightcompanion.settings.ModifyPasswordActivity;
-import com.umarbhutta.xlightcompanion.settings.ShakeActivity;
-import com.umarbhutta.xlightcompanion.settings.UserInvitationActivity;
-import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +51,6 @@ public class ControlRuseltActivity extends AppCompatActivity {
         //divider lines
         settingRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
-
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,10 +81,10 @@ public class ControlRuseltActivity extends AppCompatActivity {
         controlResultListAdapter.setmOnItemClickListener(new ControlResultListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
                 switch (position) {
                     case 0://灯具控制
-                        onFabPressed(EditDeviceActivity.class);
+                        onFabPressed(DeviceControlSelectActivity.class);
                         break;
                     case 1://场景切换
                         onFabPressed(SelectScenarioActivity.class);

@@ -123,9 +123,12 @@
         <activity
             android:name=".control.DialogActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TranslucentFullScreenTheme"/>
+            android:theme="@style/dialog_style"/>
         <activity
             android:name=".control.SelectScenarioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".control.DeviceControlSelectActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".control.EmailActivity"

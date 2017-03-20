@@ -24,6 +24,10 @@ public class NetConfig {
 
     public static final String ERROR_PARSE_MSG = "数据解析异常";
 
+    /**
+     * 服务器地址
+     */
+    public static final String SERVER_ADDRESS = "http://123.207.166.211:8080";
 
     /**
      * 登录
@@ -101,6 +105,14 @@ public class NetConfig {
      * 创建规则
      */
     public static final String URL_CREATE_RULES = "http://123.207.166.211:8080/rules?access_token=";
+    /**
+     * 修改个人信息
+     */
+    public static final String URL_MODIFY_USER_INFO = "http://123.207.166.211:8080/users/";
+    /**
+     * 上传照片
+     */
+    public static final String URL_UPLOAD_IMG = "http://123.207.166.211:8080/users/uploadimg?access_token=";
 
 
 }

@@ -113,6 +113,14 @@ public class NetConfig {
      * 上传照片
      */
     public static final String URL_UPLOAD_IMG = "http://123.207.166.211:8080/users/uploadimg?access_token=";
+    /**
+     * 注册协议帮助的url
+     */
+    public static final String URL_GET_REGISTER_URL = "http://123.207.166.211:8080/users/regagreement?access_token=";
+    /**
+     * 获取帮助的url
+     */
+    public static final String URL_GET_HELP_URL = "http://123.207.166.211:8080/users/help?access_token=";
 
 
 }

@@ -13,10 +13,14 @@ import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.RegisteResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.RigsteParam;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Administrator on 2017/3/4.
@@ -38,6 +42,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
         //hide nav bar
         getSupportActionBar().hide();
         initViews();
+//        getHelpUrl();
     }
 
     private void initViews() {
@@ -80,6 +85,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
 
     private void onFabPressed() {
         Intent intent = new Intent(RegisteredActivity.this, UserResProtocalActivity.class);
+        intent.putExtra("url",url);
         startActivityForResult(intent, 1);
     }
 
@@ -139,4 +145,38 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
     public void onHttpRequestFail(int code, String errMsg) {
         Logger.i("login fail = ");
     }
+
+    public String url;
+
+    /**
+     * 获取注册协议的url
+     */
+    public void getHelpUrl() {
+        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_REGISTER_URL + UserUtils.getUserInfo(this).getAccess_token(), null, new HttpUtils.OnHttpRequestCallBack() {
+            @Override
+            public void onHttpRequestSuccess(final Object result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject jsonObject = new JSONObject((String) result);
+                            JSONObject dataObj = jsonObject.getJSONObject("data");
+                            url = dataObj.getString("url");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onHttpRequestFail(int code, String errMsg) {
+
+            }
+        });
+    }
+
+
+
+
 }

@@ -327,9 +327,6 @@ public class MainActivity extends AppCompatActivity
      * 获取帮助的url
      */
     public void getHelpUrl() {
-        if (!UserUtils.isLogin(this)) {
-            return;
-        }
         HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_HELP_URL, null, new HttpUtils.OnHttpRequestCallBack() {
             @Override
             public void onHttpRequestSuccess(final Object result) {

@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
-import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -40,7 +39,7 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.loadUrl(NetConfig.SERVER_ADDRESS + MainActivity.helpUrl);
+        webView.loadUrl(MainActivity.helpUrl);
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
             @Override

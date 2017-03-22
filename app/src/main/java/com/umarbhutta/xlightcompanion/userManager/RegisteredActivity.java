@@ -13,7 +13,6 @@ import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
-import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.RegisteResult;
@@ -42,7 +41,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
         //hide nav bar
         getSupportActionBar().hide();
         initViews();
-//        getHelpUrl();
+        getHelpUrl();
     }
 
     private void initViews() {
@@ -85,7 +84,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
 
     private void onFabPressed() {
         Intent intent = new Intent(RegisteredActivity.this, UserResProtocalActivity.class);
-        intent.putExtra("url",url);
+        intent.putExtra("url", url);
         startActivityForResult(intent, 1);
     }
 
@@ -152,7 +151,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
      * 获取注册协议的url
      */
     public void getHelpUrl() {
-        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_REGISTER_URL + UserUtils.getUserInfo(this).getAccess_token(), null, new HttpUtils.OnHttpRequestCallBack() {
+        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_REGISTER_URL, null, new HttpUtils.OnHttpRequestCallBack() {
             @Override
             public void onHttpRequestSuccess(final Object result) {
                 runOnUiThread(new Runnable() {
@@ -175,8 +174,6 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
             }
         });
     }
-
-
 
 
 }

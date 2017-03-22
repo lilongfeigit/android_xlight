@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity
         if (!UserUtils.isLogin(this)) {
             return;
         }
-        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_HELP_URL + UserUtils.getUserInfo(this).getAccess_token(), null, new HttpUtils.OnHttpRequestCallBack() {
+        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_HELP_URL, null, new HttpUtils.OnHttpRequestCallBack() {
             @Override
             public void onHttpRequestSuccess(final Object result) {
                 runOnUiThread(new Runnable() {

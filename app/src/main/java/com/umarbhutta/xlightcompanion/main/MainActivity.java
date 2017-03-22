@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,8 @@ import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
 import com.umarbhutta.xlightcompanion.help.HelpFragment;
 import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderOptions;
+import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
+import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 import com.umarbhutta.xlightcompanion.report.ReportFragment;
 import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
@@ -37,6 +40,9 @@ import com.umarbhutta.xlightcompanion.settings.SettingFragment;
 import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 import com.umarbhutta.xlightcompanion.views.CircleImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 //import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 
@@ -56,13 +62,16 @@ public class MainActivity extends AppCompatActivity
     private Button btnRight;
     private CircleImageView userIcon;
 
-    private TextView tv_userName,textView;
+    private TextView tv_userName, textView;
     private Button btnLogin;
-    private  LinearLayout llPerName;
+    private LinearLayout llPerName;
 
     @Override
     protected void onResume() {
         super.onResume();
+        if(TextUtils.isEmpty(helpUrl)){
+            getHelpUrl();
+        }
     }
 
     @Override
@@ -75,6 +84,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         // Check Bluetooth
         BLEAdapter.init(this);
+
         if (BLEAdapter.IsSupported() && !BLEAdapter.IsEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, BLEAdapter.REQUEST_ENABLE_BT);
@@ -105,22 +115,22 @@ public class MainActivity extends AppCompatActivity
 
 //        user_nameTv = (TextView) headerView.findViewById(R.id.user_name);
         llPerName = (LinearLayout) headerView.findViewById(R.id.llPerName);
-         tv_userName = (TextView) headerView.findViewById(R.id.tv_userName);
-          textView = (TextView) headerView.findViewById(R.id.textView);
+        tv_userName = (TextView) headerView.findViewById(R.id.tv_userName);
+        textView = (TextView) headerView.findViewById(R.id.textView);
 
         btnLogin = (Button) headerView.findViewById(R.id.btn_login);
         CircleImageView userIcon = (CircleImageView) headerView.findViewById(R.id.userIcon);
         userIcon.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
 
-        if(UserUtils.isLogin(MainActivity.this)){
+        if (UserUtils.isLogin(MainActivity.this)) {
             LoginResult userInfo = UserUtils.getUserInfo(this);
             btnLogin.setVisibility(View.GONE);
             llPerName.setVisibility(View.VISIBLE);
             tv_userName.setText(UserUtils.getUserInfo(MainActivity.this).getUsername());
             textView.setText(UserUtils.getUserInfo(MainActivity.this).getEmail());
             ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
-        }else{
+        } else {
             btnLogin.setVisibility(View.VISIBLE);
             llPerName.setVisibility(View.GONE);
         }
@@ -310,4 +320,36 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
     }
+
+    public static String helpUrl = null;
+
+    /**
+     * 获取帮助的url
+     */
+    public void getHelpUrl() {
+        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_HELP_URL, null, new HttpUtils.OnHttpRequestCallBack() {
+            @Override
+            public void onHttpRequestSuccess(final Object result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject jsonObject = new JSONObject((String) result);
+                            JSONObject dataObj = jsonObject.getJSONObject("data");
+                            helpUrl = dataObj.getString("url");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onHttpRequestFail(int code, String errMsg) {
+
+            }
+        });
+    }
+
+
 }

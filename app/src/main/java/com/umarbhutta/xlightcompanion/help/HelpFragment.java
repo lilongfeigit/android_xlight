@@ -3,7 +3,6 @@ package com.umarbhutta.xlightcompanion.help;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.main.MainActivity;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -21,8 +21,8 @@ import com.umarbhutta.xlightcompanion.R;
 
 public class HelpFragment extends Fragment implements View.OnClickListener {
 
-    private  WebView webView;
-    private ImageButton ib_back,ib_refresh;
+    private WebView webView;
+    private ImageButton ib_back, ib_refresh;
 
     @Nullable
     @Override
@@ -39,7 +39,7 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.loadUrl("http://baidu.com");
+        webView.loadUrl(MainActivity.helpUrl);
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -69,7 +69,7 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.ib_back:
                 if (webView.canGoBack()) {
                     webView.goBack();//返回上一页面

@@ -21,11 +21,14 @@ public class UserResProtocalActivity extends AppCompatActivity {
 
     private LinearLayout llBack;
     private TextView tvTitle;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registerd_protocal);
+        getSupportActionBar().hide();
+        url = getIntent().getStringExtra("url");
         initViews();
     }
 
@@ -47,7 +50,7 @@ public class UserResProtocalActivity extends AppCompatActivity {
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.loadUrl("http://baidu.com");
+        webView.loadUrl(url);
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
             @Override

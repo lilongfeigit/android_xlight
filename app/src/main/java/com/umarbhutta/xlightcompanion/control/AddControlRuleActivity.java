@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteRuleDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 
@@ -38,6 +39,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
     private TextView tv_no_data1,tv_no_data2;
 
     private List<String> termList,resultList;
+    private DeviceInfoResult mDeviceInfoResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,8 @@ public class AddControlRuleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_control_rule);
         //hide nav bar
         getSupportActionBar().hide();
+
+        mDeviceInfoResult = new DeviceInfoResult();
 
         initViews();
     }
@@ -77,14 +81,14 @@ public class AddControlRuleActivity extends AppCompatActivity {
         ib_add_term.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO 添加启动条件
+                //添加启动条件
                 onFabPressed(EntryConditionActivity.class);
             }
         });
         ib_add_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO 添加执行结果
+                // 添加执行结果
                 onFabPressed(ControlRuseltActivity.class);
             }
         });
@@ -103,7 +107,10 @@ public class AddControlRuleActivity extends AppCompatActivity {
 
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(this, activity);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("DEVICE_CONTROL",mDeviceInfoResult);
+        intent.putExtra("BUNDLE",bundle);
+        startActivityForResult(intent,2018);
     }
 
     /**

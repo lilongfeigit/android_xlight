@@ -1,13 +1,15 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by guangbinw on 2017/3/13.
  * 设备信息
  */
 
-public class DeviceInfoResult {
+public class DeviceInfoResult implements Serializable{
 
     public int code;
     public String msg;

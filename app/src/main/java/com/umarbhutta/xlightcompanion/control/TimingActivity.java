@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.settings.FastBindingActivity;
 import com.umarbhutta.xlightcompanion.settings.ModifyPasswordActivity;
 import com.umarbhutta.xlightcompanion.settings.ShakeActivity;
@@ -37,12 +38,16 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
     public ArrayList<String> listStr = new ArrayList<String>();
     private int requestCode = 210;
 
+    private DeviceInfoResult deviceInfoResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timing);
         //hide nav bar
         getSupportActionBar().hide();
+
+        deviceInfoResult = (DeviceInfoResult) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL_ENTRY");
 
         initViews();
     }
@@ -79,14 +84,6 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()){
             case R.id.llStartTime:
                 listStr.clear();
-                listStr.add("00:00");
-                listStr.add("01:00");
-                listStr.add("02:00");
-                listStr.add("03:00");
-                listStr.add("04:00");
-                listStr.add("05:00");
-                listStr.add("06:00");
-                listStr.add("07:00");
                 listStr.add("08:00");
                 listStr.add("09:00");
                 listStr.add("10:00");

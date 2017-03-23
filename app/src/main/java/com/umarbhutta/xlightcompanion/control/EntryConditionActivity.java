@@ -8,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class EntryConditionActivity extends AppCompatActivity {
     private TextView btnSure;
     private TextView tvTitle;
 
-    private int requestCode = 110;
+    private int requestCode = 111;
 
     private List<String> settingStr = new ArrayList<String>();
     private List<Integer> imgInter = new ArrayList<Integer>();
@@ -36,6 +36,7 @@ public class EntryConditionActivity extends AppCompatActivity {
 
     EntryConditionListAdapter entryConditionListAdapter;
     RecyclerView settingRecyclerView;
+    private DeviceInfoResult deviceInfoResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class EntryConditionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_entry);
         //hide nav bar
         getSupportActionBar().hide();
+
+        deviceInfoResult = (DeviceInfoResult) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL");
 
         settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
         entryConditionListAdapter = new EntryConditionListAdapter(this, settingStr,imgInter);
@@ -148,7 +151,10 @@ public class EntryConditionActivity extends AppCompatActivity {
 
     private void onFabPressed(Class activity,ArrayList<String> listStr) {
         Intent intent = new Intent(this, activity);
-        intent.putStringArrayListExtra("DILOGLIST",listStr);
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("DILOGLIST",listStr);
+        bundle.putSerializable("DEVICE_CONTROL_ENTRY",deviceInfoResult);
+        intent.putExtra("BUNDLE",bundle);
         startActivityForResult(intent,requestCode);
     }
 

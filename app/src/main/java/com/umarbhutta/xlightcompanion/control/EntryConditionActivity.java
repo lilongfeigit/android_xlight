@@ -154,6 +154,7 @@ public class EntryConditionActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("DILOGLIST",listStr);
         bundle.putSerializable("DEVICE_CONTROL_ENTRY",deviceInfoResult);
+        bundle.putInt("TYPE",0);
         intent.putExtra("BUNDLE",bundle);
         startActivityForResult(intent,requestCode);
     }

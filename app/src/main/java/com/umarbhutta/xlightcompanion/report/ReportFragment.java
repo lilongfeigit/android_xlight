@@ -13,6 +13,12 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
+import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -22,6 +28,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
 
     private WebView webView;
     private ImageButton ib_back, ib_refresh;
+    private String url;
 
     @Nullable
     @Override
@@ -32,13 +39,19 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         ib_back.setOnClickListener(this);
         ib_refresh = (ImageButton) view.findViewById(R.id.ib_refresh);
         ib_refresh.setOnClickListener(this);
-        //TODO webview加载数据
+
+        getReportForm();
+
+        return view;
+    }
+
+    private void initViews() {
         //启用支持javascript
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.loadUrl("http://baidu.com");
+        webView.loadUrl(url);
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -63,7 +76,6 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-        return view;
     }
 
     @Override
@@ -79,4 +91,35 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    /**
+     * 获取报表的url
+     */
+    public void getReportForm() {
+        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_REPORT_FORM + UserUtils.getUserInfo(getActivity()).getAccess_token(), null, new HttpUtils.OnHttpRequestCallBack() {
+            @Override
+            public void onHttpRequestSuccess(final Object result) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject jsonObject = new JSONObject((String) result);
+                            JSONObject dataObj = jsonObject.getJSONObject("data");
+                            url = dataObj.getString("url");
+                            initViews();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onHttpRequestFail(int code, String errMsg) {
+
+            }
+        });
+    }
+
+
 }

@@ -300,6 +300,15 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/default_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="12dp"
+        android:gravity="center_horizontal"
+        android:text="您还没有设备，点击右上角+添加设备" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/devicesRecyclerView"
@@ -317,8 +326,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/devicesRecyclerView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="2dp"
         android:layout_marginBottom="-16dp"
+        android:layout_marginEnd="2dp"
         android:src="@drawable/ic_add_white_24dp"
         fab:fab_colorNormal="@color/colorAccent"
         fab:fab_colorPressed="@color/colorAccent"

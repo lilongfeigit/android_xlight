@@ -40,6 +40,8 @@ import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.DevicesListAdapter;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
+import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestFirstPageInfo;
@@ -76,6 +78,7 @@ public class GlanceFragment extends Fragment {
      */
     public static List<Rows> deviceList = new ArrayList<Rows>();
     private DevicesListAdapter devicesListAdapter;
+    private TextView default_text;
 
     private class MyDataReceiver extends DataReceiver {
         @Override
@@ -135,6 +138,9 @@ public class GlanceFragment extends Fragment {
 //                mSelectDialog.show();
             }
         });
+
+        default_text = (TextView) view.findViewById(R.id.default_text);
+
         outsideTemp = (TextView) view.findViewById(R.id.outsideTemp);
         degreeSymbol = (TextView) view.findViewById(R.id.degreeSymbol);
         outsideHumidity = (TextView) view.findViewById(R.id.valLocalHumidity);
@@ -353,7 +359,7 @@ public class GlanceFragment extends Fragment {
             @Override
             public void onSwitchChange(int position, boolean checked) {
                 deviceList.get(position).ison = checked ? 1 : 0;
-                switchLight(deviceList.get(position));
+                switchLight(checked, deviceList.get(position));
             }
         });
 
@@ -368,6 +374,13 @@ public class GlanceFragment extends Fragment {
                         List<Rows> devices = mDeviceInfoResult.rows;
                         deviceList.addAll(devices);
                         devicesListAdapter.notifyDataSetChanged();
+
+
+                        if (null != deviceList && deviceList.size() > 0) {
+                            default_text.setVisibility(View.GONE);
+                        }
+
+
                     }
                 });
             }
@@ -383,14 +396,34 @@ public class GlanceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         devicesListAdapter.notifyDataSetChanged();
+        if (null != deviceList && deviceList.size() > 0) {
+            default_text.setVisibility(View.GONE);
+        } else {
+            default_text.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
+     * TODO 设备开关,调用SDK
      *
-     * TODO 设备开关
      * @param deviceInfo
      */
-    private void switchLight(Rows deviceInfo) {
+    private void switchLight(boolean checked, Rows deviceInfo) {
+        MainActivity.m_mainDevice.PowerSwitch(checked);
+
+        String param = "{\"ison\":" + (checked ? 1 : 0) + "}";
+
+        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_LAMP_SWITCH + deviceInfo.id + "/onoff?access_token=" + UserUtils.getUserInfo(getActivity()).getAccess_token(), param, null, new HttpUtils.OnHttpRequestCallBack() {
+            @Override
+            public void onHttpRequestSuccess(Object result) {
+                Logger.i("开关结果 = " + result.toString());
+            }
+
+            @Override
+            public void onHttpRequestFail(int code, String errMsg) {
+                Logger.i("开关结果失败 = " + errMsg);
+            }
+        });
 
     }
 

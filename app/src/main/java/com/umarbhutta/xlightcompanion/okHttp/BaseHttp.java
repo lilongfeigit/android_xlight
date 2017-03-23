@@ -68,6 +68,10 @@ public abstract class BaseHttp {
     protected void postData(String url, String jsonParam) {
         OkHttpClient okHttpClient = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+        if(TextUtils.isEmpty(jsonParam)){
+            jsonParam = "";
+        }
         RequestBody body = RequestBody.create(JSON, jsonParam);
 
         Request request = new Request.Builder()
@@ -101,6 +105,9 @@ public abstract class BaseHttp {
     protected void putData(String url, String jsonParam) {
         OkHttpClient okHttpClient = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        if(TextUtils.isEmpty(jsonParam)){
+            jsonParam = "";
+        }
         RequestBody body = RequestBody.create(JSON, jsonParam);
 
         Request request = new Request.Builder()

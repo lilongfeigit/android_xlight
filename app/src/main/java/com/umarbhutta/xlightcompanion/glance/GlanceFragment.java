@@ -74,7 +74,7 @@ public class GlanceFragment extends Fragment {
     /**
      * 设备列表
      */
-    private List<Rows> deviceList = new ArrayList<Rows>();
+    public static List<Rows> deviceList = new ArrayList<Rows>();
     private DevicesListAdapter devicesListAdapter;
 
     private class MyDataReceiver extends DataReceiver {
@@ -353,7 +353,6 @@ public class GlanceFragment extends Fragment {
             @Override
             public void onSwitchChange(int position, boolean checked) {
                 deviceList.get(position).ison = checked ? 1 : 0;
-                devicesListAdapter.notifyDataSetChanged();
                 switchLight(deviceList.get(position));
             }
         });
@@ -378,6 +377,12 @@ public class GlanceFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        devicesListAdapter.notifyDataSetChanged();
     }
 
     /**

@@ -50,11 +50,11 @@ public class NetConfig {
     /**
      * 解绑设备
      */
-    public static final String URL_UNBIND_DEVICE = "http://127.0.0.1:8080/devices/";
+    public static final String URL_UNBIND_DEVICE = "http://123.207.166.211:8080/devices/";
     /**
      * 设置主设备
      */
-    public static final String URL_SET_MAIN_DEVICE = "http://127.0.0.1:8080/devices/";
+    public static final String URL_SET_MAIN_DEVICE = "http://123.207.166.211:8080/devices/";
     /**
      * 设备详细信息
      */

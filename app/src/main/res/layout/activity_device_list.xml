@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
-        android:textSize="16sp"
-        android:text="请选择主设备" />
+        android:text="请选择主设备"
+        android:textSize="16sp" />
 
     <ListView
         android:id="@+id/lv_devices"

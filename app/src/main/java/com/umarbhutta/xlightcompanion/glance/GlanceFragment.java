@@ -8,8 +8,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,13 +15,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,15 +32,25 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.DevicesListAdapter;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestFirstPageInfo;
+import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Umar Bhutta.
@@ -65,6 +70,12 @@ public class GlanceFragment extends Fragment {
     private Bitmap icoCloudy, icoPartlyCloudyDay, icoPartlyCloudyNight;
     private static int ICON_WIDTH = 70;
     private static int ICON_HEIGHT = 75;
+
+    /**
+     * 设备列表
+     */
+    private List<Rows> deviceList = new ArrayList<Rows>();
+    private DevicesListAdapter devicesListAdapter;
 
     private class MyDataReceiver extends DataReceiver {
         @Override
@@ -172,22 +183,19 @@ public class GlanceFragment extends Fragment {
 
         //setup recycler view
         devicesRecyclerView = (RecyclerView) view.findViewById(R.id.devicesRecyclerView);
-        //create list adapter
-        DevicesListAdapter devicesListAdapter = new DevicesListAdapter(getContext());
-        //attach adapter to recycler view
+        devicesListAdapter = new DevicesListAdapter(getContext(), deviceList);
         devicesRecyclerView.setAdapter(devicesListAdapter);
-        //set LayoutManager for recycler view
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        //attach LayoutManager to recycler view
         devicesRecyclerView.setLayoutManager(layoutManager);
-        //divider lines
         devicesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+
+        getBaseInfos();
 
         double latitude = 43.4643;
         double longitude = -80.5204;
         String forecastUrl = "https://api.forecast.io/forecast/" + CloudAccount.DarkSky_apiKey + "/" + latitude + "," + longitude;
 
-        if (isNetworkAvailable()) {
+        if (NetworkUtils.isNetworkAvaliable(getActivity())) {
             OkHttpClient client = new OkHttpClient();
             //build request
             Request request = new Request.Builder()
@@ -215,10 +223,10 @@ public class GlanceFragment extends Fragment {
                                 }
                             });
                         } else {
-                            alertUserAboutError();
+                            Toast.makeText(getActivity(), "There was an error retrieving weather data.", Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException | JSONException | NullPointerException e) {
-                        Log.e(TAG, "Exception caught: " + e);
+                        Logger.i("Exception caught: " + e);
                     }
                 }
             });
@@ -284,23 +292,6 @@ public class GlanceFragment extends Fragment {
         return weatherDetails;
     }
 
-    private void alertUserAboutError() {
-        Toast.makeText(getActivity(), "There was an error retrieving weather data.", Toast.LENGTH_SHORT).show();
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager manager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        boolean isAvailable = false;
-
-        //check if network is available and connected to web
-        if (networkInfo != null && networkInfo.isConnected()) {
-            isAvailable = true;
-        }
-
-        return isAvailable;
-    }
-
     private Bitmap decodeResource(Resources resources, final int id, final int newWidth, final int newHeight) {
         TypedValue value = new TypedValue();
         resources.openRawResource(id, value);
@@ -346,4 +337,56 @@ public class GlanceFragment extends Fragment {
             return icoDefault;
         }
     }
+
+    public void getBaseInfos() {
+        if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
+            ToastUtil.showToast(getActivity(), R.string.net_error);
+            return;
+        }
+
+        if (!UserUtils.isLogin(getActivity())) {
+            getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
+            return;
+        }
+
+        devicesListAdapter.setOnSwitchStateChangeListener(new DevicesListAdapter.OnSwitchStateChangeListener() {
+            @Override
+            public void onSwitchChange(int position, boolean checked) {
+                deviceList.get(position).ison = checked ? 1 : 0;
+                devicesListAdapter.notifyDataSetChanged();
+                switchLight(deviceList.get(position));
+            }
+        });
+
+        RequestFirstPageInfo.getInstance(getActivity()).getBaseInfo(new RequestFirstPageInfo.OnRequestFirstPageInfoCallback() {
+            @Override
+            public void onRequestFirstPageInfoSuccess(final DeviceInfoResult mDeviceInfoResult) {
+                Logger.i("mDeviceInfoResult = " + mDeviceInfoResult.toString());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        List<Rows> devices = mDeviceInfoResult.rows;
+                        deviceList.addAll(devices);
+                        devicesListAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void onRequestFirstPageInfoFail(int code, String errMsg) {
+
+            }
+        });
+    }
+
+    /**
+     *
+     * TODO 设备开关
+     * @param deviceInfo
+     */
+    private void switchLight(Rows deviceInfo) {
+
+    }
+
 }

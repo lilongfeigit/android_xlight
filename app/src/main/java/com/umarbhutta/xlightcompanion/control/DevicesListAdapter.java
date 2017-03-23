@@ -2,24 +2,22 @@ package com.umarbhutta.xlightcompanion.control;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.umarbhutta.xlightcompanion.SDK.xltDevice;
-import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
-import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
-import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.schedule.AddScheduleActivity;
+
+import java.util.List;
 
 /**
  * Created by Umar Bhutta.
@@ -27,32 +25,17 @@ import com.umarbhutta.xlightcompanion.schedule.AddScheduleActivity;
 public class DevicesListAdapter extends RecyclerView.Adapter {
 
     private Context mActivity;
+    private List<Rows> deviceList;
 
-    public DevicesListAdapter(Context activity){
+    public DevicesListAdapter(Context activity, List<Rows> deviceList) {
+        this.deviceList = deviceList;
         this.mActivity = activity;
     }
 
     private Handler m_handlerDeviceList;
 
-    private class MyStatusReceiver extends StatusReceiver {
-        public Switch m_mainSwitch = null;
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if( m_mainSwitch != null ) {
-                m_mainSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-            }
-        }
-    }
-    private final MyStatusReceiver m_StatusReceiver = new MyStatusReceiver();
-
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        if( MainActivity.m_mainDevice.getEnableEventBroadcast() ) {
-            IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
-            intentFilter.setPriority(3);
-            recyclerView.getContext().registerReceiver(m_StatusReceiver, intentFilter);
-        }
         super.onAttachedToRecyclerView(recyclerView);
     }
 
@@ -64,12 +47,6 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        if( m_handlerDeviceList != null ) {
-            MainActivity.m_mainDevice.removeDeviceEventHandler(m_handlerDeviceList);
-        }
-        if( MainActivity.m_mainDevice.getEnableEventBroadcast() ) {
-            recyclerView.getContext().unregisterReceiver(m_StatusReceiver);
-        }
         super.onDetachedFromRecyclerView(recyclerView);
     }
 
@@ -85,12 +62,13 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return deviceList.size();
     }
 
     private class DevicesListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView mDeviceName;
         private Switch mDeviceSwitch;
+        private int mPositon;
 
         public DevicesListViewHolder(View itemView) {
             super(itemView);
@@ -100,34 +78,21 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
-            mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, isChecked);
-                    MainActivity.m_mainDevice.PowerSwitch(isChecked);
-                    //TODO 右侧开关控制
+                    // 右侧开关控制
+                    if (null != mOnSwitchStateChangeListener) {
+                        mOnSwitchStateChangeListener.onSwitchChange(mPositon, isChecked);
+                    }
                 }
             });
         }
 
-        public void bindView (int position) {
-            mDeviceName.setText(MainActivity.deviceNames[position]);
-            if (position == 0) {
-                // Main device
-                mDeviceSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-                m_StatusReceiver.m_mainSwitch = mDeviceSwitch;
-
-                if( MainActivity.m_mainDevice.getEnableEventSendMessage() ) {
-                    m_handlerDeviceList = new Handler() {
-                        public void handleMessage(Message msg) {
-                            int intValue = msg.getData().getInt("State", -255);
-                            if (intValue != -255) {
-                                mDeviceSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-                            }
-                        }
-                    };
-                    MainActivity.m_mainDevice.addDeviceEventHandler(m_handlerDeviceList);
-                }
-            }
+        public void bindView(int position) {
+            mPositon = position;
+            Rows deviceInfo = deviceList.get(position);
+            mDeviceName.setText(TextUtils.isEmpty(deviceInfo.devicename) ? "灯" : deviceInfo.devicename);
+            mDeviceSwitch.setChecked(deviceInfo.ison > 0);
         }
 
         @Override
@@ -143,8 +108,26 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
             return true;
         }
     }
+
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(mActivity, activity);
         mActivity.startActivity(intent);
     }
+
+    private OnSwitchStateChangeListener mOnSwitchStateChangeListener;
+
+    /**
+     * 设置item开关通知
+     *
+     * @param mOnSwitchStateChangeListener
+     */
+    public void setOnSwitchStateChangeListener(OnSwitchStateChangeListener mOnSwitchStateChangeListener) {
+        this.mOnSwitchStateChangeListener = mOnSwitchStateChangeListener;
+    }
+
+    public interface OnSwitchStateChangeListener {
+        void onSwitchChange(int position, boolean checked);
+    }
+
+
 }

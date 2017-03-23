@@ -22,6 +22,7 @@
             android:background="@drawable/edt_bg"
             android:drawableLeft="@drawable/icon_user"
             android:drawablePadding="10dp"
+            android:singleLine="true"
             android:gravity="center_vertical"
             android:hint="请输入账号"
             android:paddingLeft="6dp"
@@ -37,6 +38,7 @@
             android:drawableLeft="@drawable/icon_password"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
+            android:singleLine="true"
             android:hint="请输入验证码"
             android:paddingLeft="8dp"
             android:textColorHint="@color/edit_login_color" />
@@ -48,6 +50,7 @@
             android:layout_below="@+id/et_user_password"
             android:layout_marginTop="10dp"
             android:background="@drawable/edt_bg"
+            android:singleLine="true"
             android:drawableLeft="@drawable/icon_password"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"

@@ -25,7 +25,7 @@ import com.umarbhutta.xlightcompanion.settings.BaseActivity;
  * 设备列表
  */
 
-public class DeviceListActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener, AdapterView.OnItemLongClickListener {
+public class DeviceListActivity extends BaseActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -47,11 +47,10 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setOnClickListener(this);
+        btnSure.setVisibility(View.INVISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("选择主设备");
         listView = (ListView) findViewById(R.id.lv_devices);
-
 
         for (int i = 0; i < GlanceFragment.deviceList.size(); i++) {
             if (1 == GlanceFragment.deviceList.get(i).maindevice) {
@@ -59,7 +58,6 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
                 break;
             }
         }
-
 
         adapter = new DeviceListAdapter(this, GlanceFragment.deviceList);
         listView.setAdapter(adapter);
@@ -70,12 +68,13 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         selectPosition = position;
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
+        setMainDevice();
+
     }
 
-    @Override
-    public void onClick(View v) {
-        //设置主设备
+    //设置主设备
+    private void setMainDevice() {
         if (!NetworkUtils.isNetworkAvaliable(this)) {
             ToastUtil.showToast(this, R.string.net_error);
             return;

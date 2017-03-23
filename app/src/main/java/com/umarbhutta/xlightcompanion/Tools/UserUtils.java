@@ -19,7 +19,7 @@ public class UserUtils {
      */
     public static boolean isLogin(Context context) {
         LoginResult result = (LoginResult) SharedPreferencesUtils.getObject(context, SharedPreferencesUtils.KEY__USERINFO, null);
-        if (null == result || TextUtils.isEmpty(result.access_token)) {
+        if (null == result || TextUtils.isEmpty(result.access_token) || TextUtils.isEmpty(result.username)) {
             return false;
         }
         return true;

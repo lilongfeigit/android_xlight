@@ -7,7 +7,7 @@ import java.util.List;
  * Created by guangbinw on 2017/3/13.
  */
 
-public class Rows implements Serializable{
+public class Rows implements Serializable {
     public int id;
     public String devicename;
     public String scenarioname;
@@ -19,9 +19,18 @@ public class Rows implements Serializable{
     public int userId;
     public String iphoneidentify;
     public String androididentify;
+    /**
+     * 是否为主设备，0否，1是
+     */
     public int maindevice;
+    /**
+     * 设备的启用禁用状态，0禁用，1启用
+     */
     public int status;
-    public String ison;
+    /**
+     * 设备开关状态，0关，1开
+     */
+    public int ison;
     public String createdAt;
     public String updatedAt;
     public int devicegroupId;

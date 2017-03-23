@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +92,8 @@ public class SettingFragment extends Fragment {
      */
     private void logout() {
         UserUtils.saveUserInfo(getActivity(), null);
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        getActivity().finish();
     }
 
 }

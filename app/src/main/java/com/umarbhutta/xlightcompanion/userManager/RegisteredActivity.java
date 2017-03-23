@@ -141,8 +141,14 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onHttpRequestFail(int code, String errMsg) {
+    public void onHttpRequestFail(int code, final String errMsg) {
         Logger.i("login fail = ");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtil.showToast(RegisteredActivity.this, getString(R.string.register_fail) + errMsg);
+            }
+        });
     }
 
     public String url;
@@ -169,7 +175,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
             }
 
             @Override
-            public void onHttpRequestFail(int code, String errMsg) {
+            public void onHttpRequestFail(int code, final String errMsg) {
 
             }
         });

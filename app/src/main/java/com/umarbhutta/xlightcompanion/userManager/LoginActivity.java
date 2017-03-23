@@ -133,7 +133,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onHttpRequestFail(int code, String errMsg) {
+    public void onHttpRequestFail(int code, final String errMsg) {
         Logger.i("login fail = ");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtil.showToast(LoginActivity.this,getString(R.string.login_fail)+errMsg);
+            }
+        });
     }
 }

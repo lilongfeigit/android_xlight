@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
-import com.umarbhutta.xlightcompanion.schedule.AddScheduleActivity;
 
 import java.util.List;
 
@@ -97,14 +96,16 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-            //TODO 点击事件 跳转到编辑设备页面
+            // 点击事件 跳转到编辑设备页面
             onFabPressed(EditDeviceActivity.class);
         }
 
         @Override
         public boolean onLongClick(View view) {
-            //TODO 长按事件  长按删除设备
-            onFabPressed(AddScheduleActivity.class);
+            // 长按事件  长按删除设备
+            if (null != mOnSwitchStateChangeListener) {
+                mOnSwitchStateChangeListener.onLongClick(mPositon);
+            }
             return true;
         }
     }
@@ -126,6 +127,8 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnSwitchStateChangeListener {
+        void onLongClick(int position);
+
         void onSwitchChange(int position, boolean checked);
     }
 

@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -36,6 +35,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 import com.umarbhutta.xlightcompanion.report.ReportFragment;
 import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 import com.umarbhutta.xlightcompanion.settings.SettingFragment;
 import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
@@ -46,7 +46,7 @@ import org.json.JSONObject;
 
 //import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     //constants for testing lists

@@ -1,17 +1,14 @@
 package com.umarbhutta.xlightcompanion.control.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
-
-import java.util.List;
+import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -20,23 +17,76 @@ import java.util.List;
 public class DialogListAdapter extends BaseAdapter {
 
     private Context mActivity;
-    private List<String> mSettingStr;
+    private Ruleconditions mRuleconditions;
     private LayoutInflater inflate;
+    private int mType;
 
-    public DialogListAdapter(Context activity, List<String> settingStr) {
+    public DialogListAdapter(Context activity, Ruleconditions ruleconditions,int type) {
         this.mActivity = activity;
-        this.mSettingStr = settingStr;
+        this.mRuleconditions = ruleconditions;
+        this.mType = type;
         inflate = LayoutInflater.from(mActivity);
     }
 
     @Override
     public int getCount() {
-        return mSettingStr.size();
+        int size = 0;
+        switch (mType){// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是大于，小于，等于 ，9是温度
+            case 1:
+                size = 100;
+                break;
+            case 2:
+                size = mRuleconditions.getActivities().size();
+                break;
+            case 3:
+                size = mRuleconditions.getVoice().size();
+                break;
+            case 5:
+                size = mRuleconditions.getLeavehome().size();
+                break;
+            case 6:
+                size = mRuleconditions.getGohome().size();
+                break;
+            case 7:
+                size = mRuleconditions.getGas().size();
+                break;
+            case 8:
+                size = 3;
+                break;
+            case 9:
+                break;
+        }
+        return size;
     }
 
     @Override
     public Object getItem(int position) {
-        return mSettingStr.get(position);
+        Object obj = null;
+        switch (mType){// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是大于，小于，等于 ，9是温度
+            case 1:
+                obj = position+1;
+                break;
+            case 2:
+                obj = mRuleconditions.activities.get(position);
+                break;
+            case 3:
+                obj = mRuleconditions.voice.get(position);
+                break;
+            case 5:
+                obj = mRuleconditions.leavehome.get(position);
+                break;
+            case 6:
+                obj = mRuleconditions.gohome.get(position);
+                break;
+            case 7:
+                obj = mRuleconditions.gas.get(position);
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+        }
+        return  obj ;
     }
 
     @Override
@@ -56,7 +106,31 @@ public class DialogListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_setting_name.setText(mSettingStr.get(position));
+        switch (mType){// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是大于，小于，等于 ，9是温度
+            case 1:
+                holder.tv_setting_name.setText((position+1)+1);
+                break;
+            case 2:
+                holder.tv_setting_name.setText(mRuleconditions.activities.get(position).name);
+                break;
+            case 3:
+                holder.tv_setting_name.setText(mRuleconditions.voice.get(position).name);
+                break;
+            case 5:
+                holder.tv_setting_name.setText(mRuleconditions.leavehome.get(position).name);
+                break;
+            case 6:
+                holder.tv_setting_name.setText(mRuleconditions.gohome.get(position).name);
+                break;
+            case 7:
+                holder.tv_setting_name.setText(mRuleconditions.gas.get(position).name);
+                break;
+            case 8:
+
+                break;
+            case 9:
+                break;
+        }
         return convertView;
     }
 

@@ -101,7 +101,7 @@ public class HttpUtils extends BaseHttp {
     @Override
     public void okOnResponse(String result) {
         try {
-//            Logger.e("HttpUtils",result);
+            Logger.e("HttpUtils",result);
             if (null != mOnHttpRequestCallBack) {
                 JSONObject jsonObject = new JSONObject(result);
 

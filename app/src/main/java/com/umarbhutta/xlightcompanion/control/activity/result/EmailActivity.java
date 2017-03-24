@@ -45,12 +45,7 @@ public class EmailActivity extends AppCompatActivity {
         btnSure.setText("完成");
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("通知Email");
-        btnSure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 确定提交按钮
-            }
-        });
+        btnSure.setVisibility(View.GONE);
     }
 
 }

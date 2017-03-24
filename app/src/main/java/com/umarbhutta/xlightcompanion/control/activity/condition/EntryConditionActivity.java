@@ -52,6 +52,8 @@ public class EntryConditionActivity extends AppCompatActivity {
 
     private Condition mCondition;
 
+    private Ruleconditions ruleconditions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,53 +109,45 @@ public class EntryConditionActivity extends AppCompatActivity {
         entryConditionListAdapter.setmOnItemClickListener(new EntryConditionListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                switch (position) {
+                switch (position) {// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体
                     case 0://定时
                         listStr.clear();
-                        onFabPressed(TimingActivity.class,listStr);
+                        onFabPressed(TimingActivity.class,0);
                         break;
                     case 1://亮度
                         listStr.clear();
                         requestCode = 111;
-                        onFabPressed(DialogActivity.class,listStr);
+                        onFabPressed(DialogActivity.class,1);
                         break;
                     case 2://检测到活动
                         listStr.clear();
-//                        listStr.add("活动一");
-//                        listStr.add("活动二");
-//                        listStr.add("活动三");
-//                        listStr.add("活动四");
                         requestCode = 112;
-                        onFabPressed(DialogActivity.class,listStr);
+                        onFabPressed(DialogActivity.class,2);
                         break;
                     case 3://检测到声音
                         listStr.clear();
-//                        listStr.add("声音一");
-//                        listStr.add("声音二");
-//                        listStr.add("声音三");
-//                        listStr.add("声音四");
                         requestCode = 113;
-                        onFabPressed(DialogActivity.class,listStr);
+                        onFabPressed(DialogActivity.class,3);
                         break;
                     case 4://温度
                         listStr.clear();
                         requestCode = 114;
-                        onFabPressed(TemControlActivity.class,listStr);
+                        onFabPressed(TemControlActivity.class,4);
                         break;
                     case 5://离家
                         listStr.clear();
                         requestCode = 115;
-                        onFabPressed(DialogActivity.class,listStr);
+                        onFabPressed(DialogActivity.class,5);
                         break;
                     case 6://回家
                         listStr.clear();
                         requestCode = 116;
-                        onFabPressed(DialogActivity.class,listStr);
+                        onFabPressed(DialogActivity.class,6);
                         break;
                     case 7://气体
                         listStr.clear();
                         requestCode = 117;
-                        onFabPressed(DialogActivity.class,listStr);
+                        onFabPressed(DialogActivity.class,7);
                         break;
                 }
             }
@@ -171,7 +165,7 @@ public class EntryConditionActivity extends AppCompatActivity {
                     @Override
                     public void onHttpRequestSuccess(Object result) {
                         //
-                        Ruleconditions ruleconditions = (Ruleconditions)result;
+                       ruleconditions = (Ruleconditions)result;
                         Logger.e(TAG,ruleconditions.toString());
                     }
 
@@ -182,13 +176,13 @@ public class EntryConditionActivity extends AppCompatActivity {
                 });
     }
 
-    private void onFabPressed(Class activity,ArrayList<String> listStr) {
+    private void onFabPressed(Class activity,int type) {
         Intent intent = new Intent(this, activity);
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList("DILOGLIST",listStr);
-        bundle.putInt("TYPE",0);
+        bundle.putInt("TYPE",type);
         bundle.putSerializable("SCHEDULE",mSchedule);
         bundle.putSerializable("CONDITION",mCondition);
+        bundle.putSerializable("RULECONDITIONS",ruleconditions);
         intent.putExtra("BUNDLE",bundle);
         startActivityForResult(intent,requestCode);
     }

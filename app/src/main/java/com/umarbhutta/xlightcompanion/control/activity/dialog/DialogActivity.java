@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.adapter.DialogListAdapter;
+import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 
 import java.util.ArrayList;
@@ -24,12 +25,11 @@ import java.util.ArrayList;
 
 public class DialogActivity extends Activity {
 
-    private ArrayList<String> settingStr = new ArrayList<String>();
     private int type;
-
     DialogListAdapter dialogConditionListAdapter;
     ListView dialoglist;
     private Condition mCondition;
+    private Ruleconditions ruleconditions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,26 +46,26 @@ public class DialogActivity extends Activity {
     private void initViews() {
         dialoglist = (ListView) findViewById(R.id.dialoglist);
 //        settingStr = EntryConditionActivity.listStr;
-        settingStr = getIntent().getBundleExtra("BUNDLE").getStringArrayList("DILOGLIST");//
         type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
         mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
-
-        dialogConditionListAdapter = new DialogListAdapter(DialogActivity.this.getApplicationContext(), settingStr);
+        ruleconditions = (Ruleconditions) getIntent().getBundleExtra("BUNDLE").getSerializable("RULECONDITIONS");
+        // 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是大于，小于，等于 ，9是温度
+        dialogConditionListAdapter = new DialogListAdapter(DialogActivity.this.getApplicationContext(),ruleconditions,type);
         dialoglist.setAdapter(dialogConditionListAdapter);
 
         dialoglist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (type){
-                    case 0://从EntryConditionActivity传过来的
+                switch (type){// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是大于，小于，等于 ，9是温度
+                    case 0:
                         break;
-                    case 1://从TimingActivity传过来的
+                    case 1:
                         break;
-                    case 2://从AddControlRule传过来的
+                    case 2:
                         break;
-                    case 3://从AddControlRule传过来的
+                    case 3:
                         break;
-                    case 4://从AddControlRule传过来的
+                    case 4:
                         break;
                 }
                 mCondition.ruleconditionname = "condition1";

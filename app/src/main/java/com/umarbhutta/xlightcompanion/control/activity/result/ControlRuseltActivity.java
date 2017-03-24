@@ -23,6 +23,7 @@ import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/13.
+ * 设置执行结果
  */
 
 public class ControlRuseltActivity extends AppCompatActivity {
@@ -34,7 +35,6 @@ public class ControlRuseltActivity extends AppCompatActivity {
     private List<String> settingStr = new ArrayList<String>();
     private List<Integer> imgInter = new ArrayList<Integer>();
 
-    //    public static String[] settingStr = {"个人信息","修改密码","摇一摇","用户邀请","快速绑定","退出登录"};
     ControlResultListAdapter controlResultListAdapter;
     RecyclerView settingRecyclerView;
 

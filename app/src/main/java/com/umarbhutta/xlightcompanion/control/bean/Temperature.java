@@ -1,10 +1,12 @@
 package com.umarbhutta.xlightcompanion.control.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/3/24.
  */
 
-public class Temperature {
+public class Temperature implements Serializable {
     public String name;
     public String value;
 

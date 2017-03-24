@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,6 +14,8 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
+import com.umarbhutta.xlightcompanion.control.adapter.DialogListAdapter;
+import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 
 import java.util.ArrayList;
@@ -28,10 +31,14 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
     private TextView btnSure;
     private TextView tvTitle;
     private RelativeLayout llTem,llMore;
-    public ArrayList<String> listStr = new ArrayList<String>();
     private int requestCode = 310;
 
     private Condition mCondition;
+
+    private int type;
+
+    private Ruleconditions ruleconditions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +46,8 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         //hide nav bar
         getSupportActionBar().hide();
         mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
+        type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
+        ruleconditions = (Ruleconditions) getIntent().getBundleExtra("BUNDLE").getSerializable("RULECONDITIONS");
         initViews();
     }
 
@@ -62,41 +71,30 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         llMore.setOnClickListener(this);
         btnSure.setOnClickListener(this);
     }
-    private void onFabPressed(Class activity,ArrayList<String> listStr) {
+    private void onFabPressed(Class activity,int type) {
         Intent intent = new Intent(this, activity);
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList("DILOGLIST",listStr);
         bundle.putSerializable("CONDITION",mCondition);
+        bundle.putSerializable("RULECONDITIONS",ruleconditions);
+        bundle.putInt("TYPE",type);
         intent.putExtra("BUNDLE",bundle);
         startActivityForResult(intent,100);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()){ // 8是大于，小于，等于 ，9是温度
             case R.id.tvEditSure:
                 //确定按钮
                 AddControlRuleActivity.mConditionList.add(mCondition);
                 break;
             case R.id.llMore:
-                listStr.clear();
-                listStr.add(">");
-                listStr.add("<");
-                listStr.add("=");
                 requestCode = 313;
-                onFabPressed(DialogActivity.class,listStr);
+                onFabPressed(DialogActivity.class,8);
                 break;
             case R.id.llTem:
-                listStr.clear();
-                listStr.add("0℃");
-                listStr.add("5℃");
-                listStr.add("10℃");
-                listStr.add("15℃");
-                listStr.add("20℃");
-                listStr.add("25℃");
-                listStr.add("30℃");
                 requestCode = 314;
-                onFabPressed(DialogActivity.class,listStr);
+                onFabPressed(DialogActivity.class,9);
                 break;
         }
     }

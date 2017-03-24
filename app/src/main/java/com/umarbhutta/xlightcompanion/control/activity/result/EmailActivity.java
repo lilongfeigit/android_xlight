@@ -1,4 +1,4 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.result;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -1,34 +1,25 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.condition;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
-import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
-import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
-import com.umarbhutta.xlightcompanion.okHttp.model.Rules;
-import com.umarbhutta.xlightcompanion.settings.FastBindingActivity;
-import com.umarbhutta.xlightcompanion.settings.ModifyPasswordActivity;
-import com.umarbhutta.xlightcompanion.settings.ShakeActivity;
-import com.umarbhutta.xlightcompanion.settings.UserInvitationActivity;
-import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
+import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
+import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogWeelActivity;
+import com.umarbhutta.xlightcompanion.control.bean.SelectTime;
+import com.umarbhutta.xlightcompanion.control.bean.SelectWeek;
+import com.umarbhutta.xlightcompanion.okHttp.model.Schedule;
 import com.umarbhutta.xlightcompanion.views.pickerview.TimePickerView;
 import com.umarbhutta.xlightcompanion.views.pickerview.lib.TimePickerUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/13.
@@ -44,7 +35,7 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
     private int requestCode = 210;
     private TextView tv_time;
 
-    private Rules rules;
+    private Schedule mSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +43,8 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_timing);
         //hide nav bar
         getSupportActionBar().hide();
-
-        rules = (Rules) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL_ENTRY");
-
+        ((App)getApplicationContext()).setActivity(this);
+        mSchedule = (Schedule) getIntent().getBundleExtra("BUNDLE").getSerializable("SCHEDULE");
         initViews();
     }
 
@@ -78,6 +68,7 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         llStartTime.setOnClickListener(this);
         btnSure.setOnClickListener(this);
         tv_week = (TextView) findViewById(R.id.tv_week);
+        tv_time = (TextView) findViewById(R.id.tv_time);
     }
 
     private void onFabPressed(Class activity) {
@@ -90,18 +81,21 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.llStartTime:
                 requestCode = 212;
-//                onFabPressed(DialogTimeActivity.class);
                 TimePickerView.Type type = TimePickerView.Type.HOURS_MINS;
                 String format = "HH:mm";
                 TimePickerUtils.alertTimerPicker(this, type, format, new TimePickerUtils.TimerPickerCallBack() {
                     @Override
                     public void onTimeSelect(Date date, String dateStr) {
                         tv_time.setText(dateStr);
+                        mSchedule.hour = Integer.parseInt(dateStr.split(":")[0]);
+                        mSchedule.minute  = Integer.parseInt(dateStr.split(":")[1]);
                     }
                 });
                 break;
             case R.id.tvEditSure:
-                //TODO 编辑提交
+               AddControlRuleActivity.mScheduleList.add(mSchedule);
+                //编辑提交
+                ((App)getApplicationContext()).finishActivity();
                 break;
             case R.id.llWeek:
                 requestCode = 213;
@@ -114,16 +108,23 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case 10:
-                String strTimelist = data.getStringExtra("SELECTTIME");
-                tv_week.setText(strTimelist);
+                SelectTime selectTime = (SelectTime) data.getSerializableExtra("SELECTTIME");
+                tv_week.setText(selectTime.name);
+                mSchedule.weekdays=selectTime.weekdays;
+                mSchedule.isrepeat = selectTime.isrepeat;
+
                 break;
             case 20:
-                ArrayList<String> array = data.getStringArrayListExtra("SELECTWEEK");
+                ArrayList<SelectWeek> array = data.getParcelableArrayListExtra("SELECTWEEK");
                 String strWeekList = "";
+                String weekDays = "";
                 for(int i=0;i<array.size();i++){
-                    strWeekList =strWeekList+","+array.get(i);
+                    strWeekList =strWeekList+array.get(i).name+",";
+                    weekDays=weekDays+array.get(i).weekdays+",";
                 }
-                tv_week.setText(strWeekList);
+                mSchedule.weekdays="["+weekDays.substring(0,weekDays.length()-1)+"]";
+                mSchedule.isrepeat =1;
+                tv_week.setText(strWeekList.substring(0,strWeekList.length()-1));
                 break;
             default:
                 break;

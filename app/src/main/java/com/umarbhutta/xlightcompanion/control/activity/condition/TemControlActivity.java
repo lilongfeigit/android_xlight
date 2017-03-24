@@ -1,14 +1,17 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.condition;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 
 import java.util.ArrayList;
 
@@ -25,13 +28,15 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
     private RelativeLayout llTem,llMore;
     public ArrayList<String> listStr = new ArrayList<String>();
     private int requestCode = 310;
+
+    private Condition mCondition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tem);
         //hide nav bar
         getSupportActionBar().hide();
-
+        mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
         initViews();
     }
 
@@ -57,7 +62,9 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
     }
     private void onFabPressed(Class activity,ArrayList<String> listStr) {
         Intent intent = new Intent(this, activity);
-        intent.putStringArrayListExtra("DILOGLIST",listStr);
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("DILOGLIST",listStr);
+        intent.putExtra("BUNDLE",bundle);
         startActivity(intent);
     }
 
@@ -88,5 +95,10 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
                 onFabPressed(DialogActivity.class,listStr);
                 break;
         }
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        finish();
+        return true;
     }
 }

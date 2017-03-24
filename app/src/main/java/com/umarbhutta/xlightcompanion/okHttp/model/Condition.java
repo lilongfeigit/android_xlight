@@ -1,10 +1,12 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.io.Serializable;
+
 /**
  * Created by guangbinw on 2017/3/17.
  */
 
-public class Condition {
+public class Condition implements Serializable{
     public String ruleconditionname;
     public int devicenodeId;
     public String attribute;

@@ -1,4 +1,4 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.result;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +25,7 @@ import android.widget.ToggleButton;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
+import com.umarbhutta.xlightcompanion.control.ControlFragment;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;

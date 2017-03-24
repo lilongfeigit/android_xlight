@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * 创建规则的结果
  */
 
-public class Ruleresult {
+public class Ruleresult implements Serializable {
 
     public List<Actionnotify> actionnotify;
     public List<Actioncmd> actioncmd;

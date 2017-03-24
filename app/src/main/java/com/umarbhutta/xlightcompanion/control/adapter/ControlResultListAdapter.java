@@ -1,4 +1,4 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +16,12 @@ import java.util.List;
  * Created by Administrator on 2017/3/5.
  */
 
-public class EntryConditionListAdapter extends RecyclerView.Adapter {
+public class ControlResultListAdapter extends RecyclerView.Adapter {
 
     private Context mActivity;
     private List<Integer> mIntList;
     private List<String> mSettingStr;
-    public EntryConditionListAdapter(Context activity, List<String> settingStr,List<Integer> intList){
+    public ControlResultListAdapter(Context activity, List<String> settingStr, List<Integer> intList){
         this.mActivity = activity;
         this.mIntList = intList;
         this.mSettingStr = settingStr;
@@ -29,13 +29,13 @@ public class EntryConditionListAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_condition_list_item, parent, false);
-        return new EntryConditionListAdapter.SettingListViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.control_result_list_item, parent, false);
+        return new ControlResultListAdapter.SettingListViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((EntryConditionListAdapter.SettingListViewHolder) holder).bindView(holder.itemView,position);
+        ((ControlResultListAdapter.SettingListViewHolder) holder).bindView(holder.itemView,position);
     }
 
     @Override

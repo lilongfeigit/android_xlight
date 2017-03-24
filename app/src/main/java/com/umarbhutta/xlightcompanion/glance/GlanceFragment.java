@@ -39,7 +39,7 @@ import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
-import com.umarbhutta.xlightcompanion.control.DevicesListAdapter;
+import com.umarbhutta.xlightcompanion.control.adapter.DevicesListAdapter;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;

@@ -129,6 +129,8 @@ public class NetConfig {
      * 灯开关接口
      */
     public static final String URL_LAMP_SWITCH = "http://123.207.166.211:8080/devices/";
-
-
+    /**
+     * 启动条件列表及详细信息
+     */
+    public static final String URL_RULES_RULECONDITIONS= "http://123.207.166.211:8080/rules/ruleconditions";
 }

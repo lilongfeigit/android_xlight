@@ -1,4 +1,4 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.adapter;
 
 import android.content.Context;
 import android.content.Intent;

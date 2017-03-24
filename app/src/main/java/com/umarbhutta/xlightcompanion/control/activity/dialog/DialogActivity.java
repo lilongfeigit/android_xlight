@@ -1,20 +1,18 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.dialog;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.control.adapter.DialogListAdapter;
+import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 
 import java.util.ArrayList;
 
@@ -30,6 +28,7 @@ public class DialogActivity extends Activity {
 
     DialogListAdapter dialogConditionListAdapter;
     ListView dialoglist;
+    private Condition mCondition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +47,7 @@ public class DialogActivity extends Activity {
 //        settingStr = EntryConditionActivity.listStr;
         settingStr = getIntent().getBundleExtra("BUNDLE").getStringArrayList("DILOGLIST");//
         type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
+        mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
         switch (type){
             case 0://从EntryConditionActivity传过来的
                 break;
@@ -70,5 +70,11 @@ public class DialogActivity extends Activity {
             }
         });
         dialogConditionListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        finish();
+        return true;
     }
 }

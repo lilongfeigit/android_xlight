@@ -14,6 +14,7 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
+import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogTemActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DialogListAdapter;
 import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
@@ -94,7 +95,7 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.llTem:
                 requestCode = 314;
-                onFabPressed(DialogActivity.class,9);
+                onFabPressed(DialogTemActivity.class,9);
                 break;
         }
     }

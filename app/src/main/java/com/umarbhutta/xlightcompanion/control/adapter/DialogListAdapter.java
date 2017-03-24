@@ -36,24 +36,22 @@ public class DialogListAdapter extends BaseAdapter {
                 size = 100;
                 break;
             case 2:
-                size = mRuleconditions.getActivities().size();
+                size = mRuleconditions.data.get(0).getActivities().size();
                 break;
             case 3:
-                size = mRuleconditions.getVoice().size();
+                size = mRuleconditions.data.get(0).getVoice().size();
                 break;
             case 5:
-                size = mRuleconditions.getLeavehome().size();
+                size = mRuleconditions.data.get(0).getLeavehome().size();
                 break;
             case 6:
-                size = mRuleconditions.getGohome().size();
+                size = mRuleconditions.data.get(0).getGohome().size();
                 break;
             case 7:
-                size = mRuleconditions.getGas().size();
+                size = mRuleconditions.data.get(0).getGas().size();
                 break;
             case 8:
                 size = 3;
-                break;
-            case 9:
                 break;
         }
         return size;
@@ -67,23 +65,28 @@ public class DialogListAdapter extends BaseAdapter {
                 obj = position+1;
                 break;
             case 2:
-                obj = mRuleconditions.activities.get(position);
+                obj = mRuleconditions.data.get(0).activities.get(position);
                 break;
             case 3:
-                obj = mRuleconditions.voice.get(position);
+                obj = mRuleconditions.data.get(0).voice.get(position);
                 break;
             case 5:
-                obj = mRuleconditions.leavehome.get(position);
+                obj = mRuleconditions.data.get(0).leavehome.get(position);
                 break;
             case 6:
-                obj = mRuleconditions.gohome.get(position);
+                obj = mRuleconditions.data.get(0).gohome.get(position);
                 break;
             case 7:
-                obj = mRuleconditions.gas.get(position);
+                obj = mRuleconditions.data.get(0).gas.get(position);
                 break;
             case 8:
-                break;
-            case 9:
+                if(position==0){
+                    obj =  ">";
+                }else if(position==1){
+                    obj =  "=";
+                }else if(position==2){
+                    obj =  "<";
+                }
                 break;
         }
         return  obj ;
@@ -108,27 +111,31 @@ public class DialogListAdapter extends BaseAdapter {
         }
         switch (mType){// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是大于，小于，等于 ，9是温度
             case 1:
-                holder.tv_setting_name.setText((position+1)+1);
+                holder.tv_setting_name.setText((position+1)+"");
                 break;
             case 2:
-                holder.tv_setting_name.setText(mRuleconditions.activities.get(position).name);
+                holder.tv_setting_name.setText(mRuleconditions.data.get(0).activities.get(position).name);
                 break;
             case 3:
-                holder.tv_setting_name.setText(mRuleconditions.voice.get(position).name);
+                holder.tv_setting_name.setText(mRuleconditions.data.get(0).voice.get(position).name);
                 break;
             case 5:
-                holder.tv_setting_name.setText(mRuleconditions.leavehome.get(position).name);
+                holder.tv_setting_name.setText(mRuleconditions.data.get(0).leavehome.get(position).name);
                 break;
             case 6:
-                holder.tv_setting_name.setText(mRuleconditions.gohome.get(position).name);
+                holder.tv_setting_name.setText(mRuleconditions.data.get(0).gohome.get(position).name);
                 break;
             case 7:
-                holder.tv_setting_name.setText(mRuleconditions.gas.get(position).name);
+                holder.tv_setting_name.setText(mRuleconditions.data.get(0).gas.get(position).name);
                 break;
             case 8:
-
-                break;
-            case 9:
+                if(position==0){
+                    holder.tv_setting_name.setText(">");
+                }else if(position==1){
+                    holder.tv_setting_name.setText("=");
+                }else if(position==2){
+                    holder.tv_setting_name.setText("<");
+                }
                 break;
         }
         return convertView;

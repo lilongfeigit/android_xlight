@@ -28,7 +28,7 @@ public class ScenarioSelectListAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scenario_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scenario_select_list_item, parent, false);
         return new ScenarioListViewHolder(view);
     }
 

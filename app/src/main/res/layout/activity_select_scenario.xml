@@ -11,7 +11,7 @@
         android:id="@+id/scenarioRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv"
+        android:layout_below="@+id/ll_top_edit"
         android:layout_marginTop="5dp" />
 
     <com.github.clans.fab.FloatingActionButton

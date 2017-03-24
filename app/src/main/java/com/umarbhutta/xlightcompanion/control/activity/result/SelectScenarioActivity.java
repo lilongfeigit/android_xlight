@@ -64,12 +64,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("选择场景");
-        btnSure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 确定提交按钮
-            }
-        });
+        btnSure.setVisibility(View.GONE);
 
         fab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab);
 

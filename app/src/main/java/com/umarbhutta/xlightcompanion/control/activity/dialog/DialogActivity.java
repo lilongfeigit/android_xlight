@@ -57,15 +57,19 @@ public class DialogActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (type){// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是大于，小于，等于 ，9是温度
-                    case 0:
-                        break;
                     case 1:
                         break;
                     case 2:
                         break;
                     case 3:
                         break;
-                    case 4:
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
                         break;
                 }
                 mCondition.ruleconditionname = "condition1";

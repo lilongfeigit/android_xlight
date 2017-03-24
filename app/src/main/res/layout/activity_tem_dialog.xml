@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="380dp"
+    android:orientation="horizontal">
+
+    <RadioGroup
+        android:id="@+id/rg"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rb_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="零上"/>
+
+        <RadioButton
+            android:id="@+id/rb_miu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="零下"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_toRightOf="@+id/rg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/dialogAddlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:listSelector="@color/white"
+            android:scrollbars="none" />
+
+        <ListView
+            android:id="@+id/dialogMiulist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:listSelector="@color/white"
+            android:visibility="gone"
+            android:scrollbars="none" />
+    </LinearLayout>
+
+</RelativeLayout>

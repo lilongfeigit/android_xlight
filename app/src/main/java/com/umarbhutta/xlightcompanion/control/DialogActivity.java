@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class DialogActivity extends Activity {
 
     private ArrayList<String> settingStr = new ArrayList<String>();
+    private int type;
 
     DialogListAdapter dialogConditionListAdapter;
     ListView dialoglist;
@@ -45,7 +46,20 @@ public class DialogActivity extends Activity {
     private void initViews() {
         dialoglist = (ListView) findViewById(R.id.dialoglist);
 //        settingStr = EntryConditionActivity.listStr;
-        settingStr = getIntent().getStringArrayListExtra("DILOGLIST");
+        settingStr = getIntent().getBundleExtra("BUNDLE").getStringArrayList("DILOGLIST");//
+        type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
+        switch (type){
+            case 0://从EntryConditionActivity传过来的
+                break;
+            case 1://从TimingActivity传过来的
+                break;
+            case 2://从AddControlRule传过来的
+                break;
+            case 3://从AddControlRule传过来的
+                break;
+            case 4://从AddControlRule传过来的
+                break;
+        }
         dialogConditionListAdapter = new DialogListAdapter(DialogActivity.this.getApplicationContext(), settingStr);
         dialoglist.setAdapter(dialogConditionListAdapter);
 

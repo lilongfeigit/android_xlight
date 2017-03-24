@@ -12,16 +12,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rules;
 import com.umarbhutta.xlightcompanion.settings.FastBindingActivity;
 import com.umarbhutta.xlightcompanion.settings.ModifyPasswordActivity;
 import com.umarbhutta.xlightcompanion.settings.ShakeActivity;
 import com.umarbhutta.xlightcompanion.settings.UserInvitationActivity;
 import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
+import com.umarbhutta.xlightcompanion.views.pickerview.TimePickerView;
+import com.umarbhutta.xlightcompanion.views.pickerview.lib.TimePickerUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,13 +38,13 @@ import java.util.List;
 public class TimingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout llBack;
-    private RelativeLayout llStartTime,llWeek;
+    private RelativeLayout llStartTime, llWeek;
     private TextView btnSure;
-    private TextView tvTitle;
-    public ArrayList<String> listStr = new ArrayList<String>();
+    private TextView tvTitle,tv_week;
     private int requestCode = 210;
+    private TextView tv_time;
 
-    private DeviceInfoResult deviceInfoResult;
+    private Rules rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,7 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         //hide nav bar
         getSupportActionBar().hide();
 
-        deviceInfoResult = (DeviceInfoResult) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL_ENTRY");
+        rules = (Rules) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL_ENTRY");
 
         initViews();
     }
@@ -71,40 +77,57 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         llWeek.setOnClickListener(this);
         llStartTime.setOnClickListener(this);
         btnSure.setOnClickListener(this);
+        tv_week = (TextView) findViewById(R.id.tv_week);
     }
 
-    private void onFabPressed(Class activity,ArrayList<String> listStr) {
+    private void onFabPressed(Class activity) {
         Intent intent = new Intent(this, activity);
-        intent.putStringArrayListExtra("DILOGLIST",listStr);
-        startActivity(intent);
+        startActivityForResult(intent, 222);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.llStartTime:
-                listStr.clear();
-                listStr.add("08:00");
-                listStr.add("09:00");
-                listStr.add("10:00");
-                listStr.add("11:00");
-                listStr.add("12:00");
-                listStr.add("13:00");
                 requestCode = 212;
-                onFabPressed(DialogActivity.class,listStr);
+//                onFabPressed(DialogTimeActivity.class);
+                TimePickerView.Type type = TimePickerView.Type.HOURS_MINS;
+                String format = "HH:mm";
+                TimePickerUtils.alertTimerPicker(this, type, format, new TimePickerUtils.TimerPickerCallBack() {
+                    @Override
+                    public void onTimeSelect(Date date, String dateStr) {
+                        tv_time.setText(dateStr);
+                    }
+                });
                 break;
             case R.id.tvEditSure:
                 //TODO 编辑提交
                 break;
             case R.id.llWeek:
-                listStr.clear();
-                listStr.add("执行一次");
-                listStr.add("每天");
-                listStr.add("周一至周五");
-                listStr.add("自定义");
                 requestCode = 213;
-                onFabPressed(DialogActivity.class,listStr);
+                onFabPressed(DialogWeelActivity.class);
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case 10:
+                String strTimelist = data.getStringExtra("SELECTTIME");
+                tv_week.setText(strTimelist);
+                break;
+            case 20:
+                ArrayList<String> array = data.getStringArrayListExtra("SELECTWEEK");
+                String strWeekList = "";
+                for(int i=0;i<array.size();i++){
+                    strWeekList =strWeekList+","+array.get(i);
+                }
+                tv_week.setText(strWeekList);
+                break;
+            default:
+                break;
+        }
+
     }
 }

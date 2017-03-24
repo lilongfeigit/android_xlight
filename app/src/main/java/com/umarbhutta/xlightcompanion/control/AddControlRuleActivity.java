@@ -18,7 +18,10 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.okHttp.model.CreateRuleResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rules;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestAddRules;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteRuleDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 
@@ -36,10 +39,10 @@ public class AddControlRuleActivity extends AppCompatActivity {
     private ImageButton ib_add_term, ib_add_result;
     private ListView lv_term, lv_control;
 
-    private TextView tv_no_data1,tv_no_data2;
+    private TextView tv_no_data1, tv_no_data2;
 
-    private List<String> termList,resultList;
-    private DeviceInfoResult mDeviceInfoResult;
+    private List<String> termList, resultList;
+    private Rules rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
         //hide nav bar
         getSupportActionBar().hide();
 
-        mDeviceInfoResult = new DeviceInfoResult();
+        rules = new Rules();
 
         initViews();
     }
@@ -65,7 +68,19 @@ public class AddControlRuleActivity extends AppCompatActivity {
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 确定提交按钮
+                //确定提交按钮
+                RequestAddRules.getInstance().createRule(AddControlRuleActivity.this, new Rules(), new RequestAddRules.OnCreateRuleCallback() {
+
+                    @Override
+                    public void mOnCreateRuleCallbackFail(int code, String errMsg) {
+                        ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);//TODO
+                    }
+
+                    @Override
+                    public void mOnCreateRuleCallbackSuccess(CreateRuleResult mCreateRuleResult) {
+                        ToastUtil.showToast(AddControlRuleActivity.this, "mCreateRuleResult=" + mCreateRuleResult.msg);//TODO
+                    }
+                });
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
@@ -101,16 +116,16 @@ public class AddControlRuleActivity extends AppCompatActivity {
 //        for(int i=0;i<5;i++){
 //            resultList.add("resultList"+i);
 //        }
-        lv_term.setAdapter(new TermAdapter(getApplicationContext(),termList));
-        lv_control.setAdapter(new ResultAdapter(getApplicationContext(),resultList));
+        lv_term.setAdapter(new TermAdapter(getApplicationContext(), termList));
+        lv_control.setAdapter(new ResultAdapter(getApplicationContext(), resultList));
     }
 
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(this, activity);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("DEVICE_CONTROL",mDeviceInfoResult);
-        intent.putExtra("BUNDLE",bundle);
-        startActivityForResult(intent,2018);
+        bundle.putSerializable("DEVICE_CONTROL", rules);
+        intent.putExtra("BUNDLE", bundle);
+        startActivityForResult(intent, 2018);
     }
 
     /**
@@ -145,7 +160,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-           ViewHolder holder = null;
+            ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
 
@@ -162,16 +177,18 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     //TODO
-                    ToastUtil.showToast(AddControlRuleActivity.this,"删除"+position);
+                    ToastUtil.showToast(AddControlRuleActivity.this, "删除" + position);
                 }
             });
             return convertView;
         }
-        class ViewHolder{
+
+        class ViewHolder {
             private TextView tvStr;
             private ImageButton imageView;
         }
     }
+
     /**
      * 执行结果
      */
@@ -221,12 +238,13 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     //TODO
-                    ToastUtil.showToast(AddControlRuleActivity.this,"删除"+position);
+                    ToastUtil.showToast(AddControlRuleActivity.this, "删除" + position);
                 }
             });
             return convertView;
         }
-        class ViewHolder{
+
+        class ViewHolder {
             private TextView tvStr;
             private ImageButton imageView;
         }

@@ -36,6 +36,7 @@ import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
+import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
@@ -351,6 +352,11 @@ public class GlanceFragment extends Fragment {
     public void getBaseInfos() {
         if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
             ToastUtil.showToast(getActivity(), R.string.net_error);
+
+            List<Rows> devices = (List<Rows>) SharedPreferencesUtils.getObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, null);
+            if (null != devices && devices.size() > 0) {
+                deviceList.addAll(devices);
+            }
             return;
         }
 
@@ -383,10 +389,9 @@ public class GlanceFragment extends Fragment {
                         List<Rows> devices = mDeviceInfoResult.rows;
                         deviceList.addAll(devices);
                         devicesListAdapter.notifyDataSetChanged();
-
-
                         if (null != deviceList && deviceList.size() > 0) {
                             default_text.setVisibility(View.GONE);
+                            SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
                         }
                     }
                 });

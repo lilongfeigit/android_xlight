@@ -31,6 +31,12 @@ public class SharedPreferencesUtils {
      */
     public static final String KEY__USERINFO = "light_userinfo_key";
 
+    /**
+     * 设备列表
+     */
+    public static final String KEY_DEVICE_LIST = "device_list_key";
+
+
     public static boolean putObject(Context context, String key, Object obj) {
 
         if (sp == null)

@@ -2,6 +2,7 @@ package com.umarbhutta.xlightcompanion.glance;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -45,6 +47,8 @@ import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestFirstPageInfo;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestUnBindDevice;
+import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 
 import org.json.JSONException;
@@ -357,6 +361,11 @@ public class GlanceFragment extends Fragment {
 
         devicesListAdapter.setOnSwitchStateChangeListener(new DevicesListAdapter.OnSwitchStateChangeListener() {
             @Override
+            public void onLongClick(int position) { //长按删除
+                showDeleteSceneDialog(position);
+            }
+
+            @Override
             public void onSwitchChange(int position, boolean checked) {
                 deviceList.get(position).ison = checked ? 1 : 0;
                 switchLight(checked, deviceList.get(position));
@@ -379,8 +388,6 @@ public class GlanceFragment extends Fragment {
                         if (null != deviceList && deviceList.size() > 0) {
                             default_text.setVisibility(View.GONE);
                         }
-
-
                     }
                 });
             }
@@ -404,7 +411,7 @@ public class GlanceFragment extends Fragment {
     }
 
     /**
-     * TODO 设备开关,调用SDK
+     * 设备开关,调用SDK
      *
      * @param deviceInfo
      */
@@ -424,7 +431,78 @@ public class GlanceFragment extends Fragment {
                 Logger.i("开关结果失败 = " + errMsg);
             }
         });
-
     }
 
+
+    /**
+     * 弹出解绑设备确认框
+     */
+    private void showDeleteSceneDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("解绑设备提示");
+        builder.setMessage("确定解绑此设备吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                unBindDevice(position);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.show();
+    }
+
+    /**
+     * 解绑设备
+     *
+     * @param position
+     */
+    private void unBindDevice(final int position) {
+        if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
+            ToastUtil.showToast(getActivity(), R.string.net_error);
+            return;
+        }
+
+        ((MainActivity) getActivity()).showProgressDialog(getString(R.string.setting));
+
+        RequestUnBindDevice.getInstance().unBindDevice(getActivity(), "" + GlanceFragment.deviceList.get(position).id, new CommentRequstCallback() {
+            @Override
+            public void onCommentRequstCallbackSuccess() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((MainActivity) getActivity()).cancelProgressDialog();
+                        ToastUtil.showToast(getActivity(), getString(R.string.unbind_sucess));
+                        updateUnbindList(position);
+                    }
+                });
+            }
+
+            @Override
+            public void onCommentRequstCallbackFail(int code, final String errMsg) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((MainActivity) getActivity()).cancelProgressDialog();
+                        ToastUtil.showToast(getActivity(), getString(R.string.unbind_fail) + errMsg);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 解绑后更新页面
+     *
+     * @param position
+     */
+    private void updateUnbindList(int position) {
+        deviceList.remove(position);
+        devicesListAdapter.notifyDataSetChanged();
+    }
 }

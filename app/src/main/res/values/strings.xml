@@ -46,4 +46,8 @@
     <string name="register_fail">注册失败</string>
     <string name="unbind_sucess">解绑成功</string>
     <string name="unbind_fail">解绑失败</string>
+    <string name="scene_name">场景名称</string>
+    <string name="color_temp">色温</string>
+    <string name="brightness">亮度</string>
+    <string name="color">颜色</string>
 </resources>

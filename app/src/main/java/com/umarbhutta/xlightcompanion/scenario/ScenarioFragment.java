@@ -67,9 +67,13 @@ public class ScenarioFragment extends Fragment {
             }
         });
 
-        getSceneList();
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getSceneList();
     }
 
     /**

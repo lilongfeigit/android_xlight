@@ -7,4 +7,12 @@ package com.umarbhutta.xlightcompanion.control.bean;
 public class Activities {
     public String name;
     public int value;
+
+    @Override
+    public String toString() {
+        return "Activities{" +
+                "name='" + name + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

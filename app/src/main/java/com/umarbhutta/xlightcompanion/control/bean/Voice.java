@@ -7,4 +7,12 @@ package com.umarbhutta.xlightcompanion.control.bean;
 public class Voice {
     public String name;
     public int value;
+
+    @Override
+    public String toString() {
+        return "Voice{" +
+                "name='" + name + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 
@@ -64,15 +66,17 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         Intent intent = new Intent(this, activity);
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("DILOGLIST",listStr);
+        bundle.putSerializable("CONDITION",mCondition);
         intent.putExtra("BUNDLE",bundle);
-        startActivity(intent);
+        startActivityForResult(intent,100);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tvEditSure:
-                //TODO 确定按钮
+                //确定按钮
+                AddControlRuleActivity.mConditionList.add(mCondition);
                 break;
             case R.id.llMore:
                 listStr.clear();
@@ -96,9 +100,15 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
     }
+
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        finish();
-        return true;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 31:
+                Condition condition = (Condition) data.getSerializableExtra("MCONDITION");
+                ToastUtil.showToast(getApplicationContext(),condition.toString());
+                break;
+        }
     }
 }

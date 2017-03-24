@@ -7,4 +7,12 @@ package com.umarbhutta.xlightcompanion.control.bean;
 public class LeaveHome {
     public String name;
     public int value;
+
+    @Override
+    public String toString() {
+        return "LeaveHome{" +
+                "name='" + name + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

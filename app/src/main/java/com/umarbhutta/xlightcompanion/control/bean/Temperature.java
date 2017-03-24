@@ -7,4 +7,12 @@ package com.umarbhutta.xlightcompanion.control.bean;
 public class Temperature {
     public String name;
     public String value;
+
+    @Override
+    public String toString() {
+        return "Temperature{" +
+                "name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

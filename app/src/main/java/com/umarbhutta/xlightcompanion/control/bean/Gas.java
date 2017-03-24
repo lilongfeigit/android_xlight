@@ -7,4 +7,12 @@ package com.umarbhutta.xlightcompanion.control.bean;
 public class Gas {
     public String name;
     public int value;
+
+    @Override
+    public String toString() {
+        return "Gas{" +
+                "name='" + name + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

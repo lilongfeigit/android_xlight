@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.okHttp;
 
 import com.google.gson.Gson;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 
 import org.json.JSONObject;
 
@@ -100,6 +101,7 @@ public class HttpUtils extends BaseHttp {
     @Override
     public void okOnResponse(String result) {
         try {
+//            Logger.e("HttpUtils",result);
             if (null != mOnHttpRequestCallBack) {
                 JSONObject jsonObject = new JSONObject(result);
 

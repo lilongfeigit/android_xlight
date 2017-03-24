@@ -171,7 +171,8 @@ public class EntryConditionActivity extends AppCompatActivity {
                     @Override
                     public void onHttpRequestSuccess(Object result) {
                         //
-                        Logger.e(TAG,result.toString());
+                        Ruleconditions ruleconditions = (Ruleconditions)result;
+                        Logger.e(TAG,ruleconditions.toString());
                     }
 
                     @Override

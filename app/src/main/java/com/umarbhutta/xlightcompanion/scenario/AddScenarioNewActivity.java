@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
@@ -26,7 +27,9 @@ import com.umarbhutta.xlightcompanion.okHttp.model.AddSceneParams;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestAddScene;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestEditScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
+import com.umarbhutta.xlightcompanion.views.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +60,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private int blue = 0;
     private Rows mSceneInfo;
     String from;
-    private ImageView circleIcon;
+    private CircleImageView circleIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +89,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         // Apply the scenarioAdapter to the spinner
         filterSpinner.setAdapter(filterAdapter);
 
-        circleIcon = (ImageView) findViewById(R.id.circle_icon);
+        circleIcon = (CircleImageView) findViewById(R.id.circle_icon);
 
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +126,11 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK, returnIntent);
 //                finish();
 
-                addScence();
+                if ("list".equals(from)) {
+                    editScene();
+                } else {
+                    addScence();
+                }
 
 
             }
@@ -196,7 +203,6 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         } else {
             tvTitle.setText("添加场景");
         }
-
     }
 
     private void initViewState() {
@@ -222,8 +228,9 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             blue = (color & 0x0000ff);
         }
 
-//        colorTextView.setTextColor(Color.parseColor(toHexEncoding(color)));
+        colorTextView.setTextColor(Color.parseColor(toHexEncoding(color)));
         circleIcon.setImageResource(Color.parseColor(toHexEncoding(color)));
+        circleIcon.setFillColorResource(Color.parseColor(toHexEncoding(color)));
 
     }
 
@@ -244,6 +251,52 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         return sb.toString();
     }
 
+
+    /**
+     * 编辑场景
+     */
+    private void editScene() {
+        if (!UserUtils.isLogin(this)) {
+            ToastUtil.showToast(this, getString(R.string.login_first));
+            return;
+        }
+        if (!NetworkUtils.isNetworkAvaliable(this)) {
+            ToastUtil.showToast(this, R.string.net_error);
+            return;
+        }
+
+        String sceneName = nameEditText.getText().toString();
+        if (TextUtils.isEmpty(sceneName)) {
+            ToastUtil.showToast(this, "请填写场景名称");
+            return;
+        }
+
+        RequestEditScene.getInstance().editScene(this, mSceneInfo.id, getParams(1), new CommentRequstCallback() {
+            @Override
+            public void onCommentRequstCallbackSuccess() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(AddScenarioNewActivity.this, "编辑场景成功");
+                        AddScenarioNewActivity.this.finish();
+                    }
+                });
+            }
+
+            @Override
+            public void onCommentRequstCallbackFail(int code, final String errMsg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(AddScenarioNewActivity.this, "" + errMsg);
+                    }
+                });
+            }
+        });
+
+
+    }
+
     /**
      * 添加场景
      */
@@ -252,35 +305,22 @@ public class AddScenarioNewActivity extends AppCompatActivity {
 
         if (!UserUtils.isLogin(this)) {
             ToastUtil.showToast(this, getString(R.string.login_first));
+            return;
         }
 
-        int brightNess = brightnessSeekBar.getProgress();  // 亮度
-        int colorTemper = colorTemperatureSeekBar.getProgress() + 2700;  // 色温
+        if (!NetworkUtils.isNetworkAvaliable(this)) {
+            ToastUtil.showToast(this, R.string.net_error);
+            return;
+        }
+
         String sceneName = nameEditText.getText().toString();
-        int type = 2;
         if (TextUtils.isEmpty(sceneName)) {
             ToastUtil.showToast(this, "请填写场景名称");
             return;
         }
 
 
-        AddSceneParams params = new AddSceneParams();
-        params.type = type;
-        params.userId = UserUtils.getUserInfo(this).id;
-        params.scenarioname = sceneName;
-        params.cct = colorTemper;
-        params.brightness = brightNess;
-        params.color = "rgb(" + red + "," + green + "," + blue + ")";
-
-        List<Scenarionodes> list = new ArrayList<Scenarionodes>();
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-
-        params.scenarionodes = list;
-
-
-        RequestAddScene.getInstance().addScene(this, params, new CommentRequstCallback() {
+        RequestAddScene.getInstance().addScene(this, getParams(2), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
                 runOnUiThread(new Runnable() {
@@ -297,7 +337,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToast(AddScenarioNewActivity.this, errMsg);
+                        ToastUtil.showToast(AddScenarioNewActivity.this, "" + errMsg);
                     }
                 });
             }
@@ -306,5 +346,31 @@ public class AddScenarioNewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * @param mType 添加场景2，编辑场景1
+     * @return
+     */
+    private AddSceneParams getParams(int mType) {
+        int brightNess = brightnessSeekBar.getProgress();  // 亮度
+        int colorTemper = colorTemperatureSeekBar.getProgress() + 2700;  // 色温
+        int type = mType;
+        String sceneName = nameEditText.getText().toString();
+
+        AddSceneParams params = new AddSceneParams();
+        params.type = type;
+        params.userId = UserUtils.getUserInfo(this).id;
+        params.scenarioname = sceneName;
+        params.cct = colorTemper;
+        params.brightness = brightNess;
+        params.color = "rgb(" + red + "," + green + "," + blue + ")";
+
+        List<Scenarionodes> list = new ArrayList<Scenarionodes>();
+        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+
+        params.scenarionodes = list;
+        return params;
+    }
 
 }

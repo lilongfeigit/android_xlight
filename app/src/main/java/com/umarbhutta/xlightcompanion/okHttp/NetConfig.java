@@ -132,5 +132,9 @@ public class NetConfig {
     /**
      * 启动条件列表及详细信息
      */
-    public static final String URL_RULES_RULECONDITIONS= "http://123.207.166.211:8080/rules/ruleconditions";
+    public static final String URL_RULES_RULECONDITIONS = "http://123.207.166.211:8080/rules/ruleconditions";
+    /**
+     * 编辑场景
+     */
+    public static final String URL_EDIT_SCENE = "http://123.207.166.211:8080/scenarios/";
 }

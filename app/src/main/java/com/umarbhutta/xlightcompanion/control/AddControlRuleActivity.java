@@ -42,7 +42,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
     private TextView tv_no_data1, tv_no_data2;
 
     private List<String> termList, resultList;
-    private DeviceInfoResult mDeviceInfoResult;
+    private Rules rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
         //hide nav bar
         getSupportActionBar().hide();
 
-        mDeviceInfoResult = new DeviceInfoResult();
+        rules = new Rules();
 
         initViews();
     }
@@ -123,7 +123,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(this, activity);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("DEVICE_CONTROL", mDeviceInfoResult);
+        bundle.putSerializable("DEVICE_CONTROL", rules);
         intent.putExtra("BUNDLE", bundle);
         startActivityForResult(intent, 2018);
     }

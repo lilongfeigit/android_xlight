@@ -16,6 +16,7 @@ import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rules;
 import com.umarbhutta.xlightcompanion.settings.FastBindingActivity;
 import com.umarbhutta.xlightcompanion.settings.ModifyPasswordActivity;
 import com.umarbhutta.xlightcompanion.settings.ShakeActivity;
@@ -41,8 +42,9 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
     private TextView btnSure;
     private TextView tvTitle,tv_week;
     private int requestCode = 210;
+    private TextView tv_time;
 
-    private DeviceInfoResult deviceInfoResult;
+    private Rules rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         //hide nav bar
         getSupportActionBar().hide();
 
-        deviceInfoResult = (DeviceInfoResult) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL_ENTRY");
+        rules = (Rules) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL_ENTRY");
 
         initViews();
     }
@@ -89,12 +91,12 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.llStartTime:
                 requestCode = 212;
 //                onFabPressed(DialogTimeActivity.class);
-                TimePickerView.Type type = TimePickerView.Type.ALL;
+                TimePickerView.Type type = TimePickerView.Type.HOURS_MINS;
                 String format = "HH:mm";
                 TimePickerUtils.alertTimerPicker(this, type, format, new TimePickerUtils.TimerPickerCallBack() {
                     @Override
                     public void onTimeSelect(Date date, String dateStr) {
-                        ToastUtil.showToast(TimingActivity.this,dateStr);
+                        tv_time.setText(dateStr);
                     }
                 });
                 break;

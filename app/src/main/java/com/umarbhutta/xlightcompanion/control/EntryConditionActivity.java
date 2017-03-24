@@ -13,6 +13,7 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class EntryConditionActivity extends AppCompatActivity {
 
     EntryConditionListAdapter entryConditionListAdapter;
     RecyclerView settingRecyclerView;
-    private DeviceInfoResult deviceInfoResult;
+    private Rules rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class EntryConditionActivity extends AppCompatActivity {
         //hide nav bar
         getSupportActionBar().hide();
 
-        deviceInfoResult = (DeviceInfoResult) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL");
+        rules = (Rules) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL");
 
         settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
         entryConditionListAdapter = new EntryConditionListAdapter(this, settingStr,imgInter);
@@ -153,7 +154,7 @@ public class EntryConditionActivity extends AppCompatActivity {
         Intent intent = new Intent(this, activity);
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("DILOGLIST",listStr);
-        bundle.putSerializable("DEVICE_CONTROL_ENTRY",deviceInfoResult);
+        bundle.putSerializable("DEVICE_CONTROL_ENTRY",rules);
         bundle.putInt("TYPE",0);
         intent.putExtra("BUNDLE",bundle);
         startActivityForResult(intent,requestCode);

@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.okHttp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * 创建规则
  */
 
-public class Rules {
+public class Rules implements Serializable{
     public String rulename;
     public int relationtype;
     public int type;

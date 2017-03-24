@@ -1,4 +1,4 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.dialog;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,21 +7,20 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.control.adapter.DialogWeekListAdapter;
+import com.umarbhutta.xlightcompanion.control.adapter.DialogWeeksListAdapter;
 import com.umarbhutta.xlightcompanion.control.bean.SelectTime;
 import com.umarbhutta.xlightcompanion.control.bean.SelectWeek;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/15.
@@ -58,10 +57,10 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
         type = 0;
        settingStr.clear();
         settingSelectStr.clear();
-       settingStr.add(new SelectTime("执行一次",false));
-       settingStr.add(new SelectTime("每天",false));
-       settingStr.add(new SelectTime("周一至周五",false));
-       settingStr.add(new SelectTime("自定义",false));
+       settingStr.add(new SelectTime("执行一次",false,"8",0));
+       settingStr.add(new SelectTime("每天",false,"1,2,3,4,5,6,7",0));
+       settingStr.add(new SelectTime("周一至周五",false,"1,2,3,4,5",0));
+       settingStr.add(new SelectTime("自定义",false,"0",0));
     }
 
     /**
@@ -90,11 +89,10 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
                             settingStr.get(position).isSelect = true;
                             settingSelectStr.add(settingStr.get(position));
                         }
-                        Intent in = new Intent();
-                            in.putExtra("SELECTTIME",settingStr.get(position).name);
+                            Intent in = new Intent();
+                            in.putExtra("SELECTTIME",settingStr.get(position));
                             setResult(10, in );
                             finish();
-                        finish();
                     }
 
                 }else{
@@ -128,13 +126,13 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
         type = 1;
         settingWeekStr.clear();
         settingSelectWeekStr.clear();
-        settingWeekStr.add(new SelectWeek("星期一",false));
-        settingWeekStr.add(new SelectWeek("星期二",false));
-        settingWeekStr.add(new SelectWeek("星期三",false));
-        settingWeekStr.add(new SelectWeek("星期四",false));
-        settingWeekStr.add(new SelectWeek("星期五",false));
-        settingWeekStr.add(new SelectWeek("星期六",false));
-        settingWeekStr.add(new SelectWeek("星期日",false));
+        settingWeekStr.add(new SelectWeek("星期一",false,"1",1));
+        settingWeekStr.add(new SelectWeek("星期二",false,"2",1));
+        settingWeekStr.add(new SelectWeek("星期三",false,"3",1));
+        settingWeekStr.add(new SelectWeek("星期四",false,"4",1));
+        settingWeekStr.add(new SelectWeek("星期五",false,"5",1));
+        settingWeekStr.add(new SelectWeek("星期六",false,"6",1));
+        settingWeekStr.add(new SelectWeek("星期日",false,"7",1));
 
         dialogConditionListAdapter = new DialogWeeksListAdapter(DialogWeelActivity.this.getApplicationContext(), settingWeekStr);
         dialoglist.setAdapter(dialogConditionListAdapter);
@@ -150,11 +148,7 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
             case R.id.sure:
                 Intent in = new Intent();
                 if(settingSelectWeekStr.size()>0){
-                    ArrayList<String> str = new ArrayList<String>();
-                    for(SelectWeek select:settingSelectWeekStr){
-                        str.add(select.name);
-                    }
-                    in.putStringArrayListExtra("SELECTWEEK",str);
+                    in.putParcelableArrayListExtra("SELECTWEEK",settingSelectWeekStr);
                     setResult(20, in );
                     finish();
                 }else{

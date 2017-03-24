@@ -8,6 +8,8 @@
         android:id="@+id/dialoglist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:listSelector="@color/white"
         android:layout_alignParentBottom="true"
         android:divider="@null"
         android:scrollbars="none" />

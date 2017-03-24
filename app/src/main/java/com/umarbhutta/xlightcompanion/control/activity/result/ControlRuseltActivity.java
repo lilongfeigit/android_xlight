@@ -1,4 +1,4 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.result;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.control.activity.result.AppNotifyActivity;
+import com.umarbhutta.xlightcompanion.control.activity.result.DeviceControlSelectActivity;
+import com.umarbhutta.xlightcompanion.control.activity.result.EmailActivity;
+import com.umarbhutta.xlightcompanion.control.activity.result.SelectScenarioActivity;
+import com.umarbhutta.xlightcompanion.control.adapter.ControlResultListAdapter;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;

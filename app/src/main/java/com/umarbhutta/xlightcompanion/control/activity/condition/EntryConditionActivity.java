@@ -1,4 +1,4 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.condition;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,20 +9,30 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
+import com.umarbhutta.xlightcompanion.control.adapter.EntryConditionListAdapter;
+import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
-import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
-import com.umarbhutta.xlightcompanion.okHttp.model.Rules;
+import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
+import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
+import com.umarbhutta.xlightcompanion.okHttp.model.Schedule;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/13.
+ * 启动条件
  */
 
 public class EntryConditionActivity extends AppCompatActivity {
+
+    private String TAG = EntryConditionActivity.class.getSimpleName();
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -37,7 +47,10 @@ public class EntryConditionActivity extends AppCompatActivity {
 
     EntryConditionListAdapter entryConditionListAdapter;
     RecyclerView settingRecyclerView;
-    private Rules rules;
+
+    private Schedule mSchedule;
+
+    private Condition mCondition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +59,9 @@ public class EntryConditionActivity extends AppCompatActivity {
         //hide nav bar
         getSupportActionBar().hide();
 
-        rules = (Rules) getIntent().getBundleExtra("BUNDLE").getSerializable("DEVICE_CONTROL");
+        ((App)getApplicationContext()).setActivity(this);
+        mSchedule= new Schedule();
+        mCondition = new Condition();
 
         settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
         entryConditionListAdapter = new EntryConditionListAdapter(this, settingStr,imgInter);
@@ -69,12 +84,7 @@ public class EntryConditionActivity extends AppCompatActivity {
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("启动条件");
-        btnSure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 确定提交按钮
-            }
-        });
+        btnSure.setVisibility(View.GONE);
 
         settingStr.add("定时");
         imgInter.add( R.drawable.rule_time);
@@ -109,19 +119,19 @@ public class EntryConditionActivity extends AppCompatActivity {
                         break;
                     case 2://检测到活动
                         listStr.clear();
-                        listStr.add("活动一");
-                        listStr.add("活动二");
-                        listStr.add("活动三");
-                        listStr.add("活动四");
+//                        listStr.add("活动一");
+//                        listStr.add("活动二");
+//                        listStr.add("活动三");
+//                        listStr.add("活动四");
                         requestCode = 112;
                         onFabPressed(DialogActivity.class,listStr);
                         break;
                     case 3://检测到声音
                         listStr.clear();
-                        listStr.add("声音一");
-                        listStr.add("声音二");
-                        listStr.add("声音三");
-                        listStr.add("声音四");
+//                        listStr.add("声音一");
+//                        listStr.add("声音二");
+//                        listStr.add("声音三");
+//                        listStr.add("声音四");
                         requestCode = 113;
                         onFabPressed(DialogActivity.class,listStr);
                         break;
@@ -148,14 +158,36 @@ public class EntryConditionActivity extends AppCompatActivity {
                 }
             }
         });
+
+        getRuleconditions();//获取规则条件详细信息
+    }
+
+    /**
+     * 获取规则条件详细信息
+     */
+    private void getRuleconditions() {
+        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_RULES_RULECONDITIONS+"?access_token=" + UserUtils.getUserInfo(getApplicationContext()).getAccess_token(),
+                Ruleconditions.class, new HttpUtils.OnHttpRequestCallBack() {
+                    @Override
+                    public void onHttpRequestSuccess(Object result) {
+                        //
+                        Logger.e(TAG,result.toString());
+                    }
+
+                    @Override
+                    public void onHttpRequestFail(int code, String errMsg) {
+                        Logger.e(TAG,"code="+code+";errMsg="+errMsg);
+                    }
+                });
     }
 
     private void onFabPressed(Class activity,ArrayList<String> listStr) {
         Intent intent = new Intent(this, activity);
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("DILOGLIST",listStr);
-        bundle.putSerializable("DEVICE_CONTROL_ENTRY",rules);
         bundle.putInt("TYPE",0);
+        bundle.putSerializable("SCHEDULE",mSchedule);
+        bundle.putSerializable("CONDITION",mCondition);
         intent.putExtra("BUNDLE",bundle);
         startActivityForResult(intent,requestCode);
     }

@@ -106,43 +106,43 @@
             android:name=".scenario.AddScenarioNewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.AddControlRuleActivity"
+            android:name=".control.activity.AddControlRuleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.EntryConditionActivity"
+            android:name=".control.activity.condition.EntryConditionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.ControlRuseltActivity"
+            android:name=".control.activity.result.ControlRuseltActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.TimingActivity"
+            android:name=".control.activity.condition.TimingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.TemControlActivity"
+            android:name=".control.activity.condition.TemControlActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.DialogActivity"
+            android:name=".control.activity.dialog.DialogActivity"
             android:screenOrientation="portrait"
             android:theme="@style/dialog_style"/>
         <activity
-            android:name=".control.DialogTimeActivity"
+            android:name=".control.activity.dialog.DialogTimeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/dialog_style"/>
         <activity
-            android:name=".control.DialogWeelActivity"
+            android:name=".control.activity.dialog.DialogWeelActivity"
             android:screenOrientation="portrait"
             android:theme="@style/dialog_style"/>
         <activity
-            android:name=".control.SelectScenarioActivity"
+            android:name=".control.activity.result.SelectScenarioActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.DeviceControlSelectActivity"
+            android:name=".control.activity.result.DeviceControlSelectActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.EmailActivity"
+            android:name=".control.activity.result.EmailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".control.AppNotifyActivity"
+            android:name=".control.activity.result.AppNotifyActivity"
             android:screenOrientation="portrait" />
 
         <receiver

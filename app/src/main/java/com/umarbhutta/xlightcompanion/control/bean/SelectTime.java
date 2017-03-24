@@ -8,11 +8,15 @@ import java.io.Serializable;
 
 public class SelectTime implements Serializable{
 
-    public SelectTime(String name, boolean isSelect) {
+    public SelectTime(String name, boolean isSelect, String weekdays, int isrepeat) {
         this.name = name;
         this.isSelect = isSelect;
+        this.weekdays = weekdays;
+        this.isrepeat = isrepeat;
     }
 
     public String name;
     public boolean isSelect;
+    public String weekdays;
+    public int isrepeat;
 }

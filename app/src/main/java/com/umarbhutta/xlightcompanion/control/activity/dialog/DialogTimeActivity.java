@@ -1,4 +1,4 @@
-package com.umarbhutta.xlightcompanion.control;
+package com.umarbhutta.xlightcompanion.control.activity.dialog;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,12 +11,9 @@ import android.widget.ListView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
-import com.umarbhutta.xlightcompanion.views.pickerview.TimePickerView;
-import com.umarbhutta.xlightcompanion.views.pickerview.lib.TimePickerUtils;
+import com.umarbhutta.xlightcompanion.control.adapter.DialogTimeListAdapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2017/3/15.

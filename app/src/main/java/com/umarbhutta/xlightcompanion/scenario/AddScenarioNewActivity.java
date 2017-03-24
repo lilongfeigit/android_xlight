@@ -57,6 +57,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private int blue = 0;
     private Rows mSceneInfo;
     String from;
+    private ImageView circleIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,8 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the scenarioAdapter to the spinner
         filterSpinner.setAdapter(filterAdapter);
+
+        circleIcon = (ImageView) findViewById(R.id.circle_icon);
 
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +222,8 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             blue = (color & 0x0000ff);
         }
 
-        colorTextView.setTextColor(Color.parseColor(toHexEncoding(color)));
+//        colorTextView.setTextColor(Color.parseColor(toHexEncoding(color)));
+        circleIcon.setImageResource(Color.parseColor(toHexEncoding(color)));
 
     }
 

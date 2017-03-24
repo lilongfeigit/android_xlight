@@ -255,7 +255,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="13dp"
-                android:text="SELECT"
+                android:text="@string/select"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold" />

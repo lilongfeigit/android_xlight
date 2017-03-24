@@ -104,7 +104,7 @@ public class EntryConditionActivity extends AppCompatActivity {
         imgInter.add( R.drawable.rule_gohome);
         settingStr.add("气体");
         imgInter.add( R.drawable.rule_gas);
-
+        getRuleconditions();//获取规则条件详细信息
         entryConditionListAdapter.notifyDataSetChanged();
         entryConditionListAdapter.setmOnItemClickListener(new EntryConditionListAdapter.OnItemClickListener() {
             @Override
@@ -117,43 +117,48 @@ public class EntryConditionActivity extends AppCompatActivity {
                     case 1://亮度
                         listStr.clear();
                         requestCode = 111;
-                        onFabPressed(DialogActivity.class,1);
+
+//                        onFabPressed(DialogActivity.class,1);
                         break;
                     case 2://检测到活动
                         listStr.clear();
                         requestCode = 112;
-                        onFabPressed(DialogActivity.class,2);
+                        Logger.e(TAG,ruleconditions.getActivities().toString()+";size=");
+//                        onFabPressed(DialogActivity.class,2);
                         break;
                     case 3://检测到声音
                         listStr.clear();
                         requestCode = 113;
-                        onFabPressed(DialogActivity.class,3);
+                        Logger.e(TAG,ruleconditions.getVoice().toString()+";size="+ruleconditions.getVoice().size());
+//                        onFabPressed(DialogActivity.class,3);
                         break;
                     case 4://温度
                         listStr.clear();
                         requestCode = 114;
-                        onFabPressed(TemControlActivity.class,4);
+//                        onFabPressed(TemControlActivity.class,4);
                         break;
                     case 5://离家
                         listStr.clear();
                         requestCode = 115;
-                        onFabPressed(DialogActivity.class,5);
+                        Logger.e(TAG,ruleconditions.getLeavehome().toString()+";size="+ruleconditions.getLeavehome().size());
+//                        onFabPressed(DialogActivity.class,5);
                         break;
                     case 6://回家
                         listStr.clear();
                         requestCode = 116;
-                        onFabPressed(DialogActivity.class,6);
+                        Logger.e(TAG,ruleconditions.getGohome().toString()+";size="+ruleconditions.getGohome().size());
+//                        onFabPressed(DialogActivity.class,6);
                         break;
                     case 7://气体
                         listStr.clear();
                         requestCode = 117;
-                        onFabPressed(DialogActivity.class,7);
+                        Logger.e(TAG,ruleconditions.gas.toString()+";size="+ruleconditions.gas.size());
+//                        onFabPressed(DialogActivity.class,7);
                         break;
                 }
             }
         });
 
-        getRuleconditions();//获取规则条件详细信息
     }
 
     /**

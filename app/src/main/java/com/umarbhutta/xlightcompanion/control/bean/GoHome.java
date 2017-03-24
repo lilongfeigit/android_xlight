@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.control.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/24.

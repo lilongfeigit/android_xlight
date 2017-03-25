@@ -140,7 +140,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             }
         });
 
-        colorTextView.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.colorLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //弹出选择颜色的页面

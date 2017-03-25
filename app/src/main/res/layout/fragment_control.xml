@@ -106,8 +106,8 @@
                 android:layout_below="@id/mainLightsLL"
                 android:orientation="horizontal"
                 android:paddingBottom="16dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="16dp">
 
                 <TextView
@@ -144,8 +144,8 @@
                 android:layout_below="@id/toolbar"
                 android:orientation="horizontal"
                 android:paddingBottom="16dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="16dp"
                 android:visibility="gone">
 
@@ -196,8 +196,8 @@
                     android:layout_below="@+id/line1"
                     android:orientation="horizontal"
                     android:paddingBottom="16dp"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="16dp">
 
                     <TextView
@@ -240,10 +240,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/line2"
                     android:orientation="horizontal"
-                    android:paddingBottom="15dp"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingTop="15dp">
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="16dp">
 
                     <TextView
                         android:id="@+id/tv_scenario"
@@ -289,8 +289,8 @@
                     android:layout_below="@+id/line1"
                     android:orientation="horizontal"
                     android:paddingBottom="16dp"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="16dp">
 
                     <TextView
@@ -309,6 +309,7 @@
                         android:id="@+id/brightnessSeekBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:thumb="@drawable/thumb"
                         android:layout_weight="1"
                         android:paddingRight="0dp" />
 
@@ -330,8 +331,8 @@
                     android:layout_below="@+id/line8"
                     android:orientation="horizontal"
                     android:paddingBottom="16dp"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="16dp">
 
                     <TextView
@@ -355,14 +356,32 @@
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="冷色"
+                        android:visibility="gone"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <SeekBar
-                        android:id="@+id/cctSeekBar"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingRight="0dp" />
+                        android:layout_marginLeft="20dp">
+
+                        <ImageView
+                            android:id="@+id/bg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="matrix"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/white_seek"/>
+
+                        <SeekBar
+                            android:id="@+id/cctSeekBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_alignLeft="@id/bg"
+                            android:layout_alignParentRight="true"
+                            android:progressDrawable="@drawable/seekbar_thumb_color"
+                            android:thumb="@drawable/thumb" />
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -382,33 +401,50 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/line3"
                     android:orientation="horizontal"
-                    android:paddingBottom="22dp"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingTop="22dp">
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="16dp">
 
                     <TextView
                         android:id="@+id/colorLabel"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="颜色"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
-                    <TextView
-                        android:id="@+id/colorTextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="13dp"
-                        android:layout_weight="1"
-                        android:text="SELECT"
-                        android:textAlignment="viewEnd"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold" />
+
+                    <RelativeLayout
+                        android:id="@+id/colorLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/colorTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="13dp"
+                            android:text="@string/select"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/dotLayout"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@id/colorTextView" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
             </LinearLayout>

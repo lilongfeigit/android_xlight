@@ -19,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -36,10 +37,12 @@ import com.umarbhutta.xlightcompanion.control.ControlFragment;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
+import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
+import com.umarbhutta.xlightcompanion.views.CircleDotView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,6 +97,7 @@ public class EditDeviceActivity extends AppCompatActivity {
     boolean ring1 = false, ring2 = false, ring3 = false;
 
     private Handler m_handlerControl;
+    private CircleDotView circleIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +152,12 @@ public class EditDeviceActivity extends AppCompatActivity {
         scenarioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         scenarioSpinner.setAdapter(scenarioAdapter);
 
+        circleIcon = new CircleDotView(this);
+
+        RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
+        dotLayout.addView(circleIcon);
+
+
 
         mDevice = new xltDevice();
         mDevice.Init(this);
@@ -201,7 +211,7 @@ public class EditDeviceActivity extends AppCompatActivity {
             }
         });
 
-        colorTextView.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.colorLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onFabPressed();
@@ -354,6 +364,22 @@ public class EditDeviceActivity extends AppCompatActivity {
             }
         });
         initScenario();//初始化场景
+
+
+        if (null != deviceInfo && null != deviceInfo.scenarionodes && deviceInfo.scenarionodes.size() > 0) {
+            Scenarionodes scenarionodes = deviceInfo.scenarionodes.get(0);
+            int R = scenarionodes.R;
+            int G = scenarionodes.G;
+            int B = scenarionodes.B;
+
+
+            int color = Color.rgb(R, G, B);
+            circleIcon.setColor(color);
+            colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
+        }
+
+
+
     }
 
     private class MyStatusReceiver extends StatusReceiver {
@@ -635,8 +661,9 @@ public class EditDeviceActivity extends AppCompatActivity {
             green = (color & 0x00ff00) >> 8;
             blue = (color & 0x0000ff);
         }
+        circleIcon.setColor(color);
+        colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
 
-        colorTextView.setTextColor(Color.parseColor(toHexEncoding(color)));
     }
 
     public String toHexEncoding(int color) {

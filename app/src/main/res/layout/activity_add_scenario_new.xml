@@ -62,7 +62,7 @@
         android:orientation="horizontal"
         android:paddingBottom="15dp"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="15dp">
 
         <TextView
@@ -146,14 +146,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/line1"
         android:orientation="horizontal"
-        android:paddingBottom="22dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="22dp">
+        android:paddingBottom="16dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="16dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="0dp"
             android:layout_weight="1"
             android:fontFamily="sans-serif-light"
@@ -162,12 +163,30 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/textColorPrimary" />
 
-        <SeekBar
-            android:id="@+id/colorTemperatureSeekBar"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingRight="0dp" />
+            android:layout_marginLeft="20dp">
+
+            <ImageView
+                android:id="@+id/bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/white_seek"/>
+
+            <SeekBar
+                android:id="@+id/colorTemperatureSeekBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_alignLeft="@id/bg"
+                android:layout_alignParentRight="true"
+                android:progressDrawable="@drawable/seekbar_thumb_color"
+                android:thumb="@drawable/thumb" />
+        </RelativeLayout>
+
 
     </LinearLayout>
 
@@ -187,10 +206,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/line2"
         android:orientation="horizontal"
-        android:paddingBottom="22dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="22dp">
+        android:paddingBottom="16dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="16dp">
 
         <TextView
             android:layout_width="0dp"
@@ -232,10 +251,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/line3"
         android:orientation="horizontal"
-        android:paddingBottom="22dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="22dp">
+        android:paddingBottom="16dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="16dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -248,6 +267,7 @@
             android:textColor="@color/textColorPrimary" />
 
         <RelativeLayout
+            android:id="@+id/colorLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

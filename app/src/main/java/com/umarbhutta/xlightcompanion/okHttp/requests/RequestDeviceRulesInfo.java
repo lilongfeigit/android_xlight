@@ -6,6 +6,7 @@ import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceGetRules;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 
@@ -28,12 +29,12 @@ public class RequestDeviceRulesInfo implements HttpUtils.OnHttpRequestCallBack {
     public void getRules(Context context, OnRequestFirstPageInfoCallback mOnRequestFirstPageInfoCallback) {
         this.mOnRequestFirstPageInfoCallback = mOnRequestFirstPageInfoCallback;
         LoginResult info = UserUtils.getUserInfo(context);
-        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_DEVICE_RULES_LIST + info.getAccess_token() + "&userId=" + info.getId(), DeviceInfoResult.class, this);
+        HttpUtils.getInstance().getRequestInfo(NetConfig.URL_DEVICE_RULES_LIST + info.getAccess_token() + "&userId=" + info.getId(), DeviceGetRules.class, this);
     }
 
     @Override
     public void onHttpRequestSuccess(Object result) {
-        DeviceInfoResult info = (DeviceInfoResult) result;
+        DeviceGetRules info = (DeviceGetRules) result;
         Logger.i("deviceInfo = " + info);
         if (null != mOnRequestFirstPageInfoCallback) {
             mOnRequestFirstPageInfoCallback.onRequestFirstPageInfoSuccess(info.data);
@@ -48,7 +49,7 @@ public class RequestDeviceRulesInfo implements HttpUtils.OnHttpRequestCallBack {
     }
 
     public interface OnRequestFirstPageInfoCallback {
-        void onRequestFirstPageInfoSuccess(DeviceInfoResult mDeviceInfoResult);
+        void onRequestFirstPageInfoSuccess(DeviceGetRules mDeviceInfoResult);
 
         void onRequestFirstPageInfoFail(int code, String errMsg);
     }

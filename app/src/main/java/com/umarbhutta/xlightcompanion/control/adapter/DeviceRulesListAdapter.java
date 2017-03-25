@@ -13,6 +13,7 @@ import android.widget.Switch;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceGetRules;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestRuleSwitchDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
@@ -28,19 +29,14 @@ public class DeviceRulesListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;//这个一定要懂它的用法及作用
     private Context mActivity;
-    private DeviceInfoResult mDeviceInfoResult;
+    private DeviceGetRules mDeviceInfoResult;
 //    private List<String> strLists;
 
-        public DeviceRulesListAdapter(Context activity, DeviceInfoResult deviceInfoResult) {
+        public DeviceRulesListAdapter(Context activity, DeviceGetRules deviceInfoResult) {
         this.mActivity = activity;
         this.mDeviceInfoResult = deviceInfoResult;
         this.inflater = LayoutInflater.from(mActivity);
     }
-//    public DeviceRulesListAdapter(Context activity, List<String> strLists) {
-//        this.mActivity = activity;
-//        this.strLists = strLists;
-//        this.inflater = LayoutInflater.from(mActivity);
-//    }
 
     @Override
     public int getCount() {
@@ -98,21 +94,10 @@ public class DeviceRulesListAdapter extends BaseAdapter {
             }
         });
 
-        List<String> strListTerm = new ArrayList<String>();
-        strListTerm.add("09:00");
-        strListTerm.add("09:00");
-        strListTerm.add("09:00");
-        strListTerm.add("09:00");
-        List<String> strListResult = new ArrayList<String>();
-        strListResult.add("卧室灯开");
-        strListResult.add("卧室灯开");
-        strListResult.add("卧室灯开");
-        strListResult.add("卧室灯开");
-
-        holder.listViewTerm.setAdapter(new TermAdapter(mActivity, strListTerm));
+        holder.listViewTerm.setAdapter(new TermAdapter(mActivity, mDeviceInfoResult.rows.get(position).ruleconditions));
         //根据innerlistview的高度机损parentlistview item的高度
         setListViewHeightBasedOnChildren(holder.listViewTerm);
-        holder.listViewResult.setAdapter(new ResultAdapter(mActivity, strListResult));
+        holder.listViewResult.setAdapter(new ResultAdapter(mActivity, mDeviceInfoResult.rows.get(position).ruleactioncmds));
         //根据innerlistview的高度机损parentlistview item的高度
         setListViewHeightBasedOnChildren(holder.listViewResult);
 

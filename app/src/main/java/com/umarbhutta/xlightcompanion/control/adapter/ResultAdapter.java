@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.RuleActioncmd;
 
 import java.util.List;
 
@@ -21,21 +22,23 @@ import java.util.List;
 public class ResultAdapter extends BaseAdapter {
 
     private Context mActivity;
-    private List<String> strList;
+    private List<RuleActioncmd> ruleactioncmds;
+    private LayoutInflater layoutInflater;
 
-    public ResultAdapter(Context activity, List<String> strList) {
+    public ResultAdapter(Context activity,List<RuleActioncmd> ruleactioncmds) {
         this.mActivity = activity;
-        this.strList = strList;
+        this.ruleactioncmds = ruleactioncmds;
+        layoutInflater = LayoutInflater.from(mActivity);
     }
 
     @Override
     public int getCount() {
-        return strList.size();
+        return ruleactioncmds.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return strList.get(position);
+        return ruleactioncmds.get(position);
     }
 
     @Override
@@ -48,14 +51,14 @@ public class ResultAdapter extends BaseAdapter {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.result_list_item, parent, false);
+            convertView = layoutInflater.inflate(R.layout.result_list_item, parent, false);
             //通过上面layout得到的view来获取里面的具体控件
             holder.tv_result = (TextView) convertView.findViewById(R.id.tv_result);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_result.setText(strList.get(position));
+        holder.tv_result.setText(ruleactioncmds.get(position).ruleId+"");
         return convertView;
     }
 

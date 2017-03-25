@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.okHttp.model.Ruleconditions;
 
 import java.util.List;
 
@@ -18,21 +19,24 @@ import java.util.List;
 public class TermAdapter extends BaseAdapter {
 
     private Context mActivity;
-    private List<String> strList;
+    private List<Ruleconditions> ruleconditions;
 
-    public TermAdapter(Context activity, List<String> strList) {
+    private LayoutInflater layoutInflater;
+
+    public TermAdapter(Context activity, List<Ruleconditions> ruleconditions) {
         this.mActivity = activity;
-        this.strList = strList;
+        this.ruleconditions = ruleconditions;
+        layoutInflater = LayoutInflater.from(mActivity);
     }
 
     @Override
     public int getCount() {
-        return strList.size();
+        return ruleconditions.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return strList.get(position);
+        return ruleconditions.get(position);
     }
 
     @Override
@@ -45,14 +49,14 @@ public class TermAdapter extends BaseAdapter {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.term_list_item, parent, false);
+            convertView = layoutInflater.inflate(R.layout.term_list_item, parent, false);
             //通过上面layout得到的view来获取里面的具体控件
             holder.tv_term = (TextView) convertView.findViewById(R.id.tv_term);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_term.setText(strList.get(position));
+        holder.tv_term.setText(ruleconditions.get(position).weekdays);
         return convertView;
     }
 

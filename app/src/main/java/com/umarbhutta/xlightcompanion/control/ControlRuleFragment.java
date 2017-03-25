@@ -21,6 +21,7 @@ import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.adapter.DeviceRulesListAdapter;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceGetRules;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteRuleDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeviceRulesInfo;
@@ -61,18 +62,6 @@ public class ControlRuleFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_control_rule, container, false);
         rulesRecyclerView = (ListView) view.findViewById(R.id.rulesRecyclerView);
 
-//        List<String> strListResult = new ArrayList<String>();
-//            strListResult.add("卧室灯开");
-//            strListResult.add("卧室灯开");
-//            strListResult.add("卧室灯开");
-//            strListResult.add("卧室灯开");
-
-//        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(), strListResult);
-//        rulesRecyclerView.setAdapter(devicesListAdapter);
-
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//        rulesRecyclerView.setLayoutManager(layoutManager);
-//        rulesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
         if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
             m_handlerGlance = new Handler() {
@@ -123,13 +112,13 @@ public class ControlRuleFragment extends Fragment {
         getControlRuleList();
     }
 
-    public DeviceInfoResult mDeviceInfoResult;
+    public DeviceGetRules mDeviceInfoResult;
 
     private void getControlRuleList() {
         RequestDeviceRulesInfo.getInstance().getRules(getActivity(), new RequestDeviceRulesInfo.OnRequestFirstPageInfoCallback() {
 
             @Override
-            public void onRequestFirstPageInfoSuccess(final DeviceInfoResult deviceInfoResult) {
+            public void onRequestFirstPageInfoSuccess(final DeviceGetRules deviceInfoResult) {
                 try {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -137,9 +126,9 @@ public class ControlRuleFragment extends Fragment {
                             mDeviceInfoResult = deviceInfoResult;
                             Logger.e(TAG, mDeviceInfoResult.toString());
                             if (mDeviceInfoResult.code == 0) {
-//                                ToastUtil.showToast(getActivity(), "数据为空");
-                            } else if (mDeviceInfoResult.code == 1) {
                                 initList();
+                            } else if (mDeviceInfoResult.code == 1) {
+//                                ToastUtil.showToast(getActivity(), "数据为空");
                             } else {
                                 ToastUtil.showToast(getActivity(), mDeviceInfoResult.msg + "");
                             }
@@ -166,5 +155,8 @@ private  DeviceRulesListAdapter devicesListAdapter;
     private void initList() {
         devicesListAdapter = new DeviceRulesListAdapter(getContext(), mDeviceInfoResult);
         rulesRecyclerView.setAdapter(devicesListAdapter);
+        if(devicesListAdapter!=null){
+            devicesListAdapter.notifyDataSetChanged();
+        }
     }
 }

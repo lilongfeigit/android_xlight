@@ -137,4 +137,8 @@ public class NetConfig {
      * 编辑场景
      */
     public static final String URL_EDIT_SCENE = "http://123.207.166.211:8080/scenarios/";
+    /**
+     * 编辑设备信息
+     */
+    public static final String URL_EDIT_DEVICE_INFO = "http://123.207.166.211:8080/devices/";
 }

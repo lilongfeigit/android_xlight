@@ -122,14 +122,17 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColorPrimary" />
 
-                <TextView
+                <EditText
                     android:id="@+id/scenarioName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:background="#00ffffff"
                     android:gravity="right"
-                    android:text="客厅灯" />
+                    android:hint="客厅灯"
+                    android:paddingRight="20dp" />
 
 
             </LinearLayout>

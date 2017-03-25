@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
@@ -58,12 +59,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 确定提交按钮
-            }
-        });
+        btnSure.setVisibility(View.GONE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("注册");
     }
@@ -110,6 +106,11 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
 
         if (!et_user_passwordStr.equals(et_verification_codeStr)) {
             ToastUtil.showToast(this, getString(R.string.twice_pwd_not_same));
+            return;
+        }
+
+        if(!StringUtil.isEmail(et_user_accountStr)){
+            ToastUtil.showToast(this,"邮箱格式不正确");
             return;
         }
 

@@ -25,6 +25,7 @@ import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Umar Bhutta.
@@ -100,7 +101,7 @@ public class ScenarioFragment extends Fragment {
     }
 
     private void deleteScene(final int position) {
-        Rows mSceneInfo = mDeviceInfoResult.rows.get(position);
+        Rows mSceneInfo = mSceneList.get(position);
         RequestDeleteScene.getInstance().deleteScene(getActivity(), mSceneInfo.id, new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
@@ -108,7 +109,7 @@ public class ScenarioFragment extends Fragment {
                     @Override
                     public void run() {
                         ToastUtil.showToast(getActivity(), "删除成功");
-                        mDeviceInfoResult.rows.remove(position);
+                        mSceneList.remove(position);
                         scenarioListAdapter.notifyDataSetChanged();
                     }
                 });
@@ -151,7 +152,7 @@ public class ScenarioFragment extends Fragment {
         startActivityForResult(intent, 1);
     }
 
-    public SceneListResult mDeviceInfoResult;
+    public List<Rows> mSceneList = new ArrayList<Rows>();
 
     private void getSceneList() {
         RequestSceneListInfo.getInstance().getSceneListInfo(getActivity(), new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
@@ -160,7 +161,10 @@ public class ScenarioFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mDeviceInfoResult = deviceInfoResult;
+                        if (null != deviceInfoResult && null != deviceInfoResult.rows && deviceInfoResult.rows.size() > 0) {
+                            mSceneList.clear();
+                            mSceneList.addAll(deviceInfoResult.rows);
+                        }
                         initList();
                     }
                 });
@@ -171,7 +175,7 @@ public class ScenarioFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToast(getActivity(), ""+errMsg);
+                        ToastUtil.showToast(getActivity(), "" + errMsg);
                     }
                 });
             }
@@ -179,7 +183,7 @@ public class ScenarioFragment extends Fragment {
     }
 
     private void initList() {
-        scenarioListAdapter = new ScenarioListAdapter(getContext(), mDeviceInfoResult);
+        scenarioListAdapter = new ScenarioListAdapter(getContext(), mSceneList);
         scenarioListAdapter.setOnLongClickCallBack(new ScenarioListAdapter.OnLongClickCallBack() {
             @Override
             public void onLongClickCallBack(int position) {

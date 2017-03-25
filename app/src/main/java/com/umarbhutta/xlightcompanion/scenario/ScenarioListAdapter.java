@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
-import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Umar Bhutta.
@@ -19,16 +21,16 @@ import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 public class ScenarioListAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    private SceneListResult mSceneListResult;
+    private List<Rows> sceneList;
 
 
     public ScenarioListAdapter(Context context) {
-        this.mSceneListResult = new SceneListResult();
+        this.sceneList = new ArrayList<Rows>();
         this.mContext = context;
     }
 
-    public ScenarioListAdapter(Context context, SceneListResult mSceneListResult) {
-        this.mSceneListResult = mSceneListResult;
+    public ScenarioListAdapter(Context context, List<Rows> sceneList) {
+        this.sceneList = sceneList;
         this.mContext = context;
     }
 
@@ -45,7 +47,7 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mSceneListResult.rows.size();
+        return sceneList.size();
     }
 
     private class ScenarioListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -75,7 +77,7 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
         public void bindView(int position) {
 
             mPosition = position;
-            infos = mSceneListResult.rows.get(position);
+            infos = sceneList.get(position);
 
 //            int displayNum = position + 1;
 //            scenarioIndex.setText(displayNum + "");

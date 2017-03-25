@@ -111,7 +111,6 @@ public class GlanceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         getBaseInfos();
-
     }
 
     @Nullable
@@ -519,4 +518,12 @@ public class GlanceFragment extends Fragment {
         deviceList.remove(position);
         devicesListAdapter.notifyDataSetChanged();
     }
+
+
+    /**
+     * TODO  变更住设备，每次变更主设备后需要再次同步一下
+     */
+    public void changeMainDeviceInfo() {
+    }
+
 }

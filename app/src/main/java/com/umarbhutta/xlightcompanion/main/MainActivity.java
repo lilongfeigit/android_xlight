@@ -32,6 +32,7 @@ import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderOptions;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.report.ReportFragment;
 import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
@@ -69,7 +70,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if(TextUtils.isEmpty(helpUrl)){
+        if (TextUtils.isEmpty(helpUrl)) {
             getHelpUrl();
         }
     }
@@ -162,6 +163,24 @@ public class MainActivity extends BaseActivity
 
         displayView(R.id.nav_glance);
         navigationView.getMenu().getItem(0).setChecked(true);
+
+    }
+
+    /**
+     * 获取主设备信息
+     *
+     * @return
+     */
+    public static Rows getMainDeviceInfo() {
+        if (null != GlanceFragment.deviceList && GlanceFragment.deviceList.size() > 0) {
+            for (Rows info : GlanceFragment.deviceList) {
+                if (info.maindevice == 1) {
+                    return info;
+                }
+            }
+        }
+
+        return null;
 
     }
 

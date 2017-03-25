@@ -82,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/blue"
             android:hint="自定义"
             android:textAlignment="textEnd" />
 
@@ -207,9 +208,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:backgroundTint="@color/blue"
             android:max="100"
             android:paddingRight="0dp"
-            android:progress="80" />
+            android:progress="80"
+            android:thumb="@drawable/thumb" />
 
     </LinearLayout>
 
@@ -257,18 +260,17 @@
                 android:layout_marginRight="13dp"
                 android:text="@string/select"
                 android:textAlignment="viewEnd"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
 
-            <com.umarbhutta.xlightcompanion.views.CircleImageView
-                android:id="@+id/circle_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+            <RelativeLayout
+                android:id="@+id/dotLayout"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:src="@color/blue"
                 android:layout_toLeftOf="@id/colorTextView" />
-
 
         </RelativeLayout>
 
@@ -281,8 +283,7 @@
         android:layout_below="@+id/colorLL"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:background="@color/dividerColor"
-        android:visibility="gone" />
+        android:background="@color/dividerColor" />
 
     <LinearLayout
         android:id="@+id/filterLL"

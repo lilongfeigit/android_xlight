@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestAddScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestEditScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
-import com.umarbhutta.xlightcompanion.views.CircleImageView;
+import com.umarbhutta.xlightcompanion.views.CircleDotView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private int blue = 0;
     private Rows mSceneInfo;
     String from;
-    private CircleImageView circleIcon;
+    private CircleDotView circleIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,10 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         // Apply the scenarioAdapter to the spinner
         filterSpinner.setAdapter(filterAdapter);
 
-        circleIcon = (CircleImageView) findViewById(R.id.circle_icon);
+        circleIcon = new CircleDotView(this);
+
+        RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
+        dotLayout.addView(circleIcon);
 
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -203,6 +207,19 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         } else {
             tvTitle.setText("添加场景");
         }
+
+
+        if (null != mSceneInfo && null != mSceneInfo.scenarionodes && mSceneInfo.scenarionodes.size() > 0) {
+            Scenarionodes scenarionodes = mSceneInfo.scenarionodes.get(0);
+            int R = scenarionodes.R;
+            int G = scenarionodes.G;
+            int B = scenarionodes.B;
+
+
+            int color = Color.rgb(R, G, B);
+            circleIcon.setColor(color);
+            colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
+        }
     }
 
     private void initViewState() {
@@ -219,7 +236,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        
+
         int color = data.getIntExtra("color", -1);
         if (-1 != color) {
             red = (color & 0xff0000) >> 16;
@@ -227,7 +244,8 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             blue = (color & 0x0000ff);
         }
 
-        colorTextView.setTextColor(Color.parseColor(toHexEncoding(color)));
+        circleIcon.setColor(color);
+        colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
     }
 
     public String toHexEncoding(int color) {

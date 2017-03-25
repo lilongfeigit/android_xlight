@@ -136,6 +136,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/dialog_style"/>
         <activity
+            android:name=".control.activity.dialog.DialogRowNameActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/dialog_style"/>
+        <activity
             android:name=".control.activity.dialog.DialogWeelActivity"
             android:screenOrientation="portrait"
             android:theme="@style/dialog_style"/>

@@ -87,13 +87,11 @@ public class DeviceRulesListAdapter extends BaseAdapter {
                 RequestRuleSwitchDevice.getInstance().switchRule(mActivity,mDeviceInfoResult.rows.get(position).id,isCheckedInt,new CommentRequstCallback(){
                     @Override
                     public void onCommentRequstCallbackSuccess() {
-                        //TODO
                         ToastUtil.showToast(mActivity,"修改成功position="+position);
                     }
 
                     @Override
                     public void onCommentRequstCallbackFail(int code, String errMsg) {
-                        //TODO
                         ToastUtil.showToast(mActivity,"errMsg="+errMsg);
                     }
                 });

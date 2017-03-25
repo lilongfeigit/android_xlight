@@ -100,21 +100,27 @@ public class ControlRuleFragment extends Fragment {
                 RequestDeleteRuleDevice.getInstance().deleteRule(getActivity(),mDeviceInfoResult.rows.get(position).id+"", new CommentRequstCallback() {
                     @Override
                     public void onCommentRequstCallbackSuccess() {
-                        //TODO
+                        if(devicesListAdapter!=null){
+                            devicesListAdapter.notifyDataSetChanged();
+                        }
                         ToastUtil.showToast(getActivity(),"删除成功position="+position+";id="+id);
                     }
 
                     @Override
                     public void onCommentRequstCallbackFail(int code, String errMsg) {
-                        //TODO
                         ToastUtil.showToast(getActivity(),"删除失败"+errMsg);
                     }
                 });
                 return true;
             }
         });
-        getControlRuleList();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getControlRuleList();
     }
 
     public DeviceInfoResult mDeviceInfoResult;
@@ -131,7 +137,7 @@ public class ControlRuleFragment extends Fragment {
                             mDeviceInfoResult = deviceInfoResult;
                             Logger.e(TAG, mDeviceInfoResult.toString());
                             if (mDeviceInfoResult.code == 0) {
-                                ToastUtil.showToast(getActivity(), "数据为空");
+//                                ToastUtil.showToast(getActivity(), "数据为空");
                             } else if (mDeviceInfoResult.code == 1) {
                                 initList();
                             } else {
@@ -156,9 +162,9 @@ public class ControlRuleFragment extends Fragment {
             }
         });
     }
-
+private  DeviceRulesListAdapter devicesListAdapter;
     private void initList() {
-        DeviceRulesListAdapter devicesListAdapter = new DeviceRulesListAdapter(getContext(), mDeviceInfoResult);
+        devicesListAdapter = new DeviceRulesListAdapter(getContext(), mDeviceInfoResult);
         rulesRecyclerView.setAdapter(devicesListAdapter);
     }
 }

@@ -16,6 +16,7 @@ import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.control.adapter.DialogTemAddListAdapter;
 import com.umarbhutta.xlightcompanion.control.adapter.DialogTemMiuListAdapter;
 import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
+import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 
 /**
  * Created by Administrator on 2017/3/15.
@@ -31,9 +32,15 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
     ListView dialogAddlist;
     ListView dialogMiuList;
 
-    private RadioButton rb_add,rb_miu;
+    private RadioButton rb_add, rb_miu;
 
     private Ruleconditions ruleconditions;
+    private Condition mCondition;
+
+    private int temType = 0;//0代表是零上，1代表是零下
+
+    private String[] addTem;
+    private String[] miuTem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,22 +65,31 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
 
 //        settingStr = EntryConditionActivity.listStr;
         ruleconditions = (Ruleconditions) getIntent().getBundleExtra("BUNDLE").getSerializable("RULECONDITIONS");
-        Logger.e(TAG,ruleconditions.data.get(0).getTemperature().toString());
+        mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
+
+        Logger.e(TAG, ruleconditions.data.get(0).getTemperature().toString());
         String addValueTem = ruleconditions.data.get(0).temperature.get(0).value;
-        String[] addTem = addValueTem.substring(1,addValueTem.length()-1).split(",");
+        addTem = addValueTem.substring(1, addValueTem.length() - 1).split(",");
         String miuAddValueTem = ruleconditions.data.get(0).temperature.get(1).value;
-        String[] miuTem = miuAddValueTem.substring(1,miuAddValueTem.length()-1).split(",");
+        miuTem = miuAddValueTem.substring(1, miuAddValueTem.length() - 1).split(",");
         // 是温度
-        dialogConditionListAdapter = new DialogTemAddListAdapter(DialogTemActivity.this.getApplicationContext(),addTem);
-        dialogTemMiuListAdapter = new DialogTemMiuListAdapter(DialogTemActivity.this.getApplicationContext(),miuTem);
+        dialogConditionListAdapter = new DialogTemAddListAdapter(DialogTemActivity.this.getApplicationContext(), addTem);
+        dialogTemMiuListAdapter = new DialogTemMiuListAdapter(DialogTemActivity.this.getApplicationContext(), miuTem);
         dialogAddlist.setAdapter(dialogConditionListAdapter);
         dialogMiuList.setAdapter(dialogTemMiuListAdapter);
 
         dialogAddlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(temType==0){
+                    mCondition.rightValue=addTem[position];
+                }else{
+                    mCondition.rightValue=miuTem[position];
+                }
                 Intent intent = new Intent();
-                setResult(31,intent);
+                intent.putExtra("MCONDITION",mCondition);
+                setResult(32,intent);
                 finish();
             }
         });
@@ -88,18 +104,20 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.rb_add:
+                temType = 0;
                 dialogAddlist.setVisibility(View.VISIBLE);
                 dialogMiuList.setVisibility(View.GONE);
-                if(dialogConditionListAdapter!=null){
+                if (dialogConditionListAdapter != null) {
                     dialogConditionListAdapter.notifyDataSetChanged();
                 }
                 break;
             case R.id.rb_miu:
+                temType = 1;
                 dialogAddlist.setVisibility(View.GONE);
                 dialogMiuList.setVisibility(View.VISIBLE);
-                if(dialogTemMiuListAdapter!=null){
+                if (dialogTemMiuListAdapter != null) {
                     dialogTemMiuListAdapter.notifyDataSetChanged();
                 }
                 break;

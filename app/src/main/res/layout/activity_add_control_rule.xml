@@ -58,6 +58,12 @@
             android:visibility="gone" />
 
         <ListView
+            android:id="@+id/lv_term_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:scrollbars="none" />
+        <ListView
             android:id="@+id/lv_term"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,10 +121,14 @@
             android:text="未添加结果" />
 
         <ListView
-            android:id="@+id/lv_control"
+            android:id="@+id/lv_control_actionnotify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical" />
+            android:layout_marginTop="10dp" />
+        <ListView
+            android:id="@+id/lv_control_actioncmd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 </LinearLayout>

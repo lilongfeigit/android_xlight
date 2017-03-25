@@ -10,7 +10,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 
 public class TemControlActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private String TAG = TemControlActivity.class.getSimpleName();
+
     private LinearLayout llBack;
     private TextView btnSure;
     private TextView tvTitle;
@@ -40,6 +44,8 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
 
     private Ruleconditions ruleconditions;
 
+    private TextView tv_tem,tv_more;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +55,7 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
         type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
         ruleconditions = (Ruleconditions) getIntent().getBundleExtra("BUNDLE").getSerializable("RULECONDITIONS");
+        ((App)getApplicationContext()).setActivity(this);
         initViews();
     }
 
@@ -56,6 +63,8 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
      * 初始化控件
      */
     private void initViews() {
+        tv_tem = (TextView) findViewById(R.id.tv_tem);
+        tv_more = (TextView) findViewById(R.id.tv_more);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +97,7 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
             case R.id.tvEditSure:
                 //确定按钮
                 AddControlRuleActivity.mConditionList.add(mCondition);
+                ((App)getApplicationContext()).finishActivity();
                 break;
             case R.id.llMore:
                 requestCode = 313;
@@ -103,10 +113,24 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (resultCode){
             case 31:
-                Condition condition = (Condition) data.getSerializableExtra("MCONDITION");
-                ToastUtil.showToast(getApplicationContext(),condition.toString());
+                mCondition = (Condition) data.getSerializableExtra("MCONDITION");
+                if(mCondition.operator.equals(">")) {
+                    tv_more.setText("高于");
+                }
+                if(mCondition.operator.equals("=")) {
+                    tv_more.setText("等于");
+                }
+                if(mCondition.operator.equals("<")) {
+                    tv_more.setText("低于");
+                }
+                Logger.e(TAG,"mCondition="+mCondition.toString());
+                break;
+            case 32:
+                mCondition = (Condition) data.getSerializableExtra("MCONDITION");
+                tv_tem.setText(mCondition.rightValue);
+                Logger.e(TAG,"mCondition="+mCondition.toString());
                 break;
         }
     }

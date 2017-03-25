@@ -11,10 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.adapter.ScenarioSelectListAdapter;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.AddScenarioActivity;
@@ -46,6 +48,8 @@ public class SelectScenarioActivity extends AppCompatActivity {
 
     public SceneListResult mDeviceInfoResult;
 
+    private Actioncmd mActioncmd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
         //hide nav bar
         getSupportActionBar().hide();
 
+        ((App)getApplicationContext()).setActivity(this);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +70,8 @@ public class SelectScenarioActivity extends AppCompatActivity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("选择场景");
         btnSure.setVisibility(View.GONE);
+
+        mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
 
         fab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab);
 
@@ -118,9 +125,9 @@ public class SelectScenarioActivity extends AppCompatActivity {
                 info.add(incomingInfo);
 
                 scenarioListAdapter.notifyDataSetChanged();
-                Toast.makeText(this, "The scenario has been successfully added", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "The scenario has been successfully added", Toast.LENGTH_SHORT).show();
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(this, "No new scenarios were added to the list", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "No new scenarios were added to the list", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -157,7 +164,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
     }
 
     private void initList() {
-        scenarioListAdapter = new ScenarioSelectListAdapter(SelectScenarioActivity.this, mDeviceInfoResult);
+        scenarioListAdapter = new ScenarioSelectListAdapter(SelectScenarioActivity.this, mDeviceInfoResult,mActioncmd);
         scenarioRecyclerView.setAdapter(scenarioListAdapter);
     }
 }

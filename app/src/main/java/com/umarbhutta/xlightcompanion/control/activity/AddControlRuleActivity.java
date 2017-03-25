@@ -3,7 +3,9 @@ package com.umarbhutta.xlightcompanion.control.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.condition.EntryConditionActivity;
 import com.umarbhutta.xlightcompanion.control.activity.result.ControlRuseltActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
@@ -36,11 +40,13 @@ import java.util.List;
  * 新的规则页面
  */
 public class AddControlRuleActivity extends AppCompatActivity {
+
+    private String TAG = AddControlRuleActivity.class.getSimpleName();
     private LinearLayout llBack;
     private TextView btnSure;
     private TextView tvTitle;
     private ImageButton ib_add_term, ib_add_result;
-    private ListView lv_term, lv_control;
+    private ListView lv_term, lv_control_actioncmd, lv_term_time,lv_control_actionnotify;
 
     private TextView tv_no_data1, tv_no_data2;
 
@@ -51,19 +57,23 @@ public class AddControlRuleActivity extends AppCompatActivity {
 
     private Rulecondition mRulecondition;
 
-    public static List<Schedule> mScheduleList= new ArrayList<Schedule>();
-    public static List<Condition> mConditionList= new ArrayList<Condition>();
+    public static List<Schedule> mScheduleList = new ArrayList<Schedule>();
+    public static List<Condition> mConditionList = new ArrayList<Condition>();
 
     //执行结果
     private List<Ruleresult> mRuleresultList;
 
     private Ruleresult mRuleresult;
 
-    public static List<Actioncmd> mActioncmdList= new ArrayList<Actioncmd>();
-    public static List<Actionnotify> mActionnotify= new ArrayList<Actionnotify>();
+    public static List<Actioncmd> mActioncmdList = new ArrayList<Actioncmd>();
+    public static List<Actionnotify> mActionnotify = new ArrayList<Actionnotify>();
 
-    private TermAdapter termAdapter;
-    private ResultAdapter resultAdapter;
+    //    private TermAdapter termAdapter;
+    private TermTopAdapter termTopAdapter;
+    private TermBottomAdapter termBottomAdapternew;
+
+    private ResultTopAdapter resultTopAdapter;
+    private ResultBottomAdapter resultBottomAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +112,23 @@ public class AddControlRuleActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ToastUtil.showToast(this,mRulecondition.schedule.size()+"");
-        if(termAdapter!=null){
-            termAdapter.notifyDataSetChanged();
+        if (termBottomAdapternew != null) {
+            termBottomAdapternew.notifyDataSetChanged();
         }
-        if(resultAdapter!=null){
-             resultAdapter.notifyDataSetChanged();
+        if (termTopAdapter != null) {
+            termTopAdapter.notifyDataSetChanged();
+        }
+        if (resultTopAdapter != null) {
+            resultTopAdapter.notifyDataSetChanged();
+        }
+        if (resultBottomAdapter != null) {
+            resultBottomAdapter.notifyDataSetChanged();
+        }
+        if(mScheduleList.size()>0 || mConditionList.size()>0){
+            tv_no_data1.setVisibility(View.GONE);
+        }
+        if(mActioncmdList.size()>0 || mActionnotify.size()>0){
+            tv_no_data2.setVisibility(View.GONE);
         }
     }
 
@@ -119,21 +140,40 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 finish();
             }
         });
+        lv_term_time = (ListView) findViewById(R.id.lv_term_time);
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //确定提交按钮
-                RequestAddRules.getInstance().createRule(AddControlRuleActivity.this, new Rules(), new RequestAddRules.OnCreateRuleCallback() {
+                rules.rulename="rule1";
+                rules.relationtype=1;
+                rules.type=1;
+                rules.status=1;
+                rules.userId= UserUtils.getUserInfo(getApplicationContext()).getId();
+                List<Rulecondition> rulecondition = new ArrayList<Rulecondition>();
+                List<Ruleresult> ruleresult = new ArrayList<Ruleresult>();
+                mRulecondition.schedule = mScheduleList;
+                mRulecondition.condition = mConditionList;
+                mRuleresult.actionnotify=mActionnotify;
+                mRuleresult.actioncmd=mActioncmdList;
+                rulecondition.add(mRulecondition);
+                ruleresult.add(mRuleresult);
+                rules.rulecondition=rulecondition;
+                rules.ruleresult=ruleresult;
+                RequestAddRules.getInstance().createRule(AddControlRuleActivity.this,rules,new RequestAddRules.OnCreateRuleCallback() {
 
                     @Override
                     public void mOnCreateRuleCallbackFail(int code, String errMsg) {
-                        ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);//TODO
+                        Logger.e(TAG,"errMsg=" + errMsg);
+                        ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);//
                     }
 
                     @Override
                     public void mOnCreateRuleCallbackSuccess(CreateRuleResult mCreateRuleResult) {
-                        ToastUtil.showToast(AddControlRuleActivity.this, "mCreateRuleResult=" + mCreateRuleResult.msg);//TODO
+                        Logger.e(TAG,"mCreateRuleResult=" + mCreateRuleResult.code);
+                        ToastUtil.showToast(AddControlRuleActivity.this, "mCreateRuleResult=" + mCreateRuleResult.msg);//
+//                        finish();
                     }
                 });
             }
@@ -143,7 +183,8 @@ public class AddControlRuleActivity extends AppCompatActivity {
         ib_add_term = (ImageButton) findViewById(R.id.ib_add_term);
         ib_add_result = (ImageButton) findViewById(R.id.ib_add_result);
         lv_term = (ListView) findViewById(R.id.lv_term);
-        lv_control = (ListView) findViewById(R.id.lv_control);
+        lv_control_actioncmd = (ListView) findViewById(R.id.lv_control_actioncmd);
+        lv_control_actionnotify = (ListView) findViewById(R.id.lv_control_actionnotify);
 
         tv_no_data1 = (TextView) findViewById(R.id.tv_no_data1);
         tv_no_data2 = (TextView) findViewById(R.id.tv_no_data2);
@@ -163,10 +204,19 @@ public class AddControlRuleActivity extends AppCompatActivity {
             }
         });
 
-        termAdapter = new TermAdapter(getApplicationContext(), mRuleconditionList);
-        lv_term.setAdapter(termAdapter);
-        resultAdapter = new ResultAdapter(getApplicationContext(), mRuleresultList);
-        lv_control.setAdapter(resultAdapter);
+//        termAdapter = new TermAdapter(getApplicationContext(), mRuleconditionList);
+//        lv_term.setAdapter(termAdapter);
+        //执行条件
+        termTopAdapter = new TermTopAdapter(getApplicationContext(), mScheduleList);
+        lv_term.setAdapter(termTopAdapter);
+        termBottomAdapternew = new TermBottomAdapter(getApplicationContext(), mConditionList);
+        lv_term_time.setAdapter(termBottomAdapternew);
+
+        //执行结果
+        resultTopAdapter = new ResultTopAdapter(getApplicationContext(), mActioncmdList);
+        lv_control_actioncmd.setAdapter(resultTopAdapter);
+        resultBottomAdapter = new ResultBottomAdapter(getApplicationContext(), mActionnotify);
+        lv_control_actionnotify.setAdapter(resultBottomAdapter);
     }
 
     private void onFabPressed(Class activity) {
@@ -212,8 +262,6 @@ public class AddControlRuleActivity extends AppCompatActivity {
             ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
-
-//                convertView = inflater.inflate(R.layout.item_term, null);
                 convertView = inflater.inflate(R.layout.item_rulecondition, null);
                 //通过上面layout得到的view来获取里面的具体控件
                 holder.lv_top = (ListView) convertView.findViewById(R.id.lv_itemtop);
@@ -222,26 +270,27 @@ public class AddControlRuleActivity extends AppCompatActivity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.lv_top.setAdapter(new TermTopAdapter(mContext,mTermsList.get(position).schedule));
+            holder.lv_top.setAdapter(new TermTopAdapter(mContext, mTermsList.get(position).schedule));
             //根据innerlistview的高度机损parentlistview item的高度
             setListViewHeightBasedOnChildren(holder.lv_top);
-            holder.lv_bottom.setAdapter(new TermBottomAdapter(mContext,mTermsList.get(position).condition));
+            holder.lv_bottom.setAdapter(new TermBottomAdapter(mContext, mTermsList.get(position).condition));
             //根据innerlistview的高度机损parentlistview item的高度
             setListViewHeightBasedOnChildren(holder.lv_bottom);
             return convertView;
         }
 
         class ViewHolder {
-            private ListView lv_top,lv_bottom;
+            private ListView lv_top, lv_bottom;
         }
     }
-    private class TermTopAdapter extends BaseAdapter {
+
+    private class TermTopAdapter extends BaseAdapter {//时间
 
         private LayoutInflater inflater;//这个一定要懂它的用法及作用
         private Context mContext;
-        private  List<Schedule> mTopTermsList;
+        private List<Schedule> mTopTermsList;
 
-        private TermTopAdapter(Context context,  List<Schedule> termsTopList) {
+        private TermTopAdapter(Context context, List<Schedule> termsTopList) {
             this.mContext = context;
             this.mTopTermsList = termsTopList;
             this.inflater = LayoutInflater.from(context);
@@ -276,12 +325,16 @@ public class AddControlRuleActivity extends AppCompatActivity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-//            holder.tvStr.setText(mTermsList.get(position));
+            final Schedule schedule = mTopTermsList.get(position);
+            holder.tvStr.setText(schedule.hour + ":" + schedule.minute + " " + schedule.weekdays);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO
-                    ToastUtil.showToast(AddControlRuleActivity.this, "删除" + position);
+                    mTopTermsList.remove(schedule);
+                    if(mScheduleList.size()>0 || mConditionList.size()>0){
+                        tv_no_data1.setVisibility(View.GONE);
+                    }
+                    notifyDataSetChanged();
                 }
             });
             return convertView;
@@ -292,13 +345,14 @@ public class AddControlRuleActivity extends AppCompatActivity {
             private ImageButton imageView;
         }
     }
+
     private class TermBottomAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;//这个一定要懂它的用法及作用
         private Context mContext;
-        private  List<Condition> mTermsBottomList;
+        private List<Condition> mTermsBottomList;
 
-        private TermBottomAdapter(Context context,  List<Condition> termsBottomList) {
+        private TermBottomAdapter(Context context, List<Condition> termsBottomList) {
             this.mContext = context;
             this.mTermsBottomList = termsBottomList;
             this.inflater = LayoutInflater.from(context);
@@ -333,12 +387,16 @@ public class AddControlRuleActivity extends AppCompatActivity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-//            holder.tvStr.setText(mTermsList.get(position));
+            final Condition condition = mTermsBottomList.get(position);
+            holder.tvStr.setText(condition.ruleconditionname + " " + condition.operator + "" + condition.rightValue);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO
-                    ToastUtil.showToast(AddControlRuleActivity.this, "删除" + position);
+                    mTermsBottomList.remove(condition);
+                    if(mScheduleList.size()>0 || mConditionList.size()>0){
+                        tv_no_data1.setVisibility(View.GONE);
+                    }
+                    notifyDataSetChanged();
                 }
             });
             return convertView;
@@ -349,6 +407,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
             private ImageButton imageView;
         }
     }
+
     /**
      * 执行结果
      */
@@ -356,7 +415,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
 
         private LayoutInflater inflater;//这个一定要懂它的用法及作用
         private Context mContext;
-        private  List<Ruleresult> mResultsList;
+        private List<Ruleresult> mResultsList;
 
         private ResultAdapter(Context context, List<Ruleresult> resultsList) {
             this.mContext = context;
@@ -394,24 +453,25 @@ public class AddControlRuleActivity extends AppCompatActivity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.lv_top.setAdapter(new ResultTopAdapter(mContext,mResultsList.get(position).actioncmd));
+            holder.lv_top.setAdapter(new ResultTopAdapter(mContext, mResultsList.get(position).actioncmd));
             //根据innerlistview的高度机损parentlistview item的高度
             setListViewHeightBasedOnChildren(holder.lv_top);
-            holder.lv_bottom.setAdapter(new ResultBottomAdapter(mContext,mResultsList.get(position).actionnotify));
+            holder.lv_bottom.setAdapter(new ResultBottomAdapter(mContext, mResultsList.get(position).actionnotify));
             //根据innerlistview的高度机损parentlistview item的高度
             setListViewHeightBasedOnChildren(holder.lv_bottom);
             return convertView;
         }
 
         class ViewHolder {
-            private ListView lv_top,lv_bottom;
+            private ListView lv_top, lv_bottom;
         }
     }
+
     private class ResultTopAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;//这个一定要懂它的用法及作用
         private Context mContext;
-        private  List<Actioncmd> mResultsList;
+        private List<Actioncmd> mResultsList;
 
         private ResultTopAdapter(Context context, List<Actioncmd> resultsList) {
             this.mContext = context;
@@ -448,12 +508,16 @@ public class AddControlRuleActivity extends AppCompatActivity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-//            holder.tvStr.setText(mResultsList.get(position));
+            final Actioncmd actioncmd = mResultsList.get(position);
+            holder.tvStr.setText(actioncmd.actioncmdfield.get(0).cmd+" "+actioncmd.actioncmdfield.get(0).paralist);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO
-                    ToastUtil.showToast(AddControlRuleActivity.this, "删除" + position);
+                    mResultsList.remove(actioncmd);
+                    if(mActioncmdList.size()>0 || mActionnotify.size()>0){
+                        tv_no_data2.setVisibility(View.GONE);
+                    }
+                    notifyDataSetChanged();
                 }
             });
             return convertView;
@@ -464,13 +528,14 @@ public class AddControlRuleActivity extends AppCompatActivity {
             private ImageButton imageView;
         }
     }
+
     private class ResultBottomAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;//这个一定要懂它的用法及作用
         private Context mContext;
-        private  List<Actionnotify> mResultsList;
+        private List<Actionnotify> mResultsList;
 
-        private ResultBottomAdapter(Context context,List<Actionnotify> resultsList) {
+        private ResultBottomAdapter(Context context, List<Actionnotify> resultsList) {
             this.mContext = context;
             this.mResultsList = resultsList;
             this.inflater = LayoutInflater.from(context);
@@ -505,12 +570,22 @@ public class AddControlRuleActivity extends AppCompatActivity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-//            holder.tvStr.setText(mResultsList.get(position));
+
+            final Actionnotify actionnotify = mResultsList.get(position);
+            if(TextUtils.isEmpty(actionnotify.msisdn)){
+                holder.tvStr.setText(actionnotify.emailaddress+" "+actionnotify.content);
+            }else{
+                holder.tvStr.setText(actionnotify.msisdn+" "+actionnotify.content);
+            }
+
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO
-                    ToastUtil.showToast(AddControlRuleActivity.this, "删除" + position);
+                    mResultsList.remove(actionnotify);
+                    if(mActioncmdList.size()>0 || mActionnotify.size()>0){
+                        tv_no_data2.setVisibility(View.GONE);
+                    }
+                    notifyDataSetChanged();
                 }
             });
             return convertView;
@@ -521,6 +596,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
             private ImageButton imageView;
         }
     }
+
     /**
      * @param listView 此方法是本次listview嵌套listview的核心方法：计算parentlistview item的高度。
      *                 如果不使用此方法，无论innerlistview有多少个item，则只会显示一个item。

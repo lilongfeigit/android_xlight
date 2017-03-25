@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.result.AppNotifyActivity;
@@ -17,6 +18,8 @@ import com.umarbhutta.xlightcompanion.control.activity.result.EmailActivity;
 import com.umarbhutta.xlightcompanion.control.activity.result.SelectScenarioActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.ControlResultListAdapter;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
+import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +41,18 @@ public class ControlRuseltActivity extends AppCompatActivity {
     ControlResultListAdapter controlResultListAdapter;
     RecyclerView settingRecyclerView;
 
+    private Actionnotify mActionnotify;
+    private Actioncmd mActioncmd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
         //hide nav bar
         getSupportActionBar().hide();
+        ((App)getApplicationContext()).setActivity(this);
+        mActionnotify = new Actionnotify();
+        mActioncmd = new Actioncmd();
 
         settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
         controlResultListAdapter = new ControlResultListAdapter(this, settingStr,imgInter);
@@ -107,6 +116,8 @@ public class ControlRuseltActivity extends AppCompatActivity {
 
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(this, activity);
+        intent.putExtra("MACTIONNOTIFY",mActionnotify);
+        intent.putExtra("MACTIONCMD",mActioncmd);
         startActivity(intent);
     }
 
@@ -116,4 +127,5 @@ public class ControlRuseltActivity extends AppCompatActivity {
     private void logout() {
         UserUtils.saveUserInfo(getApplicationContext(), null);
     }
+
 }

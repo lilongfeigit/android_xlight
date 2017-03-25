@@ -1,34 +1,31 @@
 package com.umarbhutta.xlightcompanion.control.activity.result;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.SDK.xltDevice;
-import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.ControlFragment;
+import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
+import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
+import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
-import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
 
 import java.util.ArrayList;
 
@@ -39,6 +36,10 @@ import java.util.ArrayList;
 
 public class DeviceControlSelectActivity extends AppCompatActivity {
     private TextView tvTitle;
+    private Actioncmd mActioncmd;
+
+    private Rows curMainRows;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +49,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
         //hide nav bar
         getSupportActionBar().hide();
 
-        scenarioDropdown = new ArrayList<>(ScenarioFragment.name);
-        scenarioDropdown.add(0, "None");
+        mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
 
         powerSwitch = (Switch) findViewById(R.id.powerSwitch);
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
@@ -85,48 +85,19 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("客厅灯");
 
-        scenarioSpinner = (Spinner) findViewById(R.id.scenarioSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> scenarioAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, scenarioDropdown);
-        // Specify the layout to use when the list of choices appears
-        scenarioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the scenarioAdapter to the spinner
-        scenarioSpinner.setAdapter(scenarioAdapter);
+        powerSwitch.setChecked(true);
+        brightnessSeekBar.setProgress(20);
+        cctSeekBar.setProgress(10);
 
-        // Just for demo. In real world, should get from DMI
-        MainActivity.m_mainDevice.setDeviceName(DEFAULT_LAMP_TEXT);
+        spinner = (ImageView) findViewById(R.id.spinner);
 
-        powerSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-        brightnessSeekBar.setProgress(MainActivity.m_mainDevice.getBrightness());
-        cctSeekBar.setProgress(MainActivity.m_mainDevice.getCCT() - 2700);
-
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
-            IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
-            intentFilter.setPriority(3);
-            registerReceiver(m_StatusReceiver, intentFilter);
-        }
-
-        if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
-            m_handlerControl = new Handler() {
-                public void handleMessage(Message msg) {
-                    int intValue = msg.getData().getInt("State", -255);
-                    if (intValue != -255) {
-                        powerSwitch.setChecked(intValue > 0);
-                    }
-
-                    intValue = msg.getData().getInt("BR", -255);
-                    if (intValue != -255) {
-                        brightnessSeekBar.setProgress(intValue);
-                    }
-
-                    intValue = msg.getData().getInt("CCT", -255);
-                    if (intValue != -255) {
-                        cctSeekBar.setProgress(intValue - 2700);
-                    }
-                }
-            };
-            MainActivity.m_mainDevice.addDeviceEventHandler(m_handlerControl);
-        }
+        spinner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DeviceControlSelectActivity.this, DialogRowNameActivity.class);
+                startActivityForResult(intent,29);
+            }
+        });
 
         powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -159,7 +130,6 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.e(TAG, "The brightness value is " + seekBar.getProgress());
                 //ParticleAdapter.JSONCommandBrightness(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress());
-                MainActivity.m_mainDevice.ChangeBrightness(seekBar.getProgress());
             }
         });
 
@@ -175,35 +145,6 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
-                //ParticleAdapter.JSONCommandCCT(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress()+2700);
-                MainActivity.m_mainDevice.ChangeCCT(seekBar.getProgress() + 2700);
-            }
-        });
-
-        scenarioSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getItemAtPosition(position).toString() == "None") {
-                    //scenarioNoneLL.animate().alpha(1).setDuration(600).start();
-
-                    //enable all views below spinner
-                    disableEnableControls(true);
-                } else {
-                    //if anything but "None" is selected, fade scenarioNoneLL out
-                    //scenarioNoneLL.animate().alpha(0).setDuration(500).start();
-
-                    //disable all views below spinner
-                    disableEnableControls(false);
-
-                    //ParticleAdapter.JSONCommandScenario(ParticleAdapter.DEFAULT_DEVICE_ID, position);
-                    //position passed into above function corresponds to the scenarioId i.e. s1, s2, s3 to trigger
-                    MainActivity.m_mainDevice.ChangeScenario(position);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -229,11 +170,19 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             }
         });
         initScenario();//初始化场景
+        getMainDevice();//获取主设备
+    }
+
+    private void getMainDevice() {//获取主设备
+        for (int i = 0; i < GlanceFragment.deviceList.size(); i++) {
+            if (GlanceFragment.deviceList.get(i).maindevice == 1) {//是主设备
+                curMainRows = GlanceFragment.deviceList.get(i);
+            }
+        }
     }
 
     private static final String TAG = ControlFragment.class.getSimpleName();
 
-    private static final String DEFAULT_LAMP_TEXT = "LIVING ROOM";
     private static final String RINGALL_TEXT = "ALL RINGS";
     private static final String RING1_TEXT = "RING 1";
     private static final String RING2_TEXT = "RING 2";
@@ -243,7 +192,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
     private SeekBar brightnessSeekBar;
     private SeekBar cctSeekBar;
     private TextView colorTextView;
-    private Spinner scenarioSpinner;
+    private ImageView spinner;
     private LinearLayout scenarioNoneLL;
     private ToggleButton ring1Button, ring2Button, ring3Button;
     private TextView deviceRingLabel, powerLabel, brightnessLabel, cctLabel, colorLabel;
@@ -255,54 +204,13 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
 
     private LayoutInflater mInflater;
 
-    private ArrayList<String> scenarioDropdown;
-
-    private String colorHex;
     private boolean state = false;
     boolean ring1 = false, ring2 = false, ring3 = false;
 
-    private Handler m_handlerControl;
-
-    private class MyStatusReceiver extends StatusReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            powerSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-            brightnessSeekBar.setProgress(MainActivity.m_mainDevice.getBrightness());
-            cctSeekBar.setProgress(MainActivity.m_mainDevice.getCCT() - 2700);
-        }
-    }
-
-    private final DeviceControlSelectActivity.MyStatusReceiver m_StatusReceiver = new DeviceControlSelectActivity.MyStatusReceiver();
 
     @Override
     public void onDestroy() {
-        MainActivity.m_mainDevice.removeDeviceEventHandler(m_handlerControl);
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
-            unregisterReceiver(m_StatusReceiver);
-        }
         super.onDestroy();
-    }
-
-
-    private void disableEnableControls(boolean isEnabled) {
-        powerSwitch.setEnabled(isEnabled);
-        colorTextView.setEnabled(isEnabled);
-        brightnessSeekBar.setEnabled(isEnabled);
-        cctSeekBar.setEnabled(isEnabled);
-
-        int selectColor = R.color.colorAccent, allLabels = R.color.textColorPrimary;
-        if (isEnabled) {
-            selectColor = R.color.colorAccent;
-            allLabels = R.color.textColorPrimary;
-        } else {
-            selectColor = R.color.colorDisabled;
-            allLabels = R.color.colorDisabled;
-        }
-        colorTextView.setTextColor(ContextCompat.getColor(this, selectColor));
-        powerLabel.setTextColor(ContextCompat.getColor(this, allLabels));
-        brightnessLabel.setTextColor(ContextCompat.getColor(this, allLabels));
-        cctLabel.setTextColor(ContextCompat.getColor(this, allLabels));
-        colorLabel.setTextColor(ContextCompat.getColor(this, allLabels));
     }
 
     private void updateDeviceRingLabel() {
@@ -339,23 +247,80 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
 
         deviceRingLabel.setText(label);
     }
+
     private void onFabPressed() {
         Intent intent = new Intent(DeviceControlSelectActivity.this, ColorSelectActivity.class);
         startActivityForResult(intent, 1);
     }
+
+    public SceneListResult mDeviceInfoResult;
+
     private void initScenario() {
 
-        for (int i = 0; i < 4; i++) {
-            View view;
-            if(i==0){
-                view = mInflater.inflate(R.layout.add_scenario_zdy_item,
-                        linear, false);
-            }else{
-                view = mInflater.inflate(R.layout.add_scenario_item,
-                        linear, false);
+        RequestSceneListInfo.getInstance().getSceneListInfo(DeviceControlSelectActivity.this, new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
+            @Override
+            public void onRequestFirstPageInfoSuccess(final SceneListResult deviceInfoResult) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDeviceInfoResult = deviceInfoResult;
+                        for (int i = 0; i < mDeviceInfoResult.rows.size(); i++) {
+                            View view;
+                            if (i == 0) {
+                                view = mInflater.inflate(R.layout.add_scenario_zdy_item,
+                                        linear, false);
+                            } else {
+                                view = mInflater.inflate(R.layout.add_scenario_item,
+                                        linear, false);
+                                TextView sceneName = (TextView) view.findViewById(R.id.sceneName);
+                                sceneName.setText(mDeviceInfoResult.rows.get(i).scenarioname);
+                            }
+                            linear.addView(view);
+                        }
+                    }
+                });
             }
 
-            linear.addView(view);
+            @Override
+            public void onRequestFirstPageInfoFail(int code, final String errMsg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(DeviceControlSelectActivity.this, errMsg);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode){
+            case 35:
+                curMainRows = (Rows) data.getSerializableExtra("ROW");
+                mActioncmd.devicenodeId = curMainRows.id;
+                Actioncmdfield actioncmdfield = new Actioncmdfield();
+                actioncmdfield.cmd=curMainRows.devicename;
+                actioncmdfield.paralist = "{"+"亮度"+":"+curMainRows.brightness+",色温"+":"+curMainRows.devicenodes+",颜色"+":"+curMainRows.cct+",场景"+":"+curMainRows.scenarioname+"}";
+                if( mActioncmd.actioncmdfield==null){
+                    mActioncmd.actioncmdfield = new ArrayList<Actioncmdfield>();
+                }
+                mActioncmd.actioncmdfield.add(actioncmdfield);
+                updateViews();
+                break;
         }
+    }
+
+    private void updateViews() {
+
+        cctSeekBar.setMax(6500 - 2700);
+        scenarioNoneLL.setAlpha(1);
+        tvTitle.setText("客厅灯");
+
+        powerSwitch.setChecked(true);
+        brightnessSeekBar.setProgress(20);
+        cctSeekBar.setProgress(10);
+
     }
 }

@@ -8,10 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
+import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+
+import java.util.ArrayList;
 
 /**
  * Created by Umar Bhutta.
@@ -20,10 +26,12 @@ public class ScenarioSelectListAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private SceneListResult mSceneListResult;
+    private Actioncmd mActioncmd;
 
-    public ScenarioSelectListAdapter(Context context, SceneListResult mSceneListResult) {
+    public ScenarioSelectListAdapter(Context context, SceneListResult mSceneListResult,Actioncmd mActioncmd) {
         this.mSceneListResult = mSceneListResult;
         this.mContext = context;
+        this.mActioncmd = mActioncmd;
     }
 
     @Override
@@ -82,11 +90,16 @@ public class ScenarioSelectListAdapter extends RecyclerView.Adapter {
     }
 
     private void onFabPressed(View view, Rows infos) {
-//        Intent intent = new Intent(mContext, AddScenarioNewActivity.class);
-//        intent.putExtra("from", "list");
-//        intent.putExtra("infos", infos);
-//        mContext.startActivity(intent);
-        ToastUtil.showToast(mContext,"选择了该场景");
+        mActioncmd.devicenodeId = infos.id;
+        Actioncmdfield actioncmdfield = new Actioncmdfield();
+        actioncmdfield.cmd=infos.scenarioname;
+        actioncmdfield.paralist = "{"+"场景"+":"+infos.scenarioname+"}";
+        if( mActioncmd.actioncmdfield==null){
+            mActioncmd.actioncmdfield = new ArrayList<Actioncmdfield>();
+        }
+        mActioncmd.actioncmdfield.add(actioncmdfield);
+        AddControlRuleActivity.mActioncmdList.add(mActioncmd);
+        ((App)mContext.getApplicationContext()).finishActivity();
     }
 
 }

@@ -54,7 +54,9 @@ public abstract class BaseHttp {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                okOnResponse(response.body().string());
+                String result = response.body().string();
+                Logger.i("result = " + result);
+                okOnResponse(result);
             }
         });
     }

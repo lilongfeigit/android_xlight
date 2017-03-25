@@ -97,7 +97,11 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
             // 点击事件 跳转到编辑设备页面
-            onFabPressed(EditDeviceActivity.class);
+            Intent intent = new Intent(mActivity, EditDeviceActivity.class);
+            intent.putExtra("info", deviceList.get(mPositon));
+            mActivity.startActivity(intent);
+
+
         }
 
         @Override
@@ -108,11 +112,6 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
             }
             return true;
         }
-    }
-
-    private void onFabPressed(Class activity) {
-        Intent intent = new Intent(mActivity, activity);
-        mActivity.startActivity(intent);
     }
 
     private OnSwitchStateChangeListener mOnSwitchStateChangeListener;

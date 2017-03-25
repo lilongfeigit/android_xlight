@@ -107,6 +107,13 @@ public class GlanceFragment extends Fragment {
 
     private Dialog mSelectDialog = null;
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getBaseInfos();
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -355,6 +362,7 @@ public class GlanceFragment extends Fragment {
 
             List<Rows> devices = (List<Rows>) SharedPreferencesUtils.getObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, null);
             if (null != devices && devices.size() > 0) {
+                deviceList.clear();
                 deviceList.addAll(devices);
             }
             return;
@@ -387,6 +395,7 @@ public class GlanceFragment extends Fragment {
                     public void run() {
 
                         List<Rows> devices = mDeviceInfoResult.rows;
+                        deviceList.clear();
                         deviceList.addAll(devices);
                         devicesListAdapter.notifyDataSetChanged();
                         if (null != deviceList && deviceList.size() > 0) {

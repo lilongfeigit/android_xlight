@@ -7,18 +7,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -29,17 +27,26 @@ import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.ControlFragment;
-import com.umarbhutta.xlightcompanion.scenario.AddScenarioActivity;
+import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
+import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import me.priyesh.chroma.ChromaDialog;
-import me.priyesh.chroma.ColorMode;
-import me.priyesh.chroma.ColorSelectListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -48,14 +55,55 @@ import me.priyesh.chroma.ColorSelectListener;
 
 public class EditDeviceActivity extends AppCompatActivity {
     private TextView tvTitle;
+    public SceneListResult mDeviceInfoResult;
+    private Rows deviceInfo;
+    private xltDevice mDevice;
+    private int red = 130;
+    private int green = 255;
+    private int blue = 0;
+    private EditText mscenarioName;
+
+    private static final String TAG = ControlFragment.class.getSimpleName();
+
+    private static final String DEFAULT_LAMP_TEXT = "LIVING ROOM";
+    private static final String RINGALL_TEXT = "ALL RINGS";
+    private static final String RING1_TEXT = "RING 1";
+    private static final String RING2_TEXT = "RING 2";
+    private static final String RING3_TEXT = "RING 3";
+
+    private Switch powerSwitch;
+    private SeekBar brightnessSeekBar;
+    private SeekBar cctSeekBar;
+    private TextView colorTextView;
+    private Spinner scenarioSpinner;
+    private LinearLayout scenarioNoneLL;
+    private ToggleButton ring1Button, ring2Button, ring3Button;
+    private TextView deviceRingLabel, powerLabel, brightnessLabel, cctLabel, colorLabel;
+    private ImageView lightImageView;
+
+    private LinearLayout llBack;
+    private TextView btnSure;
+    private LinearLayout linear;
+
+    private LayoutInflater mInflater;
+
+    private ArrayList<String> scenarioDropdown;
+
+    private String colorHex;
+    private boolean state = false;
+    boolean ring1 = false, ring2 = false, ring3 = false;
+
+    private Handler m_handlerControl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_control);
         mInflater = LayoutInflater.from(this);
-
         //hide nav bar
         getSupportActionBar().hide();
+
+        deviceInfo = (Rows) getIntent().getSerializableExtra("info");
 
         scenarioDropdown = new ArrayList<>(ScenarioFragment.name);
         scenarioDropdown.add(0, "None");
@@ -88,34 +136,39 @@ public class EditDeviceActivity extends AppCompatActivity {
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 确定提交按钮
+                editDeViceInfo();
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("编辑设备");
+        mscenarioName = (EditText) findViewById(R.id.scenarioName);
 
         scenarioSpinner = (Spinner) findViewById(R.id.scenarioSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> scenarioAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, scenarioDropdown);
-        // Specify the layout to use when the list of choices appears
         scenarioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the scenarioAdapter to the spinner
         scenarioSpinner.setAdapter(scenarioAdapter);
 
-        // Just for demo. In real world, should get from DMI
-        MainActivity.m_mainDevice.setDeviceName(DEFAULT_LAMP_TEXT);
 
-        powerSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-        brightnessSeekBar.setProgress(MainActivity.m_mainDevice.getBrightness());
-        cctSeekBar.setProgress(MainActivity.m_mainDevice.getCCT() - 2700);
+        mDevice = new xltDevice();
+        mDevice.Init(this);
+        mDevice.setDeviceID(deviceInfo.id);
+        mDevice.setDeviceName("" + deviceInfo.type);
 
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
+
+//        MainActivity.m_mainDevice.setDeviceName(DEFAULT_LAMP_TEXT);
+
+        mscenarioName.setText(deviceInfo.devicename);
+        powerSwitch.setChecked(mDevice.getState() > 0);
+        brightnessSeekBar.setProgress(mDevice.getBrightness());
+        cctSeekBar.setProgress(mDevice.getCCT() - 2700);
+
+        if (mDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
             intentFilter.setPriority(3);
             registerReceiver(m_StatusReceiver, intentFilter);
         }
 
-        if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
+        if (mDevice.getEnableEventSendMessage()) {
             m_handlerControl = new Handler() {
                 public void handleMessage(Message msg) {
                     int intValue = msg.getData().getInt("State", -255);
@@ -134,7 +187,7 @@ public class EditDeviceActivity extends AppCompatActivity {
                     }
                 }
             };
-            MainActivity.m_mainDevice.addDeviceEventHandler(m_handlerControl);
+            mDevice.addDeviceEventHandler(m_handlerControl);
         }
 
         powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -144,7 +197,7 @@ public class EditDeviceActivity extends AppCompatActivity {
                 state = isChecked;
                 //ParticleAdapter.JSONCommandPower(ParticleAdapter.DEFAULT_DEVICE_ID, state);
                 //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, state);
-                MainActivity.m_mainDevice.PowerSwitch(state);
+                mDevice.PowerSwitch(state);
             }
         });
 
@@ -212,6 +265,9 @@ public class EditDeviceActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * 亮度
+         */
         brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -225,10 +281,13 @@ public class EditDeviceActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.e(TAG, "The brightness value is " + seekBar.getProgress());
                 //ParticleAdapter.JSONCommandBrightness(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress());
-                MainActivity.m_mainDevice.ChangeBrightness(seekBar.getProgress());
+                mDevice.ChangeBrightness(seekBar.getProgress());
             }
         });
 
+        /**
+         *
+         */
         cctSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -242,7 +301,7 @@ public class EditDeviceActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 //ParticleAdapter.JSONCommandCCT(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress()+2700);
-                MainActivity.m_mainDevice.ChangeCCT(seekBar.getProgress() + 2700);
+                mDevice.ChangeCCT(seekBar.getProgress() + 2700);
             }
         });
 
@@ -263,7 +322,7 @@ public class EditDeviceActivity extends AppCompatActivity {
 
                     //ParticleAdapter.JSONCommandScenario(ParticleAdapter.DEFAULT_DEVICE_ID, position);
                     //position passed into above function corresponds to the scenarioId i.e. s1, s2, s3 to trigger
-                    MainActivity.m_mainDevice.ChangeScenario(position);
+                    mDevice.ChangeScenario(position);
                 }
             }
 
@@ -297,44 +356,12 @@ public class EditDeviceActivity extends AppCompatActivity {
         initScenario();//初始化场景
     }
 
-    private static final String TAG = ControlFragment.class.getSimpleName();
-
-    private static final String DEFAULT_LAMP_TEXT = "LIVING ROOM";
-    private static final String RINGALL_TEXT = "ALL RINGS";
-    private static final String RING1_TEXT = "RING 1";
-    private static final String RING2_TEXT = "RING 2";
-    private static final String RING3_TEXT = "RING 3";
-
-    private Switch powerSwitch;
-    private SeekBar brightnessSeekBar;
-    private SeekBar cctSeekBar;
-    private TextView colorTextView;
-    private Spinner scenarioSpinner;
-    private LinearLayout scenarioNoneLL;
-    private ToggleButton ring1Button, ring2Button, ring3Button;
-    private TextView deviceRingLabel, powerLabel, brightnessLabel, cctLabel, colorLabel;
-    private ImageView lightImageView;
-
-    private LinearLayout llBack;
-    private TextView btnSure;
-    private LinearLayout linear;
-
-    private LayoutInflater mInflater;
-
-    private ArrayList<String> scenarioDropdown;
-
-    private String colorHex;
-    private boolean state = false;
-    boolean ring1 = false, ring2 = false, ring3 = false;
-
-    private Handler m_handlerControl;
-
     private class MyStatusReceiver extends StatusReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            powerSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-            brightnessSeekBar.setProgress(MainActivity.m_mainDevice.getBrightness());
-            cctSeekBar.setProgress(MainActivity.m_mainDevice.getCCT() - 2700);
+            powerSwitch.setChecked(mDevice.getState() > 0);
+            brightnessSeekBar.setProgress(mDevice.getBrightness());
+            cctSeekBar.setProgress(mDevice.getCCT() - 2700);
         }
     }
 
@@ -342,8 +369,8 @@ public class EditDeviceActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        MainActivity.m_mainDevice.removeDeviceEventHandler(m_handlerControl);
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
+        mDevice.removeDeviceEventHandler(m_handlerControl);
+        if (mDevice.getEnableEventBroadcast()) {
             unregisterReceiver(m_StatusReceiver);
         }
         super.onDestroy();
@@ -372,7 +399,7 @@ public class EditDeviceActivity extends AppCompatActivity {
     }
 
     private void updateDeviceRingLabel() {
-        String label = MainActivity.m_mainDevice.getDeviceName();
+        String label = mDevice.getDeviceName();
 
         if (ring1 && ring2 && ring3) {
             label += ": " + RINGALL_TEXT;
@@ -405,23 +432,228 @@ public class EditDeviceActivity extends AppCompatActivity {
 
         deviceRingLabel.setText(label);
     }
+
     private void onFabPressed() {
         Intent intent = new Intent(EditDeviceActivity.this, ColorSelectActivity.class);
         startActivityForResult(intent, 1);
     }
-    private void initScenario() {
 
-        for (int i = 0; i < 4; i++) {
-            View view;
-            if(i==0){
-                view = mInflater.inflate(R.layout.add_scenario_zdy_item,
-                        linear, false);
-            }else{
-                view = mInflater.inflate(R.layout.add_scenario_item,
-                        linear, false);
+    private void initScenario() {
+        RequestSceneListInfo.getInstance().getSceneListInfo(this, new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
+            @Override
+            public void onRequestFirstPageInfoSuccess(final SceneListResult mDeviceInfoResult) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EditDeviceActivity.this.mDeviceInfoResult = mDeviceInfoResult;
+                        initList();
+                    }
+                });
             }
 
+            @Override
+            public void onRequestFirstPageInfoFail(int code, final String errMsg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(EditDeviceActivity.this, "" + errMsg);
+                    }
+                });
+            }
+        });
+    }
+
+    private List<View> viewList = new ArrayList<View>();
+    private List<TextView> textViews = new ArrayList<TextView>();
+
+    private void initList() {
+        for (int i = 0; i < mDeviceInfoResult.rows.size() + 1; i++) {
+            View view;
+            TextView textView;
+            if (i == 0) {
+                view = mInflater.inflate(R.layout.add_scenario_zdy_item,
+                        linear, false);
+                textView = (TextView) view.findViewById(R.id.textView);
+                view.setBackgroundResource(R.drawable.add_scenario_blue_bg);
+            } else {
+                Rows info = mDeviceInfoResult.rows.get(i - 1);
+                view = mInflater.inflate(R.layout.add_scenario_item,
+                        linear, false);
+                view.setBackgroundResource(R.drawable.add_scenario_bg);
+                textView = (TextView) view.findViewById(R.id.sceneName);
+                textView.setText(info.scenarioname);
+            }
+
+            viewList.add(view);
+            textViews.add(textView);
+            view.setTag(i);
+            view.setOnClickListener(mSceneClick);
             linear.addView(view);
         }
     }
+
+    private Rows curSene = null;
+
+    View.OnClickListener mSceneClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int index = (int) v.getTag();
+            Rows sceneInfo = mDeviceInfoResult.rows.get(index - 1);
+
+            if (0 == index) {
+                curSene = null;
+            } else {
+                curSene = sceneInfo;
+            }
+
+            updateSceneInfo(sceneInfo);
+
+            for (int i = 0; i < viewList.size(); i++) {
+                View view = viewList.get(i);
+                TextView textView = textViews.get(i);
+                view.setBackgroundResource(R.drawable.add_scenario_bg);
+                textView.setTextColor(getResources().getColor(R.color.black));
+            }
+
+            View mView = viewList.get(index);
+            mView.setBackgroundResource(R.drawable.add_scenario_blue_bg);
+            TextView mText = textViews.get(index);
+            mText.setTextColor(getResources().getColor(R.color.white));
+        }
+    };
+
+    /**
+     * 选择了某一个场景
+     *
+     * @param sceneInfo
+     */
+    private void updateSceneInfo(Rows sceneInfo) {
+        if (null == sceneInfo) {
+            return;
+        }
+        powerSwitch.setChecked((1 == sceneInfo.ison) ? true : false);
+        brightnessSeekBar.setProgress(sceneInfo.brightness);
+        cctSeekBar.setProgress(sceneInfo.cct - 2700);
+    }
+
+    /**
+     * 提交编辑设备
+     */
+    private void editDeViceInfo() {
+        if (!NetworkUtils.isNetworkAvaliable(this)) {
+            ToastUtil.showToast(this, R.string.net_error);
+            return;
+        }
+
+        String deviceName = mscenarioName.getText().toString();
+        if (TextUtils.isEmpty(deviceName)) {
+            ToastUtil.showToast(this, "请设置灯的名称");
+            return;
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("ison", powerSwitch.isChecked() ? 1 : 0);
+            jsonObject.put("userId", UserUtils.getUserInfo(this).getId());
+            jsonObject.put("devicename", deviceName);
+
+            JSONArray devicenodes = new JSONArray();
+            jsonObject.put("devicenodes", devicenodes);
+
+            JSONObject devicenodesJSONObject = new JSONObject();
+            devicenodes.put(devicenodesJSONObject);
+
+            devicenodesJSONObject.put("deviceId", deviceInfo.id);
+            devicenodesJSONObject.put("devicenodename", deviceName);
+            devicenodesJSONObject.put("ison", powerSwitch.isChecked() ? 1 : 0);
+            if (null == curSene) {
+                devicenodesJSONObject.put("scenarioId", 0);  //TODO 场景id
+            } else {
+                devicenodesJSONObject.put("scenarioId", curSene.id);  //TODO 场景id
+            }
+            JSONArray deviceringsArr = new JSONArray();
+            devicenodesJSONObject.put("devicerings", deviceringsArr);
+
+
+            for (int i = 0; i < 3; i++) {
+
+                JSONObject deviceringsObj = new JSONObject();
+                deviceringsArr.put(deviceringsObj);
+
+                deviceringsObj.put("ison", powerSwitch.isChecked() ? 1 : 0);
+                deviceringsObj.put("R", red);
+                deviceringsObj.put("G", green);
+                deviceringsObj.put("B", blue);
+                deviceringsObj.put("color", "rgb(" + red + "," + green + "," + blue + ")");
+                deviceringsObj.put("cct", cctSeekBar.getProgress() + 2700);
+                deviceringsObj.put("brightness", brightnessSeekBar.getProgress());
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_EDIT_DEVICE_INFO + deviceInfo.id + "?access_token=" + UserUtils.getUserInfo(this).getAccess_token(),
+                jsonObject.toString(), null, new HttpUtils.OnHttpRequestCallBack() {
+                    @Override
+                    public void onHttpRequestSuccess(Object result) {
+                        Logger.i("编辑成功 = " + result.toString());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setResult(0);
+                                EditDeviceActivity.this.finish();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onHttpRequestFail(int code, final String errMsg) {
+                        Logger.i("编辑失败 = " + errMsg);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtil.showToast(EditDeviceActivity.this, "编辑失败" + errMsg);
+
+                            }
+                        });
+                    }
+                });
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        int color = data.getIntExtra("color", -1);
+        if (-1 != color) {
+            red = (color & 0xff0000) >> 16;
+            green = (color & 0x00ff00) >> 8;
+            blue = (color & 0x0000ff);
+        }
+
+        colorTextView.setTextColor(Color.parseColor(toHexEncoding(color)));
+    }
+
+    public String toHexEncoding(int color) {
+        String R, G, B;
+        StringBuffer sb = new StringBuffer();
+        R = Integer.toHexString(Color.red(color));
+        G = Integer.toHexString(Color.green(color));
+        B = Integer.toHexString(Color.blue(color));
+        //判断获取到的R,G,B值的长度 如果长度等于1 给R,G,B值的前边添0
+        R = R.length() == 1 ? "0" + R : R;
+        G = G.length() == 1 ? "0" + G : G;
+        B = B.length() == 1 ? "0" + B : B;
+        sb.append("#");
+        sb.append(R);
+        sb.append(G);
+        sb.append(B);
+        return sb.toString();
+    }
+
 }

@@ -219,8 +219,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
+        
         int color = data.getIntExtra("color", -1);
         if (-1 != color) {
             red = (color & 0xff0000) >> 16;
@@ -229,9 +228,6 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         }
 
         colorTextView.setTextColor(Color.parseColor(toHexEncoding(color)));
-        circleIcon.setImageResource(Color.parseColor(toHexEncoding(color)));
-        circleIcon.setFillColorResource(Color.parseColor(toHexEncoding(color)));
-
     }
 
     public String toHexEncoding(int color) {
@@ -301,7 +297,6 @@ public class AddScenarioNewActivity extends AppCompatActivity {
      * 添加场景
      */
     private void addScence() {
-
 
         if (!UserUtils.isLogin(this)) {
             ToastUtil.showToast(this, getString(R.string.login_first));

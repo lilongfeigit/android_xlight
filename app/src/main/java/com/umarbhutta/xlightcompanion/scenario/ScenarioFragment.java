@@ -158,26 +158,30 @@ public class ScenarioFragment extends Fragment {
         RequestSceneListInfo.getInstance().getSceneListInfo(getActivity(), new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(final SceneListResult deviceInfoResult) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (null != deviceInfoResult && null != deviceInfoResult.rows && deviceInfoResult.rows.size() > 0) {
-                            mSceneList.clear();
-                            mSceneList.addAll(deviceInfoResult.rows);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (null != deviceInfoResult && null != deviceInfoResult.rows && deviceInfoResult.rows.size() > 0) {
+                                mSceneList.clear();
+                                mSceneList.addAll(deviceInfoResult.rows);
+                            }
+                            initList();
                         }
-                        initList();
-                    }
-                });
+                    });
+                }
             }
 
             @Override
             public void onRequestFirstPageInfoFail(int code, final String errMsg) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.showToast(getActivity(), "" + errMsg);
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtil.showToast(getActivity(), "" + errMsg);
+                        }
+                    });
+                }
             }
         });
     }

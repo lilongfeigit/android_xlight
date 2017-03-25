@@ -116,7 +116,6 @@ public class DialogActivity extends Activity {
                         break;
                     case 8:
                         mCondition.attribute="temperature";
-                        mCondition.rightValue="";
                         if(position==0){
                             mCondition.operator =  ">";
                         }else if(position==1){

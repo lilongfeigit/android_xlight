@@ -97,7 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:drawableRight="@drawable/switch_selector"
-            android:paddingRight="22dp"
             android:thumb="@null"
             android:track="@null" />
 

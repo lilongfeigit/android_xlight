@@ -77,10 +77,6 @@ public class SelectScenarioActivity extends AppCompatActivity {
 
         //setup recycler view
         scenarioRecyclerView = (RecyclerView) findViewById(R.id.scenarioRecyclerView);
-        //create list adapter
-//        scenarioListAdapter = new ScenarioSelectListAdapter(this);
-        //attach adapter to recycler view
-//        scenarioRecyclerView.setAdapter(scenarioListAdapter);
         //set LayoutManager for recycler view
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         //attach LayoutManager to recycler view
@@ -95,20 +91,6 @@ public class SelectScenarioActivity extends AppCompatActivity {
             }
         });
 
-//        scenarioListAdapter.setmOnItemClickListener(new ScenarioListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                //TODO 点击
-//                Toast.makeText(getActivity(),position+"item",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        scenarioListAdapter.setmOnItemLongClickListener(new ScenarioListAdapter.OnItemLongClickListener() {
-//            @Override
-//            public void onItemLongClick(View view, int position) {
-//                //TODO 长按
-//                Toast.makeText(getActivity(),position+"long",Toast.LENGTH_SHORT).show();
-//            }
-//        });
         getSceneList();
     }
 

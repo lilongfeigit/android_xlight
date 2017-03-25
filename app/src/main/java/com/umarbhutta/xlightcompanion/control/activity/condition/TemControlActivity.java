@@ -3,6 +3,7 @@ package com.umarbhutta.xlightcompanion.control.activity.condition;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -95,6 +96,14 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){ // 8是大于，小于，等于 ，9是温度
             case R.id.tvEditSure:
+                if(TextUtils.isEmpty(tv_more.getText().toString())){
+                    ToastUtil.showToast(this,"请选择状态");
+                    return;
+                }
+                if(TextUtils.isEmpty(tv_tem.getText().toString())){
+                    ToastUtil.showToast(this,"请选择温度");
+                    return;
+                }
                 //确定按钮
                 AddControlRuleActivity.mConditionList.add(mCondition);
                 ((App)getApplicationContext()).finishActivity();

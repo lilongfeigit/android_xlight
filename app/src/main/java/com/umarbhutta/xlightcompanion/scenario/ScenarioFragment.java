@@ -171,7 +171,7 @@ public class ScenarioFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToast(getActivity(), errMsg);
+                        ToastUtil.showToast(getActivity(), ""+errMsg);
                     }
                 });
             }

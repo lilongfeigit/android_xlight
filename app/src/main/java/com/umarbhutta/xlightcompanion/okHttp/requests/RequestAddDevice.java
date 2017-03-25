@@ -28,9 +28,9 @@ public class RequestAddDevice implements HttpUtils.OnHttpRequestCallBack {
      *
      * @param context
      * @param devicename
-     * @param maindevice
-     * @param status
-     * @param ison
+     * @param maindevice           是否为主设备，0不是，1是
+     * @param status               是否禁用了设备，0禁用，1启用
+     * @param ison                 设备开关状态，0关，1开
      * @param mOnAddDeviceCallBack
      */
     public void addDevice(Context context, String devicename, int maindevice, int status, int ison, OnAddDeviceCallBack mOnAddDeviceCallBack) {

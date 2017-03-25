@@ -3,21 +3,16 @@ package com.umarbhutta.xlightcompanion.main;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,16 +25,15 @@ import android.widget.ToggleButton;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.ControlFragment;
-import com.umarbhutta.xlightcompanion.scenario.AddScenarioActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
 
 import java.util.ArrayList;
-
-import me.priyesh.chroma.ChromaDialog;
-import me.priyesh.chroma.ColorMode;
-import me.priyesh.chroma.ColorSelectListener;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -48,14 +42,20 @@ import me.priyesh.chroma.ColorSelectListener;
 
 public class EditDeviceActivity extends AppCompatActivity {
     private TextView tvTitle;
+    public SceneListResult mDeviceInfoResult;
+    private Rows deviceInfo;
+    private xltDevice mDevice;
+    private TextView mscenarioName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_control);
         mInflater = LayoutInflater.from(this);
-
         //hide nav bar
         getSupportActionBar().hide();
+
+        deviceInfo = (Rows) getIntent().getSerializableExtra("info");
 
         scenarioDropdown = new ArrayList<>(ScenarioFragment.name);
         scenarioDropdown.add(0, "None");
@@ -93,29 +93,34 @@ public class EditDeviceActivity extends AppCompatActivity {
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("编辑设备");
+        mscenarioName = (TextView) findViewById(R.id.scenarioName);
 
         scenarioSpinner = (Spinner) findViewById(R.id.scenarioSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> scenarioAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, scenarioDropdown);
-        // Specify the layout to use when the list of choices appears
         scenarioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the scenarioAdapter to the spinner
         scenarioSpinner.setAdapter(scenarioAdapter);
 
-        // Just for demo. In real world, should get from DMI
-        MainActivity.m_mainDevice.setDeviceName(DEFAULT_LAMP_TEXT);
 
-        powerSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-        brightnessSeekBar.setProgress(MainActivity.m_mainDevice.getBrightness());
-        cctSeekBar.setProgress(MainActivity.m_mainDevice.getCCT() - 2700);
+        mDevice = new xltDevice();
+        mDevice.Init(this);
+        mDevice.setDeviceID(deviceInfo.id);
+        mDevice.setDeviceName("" + deviceInfo.type);
 
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
+
+//        MainActivity.m_mainDevice.setDeviceName(DEFAULT_LAMP_TEXT);
+
+        mscenarioName.setText(deviceInfo.devicename);
+        powerSwitch.setChecked(mDevice.getState() > 0);
+        brightnessSeekBar.setProgress(mDevice.getBrightness());
+        cctSeekBar.setProgress(mDevice.getCCT() - 2700);
+
+        if (mDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
             intentFilter.setPriority(3);
             registerReceiver(m_StatusReceiver, intentFilter);
         }
 
-        if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
+        if (mDevice.getEnableEventSendMessage()) {
             m_handlerControl = new Handler() {
                 public void handleMessage(Message msg) {
                     int intValue = msg.getData().getInt("State", -255);
@@ -134,7 +139,7 @@ public class EditDeviceActivity extends AppCompatActivity {
                     }
                 }
             };
-            MainActivity.m_mainDevice.addDeviceEventHandler(m_handlerControl);
+            mDevice.addDeviceEventHandler(m_handlerControl);
         }
 
         powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -144,7 +149,7 @@ public class EditDeviceActivity extends AppCompatActivity {
                 state = isChecked;
                 //ParticleAdapter.JSONCommandPower(ParticleAdapter.DEFAULT_DEVICE_ID, state);
                 //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, state);
-                MainActivity.m_mainDevice.PowerSwitch(state);
+                mDevice.PowerSwitch(state);
             }
         });
 
@@ -212,6 +217,9 @@ public class EditDeviceActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * 亮度
+         */
         brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -225,10 +233,13 @@ public class EditDeviceActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.e(TAG, "The brightness value is " + seekBar.getProgress());
                 //ParticleAdapter.JSONCommandBrightness(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress());
-                MainActivity.m_mainDevice.ChangeBrightness(seekBar.getProgress());
+                mDevice.ChangeBrightness(seekBar.getProgress());
             }
         });
 
+        /**
+         *
+         */
         cctSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -242,7 +253,7 @@ public class EditDeviceActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 //ParticleAdapter.JSONCommandCCT(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress()+2700);
-                MainActivity.m_mainDevice.ChangeCCT(seekBar.getProgress() + 2700);
+                mDevice.ChangeCCT(seekBar.getProgress() + 2700);
             }
         });
 
@@ -263,7 +274,7 @@ public class EditDeviceActivity extends AppCompatActivity {
 
                     //ParticleAdapter.JSONCommandScenario(ParticleAdapter.DEFAULT_DEVICE_ID, position);
                     //position passed into above function corresponds to the scenarioId i.e. s1, s2, s3 to trigger
-                    MainActivity.m_mainDevice.ChangeScenario(position);
+                    mDevice.ChangeScenario(position);
                 }
             }
 
@@ -332,9 +343,9 @@ public class EditDeviceActivity extends AppCompatActivity {
     private class MyStatusReceiver extends StatusReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            powerSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-            brightnessSeekBar.setProgress(MainActivity.m_mainDevice.getBrightness());
-            cctSeekBar.setProgress(MainActivity.m_mainDevice.getCCT() - 2700);
+            powerSwitch.setChecked(mDevice.getState() > 0);
+            brightnessSeekBar.setProgress(mDevice.getBrightness());
+            cctSeekBar.setProgress(mDevice.getCCT() - 2700);
         }
     }
 
@@ -342,8 +353,8 @@ public class EditDeviceActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        MainActivity.m_mainDevice.removeDeviceEventHandler(m_handlerControl);
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
+        mDevice.removeDeviceEventHandler(m_handlerControl);
+        if (mDevice.getEnableEventBroadcast()) {
             unregisterReceiver(m_StatusReceiver);
         }
         super.onDestroy();
@@ -372,7 +383,7 @@ public class EditDeviceActivity extends AppCompatActivity {
     }
 
     private void updateDeviceRingLabel() {
-        String label = MainActivity.m_mainDevice.getDeviceName();
+        String label = mDevice.getDeviceName();
 
         if (ring1 && ring2 && ring3) {
             label += ": " + RINGALL_TEXT;
@@ -405,23 +416,77 @@ public class EditDeviceActivity extends AppCompatActivity {
 
         deviceRingLabel.setText(label);
     }
+
     private void onFabPressed() {
         Intent intent = new Intent(EditDeviceActivity.this, ColorSelectActivity.class);
         startActivityForResult(intent, 1);
     }
-    private void initScenario() {
 
-        for (int i = 0; i < 4; i++) {
+    private void initScenario() {
+        RequestSceneListInfo.getInstance().getSceneListInfo(this, new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
+            @Override
+            public void onRequestFirstPageInfoSuccess(final SceneListResult mDeviceInfoResult) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EditDeviceActivity.this.mDeviceInfoResult = mDeviceInfoResult;
+                        initList();
+                    }
+                });
+            }
+
+            @Override
+            public void onRequestFirstPageInfoFail(int code, final String errMsg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(EditDeviceActivity.this, "" + errMsg);
+                    }
+                });
+            }
+        });
+    }
+
+    private void initList() {
+        for (int i = 0; i < mDeviceInfoResult.rows.size(); i++) {
+            Rows sceneInfo = mDeviceInfoResult.rows.get(i);
             View view;
-            if(i==0){
+            if (i == 0) {
                 view = mInflater.inflate(R.layout.add_scenario_zdy_item,
                         linear, false);
-            }else{
+            } else {
                 view = mInflater.inflate(R.layout.add_scenario_item,
                         linear, false);
             }
 
+            view.setTag(sceneInfo);
+            view.setOnClickListener(mSceneClick);
+
+
             linear.addView(view);
         }
     }
+
+    View.OnClickListener mSceneClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Rows sceneInfo = (Rows) v.getTag();
+            updateSceneInfo(sceneInfo);
+        }
+    };
+
+    /**
+     * 选择了某一个场景
+     *
+     * @param sceneInfo
+     */
+    private void updateSceneInfo(Rows sceneInfo) {
+        if (null == sceneInfo) {
+            return;
+        }
+        powerSwitch.setChecked((1 == sceneInfo.ison) ? true : false);
+        brightnessSeekBar.setProgress(sceneInfo.brightness);
+        cctSeekBar.setProgress(sceneInfo.cct - 2700);
+    }
+
 }

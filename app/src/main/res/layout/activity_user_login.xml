@@ -39,6 +39,7 @@
             android:drawablePadding="10dp"
             android:singleLine="true"
             android:drawableRight="@drawable/icon_delete"
+            android:inputType="textPassword"
             android:gravity="center_vertical"
             android:hint="@string/login_text_password"
             android:paddingLeft="8dp"

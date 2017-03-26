@@ -50,6 +50,7 @@ public class ModifyPasswordActivity extends AppCompatActivity implements HttpUti
                 finish();
             }
         });
+        findViewById(R.id.tvEditSure).setVisibility(View.GONE);
         btnSure = (TextView) findViewById(R.id.btn_login);
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override

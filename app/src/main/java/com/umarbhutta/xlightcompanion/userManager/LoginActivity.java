@@ -55,13 +55,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 finish();
             }
         });
+        llBack.setVisibility(View.INVISIBLE);
         btnSure = (TextView) findViewById(R.id.tvEditSure);
+        btnSure.setText("关闭");
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("登录");
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 确定提交按钮
+                finish();
             }
         });
     }
@@ -138,7 +140,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ToastUtil.showToast(LoginActivity.this,getString(R.string.login_fail)+errMsg);
+                ToastUtil.showToast(LoginActivity.this, getString(R.string.login_fail) + errMsg);
             }
         });
     }

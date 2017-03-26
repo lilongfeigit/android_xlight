@@ -24,7 +24,7 @@
             android:drawablePadding="10dp"
             android:singleLine="true"
             android:gravity="center_vertical"
-            android:hint="请输入账号"
+            android:hint="@string/login_text_user"
             android:paddingLeft="6dp"
             android:textColorHint="@color/edit_login_color" />
 
@@ -56,6 +56,7 @@
             android:gravity="center_vertical"
             android:hint="请输入新密码"
             android:paddingLeft="8dp"
+            android:inputType="textPassword"
             android:textColorHint="@color/edit_login_color" />
 
 
@@ -77,14 +78,18 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <CheckBox
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/red"
+                android:background="@drawable/icon_checked"
+                android:button="@null"
                 android:checked="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
                 android:text="本人已阅读并同意"
                 android:textColor="@color/textDarkGrey" />
 
@@ -93,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="注册协议"
-                android:textColor="@color/blue_sky" />
+                android:textColor="@color/red" />
         </LinearLayout>
     </RelativeLayout>
 

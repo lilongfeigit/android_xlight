@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:layout_marginLeft="20dp"
-            android:background="@color/white" />
+            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/nav_control"
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:layout_marginLeft="20dp"
-            android:background="@color/white" />
+            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/nav_scenario"
@@ -110,7 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:layout_marginLeft="20dp"
-            android:background="@color/white" />
+            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/nav_schedule"
@@ -128,7 +128,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:layout_marginLeft="20dp"
-            android:background="@color/white" />
+            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/nav_settings"
@@ -146,7 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:layout_marginLeft="20dp"
-            android:background="@color/white" />
+            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/nav_help"
@@ -164,6 +164,6 @@
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:layout_marginLeft="20dp"
-            android:background="@color/white" />
+            android:background="@color/line_color" />
     </LinearLayout>
 </LinearLayout>

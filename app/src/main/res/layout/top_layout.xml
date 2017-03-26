@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="56dp"
     android:layout_alignParentTop="true"
-    android:background="#2b7db1"
+    android:background="@color/bar_color"
     android:gravity="center_horizontal">
 
     <LinearLayout

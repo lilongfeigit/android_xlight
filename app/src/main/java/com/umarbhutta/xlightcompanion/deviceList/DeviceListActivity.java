@@ -31,6 +31,9 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
     public static int selectPosition = 0;
     private DeviceListAdapter adapter;
 
+    private TextView tv_select_main_device;
+    private TextView tv_no_device;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,15 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("选择主设备");
         listView = (ListView) findViewById(R.id.lv_devices);
+        tv_select_main_device = (TextView) findViewById(R.id.tv_select_main_device);
+        tv_no_device = (TextView) findViewById(R.id.tv_no_device);
+        if(GlanceFragment.deviceList!=null && GlanceFragment.deviceList.size()>0){
+            tv_no_device.setVisibility(View.GONE);
+            tv_select_main_device.setVisibility(View.VISIBLE);
+        }else{
+            tv_no_device.setVisibility(View.VISIBLE);
+            tv_select_main_device.setVisibility(View.GONE);
+        }
 
         adapter = new DeviceListAdapter(this, GlanceFragment.deviceList);
         listView.setAdapter(adapter);
@@ -67,7 +79,6 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
             ToastUtil.showToast(this, R.string.net_error);
             return;
         }
-
         showProgressDialog(getString(R.string.setting));
 
         int deviceId = GlanceFragment.deviceList.get(position).id;

@@ -67,7 +67,7 @@ import java.util.List;
  * Created by Umar Bhutta.
  */
 public class GlanceMainFragment extends Fragment implements View.OnClickListener {
-    private com.github.clans.fab.FloatingActionButton fab;
+    private ImageButton fab;
     TextView outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
     ImageView imgWeather;
     private ImageButton home_menu,home_setting;
@@ -127,7 +127,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private class MyDataReceiver extends DataReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
+            roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
             roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         }
     }
@@ -157,7 +157,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_glance, container, false);
         //        hide nav bar
-        fab = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab);
+        fab = (ImageButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,7 +174,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         outsideHumidity = (TextView) view.findViewById(R.id.valLocalHumidity);
         apparentTemp = (TextView) view.findViewById(R.id.valApparentTemp);
         roomTemp = (TextView) view.findViewById(R.id.valRoomTemp);
-        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
+        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
         roomHumidity = (TextView) view.findViewById(R.id.valRoomHumidity);
         roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         imgWeather = (ImageView) view.findViewById(R.id.weatherIcon);
@@ -208,7 +208,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 public void handleMessage(Message msg) {
                     int intValue = msg.getData().getInt("DHTt", -255);
                     if (intValue != -255) {
-                        roomTemp.setText(intValue + "\u00B0");
+                        roomTemp.setText(intValue + "℃");
                     }
                     intValue = msg.getData().getInt("DHTh", -255);
                     if (intValue != -255) {
@@ -304,13 +304,14 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
     private void updateDisplay() {
         imgWeather.setVisibility(View.VISIBLE);
-        imgWeather.setImageBitmap(getWeatherIcon(mWeatherDetails.getIcon()));
+        imgWeather.setImageResource(R.drawable.cloud);
+//        imgWeather.setImageBitmap(getWeatherIcon(mWeatherDetails.getIcon()));
         outsideTemp.setText(" " + mWeatherDetails.getTemp("celsius"));
-        degreeSymbol.setText("\u00B0");
+        degreeSymbol.setText("℃");
         outsideHumidity.setText(mWeatherDetails.getmHumidity() + "\u0025");
-        apparentTemp.setText(mWeatherDetails.getApparentTemp("celsius") + "\u00B0");
+        apparentTemp.setText(mWeatherDetails.getApparentTemp("celsius") + "℃");
 
-        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
+        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
         roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
     }
 

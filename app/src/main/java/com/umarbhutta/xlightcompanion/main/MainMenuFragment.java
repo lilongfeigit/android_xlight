@@ -72,10 +72,6 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (!UserUtils.isLogin(getActivity())) {
-            onFabPressed(LoginActivity.class);
-            return;
-        }
         Fragment fragment = null;
         switch (v.getId()) {
             case R.id.btn_login:
@@ -88,15 +84,31 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 fragment = new GlanceMainFragment();//首页
                 break;
             case R.id.nav_control:
+                if (!UserUtils.isLogin(getActivity())) {
+                    onFabPressed(LoginActivity.class);
+                    return;
+                }
                 fragment = new ControlRuleFragment();//规则
                 break;
             case R.id.nav_scenario:
+                if (!UserUtils.isLogin(getActivity())) {
+                    onFabPressed(LoginActivity.class);
+                    return;
+                }
                 fragment = new ScenarioMainFragment();//场景
                 break;
             case R.id.nav_schedule:
+                if (!UserUtils.isLogin(getActivity())) {
+                    onFabPressed(LoginActivity.class);
+                    return;
+                }
                 fragment = new ReportFragment();//报表
                 break;
             case R.id.nav_settings:
+                if (!UserUtils.isLogin(getActivity())) {
+                    onFabPressed(LoginActivity.class);
+                    return;
+                }
                 fragment = new SettingFragment();//设置
                 break;
             case R.id.nav_help:

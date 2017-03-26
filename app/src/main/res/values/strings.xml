@@ -10,11 +10,7 @@
     <string name="login_text_password">请输入密码</string>
     <string name="login_text_forget">忘记密码？</string>
     <string name="login_text_register">新用户注册</string>
-<<<<<<< HEAD
     <string name="login_text">登录</string>
-=======
-    <string name="login_text">登 录</string>
->>>>>>> f2d6d1189d6d01721c403b25ace3a72b3fcab48d
     <string name="account_is_null">账号不能为空</string>
     <string name="password_is_null">密码不能为空</string>
     <string name="confirm_pwd_is_null">请输入确认密码</string>

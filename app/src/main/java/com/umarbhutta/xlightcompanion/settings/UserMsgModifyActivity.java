@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
@@ -29,13 +30,14 @@ import com.umarbhutta.xlightcompanion.views.pickerview.lib.TimePickerUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -70,59 +72,73 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
 
     @Override
     public void selectPicResult(String picPath) {
-        ToastUtil.showToast(this, "url = " + picPath);
+//        ToastUtil.showToast(this, "url = " + picPath);
 //        user_icon.setImageBitmap(BitmapFactory.decodeFile(picPath));
-        uploadPic(picPath);
+        uploadPic2(picPath);
     }
 
-    private void uploadPic(String picPath) {
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"lightscrop\";filename=\"lightscrop.jpg\""), RequestBody.create(MediaType.parse("image/png"), picPath)).build();
+    public static final String TYPE = "application/octet-stream";
+    private OkHttpClient client;
 
-        RequestBody body = builder.build();
-        Request request = new Request.Builder().url(NetConfig.URL_UPLOAD_IMG + UserUtils.getUserInfo(this).getAccess_token()).post(body).build();
-        OkHttpClient mOkHttpClient = new OkHttpClient();
-        mOkHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
-                    }
-                });
-            }
+    private void uploadPic2(String picPath) {
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String jsonResult = response.body().string();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Logger.i("图片地址=" + jsonResult);
-                        try {
-                            JSONObject object = new JSONObject(jsonResult);
-                            if (object.has("filePath")) {
-                                String filePath = object.getString("filePath");
-                                ImageLoader.getInstance().displayImage(NetConfig.SERVER_ADDRESS + filePath, user_icon, ImageLoaderOptions.getImageLoaderOptions());
-                                LoginResult infos = UserUtils.getUserInfo(UserMsgModifyActivity.this);
-                                infos.image = NetConfig.SERVER_ADDRESS + filePath;
-                                UserUtils.saveUserInfo(UserMsgModifyActivity.this, infos);
-                            } else {
-                                ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
-                            }
-                        } catch (JSONException e) {
+        client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .build();
+
+
+        File file = new File(picPath);
+        if (!file.exists()) {
+            Toast.makeText(UserMsgModifyActivity.this, "文件不存在", Toast.LENGTH_SHORT).show();
+        } else {
+            RequestBody fileBody = RequestBody.create(MediaType.parse(TYPE), file);
+            RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("lightscrop.jpg", file.getName(), fileBody).build();
+
+            Request requestPostFile = new Request.Builder()
+                    .url(NetConfig.URL_UPLOAD_IMG + UserUtils.getUserInfo(this).getAccess_token())
+                    .post(requestBody)
+                    .build();
+            client.newCall(requestPostFile).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
                             ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
-                            e.printStackTrace();
                         }
+                    });
+                }
+
+                @Override
+                public void onResponse(Call call, final Response response) throws IOException {
+                    final String jsonResult = response.body().string();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Logger.i("图片地址=" + jsonResult);
+                            try {
+                                JSONObject object = new JSONObject(jsonResult);
+                                if (object.has("filePath")) {
+                                    String filePath = object.getString("filePath");
+                                    ImageLoader.getInstance().displayImage(NetConfig.SERVER_ADDRESS + filePath, user_icon, ImageLoaderOptions.getImageLoaderOptions());
+                                    LoginResult infos = UserUtils.getUserInfo(UserMsgModifyActivity.this);
+                                    infos.image = NetConfig.SERVER_ADDRESS + filePath;
+                                    UserUtils.saveUserInfo(UserMsgModifyActivity.this, infos);
+                                } else {
+                                    ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
+                                }
+                            } catch (JSONException e) {
+                                ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
+                                e.printStackTrace();
+                            }
 
 
-                    }
-                });
-            }
-        });
-
-
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private boolean hasPermision = false;

@@ -7,10 +7,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -76,27 +76,39 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         adapter = new WifiListAdapter(this.getApplicationContext(), listb);
         listView.setAdapter(adapter);
 
-        if (checkPublishPermission()) {
-            getCurWifiInfo();
-        }
+        checkPublishPermission();
+//        if (checkPublishPermission()) {
+        getCurWifiInfo();
+//        }
     }
 
 
-    private boolean checkPublishPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            List<String> permissions = new ArrayList<>();
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)) {
-                permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
-            }
-
-            if (permissions.size() != 0) {
-                ActivityCompat.requestPermissions(this,
-                        (String[]) permissions.toArray(new String[0]),
-                        WIFI_PERMISSION_REQ_CODE);
-                return false;
-            }
+    private void checkPublishPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION) != PackageManager.PERMISSION_GRANTED) {
+// 获取wifi连接需要定位权限,没有获取权限
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+            }, WIFI_PERMISSION_REQ_CODE);
+            return;
         }
-        return true;
+
+
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            List<String> permissions = new ArrayList<>();
+//            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)) {
+//                permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
+//            }
+//
+//            if (permissions.size() != 0) {
+//                ActivityCompat.requestPermissions(this,
+//                        (String[]) permissions.toArray(new String[0]),
+//                        WIFI_PERMISSION_REQ_CODE);
+//                return false;
+//            }
+//        }
+//        return true;
     }
 
     @Override

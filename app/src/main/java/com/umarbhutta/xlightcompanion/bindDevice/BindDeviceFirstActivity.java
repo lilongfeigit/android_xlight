@@ -1,13 +1,18 @@
 package com.umarbhutta.xlightcompanion.bindDevice;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -46,6 +51,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     private List<ScanResult> listb = new ArrayList<ScanResult>();
     private ScanResult curWifi = null;
     private final int WIFI_PERMISSION_REQ_CODE = 100;
+    private WifiReceiver mWifiReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,16 +82,88 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         adapter = new WifiListAdapter(this.getApplicationContext(), listb);
         listView.setAdapter(adapter);
 
+
+        IntentFilter filter = new IntentFilter();
+//        filter.setPriority(2147483647);
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+
+        mWifiReceiver = new WifiReceiver();
+        registerReceiver(mWifiReceiver, filter);
+
         checkPublishPermission();
 //        if (checkPublishPermission()) {
         getCurWifiInfo();
 //        }
+
+
+
+        handler.sendEmptyMessageDelayed(1,1000);
+
     }
 
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            handler.postDelayed(runnable,100);
+            handler.sendEmptyMessageDelayed(1,1000);
+        }
+    };
+
+    /**
+     * 定时更新wifi列表
+     */
+    Runnable runnable = new Runnable() {
+
+        @Override
+        public void run() {
+            getCurWifiInfo();
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mWifiReceiver);
+        handler.removeCallbacks(runnable);
+    }
+
+    public class WifiReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+
+            if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
+                //获取当前的wifi状态int类型数据
+                int mWifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
+                switch (mWifiState) {
+                    case WifiManager.WIFI_STATE_ENABLED:
+                        //已打开
+                        checkPublishPermission();
+                        getWifiList();
+                        break;
+                    case WifiManager.WIFI_STATE_ENABLING:
+                        //打开中
+                        break;
+                    case WifiManager.WIFI_STATE_DISABLED:
+                        //已关闭
+                        break;
+                    case WifiManager.WIFI_STATE_DISABLING:
+                        //关闭中
+                        break;
+                    case WifiManager.WIFI_STATE_UNKNOWN:
+                        //未知
+                        break;
+                }
+            }
+        }
+    }
 
     private void checkPublishPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION) != PackageManager.PERMISSION_GRANTED) {
-// 获取wifi连接需要定位权限,没有获取权限
+            // 获取wifi连接需要定位权限,没有获取权限
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -126,12 +204,26 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     }
 
     private void getCurWifiInfo() {
-        if (!isWifiAvailable()) {
+        if (!isWifiContect()) {
             ToastUtil.showToast(this, "请打开WiFi");
             return;
         }
-
         getWifiList();
+    }
+
+    /**
+     * wifi是否打开
+     *
+     * @return
+     */
+    private boolean isWifiContect() {
+        WifiManager wifimanager;
+        wifimanager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (wifimanager.isWifiEnabled()) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -143,8 +235,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     private boolean isWifiAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected() && networkInfo
-                .getType() == ConnectivityManager.TYPE_WIFI);
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     /**
@@ -152,6 +243,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
      */
     private void getWifiList() {
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        listb.clear();
         listb.addAll(wifiManager.getScanResults());
         adapter.notifyDataSetChanged();
         if (null != listb && listb.size() > 0) {

@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 import com.umarbhutta.xlightcompanion.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -27,15 +26,6 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
-
-        boolean isFirst = (boolean) SharedPreferencesUtils.getObject(this, SharedPreferencesUtils.KEY_IS_FIRST_LUNCH, true);
-        SharedPreferencesUtils.putObject(this, SharedPreferencesUtils.KEY_IS_FIRST_LUNCH, false);
-        if (!isFirst) {
-            startActivity(new Intent(this, WelcomActivity.class));
-            finish();
-            return;
-        }
-
 
         //功能归类分区方法，必须调用<<<<<<<<<<
         initView();
@@ -73,7 +63,7 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
             public void onClick(View view) {
                 //跳转到主页面
 //                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
-                startActivity(new Intent(SplashActivity.this, WelcomActivity.class));
+                startActivity(new Intent(SplashActivity.this, SlidingMenuMainActivity.class));
                 SplashActivity.this.finish();
             }
         });

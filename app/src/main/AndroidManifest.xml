@@ -37,7 +37,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".main.SplashActivity"
+            android:name=".main.WelcomActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -168,7 +168,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".main.WelcomActivity"
+            android:name=".main.SplashActivity"
             android:screenOrientation="portrait" />
     </application>
 

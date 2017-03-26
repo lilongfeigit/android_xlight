@@ -8,6 +8,7 @@ import android.os.Message;
 import android.view.Window;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 
 public class WelcomActivity extends Activity {
 
@@ -25,9 +26,19 @@ public class WelcomActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Intent intent = new Intent(WelcomActivity.this, SlidingMenuMainActivity.class);
-            startActivity(intent);
-            WelcomActivity.this.finish();
+
+            boolean isFirst = (boolean) SharedPreferencesUtils.getObject(WelcomActivity.this, SharedPreferencesUtils.KEY_IS_FIRST_LUNCH, true);
+            SharedPreferencesUtils.putObject(WelcomActivity.this, SharedPreferencesUtils.KEY_IS_FIRST_LUNCH, false);
+            if (!isFirst) {
+                startActivity(new Intent(WelcomActivity.this, SlidingMenuMainActivity.class));
+            } else {
+                Intent intent = new Intent(WelcomActivity.this, SplashActivity.class);
+                startActivity(intent);
+                WelcomActivity.this.finish();
+            }
+            finish();
+
+
         }
     };
 

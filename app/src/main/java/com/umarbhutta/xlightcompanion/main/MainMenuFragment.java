@@ -9,11 +9,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.ControlRuleFragment;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.help.HelpFragment;
+import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderOptions;
+import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 import com.umarbhutta.xlightcompanion.report.ReportFragment;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioMainFragment;
 import com.umarbhutta.xlightcompanion.settings.SettingFragment;
@@ -57,6 +60,23 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         itemHelp.setOnClickListener(this);
         userIcon.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+        if (UserUtils.isLogin(getActivity())) {
+            LoginResult userInfo = UserUtils.getUserInfo(getActivity());
+            btnLogin.setVisibility(View.GONE);
+            llPerName.setVisibility(View.VISIBLE);
+            tv_userName.setText("Welcome,"+UserUtils.getUserInfo(getActivity()).getUsername());
+            textView.setText(UserUtils.getUserInfo(getActivity()).getEmail());
+            ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
+        } else {
+            btnLogin.setVisibility(View.VISIBLE);
+            llPerName.setVisibility(View.GONE);
+        }
+        itemGlance.setBackgroundColor(getResources().getColor(R.color.bar_color));
+        itemControl.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+        itemScenario.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+        itemSchedule.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+        itemSettings.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+        itemHelp.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
     }
 
     // the meat of switching the above fragment
@@ -81,6 +101,12 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 onFabPressed(UserMsgModifyActivity.class);
                 break;
             case R.id.nav_glance:
+                itemGlance.setBackgroundColor(getResources().getColor(R.color.bar_color));
+                itemControl.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemScenario.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSchedule.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSettings.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemHelp.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
                 fragment = new GlanceMainFragment();//首页
                 break;
             case R.id.nav_control:
@@ -88,6 +114,13 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                     onFabPressed(LoginActivity.class);
                     return;
                 }
+                itemControl.setBackgroundColor(getResources().getColor(R.color.bar_color));
+
+                itemGlance.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemScenario.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSchedule.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSettings.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemHelp.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
                 fragment = new ControlRuleFragment();//规则
                 break;
             case R.id.nav_scenario:
@@ -95,6 +128,13 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                     onFabPressed(LoginActivity.class);
                     return;
                 }
+                itemScenario.setBackgroundColor(getResources().getColor(R.color.bar_color));
+
+                itemGlance.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemControl.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSchedule.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSettings.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemHelp.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
                 fragment = new ScenarioMainFragment();//场景
                 break;
             case R.id.nav_schedule:
@@ -102,6 +142,13 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                     onFabPressed(LoginActivity.class);
                     return;
                 }
+                itemSchedule.setBackgroundColor(getResources().getColor(R.color.bar_color));
+
+                itemGlance.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemControl.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemScenario.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSettings.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemHelp.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
                 fragment = new ReportFragment();//报表
                 break;
             case R.id.nav_settings:
@@ -109,9 +156,23 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                     onFabPressed(LoginActivity.class);
                     return;
                 }
+                itemSettings.setBackgroundColor(getResources().getColor(R.color.bar_color));
+
+                itemGlance.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemControl.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemScenario.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSchedule.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemHelp.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
                 fragment = new SettingFragment();//设置
                 break;
             case R.id.nav_help:
+                itemHelp.setBackgroundColor(getResources().getColor(R.color.bar_color));
+
+                itemGlance.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemControl.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemScenario.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSchedule.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
+                itemSettings.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
                 fragment = new HelpFragment();//帮助
                 break;
         }

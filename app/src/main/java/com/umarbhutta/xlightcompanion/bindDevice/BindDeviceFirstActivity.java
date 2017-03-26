@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -74,17 +73,6 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
 
         listView = (ListView) findViewById(R.id.wifi_list);
         listView.setOnItemClickListener(this);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION)!= PackageManager.PERMISSION_GRANTED){
-// 获取wifi连接需要定位权限,没有获取权限
-//            ActivityCompat.requestPermissions(this,new String[]{
-//                    Manifest.permission.ACCESS_FINE_LOCATION,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION,
-//                    Manifest.permission.ACCESS_WIFI_STATE,
-//            },WIFI_SCAN_PERMISSION_CODE);
-//            return;
-        }
-
         adapter = new WifiListAdapter(this.getApplicationContext(), listb);
         listView.setAdapter(adapter);
 
@@ -92,6 +80,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
             getCurWifiInfo();
         }
     }
+
 
     private boolean checkPublishPermission() {
         if (Build.VERSION.SDK_INT >= 23) {

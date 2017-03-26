@@ -1,12 +1,14 @@
 package com.umarbhutta.xlightcompanion.control;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.control.adapter.ControlResultListAdapter;
 import com.umarbhutta.xlightcompanion.control.adapter.DeviceRulesListAdapter;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceGetRules;
@@ -62,44 +65,39 @@ public class ControlRuleFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_control_rule, container, false);
         rulesRecyclerView = (ListView) view.findViewById(R.id.rulesRecyclerView);
 
-
-        if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
-            m_handlerGlance = new Handler() {
-                public void handleMessage(Message msg) {
-                    int intValue = msg.getData().getInt("DHTt", -255);
-                    if (intValue != -255) {
-//                        roomTemp.setText(intValue + "\u00B0");
-                    }
-                    intValue = msg.getData().getInt("DHTh", -255);
-                    if (intValue != -255) {
-//                        roomHumidity.setText(intValue + "\u0025");
-                    }
-                }
-            };
-            MainActivity.m_mainDevice.addDataEventHandler(m_handlerGlance);
-        }
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
-            IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
-            intentFilter.setPriority(3);
-            getContext().registerReceiver(m_DataReceiver, intentFilter);
-        }
         rulesRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position,final long id) {
-                RequestDeleteRuleDevice.getInstance().deleteRule(getActivity(),mDeviceInfoResult.rows.get(position).id+"", new CommentRequstCallback() {
-                    @Override
-                    public void onCommentRequstCallbackSuccess() {
-                        if(devicesListAdapter!=null){
-                            devicesListAdapter.notifyDataSetChanged();
-                        }
-                        ToastUtil.showToast(getActivity(),"删除成功position="+position+";id="+id);
-                    }
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("删除规则提示");
+                builder.setMessage("确定删除此规则吗？");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onCommentRequstCallbackFail(int code, String errMsg) {
-                        ToastUtil.showToast(getActivity(),"删除失败"+errMsg);
+                    public void onClick(DialogInterface dialog, int which) {
+                        RequestDeleteRuleDevice.getInstance().deleteRule(getActivity(),mDeviceInfoResult.rows.get(position).id+"", new CommentRequstCallback() {
+                            @Override
+                            public void onCommentRequstCallbackSuccess() {
+                                if(devicesListAdapter!=null){
+                                    devicesListAdapter.notifyDataSetChanged();
+                                }
+                                ToastUtil.showToast(getActivity(),"删除成功"+position);
+                            }
+
+                            @Override
+                            public void onCommentRequstCallbackFail(int code, String errMsg) {
+                                ToastUtil.showToast(getActivity(),"删除失败"+errMsg);
+                            }
+                        });
                     }
                 });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
                 return true;
             }
         });
@@ -142,12 +140,14 @@ public class ControlRuleFragment extends Fragment {
 
             @Override
             public void onRequestFirstPageInfoFail(int code, final String errMsg) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.showToast(getActivity(), errMsg);
-                    }
-                });
+                if(getActivity()!=null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtil.showToast(getActivity(), errMsg);
+                        }
+                    });
+                }
             }
         });
     }

@@ -14,13 +14,16 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.adapter.DialogWeekListAdapter;
 import com.umarbhutta.xlightcompanion.control.adapter.DialogWeeksListAdapter;
 import com.umarbhutta.xlightcompanion.control.bean.SelectTime;
 import com.umarbhutta.xlightcompanion.control.bean.SelectWeek;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/3/15.
@@ -57,7 +60,26 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
         type = 0;
        settingStr.clear();
         settingSelectStr.clear();
-       settingStr.add(new SelectTime("执行一次",false,"8",0));
+        long time=System.currentTimeMillis();
+        Date date=new Date(time);
+        SimpleDateFormat format=new SimpleDateFormat("E");
+        String weekday = format.format(date);
+        if(weekday.equals("周一")){
+            settingStr.add(new SelectTime("执行一次",false,"1",0));
+        }else  if(weekday.equals("周二")){
+            settingStr.add(new SelectTime("执行一次",false,"2",0));
+        }else  if(weekday.equals("周三")){
+            settingStr.add(new SelectTime("执行一次",false,"3",0));
+        }else  if(weekday.equals("周四")){
+            settingStr.add(new SelectTime("执行一次",false,"4",0));
+        }else  if(weekday.equals("周五")){
+            settingStr.add(new SelectTime("执行一次",false,"5",0));
+        }else  if(weekday.equals("周六")){
+            settingStr.add(new SelectTime("执行一次",false,"6",0));
+        }else  if(weekday.equals("周日")){
+            settingStr.add(new SelectTime("执行一次",false,"7",0));
+        }
+
        settingStr.add(new SelectTime("每天",false,"1,2,3,4,5,6,7",0));
        settingStr.add(new SelectTime("周一至周五",false,"1,2,3,4,5",0));
        settingStr.add(new SelectTime("自定义",false,"0",0));

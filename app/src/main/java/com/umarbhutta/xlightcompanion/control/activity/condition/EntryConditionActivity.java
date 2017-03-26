@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.EntryConditionListAdapter;
@@ -122,13 +123,11 @@ public class EntryConditionActivity extends AppCompatActivity {
                     case 2://检测到活动
                         listStr.clear();
                         requestCode = 112;
-                        Logger.e(TAG,ruleconditions.data.get(0).getActivities().toString()+";size=");
                         onFabPressed(DialogActivity.class,2);
                         break;
                     case 3://检测到声音
                         listStr.clear();
                         requestCode = 113;
-                        Logger.e(TAG,ruleconditions.data.get(0).getVoice().toString()+";size="+ruleconditions.data.get(0).getVoice().size());
                         onFabPressed(DialogActivity.class,3);
                         break;
                     case 4://温度
@@ -139,19 +138,16 @@ public class EntryConditionActivity extends AppCompatActivity {
                     case 5://离家
                         listStr.clear();
                         requestCode = 115;
-                        Logger.e(TAG,ruleconditions.data.get(0).getLeavehome().toString()+";size="+ruleconditions.data.get(0).getLeavehome().size());
                         onFabPressed(DialogActivity.class,5);
                         break;
                     case 6://回家
                         listStr.clear();
                         requestCode = 116;
-                        Logger.e(TAG,ruleconditions.data.get(0).getGohome().toString()+";size="+ruleconditions.data.get(0).getGohome().size());
                         onFabPressed(DialogActivity.class,6);
                         break;
                     case 7://气体
                         listStr.clear();
                         requestCode = 117;
-                        Logger.e(TAG,ruleconditions.data.get(0).gas.toString()+";size="+ruleconditions.data.get(0).gas.size());
                         onFabPressed(DialogActivity.class,7);
                         break;
                 }
@@ -188,7 +184,12 @@ public class EntryConditionActivity extends AppCompatActivity {
         bundle.putSerializable("CONDITION",mCondition);
         bundle.putSerializable("RULECONDITIONS",ruleconditions);
         intent.putExtra("BUNDLE",bundle);
-        startActivityForResult(intent,requestCode);
+        if(ruleconditions!=null){
+            startActivityForResult(intent,requestCode);
+        }else{
+            ToastUtil.showToast(getApplicationContext(),"加载基础信息失败");
+        }
+
     }
 
     /**

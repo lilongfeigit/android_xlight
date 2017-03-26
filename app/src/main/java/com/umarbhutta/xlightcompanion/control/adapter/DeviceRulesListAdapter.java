@@ -69,10 +69,14 @@ public class DeviceRulesListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        if(mDeviceInfoResult.rows.get(position).status==1){//1是开 0是关
+            holder.mDeviceSwitch.setChecked(true);
+        }else{
+            holder.mDeviceSwitch.setChecked(false);
+        }
+
         holder.mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, isChecked);
-                MainActivity.m_mainDevice.PowerSwitch(isChecked);
                 //右侧开关控制 status:1代表启用，0代表禁用
                 int isCheckedInt=0;
                 if(isChecked){
@@ -83,12 +87,12 @@ public class DeviceRulesListAdapter extends BaseAdapter {
                 RequestRuleSwitchDevice.getInstance().switchRule(mActivity,mDeviceInfoResult.rows.get(position).id,isCheckedInt,new CommentRequstCallback(){
                     @Override
                     public void onCommentRequstCallbackSuccess() {
-                        ToastUtil.showToast(mActivity,"修改成功position="+position);
+//                        ToastUtil.showToast(mActivity,"修改成功");
                     }
 
                     @Override
                     public void onCommentRequstCallbackFail(int code, String errMsg) {
-                        ToastUtil.showToast(mActivity,"errMsg="+errMsg);
+//                        ToastUtil.showToast(mActivity,"errMsg="+errMsg);
                     }
                 });
             }
@@ -326,6 +330,8 @@ public class DeviceRulesListAdapter extends BaseAdapter {
     public void setListViewHeightBasedOnChildren(ListView listView) {
         // 获取ListView对应的Adapter
         ListAdapter listAdapter = listView.getAdapter();
+        listView.setFocusable(false);
+        listView.setClickable(false);
         if (listAdapter == null) {
             return;
         }

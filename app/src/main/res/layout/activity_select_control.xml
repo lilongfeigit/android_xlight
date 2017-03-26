@@ -90,7 +90,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/mainLightsLL"
+        android:layout_alignParentStart="true"
         android:orientation="vertical"
         android:scrollbars="none">
 
@@ -308,13 +310,22 @@
                         android:text="亮度"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
-
                     <SeekBar
                         android:id="@+id/brightnessSeekBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingRight="0dp" />
+                        android:layout_weight="2"
+                        android:backgroundTint="@color/blue"
+                        android:max="100"
+                        android:paddingRight="0dp"
+                        android:progress="80"
+                        android:thumb="@drawable/thumb" />
+                    <!--<SeekBar-->
+                        <!--android:id="@+id/brightnessSeekBar"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:paddingRight="0dp" />-->
 
                 </LinearLayout>
 
@@ -361,14 +372,37 @@
                         android:text="冷色"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <SeekBar
-                        android:id="@+id/cctSeekBar"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingRight="0dp" />
+                        android:layout_marginLeft="20dp">
+
+                        <ImageView
+                            android:id="@+id/bg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/white_seek" />
+
+                        <SeekBar
+                            android:id="@+id/cctSeekBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@id/bg"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="8dp"
+                            android:progressDrawable="@drawable/seekbar_thumb_color"
+                            android:thumb="@drawable/thumb" />
+                    </RelativeLayout>
+                    <!--<SeekBar-->
+                    <!--android:id="@+id/cctSeekBar"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:paddingRight="0dp" />-->
 
                 </LinearLayout>
+
 
                 <View
                     android:id="@+id/line3"
@@ -403,16 +437,44 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
-                    <TextView
-                        android:id="@+id/colorTextView"
+                    <RelativeLayout
+                        android:id="@+id/colorLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="13dp"
-                        android:layout_weight="1"
-                        android:text="SELECT"
-                        android:textAlignment="viewEnd"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold" />
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/colorTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="13dp"
+                            android:text="@string/select"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/dotLayout"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@id/colorTextView" />
+
+                    </RelativeLayout>
+                    <!--<TextView-->
+                    <!--android:id="@+id/colorTextView"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginRight="13dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="SELECT"-->
+                    <!--android:textAlignment="viewEnd"-->
+                    <!--android:textColor="@color/colorAccent"-->
+                    <!--android:textStyle="bold" />-->
 
                 </LinearLayout>
             </LinearLayout>

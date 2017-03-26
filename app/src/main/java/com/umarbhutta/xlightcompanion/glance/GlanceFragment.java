@@ -282,6 +282,7 @@ public class GlanceFragment extends Fragment {
     };
 
     private void updateDisplay() {
+        imgWeather.setVisibility(View.VISIBLE);
         imgWeather.setImageBitmap(getWeatherIcon(mWeatherDetails.getIcon()));
         outsideTemp.setText(" " + mWeatherDetails.getTemp("celsius"));
         degreeSymbol.setText("\u00B0");

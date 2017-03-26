@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
@@ -66,7 +67,7 @@ public class AppNotifyActivity extends AppCompatActivity {
                     ToastUtil.showToast(getApplicationContext(),"请输入通知内容");
                     return;
                 }
-                mActionnotify.msisdn = "";
+                mActionnotify.msisdn = UserUtils.getUserInfo(AppNotifyActivity.this.getApplicationContext()).getUsergroupId();
                 mActionnotify.content = appContext;
                 mActionnotify.subject = "App通知";
 

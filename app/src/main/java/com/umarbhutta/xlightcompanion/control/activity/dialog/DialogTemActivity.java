@@ -37,8 +37,6 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
     private Ruleconditions ruleconditions;
     private Condition mCondition;
 
-    private int temType = 0;//0代表是零上，1代表是零下
-
     private String[] addTem;
     private String[] miuTem;
 
@@ -82,14 +80,21 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if(temType==0){
-                    mCondition.rightValue=addTem[position];
-                }else{
-                    mCondition.rightValue=miuTem[position];
-                }
+                mCondition.rightValue = addTem[position];
                 Intent intent = new Intent();
-                intent.putExtra("MCONDITION",mCondition);
-                setResult(32,intent);
+                intent.putExtra("MCONDITION", mCondition);
+                setResult(32, intent);
+                finish();
+            }
+        });
+        dialogMiuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                mCondition.rightValue = miuTem[position];
+                Intent intent = new Intent();
+                intent.putExtra("MCONDITION", mCondition);
+                setResult(32, intent);
                 finish();
             }
         });
@@ -106,7 +111,6 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rb_add:
-                temType = 0;
                 dialogAddlist.setVisibility(View.VISIBLE);
                 dialogMiuList.setVisibility(View.GONE);
                 if (dialogConditionListAdapter != null) {
@@ -114,7 +118,6 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
                 }
                 break;
             case R.id.rb_miu:
-                temType = 1;
                 dialogAddlist.setVisibility(View.GONE);
                 dialogMiuList.setVisibility(View.VISIBLE);
                 if (dialogTemMiuListAdapter != null) {

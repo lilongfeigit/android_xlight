@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
@@ -70,6 +71,10 @@ public class EmailActivity extends AppCompatActivity {
                 String emailContext = et_context.getText().toString();
                 if(TextUtils.isEmpty(email)){
                     ToastUtil.showToast(getApplicationContext(),"请输入邮箱");
+                    return;
+                }
+                if(!StringUtil.isEmail(email)){
+                    ToastUtil.showToast(getApplicationContext(),"请输入正确的邮箱");
                     return;
                 }
                 if(TextUtils.isEmpty(emailTitle)){

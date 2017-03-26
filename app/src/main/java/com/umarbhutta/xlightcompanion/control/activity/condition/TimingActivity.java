@@ -2,7 +2,9 @@ package com.umarbhutta.xlightcompanion.control.activity.condition;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogWeelActivity;
 import com.umarbhutta.xlightcompanion.control.bean.SelectTime;
@@ -93,7 +96,25 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
                 });
                 break;
             case R.id.tvEditSure:
+                if(TextUtils.isEmpty(tv_week.getText().toString())){
+                    ToastUtil.showToast(TimingActivity.this,"请选择重复周期");
+                    return;
+                }
+                if(TextUtils.isEmpty(tv_time.getText().toString())){
+                    ToastUtil.showToast(TimingActivity.this,"请选择时间");
+                    return;
+                }
                AddControlRuleActivity.mScheduleList.add(mSchedule);
+                if(resultCodeA==1){
+                    AddControlRuleActivity.mScheduleListStr.add(selectTime.name);
+                }else if(resultCodeA==2){
+                    String strWeekList = "";
+                    for(int i=0;i<array.size();i++){
+                        strWeekList =strWeekList+array.get(i).name+",";
+                    }
+                    AddControlRuleActivity.mScheduleListStr.add(strWeekList);
+                }
+
                 //编辑提交
                 ((App)getApplicationContext()).finishActivity();
                 break;
@@ -104,18 +125,22 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    private SelectTime selectTime;
+    private ArrayList<SelectWeek> array;
+    private  int resultCodeA = 0;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case 10:
-                SelectTime selectTime = (SelectTime) data.getSerializableExtra("SELECTTIME");
+                resultCodeA=1;
+                selectTime = (SelectTime) data.getSerializableExtra("SELECTTIME");
                 tv_week.setText(selectTime.name);
                 mSchedule.weekdays=selectTime.weekdays;
                 mSchedule.isrepeat = selectTime.isrepeat;
-
                 break;
             case 20:
-                ArrayList<SelectWeek> array = data.getParcelableArrayListExtra("SELECTWEEK");
+                resultCodeA=2;
+                array = data.getParcelableArrayListExtra("SELECTWEEK");
                 String strWeekList = "";
                 String weekDays = "";
                 for(int i=0;i<array.size();i++){

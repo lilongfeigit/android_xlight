@@ -35,7 +35,6 @@
             android:layout_toRightOf="@+id/tv1"
             android:fontFamily="sans-serif-light"
             android:paddingLeft="10dp"
-            android:text="16:00"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
@@ -77,7 +76,6 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
             android:paddingLeft="10dp"
-            android:text="周一、周二"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView

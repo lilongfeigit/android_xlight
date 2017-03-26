@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,14 +44,21 @@ public class SettingListAdapter extends RecyclerView.Adapter {
 
     private class SettingListViewHolder extends RecyclerView.ViewHolder{
         private TextView tv_setting_name;
+        private ImageView iv;
 
         public SettingListViewHolder(View itemView) {
             super(itemView);
             tv_setting_name = (TextView) itemView.findViewById(R.id.tv_setting_name);
+            iv = (ImageView) itemView.findViewById(R.id.iv);
         }
 
         public void bindView(final View itemView,final int position) {
             tv_setting_name.setText(mSettingStr.get(position));
+            if(position==mSettingStr.size()){
+                iv.setVisibility(View.INVISIBLE);
+            }else{
+                iv.setVisibility(View.VISIBLE);
+            }
 
             //如果设置了回调，就设置点击事件
             if (mOnItemClickListener != null){

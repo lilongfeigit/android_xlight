@@ -106,7 +106,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 确定提交按钮
+                // 确定提交按钮
                 //send info back to ScenarioFragment
 
 

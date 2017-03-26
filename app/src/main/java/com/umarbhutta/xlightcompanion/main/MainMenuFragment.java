@@ -30,10 +30,27 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     private Button btnLogin;
     private LinearLayout llPerName;
     private TextView itemGlance, itemControl, itemScenario, itemSchedule, itemSettings, itemHelp;
+    private CircleImageView userIcon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main_menu, null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (UserUtils.isLogin(getActivity())) {
+            LoginResult userInfo = UserUtils.getUserInfo(getActivity());
+            btnLogin.setVisibility(View.GONE);
+            llPerName.setVisibility(View.VISIBLE);
+            tv_userName.setText("Welcome,"+UserUtils.getUserInfo(getActivity()).getUsername());
+            textView.setText(UserUtils.getUserInfo(getActivity()).getEmail());
+            ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
+        } else {
+            btnLogin.setVisibility(View.VISIBLE);
+            llPerName.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -45,7 +62,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         textView = (TextView) getActivity().findViewById(R.id.textView);
 
         btnLogin = (Button) getActivity().findViewById(R.id.btn_login);
-        CircleImageView userIcon = (CircleImageView) getActivity().findViewById(R.id.userIcon);
+        userIcon = (CircleImageView) getActivity().findViewById(R.id.userIcon);
         itemGlance = (TextView) getActivity().findViewById(R.id.nav_glance);
         itemControl = (TextView) getActivity().findViewById(R.id.nav_control);
         itemScenario = (TextView) getActivity().findViewById(R.id.nav_scenario);
@@ -60,17 +77,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         itemHelp.setOnClickListener(this);
         userIcon.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
-        if (UserUtils.isLogin(getActivity())) {
-            LoginResult userInfo = UserUtils.getUserInfo(getActivity());
-            btnLogin.setVisibility(View.GONE);
-            llPerName.setVisibility(View.VISIBLE);
-            tv_userName.setText("Welcome,"+UserUtils.getUserInfo(getActivity()).getUsername());
-            textView.setText(UserUtils.getUserInfo(getActivity()).getEmail());
-            ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
-        } else {
-            btnLogin.setVisibility(View.VISIBLE);
-            llPerName.setVisibility(View.GONE);
-        }
+
         itemGlance.setBackgroundColor(getResources().getColor(R.color.bar_color));
         itemControl.setBackgroundColor(getResources().getColor(R.color.btn_login_color));
         itemScenario.setBackgroundColor(getResources().getColor(R.color.btn_login_color));

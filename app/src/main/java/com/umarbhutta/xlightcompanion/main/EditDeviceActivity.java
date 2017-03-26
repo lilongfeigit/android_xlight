@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,11 +44,13 @@ import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
+import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
 import com.umarbhutta.xlightcompanion.views.CircleDotView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +60,7 @@ import java.util.List;
  * 设置灯
  */
 
-public class EditDeviceActivity extends AppCompatActivity {
+public class EditDeviceActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView tvTitle;
     public SceneListResult mDeviceInfoResult;
     private Rows deviceInfo;
@@ -64,7 +68,7 @@ public class EditDeviceActivity extends AppCompatActivity {
     private int red = 130;
     private int green = 255;
     private int blue = 0;
-    private EditText mscenarioName;
+    private TextView mscenarioName;
 
     private static final String TAG = ControlFragment.class.getSimpleName();
 
@@ -137,15 +141,11 @@ public class EditDeviceActivity extends AppCompatActivity {
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editDeViceInfo();
-            }
-        });
+        btnSure.setVisibility(View.INVISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("编辑设备");
-        mscenarioName = (EditText) findViewById(R.id.scenarioName);
+        mscenarioName = (TextView) findViewById(R.id.scenarioName);
+        mscenarioName.setOnClickListener(this);
 
         scenarioSpinner = (Spinner) findViewById(R.id.scenarioSpinner);
         ArrayAdapter<String> scenarioAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, scenarioDropdown);
@@ -380,6 +380,31 @@ public class EditDeviceActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.scenarioName:
+                String title = "编辑设备名称";
+                final EditText et = new EditText(this);
+                new AlertDialog.Builder(this).setTitle(title)
+                        .setView(et)
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                String input = et.getText().toString();
+
+                                if (TextUtils.isEmpty(input)) {
+                                    ToastUtil.showToast(EditDeviceActivity.this, getString(R.string.content_is_null));
+                                    return;
+                                }
+                                editDeViceInfo();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.cancel), null)
+                        .show();
+                break;
+        }
     }
 
     private class MyStatusReceiver extends StatusReceiver {
@@ -647,23 +672,21 @@ public class EditDeviceActivity extends AppCompatActivity {
                         });
                     }
                 });
-
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        int color = data.getIntExtra("color", -1);
-        if (-1 != color) {
-            red = (color & 0xff0000) >> 16;
-            green = (color & 0x00ff00) >> 8;
-            blue = (color & 0x0000ff);
+        if(resultCode==-1){
+            int color = data.getIntExtra("color", -1);
+            if (-1 != color) {
+                red = (color & 0xff0000) >> 16;
+                green = (color & 0x00ff00) >> 8;
+                blue = (color & 0x0000ff);
+            }
+            circleIcon.setColor(color);
+            colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
         }
-        circleIcon.setColor(color);
-        colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
-
     }
 
     public String toHexEncoding(int color) {

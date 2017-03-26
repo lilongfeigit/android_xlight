@@ -116,13 +116,14 @@
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="4dp"
                     android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
                     android:fontFamily="sans-serif-light"
                     android:gravity="left|start"
                     android:text="名称"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColorPrimary" />
 
-                <EditText
+                <TextView
                     android:id="@+id/scenarioName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -206,6 +207,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="0dp"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="电源"
@@ -250,6 +252,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="0dp"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="场景"
@@ -299,6 +302,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="0dp"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="亮度"
@@ -337,32 +341,31 @@
 
                     <TextView
                         android:id="@+id/cctLabel"
-                        android:layout_width="0dp"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="0.5"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
+                        android:layout_gravity="center_vertical"
                         android:text="色温"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
                     <TextView
                         android:id="@+id/cctLabelColor"
-                        android:layout_width="0dp"
+                        android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_marginLeft="2dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
+                        android:layout_gravity="center_vertical"
                         android:text="冷色"
-                        android:visibility="gone"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp">
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp">
 
                         <ImageView
                             android:id="@+id/bg"
@@ -376,9 +379,9 @@
                             android:id="@+id/cctSeekBar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:layout_alignLeft="@id/bg"
                             android:layout_alignParentRight="true"
+                            android:paddingTop="8dp"
                             android:progressDrawable="@drawable/seekbar_thumb_color"
                             android:thumb="@drawable/thumb" />
                     </RelativeLayout>
@@ -413,6 +416,7 @@
                         android:layout_marginLeft="0dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
+                        android:layout_gravity="center_vertical"
                         android:text="颜色"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
@@ -427,14 +431,22 @@
                             android:id="@+id/colorTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_toLeftOf="@+id/arraw"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="13dp"
                             android:text="@string/select"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
-
+                        <ImageView
+                            android:id="@+id/arraw"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="13dp"
+                            android:src="@drawable/arraw"
+                            />
 
                         <RelativeLayout
                             android:id="@+id/dotLayout"

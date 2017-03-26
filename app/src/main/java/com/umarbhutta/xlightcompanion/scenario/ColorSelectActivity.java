@@ -40,17 +40,17 @@ public class ColorSelectActivity extends AppCompatActivity {
         findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                ColorSelectActivity.this.finish();
             }
         });
         findViewById(R.id.btn_sure).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 确定，选择的颜色
+                // 确定，选择的颜色
                 Intent intent = new Intent();
                 intent.putExtra("color", picker.getColor());
-                setResult(1, intent);
-                finish();
+                setResult(-1, intent);
+                ColorSelectActivity.this.finish();
             }
         });
 
@@ -69,7 +69,7 @@ public class ColorSelectActivity extends AppCompatActivity {
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override
             public void onColorChanged(int color) {
-                //TODO 颜色选择
+                //颜色选择
 //                Logger.i("颜色变化 = " + color);
             }
         });
@@ -81,7 +81,6 @@ public class ColorSelectActivity extends AppCompatActivity {
         opacityBar.setOnOpacityChangedListener(new OpacityBar.OnOpacityChangedListener() {
             @Override
             public void onOpacityChanged(int opacity) {
-                //TODO
 //                Logger.i("透明度颜色变化 = " + opacity);
             }
         });
@@ -89,14 +88,14 @@ public class ColorSelectActivity extends AppCompatActivity {
         valueBar.setOnValueChangedListener(new ValueBar.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
-                //TODO 颜色值修改变化
+                // 颜色值修改变化
 //                Logger.i("颜色值修改变化 = " + value);
             }
         });
         saturationBar.setOnSaturationChangedListener(new SaturationBar.OnSaturationChangedListener() {
             @Override
             public void onSaturationChanged(int saturation) {
-                //TODO 颜色状态变化
+                // 颜色状态变化
 //                Logger.i("颜色状态变化 = " + saturation);
             }
         });

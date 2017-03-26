@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
@@ -69,6 +70,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((App)getApplicationContext()).finishActivity();
                 finish();
             }
         });
@@ -78,11 +80,11 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_finash_registered:
-                //TODO
+                //
                 registe();
                 break;
             case R.id.tv_protocol:
-                //TODO
+                //
                 onFabPressed();
                 break;
         }

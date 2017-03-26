@@ -95,9 +95,11 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         Fragment fragment = null;
         switch (v.getId()) {
             case R.id.btn_login:
+                showContentView();
                 onFabPressed(LoginActivity.class);
                 break;
             case R.id.userIcon:
+                showContentView();
                 onFabPressed(UserMsgModifyActivity.class);
                 break;
             case R.id.nav_glance:
@@ -111,6 +113,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.nav_control:
                 if (!UserUtils.isLogin(getActivity())) {
+                    showContentView();
                     onFabPressed(LoginActivity.class);
                     return;
                 }
@@ -125,6 +128,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.nav_scenario:
                 if (!UserUtils.isLogin(getActivity())) {
+                    showContentView();
                     onFabPressed(LoginActivity.class);
                     return;
                 }
@@ -139,6 +143,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.nav_schedule:
                 if (!UserUtils.isLogin(getActivity())) {
+                    showContentView();
                     onFabPressed(LoginActivity.class);
                     return;
                 }
@@ -153,6 +158,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.nav_settings:
                 if (!UserUtils.isLogin(getActivity())) {
+                    showContentView();
                     onFabPressed(LoginActivity.class);
                     return;
                 }
@@ -188,6 +194,15 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         if (getActivity() instanceof SlidingMenuMainActivity) {
             SlidingMenuMainActivity ra = (SlidingMenuMainActivity) getActivity();
             ra.onActivityPressed(activity);
+        }
+    }
+    private void showContentView() {
+        if (getActivity() == null)
+            return;
+
+        if (getActivity() instanceof SlidingMenuMainActivity) {
+            SlidingMenuMainActivity ra = (SlidingMenuMainActivity) getActivity();
+            ra.showContent();
         }
     }
 }

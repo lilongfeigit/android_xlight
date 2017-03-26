@@ -17,7 +17,6 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
-import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 
 import java.util.ArrayList;
@@ -109,7 +108,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private void logout() {
         UserUtils.saveUserInfo(getActivity(), null);
         startActivity(new Intent(getActivity(), LoginActivity.class));
-        getActivity().finish();
     }
 
     @Override

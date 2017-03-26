@@ -1,11 +1,16 @@
 package com.umarbhutta.xlightcompanion.bindDevice;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -40,6 +45,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     private WifiListAdapter adapter;
     private List<ScanResult> listb = new ArrayList<ScanResult>();
     private ScanResult curWifi = null;
+    private final int WIFI_PERMISSION_REQ_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +76,40 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         adapter = new WifiListAdapter(this, listb);
         listView.setAdapter(adapter);
 
-        getCurWifiInfo();
+        if (checkPublishPermission()) {
+            getCurWifiInfo();
+        }
+    }
+
+    private boolean checkPublishPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> permissions = new ArrayList<>();
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)) {
+                permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
+            }
+
+            if (permissions.size() != 0) {
+                ActivityCompat.requestPermissions(this,
+                        (String[]) permissions.toArray(new String[0]),
+                        WIFI_PERMISSION_REQ_CODE);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case WIFI_PERMISSION_REQ_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {// 允许
+                    getCurWifiInfo();
+                } else { // 不允许
+                    ToastUtil.showToast(this, "您拒绝了获取wifi列表权限");
+                }
+                break;
+        }
     }
 
     private void getCurWifiInfo() {
@@ -89,7 +128,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
      * @return
      */
     private boolean isWifiAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected() && networkInfo
                 .getType() == ConnectivityManager.TYPE_WIFI);
@@ -99,7 +138,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
      * wifi列表
      */
     private void getWifiList() {
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         listb.addAll(wifiManager.getScanResults());
         adapter.notifyDataSetChanged();
         if (null != listb && listb.size() > 0) {

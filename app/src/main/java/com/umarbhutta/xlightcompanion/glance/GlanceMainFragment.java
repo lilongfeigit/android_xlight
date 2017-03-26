@@ -43,8 +43,6 @@ import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesListAdapter;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
-import com.umarbhutta.xlightcompanion.main.MainActivity;
-import com.umarbhutta.xlightcompanion.main.MainMenuFragment;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
@@ -70,7 +68,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private ImageButton fab;
     TextView outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
     ImageView imgWeather;
-    private ImageButton home_menu,home_setting;
+    private ImageButton home_menu, home_setting;
 
     private static final String TAG = GlanceMainFragment.class.getSimpleName();
     private RecyclerView devicesRecyclerView;
@@ -92,7 +90,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.home_setting:
                 // 跳转到选择的主设备列表页面
                 onFabPressed(DeviceListActivity.class);
@@ -161,6 +159,10 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!UserUtils.isLogin(getContext())) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
                 //跳转到绑定设备页面
                 Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
                 startActivityForResult(intent, 1);
@@ -178,9 +180,9 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         roomHumidity = (TextView) view.findViewById(R.id.valRoomHumidity);
         roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         imgWeather = (ImageView) view.findViewById(R.id.weatherIcon);
-        home_menu= (ImageButton) view.findViewById(R.id.home_menu);
+        home_menu = (ImageButton) view.findViewById(R.id.home_menu);
         home_menu.setOnClickListener(this);
-        home_setting= (ImageButton) view.findViewById(R.id.home_setting);
+        home_setting = (ImageButton) view.findViewById(R.id.home_setting);
         home_setting.setOnClickListener(this);
 
         Resources res = getResources();
@@ -391,7 +393,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         }
 
         if (!UserUtils.isLogin(getActivity())) {
-            getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
             return;
         }
 

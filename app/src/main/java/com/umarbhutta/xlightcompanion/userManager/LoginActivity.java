@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
@@ -38,7 +39,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_user_login);
         //hide nav bar
         getSupportActionBar().hide();
-
         initViews();
     }
 
@@ -64,6 +64,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+
+        findViewById(R.id.ib_clear2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_user_password.setText("");
             }
         });
     }
@@ -101,6 +109,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (TextUtils.isEmpty(et_user_passwordStr)) {
             ToastUtil.showToast(this, getString(R.string.password_is_null));
+            return;
+        }
+
+        if (!StringUtil.isEmail(et_user_accountStr)) {
+            ToastUtil.showToast(this, getString(R.string.email_error));
             return;
         }
 

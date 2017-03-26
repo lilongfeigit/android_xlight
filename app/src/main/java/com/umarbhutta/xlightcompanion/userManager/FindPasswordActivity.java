@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,7 +39,9 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initViews() {
-        findViewById(R.id.btn_finash_registered).setOnClickListener(this);
+        Button btn_finash_registered = (Button) findViewById(R.id.btn_finash_registered);
+        btn_finash_registered.setOnClickListener(this);
+        btn_finash_registered.setText(R.string.next);
         findViewById(R.id.tv_protocol).setOnClickListener(this);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -75,16 +78,15 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
 
     private void findPwd() {
 
-
         final String email = et_user_account.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
-            ToastUtil.showToast(this, "请输入您的邮箱");
+            ToastUtil.showToast(this, getString(R.string.input_email));
             return;
         }
 
-        if(!StringUtil.isEmail(email)){
-            ToastUtil.showToast(this,"请输入正确的邮箱");
+        if (!StringUtil.isEmail(email)) {
+            ToastUtil.showToast(this, R.string.email_error);
             return;
         }
 

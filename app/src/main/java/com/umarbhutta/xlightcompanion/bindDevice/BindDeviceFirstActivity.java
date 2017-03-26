@@ -73,7 +73,6 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
 
         listView = (ListView) findViewById(R.id.wifi_list);
         listView.setOnItemClickListener(this);
-
         adapter = new WifiListAdapter(this.getApplicationContext(), listb);
         listView.setAdapter(adapter);
 

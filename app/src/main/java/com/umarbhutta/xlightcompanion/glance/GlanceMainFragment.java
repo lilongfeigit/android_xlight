@@ -159,10 +159,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!UserUtils.isLogin(getContext())) {
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    return;
-                }
                 //跳转到绑定设备页面
                 Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
                 startActivityForResult(intent, 1);

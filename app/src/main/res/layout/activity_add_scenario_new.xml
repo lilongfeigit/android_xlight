@@ -186,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:scaleType="matrix"
-                android:src="@drawable/white_seek" />
+                android:background="@drawable/white_seek" />
 
             <SeekBar
                 android:id="@+id/colorTemperatureSeekBar"

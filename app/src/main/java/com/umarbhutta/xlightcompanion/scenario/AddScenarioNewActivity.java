@@ -237,15 +237,17 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        int color = data.getIntExtra("color", -1);
-        if (-1 != color) {
-            red = (color & 0xff0000) >> 16;
-            green = (color & 0x00ff00) >> 8;
-            blue = (color & 0x0000ff);
-        }
+        if(resultCode == -1){
+            int color = data.getIntExtra("color", -1);
+            if (-1 != color) {
+                red = (color & 0xff0000) >> 16;
+                green = (color & 0x00ff00) >> 8;
+                blue = (color & 0x0000ff);
+            }
 
-        circleIcon.setColor(color);
-        colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
+            circleIcon.setColor(color);
+            colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
+        }
     }
 
     public String toHexEncoding(int color) {

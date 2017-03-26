@@ -549,15 +549,14 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         @Override
         public void onClick(View v) {
             int index = (int) v.getTag();
-            Rows sceneInfo = mDeviceInfoResult.rows.get(index - 1);
 
             if (0 == index) {
                 curSene = null;
             } else {
+                Rows sceneInfo = mDeviceInfoResult.rows.get(index - 1);
                 curSene = sceneInfo;
+                updateSceneInfo(sceneInfo);
             }
-
-            updateSceneInfo(sceneInfo);
 
             for (int i = 0; i < viewList.size(); i++) {
                 View view = viewList.get(i);

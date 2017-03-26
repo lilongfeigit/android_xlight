@@ -83,7 +83,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
 //                    Manifest.permission.ACCESS_WIFI_STATE,
 //            },WIFI_SCAN_PERMISSION_CODE);
 //            return;
-//        }
+        }
 
         adapter = new WifiListAdapter(this.getApplicationContext(), listb);
         listView.setAdapter(adapter);

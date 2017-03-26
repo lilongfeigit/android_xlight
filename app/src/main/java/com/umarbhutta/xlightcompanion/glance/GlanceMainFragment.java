@@ -21,6 +21,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,8 +42,11 @@ import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesListAdapter;
+import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
+import com.umarbhutta.xlightcompanion.main.MainMenuFragment;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
@@ -62,12 +66,13 @@ import java.util.List;
 /**
  * Created by Umar Bhutta.
  */
-public class GlanceFragment extends Fragment {
+public class GlanceMainFragment extends Fragment implements View.OnClickListener {
     private com.github.clans.fab.FloatingActionButton fab;
     TextView outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
     ImageView imgWeather;
+    private ImageButton home_menu,home_setting;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = GlanceMainFragment.class.getSimpleName();
     private RecyclerView devicesRecyclerView;
     WeatherDetails mWeatherDetails;
 
@@ -85,11 +90,45 @@ public class GlanceFragment extends Fragment {
     private DevicesListAdapter devicesListAdapter;
     private TextView default_text;
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.home_setting:
+                // 跳转到选择的主设备列表页面
+                onFabPressed(DeviceListActivity.class);
+                break;
+            case R.id.home_menu:
+                switchFragment();
+                break;
+        }
+    }
+
+    // the meat of switching the above fragment
+    private void switchFragment() {
+        if (getActivity() == null)
+            return;
+
+        if (getActivity() instanceof SlidingMenuMainActivity) {
+            SlidingMenuMainActivity ra = (SlidingMenuMainActivity) getActivity();
+            ra.toggle();
+        }
+    }
+
+    private void onFabPressed(Class activity) {
+        if (getActivity() == null)
+            return;
+
+        if (getActivity() instanceof SlidingMenuMainActivity) {
+            SlidingMenuMainActivity ra = (SlidingMenuMainActivity) getActivity();
+            ra.onActivityPressed(activity);
+        }
+    }
+
     private class MyDataReceiver extends DataReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            roomTemp.setText(MainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
-            roomHumidity.setText(MainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+            roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
+            roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         }
     }
 
@@ -98,8 +137,8 @@ public class GlanceFragment extends Fragment {
     @Override
     public void onDestroyView() {
         devicesRecyclerView.setAdapter(null);
-        MainActivity.m_mainDevice.removeDataEventHandler(m_handlerGlance);
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
+        SlidingMenuMainActivity.m_mainDevice.removeDataEventHandler(m_handlerGlance);
+        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
             getContext().unregisterReceiver(m_DataReceiver);
         }
         super.onDestroyView();
@@ -116,7 +155,7 @@ public class GlanceFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_glance, container, false);
+        View view = inflater.inflate(R.layout.fragment_main_glance, container, false);
         //        hide nav bar
         fab = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -125,28 +164,6 @@ public class GlanceFragment extends Fragment {
                 //跳转到绑定设备页面
                 Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
                 startActivityForResult(intent, 1);
-//                mSelectDialog = new Dialog(getActivity(), R.style.select_bing_dialog);
-//                LinearLayout root = (LinearLayout) LayoutInflater.from(getActivity()).inflate(
-//                        R.layout.layout_select_bing_control, null);
-//                root.findViewById(R.id.btn_choose_add_wifi_device).setOnClickListener(btnlistener);
-//                root.findViewById(R.id.btn_choose_scan_add_device).setOnClickListener(btnlistener);
-//                root.findViewById(R.id.btn_choose_add_line_device).setOnClickListener(btnlistener);
-//                root.findViewById(R.id.btn_cancel).setOnClickListener(btnlistener);
-//                mSelectDialog.setContentView(root);
-//                Window dialogWindow = mSelectDialog.getWindow();
-//                dialogWindow.setGravity(Gravity.BOTTOM);
-//                dialogWindow.setWindowAnimations(R.style.dialogstyle); // 添加动画
-//                WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-//                lp.x = 0; // 新位置X坐标
-//                lp.y = -20; // 新位置Y坐标
-//                lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
-//                //      lp.height = WindowManager.LayoutParams.WRAP_CONTENT; // 高度
-//                //      lp.alpha = 9f; // 透明度
-//                root.measure(0, 0);
-//                lp.height = root.getMeasuredHeight();
-//                lp.alpha = 9f; // 透明度
-//                dialogWindow.setAttributes(lp);
-//                mSelectDialog.show();
             }
         });
 
@@ -157,10 +174,14 @@ public class GlanceFragment extends Fragment {
         outsideHumidity = (TextView) view.findViewById(R.id.valLocalHumidity);
         apparentTemp = (TextView) view.findViewById(R.id.valApparentTemp);
         roomTemp = (TextView) view.findViewById(R.id.valRoomTemp);
-        roomTemp.setText(MainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
+        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
         roomHumidity = (TextView) view.findViewById(R.id.valRoomHumidity);
-        roomHumidity.setText(MainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         imgWeather = (ImageView) view.findViewById(R.id.weatherIcon);
+        home_menu= (ImageButton) view.findViewById(R.id.home_menu);
+        home_menu.setOnClickListener(this);
+        home_setting= (ImageButton) view.findViewById(R.id.home_setting);
+        home_setting.setOnClickListener(this);
 
         Resources res = getResources();
         Bitmap weatherIcons = decodeResource(res, R.drawable.weather_icons_1, 420, 600);
@@ -176,13 +197,13 @@ public class GlanceFragment extends Fragment {
         icoPartlyCloudyDay = Bitmap.createBitmap(weatherIcons, ICON_WIDTH, ICON_HEIGHT, ICON_WIDTH, ICON_HEIGHT);
         icoPartlyCloudyNight = Bitmap.createBitmap(weatherIcons, ICON_WIDTH * 2, ICON_HEIGHT, ICON_WIDTH, ICON_HEIGHT);
 
-        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
+        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
             intentFilter.setPriority(3);
             getContext().registerReceiver(m_DataReceiver, intentFilter);
         }
 
-        if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
+        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventSendMessage()) {
             m_handlerGlance = new Handler() {
                 public void handleMessage(Message msg) {
                     int intValue = msg.getData().getInt("DHTt", -255);
@@ -195,7 +216,7 @@ public class GlanceFragment extends Fragment {
                     }
                 }
             };
-            MainActivity.m_mainDevice.addDataEventHandler(m_handlerGlance);
+            SlidingMenuMainActivity.m_mainDevice.addDataEventHandler(m_handlerGlance);
         }
 
         //setup recycler view
@@ -289,8 +310,8 @@ public class GlanceFragment extends Fragment {
         outsideHumidity.setText(mWeatherDetails.getmHumidity() + "\u0025");
         apparentTemp.setText(mWeatherDetails.getApparentTemp("celsius") + "\u00B0");
 
-        roomTemp.setText(MainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
-        roomHumidity.setText(MainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
+        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
     }
 
     private WeatherDetails getWeatherDetails(String jsonData) throws JSONException {
@@ -430,7 +451,7 @@ public class GlanceFragment extends Fragment {
      * @param deviceInfo
      */
     private void switchLight(boolean checked, Rows deviceInfo) {
-        MainActivity.m_mainDevice.PowerSwitch(checked);
+        SlidingMenuMainActivity.m_mainDevice.PowerSwitch(checked);
 
         String param = "{\"ison\":" + (checked ? 1 : 0) + "}";
 
@@ -482,15 +503,15 @@ public class GlanceFragment extends Fragment {
             return;
         }
 
-        ((MainActivity) getActivity()).showProgressDialog(getString(R.string.setting));
+        ((SlidingMenuMainActivity) getActivity()).showProgressDialog(getString(R.string.setting));
 
-        RequestUnBindDevice.getInstance().unBindDevice(getActivity(), "" + GlanceFragment.deviceList.get(position).id, new CommentRequstCallback() {
+        RequestUnBindDevice.getInstance().unBindDevice(getActivity(), "" + GlanceMainFragment.deviceList.get(position).id, new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((MainActivity) getActivity()).cancelProgressDialog();
+                        ((SlidingMenuMainActivity) getActivity()).cancelProgressDialog();
                         ToastUtil.showToast(getActivity(), getString(R.string.unbind_sucess));
                         updateUnbindList(position);
                     }
@@ -502,7 +523,7 @@ public class GlanceFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((MainActivity) getActivity()).cancelProgressDialog();
+                        ((SlidingMenuMainActivity) getActivity()).cancelProgressDialog();
                         ToastUtil.showToast(getActivity(), getString(R.string.unbind_fail) + errMsg);
                     }
                 });

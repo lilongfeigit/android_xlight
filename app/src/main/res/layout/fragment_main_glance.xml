@@ -4,6 +4,7 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/mainLightsLL"
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,11 +22,35 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/home_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/home_menu"/>
+
+                <ImageButton
+                    android:id="@+id/home_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/home_setting"/>
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="@dimen/activity_vertical_margin"
                 android:text="滑铁卢区"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -67,8 +93,8 @@
                     android:background="@android:color/transparent"
                     android:gravity="center"
                     android:scaleType="fitCenter"
-                    android:visibility="invisible"
-                    android:src="@drawable/weather_icons_1" />
+                    android:src="@drawable/weather_icons_1"
+                    android:visibility="invisible" />
 
                 <LinearLayout
                     android:id="@+id/localApparentLL"

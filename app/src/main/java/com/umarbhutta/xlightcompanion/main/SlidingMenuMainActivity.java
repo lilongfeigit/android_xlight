@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.main;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,25 +12,46 @@ import android.view.Window;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
+import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
+import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
+import com.umarbhutta.xlightcompanion.settings.BaseFragmentActivity;
 
 /**
  * Created by Administrator
  */
 
-public class SlidingMenuMainActivity extends SlidingFragmentActivity {
+public class SlidingMenuMainActivity extends BaseFragmentActivity {
     private Fragment mContent;
+
+    public static xltDevice m_mainDevice;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
 //        setTitle("ResponsiveUI");
-
         // 设置主视图界面
         setContentView(R.layout.responsive_content_frame);
-
         initSlidingMenu(savedInstanceState);
+
+        // Check Bluetooth
+        BLEAdapter.init(this);
+
+        if (BLEAdapter.IsSupported() && !BLEAdapter.IsEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, BLEAdapter.REQUEST_ENABLE_BT);
+        }
+
+        // Initialize SmartDevice SDK
+        m_mainDevice = new xltDevice();
+        m_mainDevice.Init(this);
+//        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
+
+        // Set SmartDevice Event Notification Flag
+        //m_mainDevice.setEnableEventSendMessage(false);
+        //m_mainDevice.setEnableEventBroadcast(true);
+
     }
 
     private void initSlidingMenu(Bundle savedInstanceState) {
@@ -39,8 +61,6 @@ public class SlidingMenuMainActivity extends SlidingFragmentActivity {
             getSlidingMenu().setSlidingEnabled(true);
             getSlidingMenu()
                     .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-            // show home as up so we can toggle
-//			getActionBar().setDisplayHomeAsUpEnabled(true);
         } else {
             // add a dummy view
             View v = new View(this);
@@ -54,7 +74,7 @@ public class SlidingMenuMainActivity extends SlidingFragmentActivity {
             mContent = getSupportFragmentManager().getFragment(
                     savedInstanceState, "mContent");
         if (mContent == null)
-            mContent = new GlanceFragment();
+            mContent = new GlanceMainFragment();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, mContent).commit();
@@ -85,9 +105,9 @@ public class SlidingMenuMainActivity extends SlidingFragmentActivity {
         }, 50);
     }
 
-    public void onBirdPressed(int pos) {
-//        Intent intent = BirdActivity.newInstance(this, pos);
-//        startActivity(intent);
+    public void onActivityPressed(Class activity) {
+        Intent intent = new Intent(this,activity);
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -103,5 +123,13 @@ public class SlidingMenuMainActivity extends SlidingFragmentActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, "mContent", mContent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == BLEAdapter.REQUEST_ENABLE_BT) {
+            BLEAdapter.init(this);
+        }
     }
 }

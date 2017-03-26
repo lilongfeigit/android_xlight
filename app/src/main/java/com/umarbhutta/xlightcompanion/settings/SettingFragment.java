@@ -9,10 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
+import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 
 import java.util.ArrayList;
@@ -22,7 +27,7 @@ import java.util.List;
  * Created by Administrator on 2017/3/5.
  */
 
-public class SettingFragment extends Fragment {
+public class SettingFragment extends Fragment implements View.OnClickListener {
 
 
     private List<String> settingStr = new ArrayList<String>();
@@ -31,10 +36,21 @@ public class SettingFragment extends Fragment {
     SettingListAdapter settingListAdapter;
     RecyclerView settingRecyclerView;
 
+    private ImageView iv_menu;
+    private TextView textTitle;
+    private Button btn_add;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
+
+        iv_menu = (ImageView) view.findViewById(R.id.iv_menu);
+        iv_menu.setOnClickListener(this);
+        textTitle = (TextView) view.findViewById(R.id.tvTitle);
+        textTitle.setText("设置");
+        btn_add = (Button) view.findViewById(R.id.btn_add);
+        btn_add.setVisibility(View.INVISIBLE);
 
         settingRecyclerView = (RecyclerView) view.findViewById(R.id.settingRecyclerView);
         settingListAdapter = new SettingListAdapter(getActivity(), settingStr);
@@ -96,4 +112,22 @@ public class SettingFragment extends Fragment {
         getActivity().finish();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_menu:
+                switchFragment();
+                break;
+        }
+    }
+    // the meat of switching the above fragment
+    private void switchFragment() {
+        if (getActivity() == null)
+            return;
+
+        if (getActivity() instanceof SlidingMenuMainActivity) {
+            SlidingMenuMainActivity ra = (SlidingMenuMainActivity) getActivity();
+            ra.toggle();
+        }
+    }
 }

@@ -10,12 +10,17 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,15 +35,32 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
     private ImageButton ib_back, ib_refresh;
     private String url;
 
+    private ImageView iv_menu;
+    private TextView textTitle;
+    private Button btn_add;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_report, container, false);
+
+        iv_menu = (ImageView) view.findViewById(R.id.iv_menu);
+        iv_menu.setOnClickListener(this);
+        textTitle = (TextView) view.findViewById(R.id.tvTitle);
+        textTitle.setText("报表");
+        btn_add = (Button) view.findViewById(R.id.btn_add);
+        btn_add.setVisibility(View.INVISIBLE);
+
         webView = (WebView) view.findViewById(R.id.helpWebview);
         ib_back = (ImageButton) view.findViewById(R.id.ib_back);
         ib_back.setOnClickListener(this);
         ib_refresh = (ImageButton) view.findViewById(R.id.ib_refresh);
         ib_refresh.setOnClickListener(this);
+        //启用支持javascript
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         getReportForm();
 
@@ -46,17 +68,11 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initViews() {
-        //启用支持javascript
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.loadUrl(url);
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;
@@ -65,7 +81,6 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                // TODO Auto-generated method stub
                 if (newProgress == 100) {
                     // 网页加载完成
 
@@ -89,6 +104,19 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
             case R.id.ib_refresh:
                 webView.reload();//刷新
                 break;
+            case R.id.iv_menu:
+                switchFragment();
+                break;
+        }
+    }
+    // the meat of switching the above fragment
+    private void switchFragment() {
+        if (getActivity() == null)
+            return;
+
+        if (getActivity() instanceof SlidingMenuMainActivity) {
+            SlidingMenuMainActivity ra = (SlidingMenuMainActivity) getActivity();
+            ra.toggle();
         }
     }
 
@@ -99,6 +127,9 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_REPORT_FORM + UserUtils.getUserInfo(getActivity()).getAccess_token(), null, new HttpUtils.OnHttpRequestCallBack() {
             @Override
             public void onHttpRequestSuccess(final Object result) {
+                if (getActivity() == null) {
+                    return;
+                }
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

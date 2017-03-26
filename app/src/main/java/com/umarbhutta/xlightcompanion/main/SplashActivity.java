@@ -60,7 +60,8 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
             @Override
             public void onClick(View view) {
                 //跳转到主页面
-                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+//                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this,SlidingMenuMainActivity.class);
                 startActivity(intent);
             }
         });

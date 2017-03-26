@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.Window;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
@@ -33,7 +32,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 //        setTitle("ResponsiveUI");
         // 设置主视图界面
         setContentView(R.layout.responsive_content_frame);
-        getWindow().setStatusBarColor(getColor(R.color.bar_color));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         initSlidingMenu(savedInstanceState);
 
         // Check Bluetooth

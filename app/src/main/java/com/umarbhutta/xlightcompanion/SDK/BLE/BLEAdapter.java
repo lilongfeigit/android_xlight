@@ -32,7 +32,7 @@ public class BLEAdapter {
     public static void init(Context context) {
         m_Context = context;
         m_bSupported = m_Context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
-        if  (!m_bSupported) {
+        if (!m_bSupported) {
             Log.e(TAG, "Bluetooth NOT supported!");
             return;
         }
@@ -65,6 +65,9 @@ public class BLEAdapter {
             mPairedDevices.clear();
             Set<BluetoothDevice> devices = m_btAdapter.getBondedDevices();
             for (BluetoothDevice device : devices) {
+                if (null == device || null == device.getName() || null == device.getBluetoothClass()) { //TODO 这块会引起崩溃
+                    continue;
+                }
                 if (device.getBluetoothClass().hashCode() == XLIGHT_BLE_CLASS || device.getName().startsWith(XLIGHT_BLE_NAME_PREFIX)) {
                     mPairedDevices.add(device);
                 }

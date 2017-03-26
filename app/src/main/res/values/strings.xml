@@ -51,4 +51,7 @@
     <string name="brightness">亮度</string>
     <string name="color">颜色</string>
     <string name="select">选择</string>
+    <string name="email_error">邮箱格式不正确</string>
+    <string name="input_email">请输入您的邮箱</string>
+    <string name="next">下一步</string>
 </resources>

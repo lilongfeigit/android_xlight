@@ -35,6 +35,10 @@ public class SharedPreferencesUtils {
      * 设备列表
      */
     public static final String KEY_DEVICE_LIST = "device_list_key";
+    /**
+     * 是不是第一次启动
+     */
+    public static final String KEY_IS_FIRST_LUNCH = "key_is_first_launch";
 
 
     public static boolean putObject(Context context, String key, Object obj) {

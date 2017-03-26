@@ -70,6 +70,21 @@ public class ResetPasswordActivity extends AppCompatActivity implements HttpUtil
         et_new_password_againTv = (EditText) findViewById(R.id.et_new_password_again);
 
 
+        findViewById(R.id.ib_clear1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_old_passwordTv.setText("");
+            }
+        });
+
+        findViewById(R.id.ib_clear2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_new_passwordTv.setText("");
+            }
+        });
+
+
         findViewById(R.id.first_layout).setVisibility(View.GONE);
 
     }

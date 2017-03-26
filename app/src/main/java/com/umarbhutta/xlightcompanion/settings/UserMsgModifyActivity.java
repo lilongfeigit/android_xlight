@@ -175,9 +175,9 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         tvTitle.setText("用户信息");
         sexList.add("女");
         sexList.add("男");
+        sexList.add("不确定");
 
 
-        findViewById(R.id.account_layout).setOnClickListener(this);
         findViewById(R.id.nick_name_layout).setOnClickListener(this);
         findViewById(R.id.avatar_layout).setOnClickListener(this);
         findViewById(R.id.sex_layout).setOnClickListener(this);

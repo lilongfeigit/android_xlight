@@ -6,11 +6,11 @@
 
     <string name="action_settings">Settings</string>
     <!--登陆-->
-    <string name="login_text_user">请输入账号</string>
+    <string name="login_text_user">请输入邮箱</string>
     <string name="login_text_password">请输入密码</string>
     <string name="login_text_forget">忘记密码？</string>
     <string name="login_text_register">新用户注册</string>
-    <string name="login_text">LOGIN</string>
+    <string name="login_text">登录</string>
     <string name="account_is_null">账号不能为空</string>
     <string name="password_is_null">密码不能为空</string>
     <string name="confirm_pwd_is_null">请输入确认密码</string>
@@ -20,7 +20,7 @@
     <string name="registe_success">注册成功</string>
     <string name="input_old_pwd">请输入原密码</string>
     <string name="input_new_pwd">请输入新密码</string>
-    <string name="input_new_pwd_again">请确认新密码</string>
+    <string name="input_new_pwd_again">请再次输入新密码</string>
     <string name="two_pwd_not_same">两次密码不一致</string>
     <string name="modify_pwd_success">密码修改成功</string>
     <string name="commit_img">提交中。。。</string>

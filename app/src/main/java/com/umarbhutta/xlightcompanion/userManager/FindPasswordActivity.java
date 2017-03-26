@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSendVerifyCode;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
@@ -46,13 +47,7 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 finish();
             }
         });
-        btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 确定提交按钮
-            }
-        });
+        findViewById(R.id.tvEditSure).setVisibility(View.GONE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("找回密码");
 
@@ -85,6 +80,11 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
 
         if (TextUtils.isEmpty(email)) {
             ToastUtil.showToast(this, "请输入您的邮箱");
+            return;
+        }
+
+        if(!StringUtil.isEmail(email)){
+            ToastUtil.showToast(this,"请输入正确的邮箱");
             return;
         }
 

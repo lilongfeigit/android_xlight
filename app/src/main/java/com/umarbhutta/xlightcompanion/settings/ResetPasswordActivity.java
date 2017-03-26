@@ -38,7 +38,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements HttpUtil
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modify_password);
+        setContentView(R.layout.activity_reset_password);
         //hide nav bar
         getSupportActionBar().hide();
         email = getIntent().getStringExtra("email");
@@ -53,6 +53,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements HttpUtil
                 finish();
             }
         });
+        findViewById(R.id.tvEditSure).setVisibility(View.GONE);
         btnSure = (TextView) findViewById(R.id.btn_login);
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override

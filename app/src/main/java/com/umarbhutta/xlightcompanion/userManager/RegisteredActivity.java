@@ -3,6 +3,7 @@ package com.umarbhutta.xlightcompanion.userManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -48,7 +49,10 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
     private void initViews() {
         et_user_account = (EditText) findViewById(R.id.et_user_account);
         et_user_password = (EditText) findViewById(R.id.et_user_password);
+        et_user_password.setHint("请输入密码");
+        et_user_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         et_verification_code = (EditText) findViewById(R.id.et_verification_code);
+        et_verification_code.setVisibility(View.GONE);
         findViewById(R.id.btn_finash_registered).setOnClickListener(this);
         findViewById(R.id.tv_protocol).setOnClickListener(this);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
@@ -59,9 +63,15 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setVisibility(View.GONE);
+        btnSure.setText("关闭");
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText("注册");
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -87,7 +97,6 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
     private void registe() {
         String et_user_accountStr = et_user_account.getText().toString();
         String et_user_passwordStr = et_user_password.getText().toString();
-        String et_verification_codeStr = et_verification_code.getText().toString();
 
         if (TextUtils.isEmpty(et_user_accountStr)) {
             ToastUtil.showToast(this, getString(R.string.account_is_null));
@@ -99,18 +108,8 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
             return;
         }
 
-        if (TextUtils.isEmpty(et_verification_codeStr)) {
-            ToastUtil.showToast(this, getString(R.string.confirm_pwd_is_null));
-            return;
-        }
-
-        if (!et_user_passwordStr.equals(et_verification_codeStr)) {
-            ToastUtil.showToast(this, getString(R.string.twice_pwd_not_same));
-            return;
-        }
-
-        if(!StringUtil.isEmail(et_user_accountStr)){
-            ToastUtil.showToast(this,"邮箱格式不正确");
+        if (!StringUtil.isEmail(et_user_accountStr)) {
+            ToastUtil.showToast(this, "邮箱格式不正确");
             return;
         }
 

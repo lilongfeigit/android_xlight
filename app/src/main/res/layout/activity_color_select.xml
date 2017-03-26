@@ -8,8 +8,7 @@
         android:id="@+id/picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@color/btn_login_color" />
+        android:layout_centerInParent="true" />
 
     <com.larswerkman.holocolorpicker.SVBar
         android:id="@+id/svbar"

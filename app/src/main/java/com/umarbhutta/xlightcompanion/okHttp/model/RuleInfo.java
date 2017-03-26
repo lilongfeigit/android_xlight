@@ -13,7 +13,7 @@ public class RuleInfo implements Serializable {
     public int relationtype;
     public int type;
     public String description;
-    public String status;
+    public int status;
 
     public int duration;
     public int userId;

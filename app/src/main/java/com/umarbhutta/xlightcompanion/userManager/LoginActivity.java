@@ -75,11 +75,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 login();
                 break;
             case R.id.tv_forget_password:
-                //TODO
+                //
                 onFabPressed(FindPasswordActivity.class);
                 break;
             case R.id.tv_new_user_res:
-                //TODO
+                //
                 onFabPressed(RegisteredActivity.class);
                 break;
         }

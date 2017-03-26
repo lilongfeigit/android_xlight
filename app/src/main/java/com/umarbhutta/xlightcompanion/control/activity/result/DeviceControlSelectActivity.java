@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
+import com.umarbhutta.xlightcompanion.views.CircleDotView;
 
 import java.util.ArrayList;
 
@@ -76,10 +78,15 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
+        circleIcon = new CircleDotView(this);
+        RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
+        dotLayout.addView(circleIcon);
+
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO 确定提交按钮
+                finish();
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
@@ -269,6 +276,8 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                             if (i == 0) {
                                 view = mInflater.inflate(R.layout.add_scenario_zdy_item,
                                         linear, false);
+                                TextView sceneName = (TextView) view.findViewById(R.id.textView);
+                                sceneName.setText("自定义");
                             } else {
                                 view = mInflater.inflate(R.layout.add_scenario_item,
                                         linear, false);
@@ -292,7 +301,10 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             }
         });
     }
-
+    private int red = 130;
+    private int green = 255;
+    private int blue = 0;
+    private CircleDotView circleIcon;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -308,6 +320,17 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                 }
                 mActioncmd.actioncmdfield.add(actioncmdfield);
                 updateViews();
+                break;
+            default:
+                int color = data.getIntExtra("color", -1);
+                if (-1 != color) {
+                    red = (color & 0xff0000) >> 16;
+                    green = (color & 0x00ff00) >> 8;
+                    blue = (color & 0x0000ff);
+                }
+
+                circleIcon.setColor(color);
+                colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
                 break;
         }
     }

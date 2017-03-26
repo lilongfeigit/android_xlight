@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.condition.EntryConditionActivity;
@@ -59,6 +60,8 @@ public class AddControlRuleActivity extends AppCompatActivity {
 
     public static List<Schedule> mScheduleList = new ArrayList<Schedule>();
     public static List<Condition> mConditionList = new ArrayList<Condition>();
+
+    public static List<String> mScheduleListStr = new ArrayList<String>();
 
     //执行结果
     private List<Ruleresult> mRuleresultList;
@@ -326,10 +329,12 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
             final Schedule schedule = mTopTermsList.get(position);
-            holder.tvStr.setText(schedule.hour + ":" + schedule.minute + " " + schedule.weekdays);
+
+            holder.tvStr.setText(schedule.hour + ":" + schedule.minute + "     " + mScheduleListStr.get(position));
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mScheduleListStr.remove(position);
                     mTopTermsList.remove(schedule);
                     if(mScheduleList.size()>0 || mConditionList.size()>0){
                         tv_no_data1.setVisibility(View.GONE);
@@ -388,7 +393,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
             final Condition condition = mTermsBottomList.get(position);
-            holder.tvStr.setText(condition.ruleconditionname + " " + condition.operator + "" + condition.rightValue);
+            holder.tvStr.setText(condition.ruleconditionname + "   " + condition.operator + "   " + condition.rightValue);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -509,7 +514,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
             final Actioncmd actioncmd = mResultsList.get(position);
-            holder.tvStr.setText(actioncmd.actioncmdfield.get(0).cmd+" "+actioncmd.actioncmdfield.get(0).paralist);
+            holder.tvStr.setText(actioncmd.actioncmdfield.get(0).cmd+" "+actioncmd.actioncmdfield.get(0).paralist.replace("{","").replace("}",""));
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -572,10 +577,10 @@ public class AddControlRuleActivity extends AppCompatActivity {
             }
 
             final Actionnotify actionnotify = mResultsList.get(position);
-            if(TextUtils.isEmpty(actionnotify.msisdn)){
-                holder.tvStr.setText(actionnotify.emailaddress+" "+actionnotify.content);
-            }else{
+            if(StringUtil.isNotEmpty(actionnotify.msisdn,true)){
                 holder.tvStr.setText(actionnotify.msisdn+" "+actionnotify.content);
+            }else{
+                holder.tvStr.setText(actionnotify.emailaddress+" "+actionnotify.content);
             }
 
             holder.imageView.setOnClickListener(new View.OnClickListener() {

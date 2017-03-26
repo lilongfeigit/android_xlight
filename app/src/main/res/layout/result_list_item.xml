@@ -8,6 +8,8 @@
         android:id="@+id/tv_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text=""
+        android:fontFamily="sans-serif-light"
+        android:gravity="left|start"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/black" />
 </LinearLayout>

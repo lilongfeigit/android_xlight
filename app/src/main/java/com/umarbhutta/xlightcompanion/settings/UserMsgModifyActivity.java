@@ -209,7 +209,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         LoginResult info = UserUtils.getUserInfo(this);
         user_name.setText("" + info.username);
         nick_name.setText("" + ((TextUtils.isEmpty(info.nickname) ? "" : info.nickname)));
-        sex.setText("" + ((TextUtils.isEmpty(info.sex)) ? "女" : "男"));
+        sex.setText("" + ((TextUtils.isEmpty(info.sex)) ? "不确定" : ("0".equals(info.sex) ? "女" : "男")));
         ImageLoader.getInstance().displayImage(info.getImage(), user_icon, ImageLoaderOptions.getImageLoaderOptions());
     }
 
@@ -305,7 +305,9 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         try {
             object.put("username", usernameResult);
             object.put("nickname", nickNameResult);
-            object.put("sex", sexResResult);
+            if (2 != sexPosition) { //不确定，性别不确定时不用传此参数
+                object.put("sex", sexResResult);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

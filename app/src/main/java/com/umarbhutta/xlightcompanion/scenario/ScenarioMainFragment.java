@@ -144,9 +144,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
                 info.add(incomingInfo);
 
                 scenarioListAdapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(), "The scenario has been successfully added", Toast.LENGTH_SHORT).show();
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(getActivity(), "No new scenarios were added to the list", Toast.LENGTH_SHORT).show();
             }
         }
     }

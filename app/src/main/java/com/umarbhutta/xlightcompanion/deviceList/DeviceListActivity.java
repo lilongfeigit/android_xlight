@@ -12,7 +12,7 @@ import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.adapter.DeviceListAdapter;
-import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
+import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSettingMainDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 import com.umarbhutta.xlightcompanion.settings.BaseActivity;
@@ -53,7 +53,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         listView = (ListView) findViewById(R.id.lv_devices);
         tv_select_main_device = (TextView) findViewById(R.id.tv_select_main_device);
         tv_no_device = (TextView) findViewById(R.id.tv_no_device);
-        if(GlanceFragment.deviceList!=null && GlanceFragment.deviceList.size()>0){
+        if(GlanceMainFragment.deviceList!=null && GlanceMainFragment.deviceList.size()>0){
             tv_no_device.setVisibility(View.GONE);
             tv_select_main_device.setVisibility(View.VISIBLE);
         }else{
@@ -61,7 +61,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
             tv_select_main_device.setVisibility(View.GONE);
         }
 
-        adapter = new DeviceListAdapter(this, GlanceFragment.deviceList);
+        adapter = new DeviceListAdapter(this, GlanceMainFragment.deviceList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
@@ -81,7 +81,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         }
         showProgressDialog(getString(R.string.setting));
 
-        int deviceId = GlanceFragment.deviceList.get(position).id;
+        int deviceId = GlanceMainFragment.deviceList.get(position).id;
         RequestSettingMainDevice.getInstance().settingDevice(this, 1, deviceId, UserUtils.getUserInfo(this).getId(), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
@@ -109,10 +109,10 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
     }
 
     private void updateDeviceListInfo() {
-        for (int i = 0; i < GlanceFragment.deviceList.size(); i++) {
-            GlanceFragment.deviceList.get(i).maindevice = 0;
+        for (int i = 0; i < GlanceMainFragment.deviceList.size(); i++) {
+            GlanceMainFragment.deviceList.get(i).maindevice = 0;
         }
-        GlanceFragment.deviceList.get(selectPosition).maindevice = 1;
+        GlanceMainFragment.deviceList.get(selectPosition).maindevice = 1;
         adapter.notifyDataSetChanged();
     }
 }

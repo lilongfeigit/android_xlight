@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.umarbhutta.xlightcompanion"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -41,4 +41,5 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.android.support.constraint:constraint-layout:+'
     testCompile 'junit:junit:4.12'
+    compile project(':slidingmenu_library')
 }

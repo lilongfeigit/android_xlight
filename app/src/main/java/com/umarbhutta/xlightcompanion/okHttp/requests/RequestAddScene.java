@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
-import com.umarbhutta.xlightcompanion.okHttp.model.AddSceneParams;
+import com.umarbhutta.xlightcompanion.okHttp.model.EditSceneParams;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 
 /**
@@ -29,7 +29,7 @@ public class RequestAddScene implements HttpUtils.OnHttpRequestCallBack {
      * @param params
      * @param mCommentRequstCallback
      */
-    public void addScene(Context context, AddSceneParams params, CommentRequstCallback mCommentRequstCallback) {
+    public void addScene(Context context, EditSceneParams params, CommentRequstCallback mCommentRequstCallback) {
         this.context = context;
         this.mCommentRequstCallback = mCommentRequstCallback;
         if (UserUtils.isLogin(context)) {

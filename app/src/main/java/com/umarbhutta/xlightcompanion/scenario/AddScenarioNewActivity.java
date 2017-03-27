@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.scenario;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,14 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -23,14 +22,16 @@ import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.main.MainActivity;
-import com.umarbhutta.xlightcompanion.okHttp.model.AddSceneParams;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
+import com.umarbhutta.xlightcompanion.okHttp.model.EditScenarionodes;
+import com.umarbhutta.xlightcompanion.okHttp.model.EditSceneParams;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestAddScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestEditScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 import com.umarbhutta.xlightcompanion.views.CircleDotView;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,6 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private Button addButton;
     private EditText nameEditText;
     private ImageView backImageView;
-    private Spinner filterSpinner;
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -62,6 +62,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private Rows mSceneInfo;
     String from;
     private CircleDotView circleIcon;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +83,6 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         backImageView = (ImageView) findViewById(R.id.backImageView);
 
-        filterSpinner = (Spinner) findViewById(R.id.filterSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, MainActivity.filterNames);
-        // Specify the layout to use when the list of choices appears
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the scenarioAdapter to the spinner
-        filterSpinner.setAdapter(filterAdapter);
-
         circleIcon = new CircleDotView(this);
 
         RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
@@ -106,7 +99,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 确定提交按钮
+                // 确定提交按钮
                 //send info back to ScenarioFragment
 
 
@@ -121,7 +114,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
 
                 //SEND TO PARTICLE CLOUD FOR ALL RINGS
-                MainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
 
                 //send data to update the list
                 Intent returnIntent = getIntent();
@@ -173,7 +166,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
 
                 //SEND TO PARTICLE CLOUD FOR ALL RINGS
-                MainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
 
                 //send data to update the list
                 Intent returnIntent = getIntent();
@@ -237,15 +230,17 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        int color = data.getIntExtra("color", -1);
-        if (-1 != color) {
-            red = (color & 0xff0000) >> 16;
-            green = (color & 0x00ff00) >> 8;
-            blue = (color & 0x0000ff);
-        }
+        if (resultCode == -1) {
+            int color = data.getIntExtra("color", -1);
+            if (-1 != color) {
+                red = (color & 0xff0000) >> 16;
+                green = (color & 0x00ff00) >> 8;
+                blue = (color & 0x0000ff);
+            }
 
-        circleIcon.setColor(color);
-        colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
+            circleIcon.setColor(color);
+            colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
+        }
     }
 
     public String toHexEncoding(int color) {
@@ -285,12 +280,15 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             return;
         }
 
+        mProgressDialog = ProgressDialogUtils.showProgressDialog(this, getString(R.string.commiting));
+
         RequestEditScene.getInstance().editScene(this, mSceneInfo.id, getParams(1), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(AddScenarioNewActivity.this, "编辑场景成功");
                         AddScenarioNewActivity.this.finish();
                     }
@@ -302,6 +300,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(AddScenarioNewActivity.this, "" + errMsg);
                     }
                 });
@@ -332,6 +331,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             return;
         }
 
+        mProgressDialog = ProgressDialogUtils.showProgressDialog(this, getString(R.string.commiting));
 
         RequestAddScene.getInstance().addScene(this, getParams(2), new CommentRequstCallback() {
             @Override
@@ -339,6 +339,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(AddScenarioNewActivity.this, "场景添加成功");
                         AddScenarioNewActivity.this.finish();
                     }
@@ -350,6 +351,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(AddScenarioNewActivity.this, "" + errMsg);
                     }
                 });
@@ -363,13 +365,13 @@ public class AddScenarioNewActivity extends AppCompatActivity {
      * @param mType 添加场景2，编辑场景1
      * @return
      */
-    private AddSceneParams getParams(int mType) {
+    private EditSceneParams getParams(int mType) {
         int brightNess = brightnessSeekBar.getProgress();  // 亮度
         int colorTemper = colorTemperatureSeekBar.getProgress() + 2700;  // 色温
         int type = mType;
         String sceneName = nameEditText.getText().toString();
 
-        AddSceneParams params = new AddSceneParams();
+        EditSceneParams params = new EditSceneParams();
         params.type = type;
         params.userId = UserUtils.getUserInfo(this).id;
         params.scenarioname = sceneName;
@@ -377,10 +379,10 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         params.brightness = brightNess;
         params.color = "rgb(" + red + "," + green + "," + blue + ")";
 
-        List<Scenarionodes> list = new ArrayList<Scenarionodes>();
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        List<EditScenarionodes> list = new ArrayList<EditScenarionodes>();
+        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
 
         params.scenarionodes = list;
         return params;

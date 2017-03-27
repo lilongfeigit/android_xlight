@@ -96,8 +96,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
 //        }
 
 
-
-        handler.sendEmptyMessageDelayed(1,1000);
+        handler.sendEmptyMessageDelayed(1, 1000);
 
     }
 
@@ -105,8 +104,8 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            handler.postDelayed(runnable,100);
-            handler.sendEmptyMessageDelayed(1,1000);
+            handler.postDelayed(runnable, 100);
+            handler.sendEmptyMessageDelayed(1, 1000);
         }
     };
 
@@ -247,8 +246,10 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         listb.addAll(wifiManager.getScanResults());
         adapter.notifyDataSetChanged();
         if (null != listb && listb.size() > 0) {
-            curWifi = listb.get(0);
-            ssidEdit.setText(curWifi.SSID);
+            if (null == curWifi) {
+                curWifi = listb.get(0);
+                ssidEdit.setText(curWifi.SSID);
+            }
         }
     }
 

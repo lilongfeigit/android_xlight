@@ -22,6 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.ControlRuleFragment;
@@ -33,6 +34,8 @@ import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
+import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.report.ReportFragment;
 import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
@@ -363,6 +366,33 @@ public class MainActivity extends BaseActivity
             @Override
             public void onHttpRequestFail(int code, String errMsg) {
 
+            }
+        });
+    }
+
+    /**
+     * 获取场景进行本地化
+     */
+    private void initSceneListInfo() {
+        if (!UserUtils.isLogin(this)) {
+            return;
+        }
+        RequestSceneListInfo.getInstance().getSceneListInfo(this, new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
+            @Override
+            public void onRequestFirstPageInfoSuccess(final SceneListResult deviceInfoResult) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (null != deviceInfoResult && null != deviceInfoResult.rows && deviceInfoResult.rows.size() > 0) {
+                            SharedPreferencesUtils.putObject(MainActivity.this, SharedPreferencesUtils.KEY_SCENE_LIST, deviceInfoResult.rows);
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onRequestFirstPageInfoFail(int code, String errMsg) {
             }
         });
     }

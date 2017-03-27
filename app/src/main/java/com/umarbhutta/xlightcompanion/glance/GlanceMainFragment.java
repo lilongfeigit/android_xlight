@@ -52,7 +52,6 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestFirstPageInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestUnBindDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
-import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -147,7 +146,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getBaseInfos();
+        //TODO 判断是哪个页面过来的。
+//        getBaseInfos();
     }
 
     @Nullable
@@ -159,10 +159,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!UserUtils.isLogin(getContext())) {
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    return;
-                }
                 //跳转到绑定设备页面
                 Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
                 startActivityForResult(intent, 1);
@@ -228,8 +224,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         devicesRecyclerView.setLayoutManager(layoutManager);
         devicesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
-
-        getBaseInfos();
 
         double latitude = 43.4643;
         double longitude = -80.5204;
@@ -412,12 +406,11 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         RequestFirstPageInfo.getInstance(getActivity()).getBaseInfo(new RequestFirstPageInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(final DeviceInfoResult mDeviceInfoResult) {
-                Logger.i("mDeviceInfoResult = " + mDeviceInfoResult.toString());
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                         List<Rows> devices = mDeviceInfoResult.rows;
+                        Logger.i("mDeviceInfoResult = " + devices.toString());
                         deviceList.clear();
                         deviceList.addAll(devices);
                         devicesListAdapter.notifyDataSetChanged();
@@ -439,6 +432,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+        getBaseInfos();
         devicesListAdapter.notifyDataSetChanged();
         if (null != deviceList && deviceList.size() > 0) {
             default_text.setVisibility(View.GONE);

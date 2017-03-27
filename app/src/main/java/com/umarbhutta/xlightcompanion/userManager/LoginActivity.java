@@ -135,8 +135,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void run() {
                 LoginResult info = (LoginResult) result;
                 if (info.code == 1) {   //登录成功
-                    ToastUtil.showToast(LoginActivity.this, getString(R.string.login_success));
                     UserUtils.saveUserInfo(LoginActivity.this, info.data.get(0));
+                    ToastUtil.showToast(LoginActivity.this, getString(R.string.login_success));
                     finish();
                 } else if (info.code == 0) {  //登录失败，提示服务端返回的信息
                     ToastUtil.showToast(LoginActivity.this, info.msg);

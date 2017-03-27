@@ -23,7 +23,7 @@ import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.main.MainActivity;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.AddSceneParams;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
@@ -46,7 +46,6 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private Button addButton;
     private EditText nameEditText;
     private ImageView backImageView;
-    private Spinner filterSpinner;
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -82,14 +81,6 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         backImageView = (ImageView) findViewById(R.id.backImageView);
 
-        filterSpinner = (Spinner) findViewById(R.id.filterSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, MainActivity.filterNames);
-        // Specify the layout to use when the list of choices appears
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the scenarioAdapter to the spinner
-        filterSpinner.setAdapter(filterAdapter);
-
         circleIcon = new CircleDotView(this);
 
         RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
@@ -121,7 +112,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
 
                 //SEND TO PARTICLE CLOUD FOR ALL RINGS
-                MainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
 
                 //send data to update the list
                 Intent returnIntent = getIntent();
@@ -173,7 +164,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
 
                 //SEND TO PARTICLE CLOUD FOR ALL RINGS
-                MainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
 
                 //send data to update the list
                 Intent returnIntent = getIntent();

@@ -19,8 +19,8 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.ControlFragment;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
-import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
-import com.umarbhutta.xlightcompanion.main.MainActivity;
+import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
@@ -113,7 +113,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                 state = isChecked;
                 //ParticleAdapter.JSONCommandPower(ParticleAdapter.DEFAULT_DEVICE_ID, state);
                 //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, state);
-                MainActivity.m_mainDevice.PowerSwitch(state);
+                SlidingMenuMainActivity.m_mainDevice.PowerSwitch(state);
             }
         });
 
@@ -181,9 +181,9 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
     }
 
     private void getMainDevice() {//获取主设备
-        for (int i = 0; i < GlanceFragment.deviceList.size(); i++) {
-            if (GlanceFragment.deviceList.get(i).maindevice == 1) {//是主设备
-                curMainRows = GlanceFragment.deviceList.get(i);
+        for (int i = 0; i < GlanceMainFragment.deviceList.size(); i++) {
+            if (GlanceMainFragment.deviceList.get(i).maindevice == 1) {//是主设备
+                curMainRows = GlanceMainFragment.deviceList.get(i);
             }
         }
     }
@@ -221,7 +221,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
     }
 
     private void updateDeviceRingLabel() {
-        String label = MainActivity.m_mainDevice.getDeviceName();
+        String label = SlidingMenuMainActivity.m_mainDevice.getDeviceName();
 
         if (ring1 && ring2 && ring3) {
             label += ": " + RINGALL_TEXT;
@@ -322,15 +322,16 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                 updateViews();
                 break;
             default:
-                int color = data.getIntExtra("color", -1);
-                if (-1 != color) {
-                    red = (color & 0xff0000) >> 16;
-                    green = (color & 0x00ff00) >> 8;
-                    blue = (color & 0x0000ff);
+                if(resultCode==-1){
+                    int color = data.getIntExtra("color", -1);
+                    if (-1 != color) {
+                        red = (color & 0xff0000) >> 16;
+                        green = (color & 0x00ff00) >> 8;
+                        blue = (color & 0x0000ff);
+                    }
+                    circleIcon.setColor(color);
+                    colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
                 }
-
-                circleIcon.setColor(color);
-                colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
                 break;
         }
     }

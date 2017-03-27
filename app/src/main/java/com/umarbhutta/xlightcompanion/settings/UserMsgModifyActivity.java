@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderOptions;
@@ -207,9 +208,27 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
 
     private void updateUserinfo() {
         LoginResult info = UserUtils.getUserInfo(this);
-        user_name.setText("" + info.username);
-        nick_name.setText("" + ((TextUtils.isEmpty(info.nickname) ? "" : info.nickname)));
-        sex.setText("" + ((TextUtils.isEmpty(info.sex)) ? "女" : "男"));
+        if(StringUtil.isNotEmpty(info.username,false)){
+            user_name.setText(info.username);
+        }else{
+            user_name.setText("");
+        }
+        if(StringUtil.isNotEmpty(info.nickname,false)){
+            nick_name.setText(info.nickname);
+        }else{
+            nick_name.setText("");
+        }
+        if(StringUtil.isNotEmpty(info.sex,true)){
+            if(info.sex.equals("0")){
+                sex.setText("女");
+            }else if(info.sex.equals("1")){
+                sex.setText("男");
+            }else if(info.sex.equals("2")){
+                sex.setText("不确定");
+            }
+        }else{
+            sex.setText("不确定");
+        }
         ImageLoader.getInstance().displayImage(info.getImage(), user_icon, ImageLoaderOptions.getImageLoaderOptions());
     }
 
@@ -284,7 +303,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         LoginResult userInfo = UserUtils.getUserInfo(this);
         usernameResult = userInfo.getUsername();
         nickNameResult = userInfo.getNickname();
-        sexResResult = TextUtils.isEmpty(userInfo.getSex()) ? "0" : "1";
+        sexResResult = TextUtils.isEmpty(userInfo.getSex()) ? "0" : "1";//sex=0代表女，1代表男，没选的话就不传这个参数
 
         this.type = type;
 
@@ -305,7 +324,11 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         try {
             object.put("username", usernameResult);
             object.put("nickname", nickNameResult);
-            object.put("sex", sexResResult);
+            if("2".equals(sexResResult)){
+                object.put("sex", "");
+            }else{
+                object.put("sex", sexResResult);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -316,8 +339,8 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToast(UserMsgModifyActivity.this, "修改成功");
                         saveUserInfo();
+                        ToastUtil.showToast(UserMsgModifyActivity.this, "修改成功");
                     }
                 });
             }
@@ -346,7 +369,13 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                 nick_name.setText(nickNameResult);
                 break;
             case 2:
-                mLoginResult.sex = "0".equals(sexResResult) ? "女" : "男";
+                if("0".equals(sexResResult)){
+                    mLoginResult.sex = "女";
+                }else if("1".equals(sexResResult)){
+                    mLoginResult.sex = "男";
+                }else{
+                    mLoginResult.sex = "不确定";
+                }
                 break;
         }
 

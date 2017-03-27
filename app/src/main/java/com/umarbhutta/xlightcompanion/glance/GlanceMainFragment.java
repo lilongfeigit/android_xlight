@@ -147,7 +147,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getBaseInfos();
+        //TODO 判断是哪个页面过来的。
+//        getBaseInfos();
     }
 
     @Nullable
@@ -224,8 +225,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         devicesRecyclerView.setLayoutManager(layoutManager);
         devicesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
-
-        getBaseInfos();
 
         double latitude = 43.4643;
         double longitude = -80.5204;
@@ -435,6 +434,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+        getBaseInfos();
         devicesListAdapter.notifyDataSetChanged();
         if (null != deviceList && deviceList.size() > 0) {
             default_text.setVisibility(View.GONE);

@@ -54,7 +54,7 @@ public class SettingListAdapter extends RecyclerView.Adapter {
 
         public void bindView(final View itemView,final int position) {
             tv_setting_name.setText(mSettingStr.get(position));
-            if(position==mSettingStr.size()){
+            if(position==mSettingStr.size()-1){
                 iv.setVisibility(View.INVISIBLE);
             }else{
                 iv.setVisibility(View.VISIBLE);

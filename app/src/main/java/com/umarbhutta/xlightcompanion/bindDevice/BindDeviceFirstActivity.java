@@ -197,7 +197,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {// 允许
                     getCurWifiInfo();
                 } else { // 不允许
-                    ToastUtil.showToast(this, "您拒绝了获取wifi列表权限");
+//                    ToastUtil.showToast(this, "您拒绝了获取wifi列表权限");
                 }
                 break;
         }

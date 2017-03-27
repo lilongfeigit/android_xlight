@@ -100,8 +100,6 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
             Intent intent = new Intent(mActivity, EditDeviceActivity.class);
             intent.putExtra("info", deviceList.get(mPositon));
             mActivity.startActivity(intent);
-
-
         }
 
         @Override

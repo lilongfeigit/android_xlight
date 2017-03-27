@@ -237,12 +237,11 @@
 
         <SeekBar
             android:id="@+id/brightnessSeekBar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:backgroundTint="@color/blue"
             android:max="100"
-            android:paddingRight="0dp"
             android:progress="80"
             android:thumb="@drawable/thumb" />
 

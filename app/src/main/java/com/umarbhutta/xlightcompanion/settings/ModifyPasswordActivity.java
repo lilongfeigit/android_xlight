@@ -103,7 +103,7 @@ public class ModifyPasswordActivity extends AppCompatActivity implements HttpUti
         Gson gson = new Gson();
         String paramStr = gson.toJson(param);
 
-        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_MODIFY_PWD + UserUtils.getUserInfo(this).getAccess_token(), paramStr, CommentResult.class, this);
+        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_MODIFY_PWD + UserUtils.getUserInfo(this).getId() + "/resetpassword?access_token=" + UserUtils.getUserInfo(this).getAccess_token(), paramStr, CommentResult.class, this);
 
     }
 

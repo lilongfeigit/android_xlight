@@ -46,7 +46,7 @@ public class NetConfig {
     /**
      * 修改密码
      */
-    public static final String URL_MODIFY_PWD = "http://123.207.166.211:8080/users/2/resetpassword?access_token=";
+    public static final String URL_MODIFY_PWD = "http://123.207.166.211:8080/users/";
     /**
      * 解绑设备
      */

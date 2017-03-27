@@ -653,8 +653,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                setResult(0);
-                                EditDeviceActivity.this.finish();
+                                ToastUtil.showToast(EditDeviceActivity.this, "修改成功");
+//                                setResult(0);
+//                                EditDeviceActivity.this.finish();
                             }
                         });
                     }

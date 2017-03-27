@@ -407,12 +407,11 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         RequestFirstPageInfo.getInstance(getActivity()).getBaseInfo(new RequestFirstPageInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(final DeviceInfoResult mDeviceInfoResult) {
-                Logger.i("mDeviceInfoResult = " + mDeviceInfoResult.toString());
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                         List<Rows> devices = mDeviceInfoResult.rows;
+                        Logger.i("mDeviceInfoResult = " + devices.toString());
                         deviceList.clear();
                         deviceList.addAll(devices);
                         devicesListAdapter.notifyDataSetChanged();

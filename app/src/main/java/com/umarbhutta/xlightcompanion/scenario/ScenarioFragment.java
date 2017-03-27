@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.scenario;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
+import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
@@ -22,6 +25,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +46,7 @@ public class ScenarioFragment extends Fragment {
 
     ScenarioListAdapter scenarioListAdapter;
     RecyclerView scenarioRecyclerView;
+    private ProgressDialog mProgressDialog;
 
     @Nullable
     @Override
@@ -101,6 +106,11 @@ public class ScenarioFragment extends Fragment {
     }
 
     private void deleteScene(final int position) {
+        if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
+            ToastUtil.showToast(getContext(), R.string.net_error);
+            return;
+        }
+        mProgressDialog = ProgressDialogUtils.showProgressDialog(getContext(), getString(R.string.commiting));
         Rows mSceneInfo = mSceneList.get(position);
         RequestDeleteScene.getInstance().deleteScene(getActivity(), mSceneInfo.id, new CommentRequstCallback() {
             @Override
@@ -108,6 +118,7 @@ public class ScenarioFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(getActivity(), "删除成功");
                         mSceneList.remove(position);
                         scenarioListAdapter.notifyDataSetChanged();
@@ -120,6 +131,7 @@ public class ScenarioFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(getActivity(), "" + errMsg);
                     }
                 });
@@ -155,6 +167,11 @@ public class ScenarioFragment extends Fragment {
     public List<Rows> mSceneList = new ArrayList<Rows>();
 
     private void getSceneList() {
+        if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
+            ToastUtil.showToast(getContext(), R.string.net_error);
+            return;
+        }
+        mProgressDialog = ProgressDialogUtils.showProgressDialog(getContext(), getString(R.string.loading));
         RequestSceneListInfo.getInstance().getSceneListInfo(getActivity(), new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(final SceneListResult deviceInfoResult) {
@@ -162,9 +179,11 @@ public class ScenarioFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mProgressDialog.cancel();
                             if (null != deviceInfoResult && null != deviceInfoResult.rows && deviceInfoResult.rows.size() > 0) {
                                 mSceneList.clear();
                                 mSceneList.addAll(deviceInfoResult.rows);
+                                SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_SCENE_LIST, deviceInfoResult.rows);
                             }
                             initList();
                         }
@@ -178,6 +197,7 @@ public class ScenarioFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mProgressDialog.cancel();
                             ToastUtil.showToast(getActivity(), "" + errMsg);
                         }
                     });

@@ -44,13 +44,11 @@ import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
-import com.umarbhutta.xlightcompanion.settings.UserMsgModifyActivity;
 import com.umarbhutta.xlightcompanion.views.CircleDotView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +156,6 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         dotLayout.addView(circleIcon);
 
 
-
         mDevice = new xltDevice();
         mDevice.Init(this);
         mDevice.setDeviceID(deviceInfo.id);
@@ -168,9 +165,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
 //        MainActivity.m_mainDevice.setDeviceName(DEFAULT_LAMP_TEXT);
 
         mscenarioName.setText(deviceInfo.devicename);
-        powerSwitch.setChecked(mDevice.getState() > 0);
-        brightnessSeekBar.setProgress(mDevice.getBrightness());
-        cctSeekBar.setProgress(mDevice.getCCT() - 2700);
+        powerSwitch.setChecked(deviceInfo.ison > 0);
+        brightnessSeekBar.setProgress(deviceInfo.brightness);
+        cctSeekBar.setProgress(deviceInfo.cct - 2700);
 
         if (mDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
@@ -379,12 +376,11 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.scenarioName:
                 String title = "编辑设备名称";
                 final EditText et = new EditText(this);
@@ -677,7 +673,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==-1){
+        if (resultCode == -1) {
             int color = data.getIntExtra("color", -1);
             if (-1 != color) {
                 red = (color & 0xff0000) >> 16;

@@ -39,6 +39,10 @@ public class SharedPreferencesUtils {
      * 是不是第一次启动
      */
     public static final String KEY_IS_FIRST_LUNCH = "key_is_first_launch";
+    /**
+     * 场景列表,,存储为List<Rows>
+     */
+    public static final String KEY_SCENE_LIST = "key_scene_list";
 
 
     public static boolean putObject(Context context, String key, Object obj) {

@@ -52,7 +52,6 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestFirstPageInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestUnBindDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
-import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

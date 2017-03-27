@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.scenario;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,14 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -24,13 +23,15 @@ import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
-import com.umarbhutta.xlightcompanion.okHttp.model.AddSceneParams;
+import com.umarbhutta.xlightcompanion.okHttp.model.EditScenarionodes;
+import com.umarbhutta.xlightcompanion.okHttp.model.EditSceneParams;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestAddScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestEditScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 import com.umarbhutta.xlightcompanion.views.CircleDotView;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private Rows mSceneInfo;
     String from;
     private CircleDotView circleIcon;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,7 +230,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == -1){
+        if (resultCode == -1) {
             int color = data.getIntExtra("color", -1);
             if (-1 != color) {
                 red = (color & 0xff0000) >> 16;
@@ -278,12 +280,15 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             return;
         }
 
+        mProgressDialog = ProgressDialogUtils.showProgressDialog(this, getString(R.string.commiting));
+
         RequestEditScene.getInstance().editScene(this, mSceneInfo.id, getParams(1), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(AddScenarioNewActivity.this, "编辑场景成功");
                         AddScenarioNewActivity.this.finish();
                     }
@@ -295,6 +300,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(AddScenarioNewActivity.this, "" + errMsg);
                     }
                 });
@@ -325,6 +331,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             return;
         }
 
+        mProgressDialog = ProgressDialogUtils.showProgressDialog(this, getString(R.string.commiting));
 
         RequestAddScene.getInstance().addScene(this, getParams(2), new CommentRequstCallback() {
             @Override
@@ -332,6 +339,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(AddScenarioNewActivity.this, "场景添加成功");
                         AddScenarioNewActivity.this.finish();
                     }
@@ -343,6 +351,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mProgressDialog.cancel();
                         ToastUtil.showToast(AddScenarioNewActivity.this, "" + errMsg);
                     }
                 });
@@ -356,13 +365,13 @@ public class AddScenarioNewActivity extends AppCompatActivity {
      * @param mType 添加场景2，编辑场景1
      * @return
      */
-    private AddSceneParams getParams(int mType) {
+    private EditSceneParams getParams(int mType) {
         int brightNess = brightnessSeekBar.getProgress();  // 亮度
         int colorTemper = colorTemperatureSeekBar.getProgress() + 2700;  // 色温
         int type = mType;
         String sceneName = nameEditText.getText().toString();
 
-        AddSceneParams params = new AddSceneParams();
+        EditSceneParams params = new EditSceneParams();
         params.type = type;
         params.userId = UserUtils.getUserInfo(this).id;
         params.scenarioname = sceneName;
@@ -370,10 +379,10 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         params.brightness = brightNess;
         params.color = "rgb(" + red + "," + green + "," + blue + ")";
 
-        List<Scenarionodes> list = new ArrayList<Scenarionodes>();
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-        list.add(new Scenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        List<EditScenarionodes> list = new ArrayList<EditScenarionodes>();
+        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
 
         params.scenarionodes = list;
         return params;

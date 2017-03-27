@@ -88,7 +88,6 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                 .readTimeout(10, TimeUnit.SECONDS)
                 .build();
 
-
         File file = new File(picPath);
         if (!file.exists()) {
             Toast.makeText(UserMsgModifyActivity.this, "文件不存在", Toast.LENGTH_SHORT).show();
@@ -97,7 +96,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
             RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("lightscrop.jpg", file.getName(), fileBody).build();
 
             Request requestPostFile = new Request.Builder()
-                    .url(NetConfig.URL_UPLOAD_IMG + UserUtils.getUserInfo(this).getAccess_token())
+                    .url(NetConfig.URL_UPLOAD_IMG + UserUtils.getUserInfo(this).getId() + "/uploadimg?access_token=" + UserUtils.getUserInfo(this).getAccess_token())
                     .post(requestBody)
                     .build();
             client.newCall(requestPostFile).enqueue(new Callback() {
@@ -208,25 +207,28 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
 
     private void updateUserinfo() {
         LoginResult info = UserUtils.getUserInfo(this);
-        if(StringUtil.isNotEmpty(info.username,false)){
+        user_name.setText("" + info.username);
+        nick_name.setText("" + ((TextUtils.isEmpty(info.nickname) ? "" : info.nickname)));
+        sex.setText("" + ((TextUtils.isEmpty(info.sex)) ? "不确定" : ("0".equals(info.sex) ? "女" : "男")));
+        if (StringUtil.isNotEmpty(info.username, false)) {
             user_name.setText(info.username);
-        }else{
+        } else {
             user_name.setText("");
         }
-        if(StringUtil.isNotEmpty(info.nickname,false)){
+        if (StringUtil.isNotEmpty(info.nickname, false)) {
             nick_name.setText(info.nickname);
-        }else{
+        } else {
             nick_name.setText("");
         }
-        if(StringUtil.isNotEmpty(info.sex,true)){
-            if(info.sex.equals("0")){
+        if (StringUtil.isNotEmpty(info.sex, true)) {
+            if (info.sex.equals("0")) {
                 sex.setText("女");
-            }else if(info.sex.equals("1")){
+            } else if (info.sex.equals("1")) {
                 sex.setText("男");
-            }else if(info.sex.equals("2")){
+            } else if (info.sex.equals("2")) {
                 sex.setText("不确定");
             }
-        }else{
+        } else {
             sex.setText("不确定");
         }
         ImageLoader.getInstance().displayImage(info.getImage(), user_icon, ImageLoaderOptions.getImageLoaderOptions());
@@ -324,9 +326,9 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         try {
             object.put("username", usernameResult);
             object.put("nickname", nickNameResult);
-            if("2".equals(sexResResult)){
+            if ("2".equals(sexResResult)) {  //不确定，性别不确定时不用传此参数
                 object.put("sex", "");
-            }else{
+            } else {
                 object.put("sex", sexResResult);
             }
         } catch (JSONException e) {
@@ -369,11 +371,11 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                 nick_name.setText(nickNameResult);
                 break;
             case 2:
-                if("0".equals(sexResResult)){
+                if ("0".equals(sexResResult)) {
                     mLoginResult.sex = "女";
-                }else if("1".equals(sexResResult)){
+                } else if ("1".equals(sexResResult)) {
                     mLoginResult.sex = "男";
-                }else{
+                } else {
                     mLoginResult.sex = "不确定";
                 }
                 break;

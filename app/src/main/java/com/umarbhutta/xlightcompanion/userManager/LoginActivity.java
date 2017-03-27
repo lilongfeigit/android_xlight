@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_user_login);
         //hide nav bar
         getSupportActionBar().hide();
-        ((App)getApplicationContext()).setActivity(this);
+        ((App) getApplicationContext()).setActivity(this);
         initViews();
     }
 
@@ -135,6 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void run() {
                 LoginResult info = (LoginResult) result;
                 if (info.code == 1) {   //登录成功
+                    info.data.get(0).setImage(NetConfig.SERVER_ADDRESS + info.data.get(0).getImage());
                     UserUtils.saveUserInfo(LoginActivity.this, info.data.get(0));
                     ToastUtil.showToast(LoginActivity.this, getString(R.string.login_success));
                     finish();

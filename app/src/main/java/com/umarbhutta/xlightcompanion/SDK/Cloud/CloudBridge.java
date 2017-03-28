@@ -353,12 +353,12 @@ public class CloudBridge extends BaseBridge {
         return resultCode;
     }
 
-    public int FastCallPowerSwitch(final boolean state) {
+    public int FastCallPowerSwitch(final int state) {
         new Thread() {
             @Override
             public void run() {
                 // Make the Particle call here
-                String strParam = String.format("%d:%d", getNodeID(), state ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
+                String strParam = String.format("%d:%d", getNodeID(), state);
                 ArrayList<String> message = new ArrayList<>();
                 message.add(strParam);
                 try {
@@ -383,7 +383,7 @@ public class CloudBridge extends BaseBridge {
                             Log.i(TAG, "Received event: " + eventName + " with payload: " + event.dataPayload);
                             // Notes: due to bug of SDK 0.3.4, the eventName is not correct
                             /// We work around by specifying eventName
-                            if( event.dataPayload.contains("DHTt") ) {
+                            if( event.dataPayload.contains("DHTt") || event.dataPayload.contains("ALS") || event.dataPayload.contains("PIR") ) {
                                 eventName = xltDevice.eventSensorData;
                             } else {
                                 eventName = xltDevice.eventDeviceStatus;
@@ -437,19 +437,41 @@ public class CloudBridge extends BaseBridge {
             if (eventName.equalsIgnoreCase(xltDevice.eventDeviceStatus)) {
                 if (jObject.has("nd")) {
                     int nodeId = jObject.getInt("nd");
-                    if (nodeId ==  m_parentDevice.getDeviceID()) {
+                    int ringId = xltDevice.RING_ID_ALL;
+                    if (nodeId ==  m_parentDevice.getDeviceID() || m_parentDevice.findNodeFromDeviceList(nodeId) >= 0) {
                         Bundle bdlControl = new Bundle();
+                        bdlControl.putInt("nd", nodeId);
+                        if (jObject.has("Ring")) {
+                            ringId = jObject.getInt("Ring");
+                        }
+                        bdlControl.putInt("Ring", ringId);
                         if (jObject.has("State")) {
-                            m_parentDevice.setState(jObject.getInt("State"));
-                            bdlControl.putInt("State", m_parentDevice.getState());
+                            m_parentDevice.setState(nodeId, jObject.getInt("State"));
+                            bdlControl.putInt("State", jObject.getInt("State"));
                         }
                         if (jObject.has("BR")) {
-                            m_parentDevice.setBrightness(jObject.getInt("BR"));
-                            bdlControl.putInt("BR", m_parentDevice.getBrightness());
+                            m_parentDevice.setBrightness(nodeId, jObject.getInt("BR"));
+                            bdlControl.putInt("BR", jObject.getInt("BR"));
                         }
                         if (jObject.has("CCT")) {
-                            m_parentDevice.setCCT(jObject.getInt("CCT"));
-                            bdlControl.putInt("CCT", m_parentDevice.getCCT());
+                            m_parentDevice.setCCT(nodeId, jObject.getInt("CCT"));
+                            bdlControl.putInt("CCT", jObject.getInt("CCT"));
+                        }
+                        if (jObject.has("W")) {
+                            m_parentDevice.setWhite(nodeId, ringId, jObject.getInt("W"));
+                            bdlControl.putInt("W", jObject.getInt("W"));
+                        }
+                        if (jObject.has("R")) {
+                            m_parentDevice.setRed(nodeId, ringId, jObject.getInt("R"));
+                            bdlControl.putInt("R", jObject.getInt("R"));
+                        }
+                        if (jObject.has("G")) {
+                            m_parentDevice.setGreen(nodeId, ringId, jObject.getInt("G"));
+                            bdlControl.putInt("G", jObject.getInt("G"));
+                        }
+                        if (jObject.has("B")) {
+                            m_parentDevice.setBlue(nodeId, ringId, jObject.getInt("B"));
+                            bdlControl.putInt("B", jObject.getInt("B"));
                         }
                         m_parentDevice.sendDeviceStatusMessage(bdlControl);
                     }
@@ -464,6 +486,10 @@ public class CloudBridge extends BaseBridge {
                     m_parentDevice.m_Data.m_RoomHumidity = jObject.getInt("DHTh");
                     bdlData.putInt("DHTh", m_parentDevice.m_Data.m_RoomHumidity);
                 }
+                if (jObject.has("ALS")) {
+                    m_parentDevice.m_Data.m_RoomBrightness = jObject.getInt("ALS");
+                    bdlData.putInt("ALS", m_parentDevice.m_Data.m_RoomBrightness);
+                }
                 m_parentDevice.sendSensorDataMessage(bdlData);
             }
         } catch (final JSONException e) {
@@ -473,20 +499,38 @@ public class CloudBridge extends BaseBridge {
 
     // Demo Option: use broadcast & receivers to publish events
     private void BroadcastEvent(final String eventName, String dataPayload) {
+        int nodeId = -1;
+
         try {
             JSONObject jObject = new JSONObject(dataPayload);
             if (jObject.has("nd")) {
-                int nodeId = jObject.getInt("nd");
-                // ToDO: search device
-                if (nodeId ==  m_parentDevice.getDeviceID()) {
+                nodeId = jObject.getInt("nd");
+                int ringId = xltDevice.RING_ID_ALL;
+                // search device
+                if (nodeId ==  m_parentDevice.getDeviceID() || m_parentDevice.findNodeFromDeviceList(nodeId) >= 0) {
+                    if (jObject.has("Ring")) {
+                        ringId = jObject.getInt("Ring");
+                    }
                     if (jObject.has("State")) {
-                        m_parentDevice.setState(jObject.getInt("State"));
+                        m_parentDevice.setState(nodeId, jObject.getInt("State"));
                     }
                     if (jObject.has("BR")) {
-                        m_parentDevice.setBrightness(jObject.getInt("BR"));
+                        m_parentDevice.setBrightness(nodeId, jObject.getInt("BR"));
                     }
                     if (jObject.has("CCT")) {
-                        m_parentDevice.setCCT(jObject.getInt("CCT"));
+                        m_parentDevice.setCCT(nodeId, jObject.getInt("CCT"));
+                    }
+                    if (jObject.has("W")) {
+                        m_parentDevice.setWhite(nodeId, ringId, jObject.getInt("W"));
+                    }
+                    if (jObject.has("R")) {
+                        m_parentDevice.setRed(nodeId, ringId, jObject.getInt("R"));
+                    }
+                    if (jObject.has("G")) {
+                        m_parentDevice.setGreen(nodeId, ringId, jObject.getInt("G"));
+                    }
+                    if (jObject.has("B")) {
+                        m_parentDevice.setBlue(nodeId, ringId, jObject.getInt("B"));
                     }
                 }
             }
@@ -496,13 +540,20 @@ public class CloudBridge extends BaseBridge {
             if (jObject.has("DHTh")) {
                 m_parentDevice.m_Data.m_RoomHumidity = jObject.getInt("DHTh");
             }
+            if (jObject.has("ALS")) {
+                m_parentDevice.m_Data.m_RoomBrightness = jObject.getInt("ALS");
+            }
             //}
         } catch (final JSONException e) {
             Log.e(TAG, "Json parsing error: " + e.getMessage());
         }
 
         if (eventName.equalsIgnoreCase(xltDevice.eventDeviceStatus)) {
-            m_parentContext.sendBroadcast(new Intent(xltDevice.bciDeviceStatus));
+            if( nodeId >= 0 ) {
+                Intent devStatus = new Intent(xltDevice.bciDeviceStatus);
+                devStatus.putExtra("nd", nodeId);
+                m_parentContext.sendBroadcast(devStatus);
+            }
         } else if (eventName.equalsIgnoreCase(xltDevice.eventSensorData)) {
             m_parentContext.sendBroadcast(new Intent(xltDevice.bciSensorData));
         }

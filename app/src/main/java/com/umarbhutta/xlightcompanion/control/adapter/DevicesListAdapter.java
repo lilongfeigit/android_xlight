@@ -13,7 +13,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 
 import java.util.List;
@@ -30,8 +32,8 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
         this.deviceList = deviceList;
         this.mActivity = activity;
     }
-
-    private Handler m_handlerDeviceList;
+    public DevicesListAdapter() {
+    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -80,9 +82,12 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
             mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     // 右侧开关控制
-                    if (null != mOnSwitchStateChangeListener) {
-                        mOnSwitchStateChangeListener.onSwitchChange(mPositon, isChecked);
-                    }
+//                    if (null != mOnSwitchStateChangeListener) {
+//                        mOnSwitchStateChangeListener.onSwitchChange(mPositon, isChecked);
+//                    }
+                    //TODO 测试sdk 这里的id 需要确定一下。 deviceList.get(mPositon).id 这里的id代表什么意思。
+                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceList.get(mPositon).id);
+                    SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
                 }
             });
         }

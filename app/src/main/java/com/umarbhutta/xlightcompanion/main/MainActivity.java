@@ -20,12 +20,13 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
+import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
+import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.ControlRuleFragment;
+import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
 import com.umarbhutta.xlightcompanion.help.HelpFragment;
@@ -54,7 +55,8 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     //constants for testing lists
-    public static final String[] deviceNames = {"Living Room", "Bedroom", "Basement Kitchen"};
+    public static final String[] deviceNames = {"Living Room", "Bedroom", "Bar"};
+    public static final int[] deviceNodeIDs = {1, 8, 11};
     public static final String[] scheduleTimes = {"10:30 AM", "12:45 PM", "02:00 PM", "06:45 PM", "08:00 PM", "11:30 PM"};
     public static final String[] scheduleDays = {"Mo Tu We Th Fr", "Every day", "Mo We Th Sa Su", "Tomorrow", "We", "Mo Tu Fr Sa Su"};
     public static final String[] scenarioNames = {"Brunching", "Guests", "Naptime", "Dinner", "Sunset", "Bedtime"};
@@ -87,21 +89,21 @@ public class MainActivity extends BaseActivity
         btnRight = (Button) findViewById(R.id.btnRight);
         setSupportActionBar(toolbar);
         // Check Bluetooth
-        BLEAdapter.init(this);
-
-        if (BLEAdapter.IsSupported() && !BLEAdapter.IsEnabled()) {
+        BLEPairedDeviceList.init(this);
+        if( BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled() ) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, BLEAdapter.REQUEST_ENABLE_BT);
+            startActivityForResult(enableBtIntent, BLEPairedDeviceList.REQUEST_ENABLE_BT);
         }
 
-        // Initialize SmartDevice SDK
-        m_mainDevice = new xltDevice();
-        m_mainDevice.Init(this);
-//        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
+        //TODO 测试数据
+        // Setup Device/Node List
+        for( int lv_idx = 0; lv_idx < 3; lv_idx++ ) {
+            m_mainDevice.addNodeToDeviceList(deviceNodeIDs[lv_idx], xltDevice.DEFAULT_DEVICE_TYPE, deviceNames[lv_idx]);
+        }
+        m_mainDevice.setDeviceID(deviceNodeIDs[0]);
 
-        // Set SmartDevice Event Notification Flag
-        //m_mainDevice.setEnableEventSendMessage(false);
-        //m_mainDevice.setEnableEventBroadcast(true);
+        // Connect to Controller
+        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
 
         //setup drawer layout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -199,8 +201,8 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == BLEAdapter.REQUEST_ENABLE_BT) {
-            BLEAdapter.init(this);
+        if (requestCode == BLEPairedDeviceList.REQUEST_ENABLE_BT) {
+            BLEPairedDeviceList.init(this);
         }
     }
 

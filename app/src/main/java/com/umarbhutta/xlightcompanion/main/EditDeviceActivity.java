@@ -62,7 +62,6 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     private TextView tvTitle;
     public SceneListResult mDeviceInfoResult;
     private Rows deviceInfo;
-    private xltDevice mDevice;
     private int red = 130;
     private int green = 255;
     private int blue = 0;
@@ -155,27 +154,20 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
         dotLayout.addView(circleIcon);
 
-
-        mDevice = new xltDevice();
-        mDevice.Init(this);
-        mDevice.setDeviceID(deviceInfo.id);
-        mDevice.setDeviceName("" + deviceInfo.type);
-
-
-//        MainActivity.m_mainDevice.setDeviceName(DEFAULT_LAMP_TEXT);
+        SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.id);
 
         mscenarioName.setText(deviceInfo.devicename);
         powerSwitch.setChecked(deviceInfo.ison > 0);
         brightnessSeekBar.setProgress(deviceInfo.brightness);
         cctSeekBar.setProgress(deviceInfo.cct - 2700);
 
-        if (mDevice.getEnableEventBroadcast()) {
+        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
             intentFilter.setPriority(3);
             registerReceiver(m_StatusReceiver, intentFilter);
         }
 
-        if (mDevice.getEnableEventSendMessage()) {
+        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventSendMessage()) {
             m_handlerControl = new Handler() {
                 public void handleMessage(Message msg) {
                     int intValue = msg.getData().getInt("State", -255);
@@ -194,7 +186,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                     }
                 }
             };
-            mDevice.addDeviceEventHandler(m_handlerControl);
+            SlidingMenuMainActivity.m_mainDevice.addDeviceEventHandler(m_handlerControl);
         }
 
         powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -204,7 +196,8 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                 state = isChecked;
                 //ParticleAdapter.JSONCommandPower(ParticleAdapter.DEFAULT_DEVICE_ID, state);
                 //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, state);
-                mDevice.PowerSwitch(state);
+                SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.id);
+                SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
             }
         });
 
@@ -212,63 +205,6 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 onFabPressed();
-//                new ChromaDialog.Builder()
-//                        .initialColor(ContextCompat.getColor(EditDeviceActivity.this, R.color.colorAccent))
-//                        .colorMode(ColorMode.RGB) // There's also ARGB and HSV
-//                        .onColorSelected(new ColorSelectListener() {
-//                            @Override
-//                            public void onColorSelected(int color) {
-//                                Log.e(TAG, "int: " + color);
-//                                colorHex = String.format("%06X", (0xFFFFFF & color));
-//                                Log.e(TAG, "HEX: #" + colorHex);
-//
-//                                int br = 65;
-//                                int ww = 0;
-//                                int c = (int) Long.parseLong(colorHex, 16);
-//                                int r = (c >> 16) & 0xFF;
-//                                int g = (c >> 8) & 0xFF;
-//                                int b = (c >> 0) & 0xFF;
-//                                Log.e(TAG, "RGB: " + r + "," + g + "," + b);
-//
-//                                colorHex = "#" + colorHex;
-//                                colorTextView.setText(colorHex);
-//                                colorTextView.setTextColor(Color.parseColor(colorHex));
-//
-//                                //send message to Particle based on which rings have been selected
-//                                if ((ring1 && ring2 && ring3) || (!ring1 && !ring2 && !ring3)) {
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_ALL, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_ALL, state, br, ww, r, g, b);
-//                                } else if (ring1 && ring2) {
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
-//                                } else if (ring2 && ring3) {
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
-//                                } else if (ring1 && ring3) {
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
-//                                } else if (ring1) {
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_1, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_1, state, br, ww, r, g, b);
-//                                } else if (ring2) {
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_2, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_2, state, br, ww, r, g, b);
-//                                } else if (ring3) {
-//                                    //ParticleAdapter.JSONCommandColor(ParticleAdapter.DEFAULT_DEVICE_ID, ParticleAdapter.RING_3, state, br, ww, r, g, b);
-//                                    MainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_3, state, br, ww, r, g, b);
-//                                } else {
-//                                    //do nothing
-//                                }
-//                            }
-//                        })
-//                        .create()
-//                        .show(getSupportFragmentManager(), "dialog");
             }
         });
 
@@ -288,7 +224,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.e(TAG, "The brightness value is " + seekBar.getProgress());
                 //ParticleAdapter.JSONCommandBrightness(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress());
-                mDevice.ChangeBrightness(seekBar.getProgress());
+                SlidingMenuMainActivity.m_mainDevice.ChangeBrightness(seekBar.getProgress());
             }
         });
 
@@ -308,7 +244,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 //ParticleAdapter.JSONCommandCCT(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress()+2700);
-                mDevice.ChangeCCT(seekBar.getProgress() + 2700);
+                SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBar.getProgress() + 2700);
             }
         });
 
@@ -329,7 +265,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
 
                     //ParticleAdapter.JSONCommandScenario(ParticleAdapter.DEFAULT_DEVICE_ID, position);
                     //position passed into above function corresponds to the scenarioId i.e. s1, s2, s3 to trigger
-                    mDevice.ChangeScenario(position);
+                    SlidingMenuMainActivity.m_mainDevice.ChangeScenario(position);
                 }
             }
 
@@ -406,9 +342,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     private class MyStatusReceiver extends StatusReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            powerSwitch.setChecked(mDevice.getState() > 0);
-            brightnessSeekBar.setProgress(mDevice.getBrightness());
-            cctSeekBar.setProgress(mDevice.getCCT() - 2700);
+            powerSwitch.setChecked(SlidingMenuMainActivity.m_mainDevice.getState() > 0);
+            brightnessSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getBrightness());
+            cctSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getCCT() - 2700);
         }
     }
 
@@ -416,8 +352,8 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onDestroy() {
-        mDevice.removeDeviceEventHandler(m_handlerControl);
-        if (mDevice.getEnableEventBroadcast()) {
+        SlidingMenuMainActivity.m_mainDevice.removeDeviceEventHandler(m_handlerControl);
+        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
             unregisterReceiver(m_StatusReceiver);
         }
         super.onDestroy();
@@ -446,7 +382,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void updateDeviceRingLabel() {
-        String label = mDevice.getDeviceName();
+        String label = SlidingMenuMainActivity.m_mainDevice.getDeviceName();
 
         if (ring1 && ring2 && ring3) {
             label += ": " + RINGALL_TEXT;

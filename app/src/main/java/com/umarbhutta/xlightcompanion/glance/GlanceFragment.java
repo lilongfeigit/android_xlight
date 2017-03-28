@@ -43,6 +43,7 @@ import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesListAdapter;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
@@ -64,7 +65,7 @@ import java.util.List;
  */
 public class GlanceFragment extends Fragment {
     private com.github.clans.fab.FloatingActionButton fab;
-    TextView outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
+    TextView txtLocation, outsideTemp, degreeSymbol, roomTemp, roomHumidity, roomBrightness,outsideHumidity, apparentTemp;
     ImageView imgWeather;
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -90,6 +91,7 @@ public class GlanceFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             roomTemp.setText(MainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
             roomHumidity.setText(MainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+            roomBrightness.setText(MainActivity.m_mainDevice.m_Data.m_RoomBrightness + "\u0025");
         }
     }
 
@@ -110,7 +112,7 @@ public class GlanceFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getBaseInfos();
+//        getBaseInfos();
     }
 
     @Nullable
@@ -125,33 +127,12 @@ public class GlanceFragment extends Fragment {
                 //跳转到绑定设备页面
                 Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
                 startActivityForResult(intent, 1);
-//                mSelectDialog = new Dialog(getActivity(), R.style.select_bing_dialog);
-//                LinearLayout root = (LinearLayout) LayoutInflater.from(getActivity()).inflate(
-//                        R.layout.layout_select_bing_control, null);
-//                root.findViewById(R.id.btn_choose_add_wifi_device).setOnClickListener(btnlistener);
-//                root.findViewById(R.id.btn_choose_scan_add_device).setOnClickListener(btnlistener);
-//                root.findViewById(R.id.btn_choose_add_line_device).setOnClickListener(btnlistener);
-//                root.findViewById(R.id.btn_cancel).setOnClickListener(btnlistener);
-//                mSelectDialog.setContentView(root);
-//                Window dialogWindow = mSelectDialog.getWindow();
-//                dialogWindow.setGravity(Gravity.BOTTOM);
-//                dialogWindow.setWindowAnimations(R.style.dialogstyle); // 添加动画
-//                WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-//                lp.x = 0; // 新位置X坐标
-//                lp.y = -20; // 新位置Y坐标
-//                lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
-//                //      lp.height = WindowManager.LayoutParams.WRAP_CONTENT; // 高度
-//                //      lp.alpha = 9f; // 透明度
-//                root.measure(0, 0);
-//                lp.height = root.getMeasuredHeight();
-//                lp.alpha = 9f; // 透明度
-//                dialogWindow.setAttributes(lp);
-//                mSelectDialog.show();
             }
         });
 
         default_text = (TextView) view.findViewById(R.id.default_text);
 
+        txtLocation = (TextView) view.findViewById(R.id.location);
         outsideTemp = (TextView) view.findViewById(R.id.outsideTemp);
         degreeSymbol = (TextView) view.findViewById(R.id.degreeSymbol);
         outsideHumidity = (TextView) view.findViewById(R.id.valLocalHumidity);
@@ -193,6 +174,10 @@ public class GlanceFragment extends Fragment {
                     if (intValue != -255) {
                         roomHumidity.setText(intValue + "\u0025");
                     }
+                    intValue = msg.getData().getInt("ALS", -255);
+                    if (intValue != -255) {
+                        roomBrightness.setText(intValue + "\u0025");
+                    }
                 }
             };
             MainActivity.m_mainDevice.addDataEventHandler(m_handlerGlance);
@@ -208,6 +193,7 @@ public class GlanceFragment extends Fragment {
 
         getBaseInfos();
 
+        final String strLocation = "Suzhou, China";
         double latitude = 43.4643;
         double longitude = -80.5204;
         String forecastUrl = "https://api.forecast.io/forecast/" + CloudAccount.DarkSky_apiKey + "/" + latitude + "," + longitude;
@@ -283,6 +269,7 @@ public class GlanceFragment extends Fragment {
 
     private void updateDisplay() {
         imgWeather.setVisibility(View.VISIBLE);
+        txtLocation.setText(mWeatherDetails.getLocation());
         imgWeather.setImageBitmap(getWeatherIcon(mWeatherDetails.getIcon()));
         outsideTemp.setText(" " + mWeatherDetails.getTemp("celsius"));
         degreeSymbol.setText("\u00B0");
@@ -291,6 +278,7 @@ public class GlanceFragment extends Fragment {
 
         roomTemp.setText(MainActivity.m_mainDevice.m_Data.m_RoomTemp + "\u00B0");
         roomHumidity.setText(MainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+        roomBrightness.setText(MainActivity.m_mainDevice.m_Data.m_RoomBrightness + "\u0025");
     }
 
     private WeatherDetails getWeatherDetails(String jsonData) throws JSONException {
@@ -430,7 +418,8 @@ public class GlanceFragment extends Fragment {
      * @param deviceInfo
      */
     private void switchLight(boolean checked, Rows deviceInfo) {
-        MainActivity.m_mainDevice.PowerSwitch(checked);
+        MainActivity.m_mainDevice.setDeviceID(deviceInfo.id);
+        MainActivity.m_mainDevice.PowerSwitch(checked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
 
         String param = "{\"ison\":" + (checked ? 1 : 0) + "}";
 

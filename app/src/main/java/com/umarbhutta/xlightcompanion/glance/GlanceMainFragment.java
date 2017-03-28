@@ -447,21 +447,24 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      * @param deviceInfo
      */
     private void switchLight(boolean checked, Rows deviceInfo) {
-        SlidingMenuMainActivity.m_mainDevice.PowerSwitch(checked);
 
-        String param = "{\"ison\":" + (checked ? 1 : 0) + "}";
+        //TODO 测试sdk 这里的id 需要确定一下。 deviceList.get(mPositon).id 这里的id代表什么意思。
+        SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.id);
+        SlidingMenuMainActivity.m_mainDevice.PowerSwitch(checked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
 
-        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_LAMP_SWITCH + deviceInfo.id + "/onoff?access_token=" + UserUtils.getUserInfo(getActivity()).getAccess_token(), param, null, new HttpUtils.OnHttpRequestCallBack() {
-            @Override
-            public void onHttpRequestSuccess(Object result) {
-                Logger.i("开关结果 = " + result.toString());
-            }
-
-            @Override
-            public void onHttpRequestFail(int code, String errMsg) {
-                Logger.i("开关结果失败 = " + errMsg);
-            }
-        });
+//        String param = "{\"ison\":" + (checked ? 1 : 0) + "}";
+//
+//        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_LAMP_SWITCH + deviceInfo.id + "/onoff?access_token=" + UserUtils.getUserInfo(getActivity()).getAccess_token(), param, null, new HttpUtils.OnHttpRequestCallBack() {
+//            @Override
+//            public void onHttpRequestSuccess(Object result) {
+//                Logger.i("开关结果 = " + result.toString());
+//            }
+//
+//            @Override
+//            public void onHttpRequestFail(int code, String errMsg) {
+//                Logger.i("开关结果失败 = " + errMsg);
+//            }
+//        });
     }
 
 

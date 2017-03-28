@@ -106,7 +106,11 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 onFabPressed(LoginActivity.class);
                 break;
             case R.id.userIcon:
-                showContentView();
+                if (!UserUtils.isLogin(getActivity())) {
+                    showContentView();
+                    onFabPressed(LoginActivity.class);
+                    return;
+                }
                 onFabPressed(UserMsgModifyActivity.class);
                 break;
             case R.id.nav_glance:

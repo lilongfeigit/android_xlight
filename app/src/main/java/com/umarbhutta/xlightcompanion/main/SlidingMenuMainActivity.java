@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.SDK.BLE.BLEAdapter;
+import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
+import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.settings.BaseFragmentActivity;
@@ -25,6 +27,10 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 
     public static xltDevice m_mainDevice;
 
+    //TODO 测试数据
+    public static final String[] deviceNames = {"Living Room", "Bedroom", "Bar"};
+    public static final int[] deviceNodeIDs = {1, 8, 11};
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,21 +42,25 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
         initSlidingMenu(savedInstanceState);
 
         // Check Bluetooth
-        BLEAdapter.init(this);
-
-        if (BLEAdapter.IsSupported() && !BLEAdapter.IsEnabled()) {
+        BLEPairedDeviceList.init(this);
+        if( BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled() ) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, BLEAdapter.REQUEST_ENABLE_BT);
+            startActivityForResult(enableBtIntent, BLEPairedDeviceList.REQUEST_ENABLE_BT);
         }
 
         // Initialize SmartDevice SDK
         m_mainDevice = new xltDevice();
         m_mainDevice.Init(this);
-//        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
 
-        // Set SmartDevice Event Notification Flag
-        //m_mainDevice.setEnableEventSendMessage(false);
-        //m_mainDevice.setEnableEventBroadcast(true);
+        //TODO 测试数据
+        // Setup Device/Node List
+        for( int lv_idx = 0; lv_idx < 3; lv_idx++ ) {
+            m_mainDevice.addNodeToDeviceList(deviceNodeIDs[lv_idx], xltDevice.DEFAULT_DEVICE_TYPE, deviceNames[lv_idx]);
+        }
+        m_mainDevice.setDeviceID(deviceNodeIDs[0]);
+
+        // Connect to Controller
+        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
 
     }
 
@@ -128,8 +138,16 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == BLEAdapter.REQUEST_ENABLE_BT) {
-            BLEAdapter.init(this);
+        if (requestCode == BLEPairedDeviceList.REQUEST_ENABLE_BT) {
+            BLEPairedDeviceList.init(this);
         }
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {//点击的是返回键
+            showContent();
+        }
+        return super.dispatchKeyEvent(event);
     }
 }

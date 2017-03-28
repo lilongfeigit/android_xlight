@@ -14,6 +14,8 @@ public class Rows implements Serializable {
     public int brightness;
     public int cct;
     public int type;
+    public String coreid;
+    public int areaId;
 
 
     public int userId;
@@ -40,7 +42,6 @@ public class Rows implements Serializable {
     public List<Devicenodes> devicenodes;
     public List<Scenarionodes> scenarionodes;
 
-
     @Override
     public String toString() {
         return "Rows{" +
@@ -50,12 +51,14 @@ public class Rows implements Serializable {
                 ", brightness=" + brightness +
                 ", cct=" + cct +
                 ", type=" + type +
+                ", coreid=" + coreid +
+                ", areaId=" + areaId +
                 ", userId=" + userId +
                 ", iphoneidentify='" + iphoneidentify + '\'' +
                 ", androididentify='" + androididentify + '\'' +
                 ", maindevice=" + maindevice +
                 ", status=" + status +
-                ", ison='" + ison + '\'' +
+                ", ison=" + ison +
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
                 ", devicegroupId=" + devicegroupId +

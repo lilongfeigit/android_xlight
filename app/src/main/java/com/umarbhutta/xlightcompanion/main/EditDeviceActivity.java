@@ -154,7 +154,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
         dotLayout.addView(circleIcon);
 
-        SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.id);
+        SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.devicenodes.get(0).nodeno);
 
         mscenarioName.setText(deviceInfo.devicename);
         powerSwitch.setChecked(deviceInfo.ison > 0);
@@ -196,7 +196,6 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                 state = isChecked;
                 //ParticleAdapter.JSONCommandPower(ParticleAdapter.DEFAULT_DEVICE_ID, state);
                 //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, state);
-                SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.id);
                 SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
             }
         });

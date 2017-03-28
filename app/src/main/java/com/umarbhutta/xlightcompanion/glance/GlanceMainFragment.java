@@ -65,7 +65,7 @@ import java.util.List;
  */
 public class GlanceMainFragment extends Fragment implements View.OnClickListener {
     private ImageButton fab;
-    TextView outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
+    TextView txtLocation,outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
     ImageView imgWeather;
     private ImageButton home_menu, home_setting;
 
@@ -126,6 +126,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         public void onReceive(Context context, Intent intent) {
             roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
             roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+//            roomBrightness.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomBrightness + "\u0025");
         }
     }
 
@@ -146,8 +147,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //TODO 判断是哪个页面过来的。
-//        getBaseInfos();
     }
 
     @Nullable
@@ -167,6 +166,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
         default_text = (TextView) view.findViewById(R.id.default_text);
 
+        txtLocation = (TextView) view.findViewById(R.id.location);
         outsideTemp = (TextView) view.findViewById(R.id.outsideTemp);
         degreeSymbol = (TextView) view.findViewById(R.id.degreeSymbol);
         outsideHumidity = (TextView) view.findViewById(R.id.valLocalHumidity);
@@ -212,6 +212,10 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                     if (intValue != -255) {
                         roomHumidity.setText(intValue + "\u0025");
                     }
+                    intValue = msg.getData().getInt("ALS", -255);
+                    if (intValue != -255) {
+//                        roomBrightness.setText(intValue + "\u0025");
+                    }
                 }
             };
             SlidingMenuMainActivity.m_mainDevice.addDataEventHandler(m_handlerGlance);
@@ -225,6 +229,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         devicesRecyclerView.setLayoutManager(layoutManager);
         devicesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
+        final String strLocation = "Suzhou, China";
         double latitude = 43.4643;
         double longitude = -80.5204;
         String forecastUrl = "https://api.forecast.io/forecast/" + CloudAccount.DarkSky_apiKey + "/" + latitude + "," + longitude;
@@ -241,9 +246,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
-
                 }
-
                 @Override
                 public void onResponse(Response response) throws IOException {
                     try {
@@ -301,6 +304,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private void updateDisplay() {
         imgWeather.setVisibility(View.VISIBLE);
         imgWeather.setImageResource(R.drawable.cloud);
+        txtLocation.setText(mWeatherDetails.getLocation());
 //        imgWeather.setImageBitmap(getWeatherIcon(mWeatherDetails.getIcon()));
         outsideTemp.setText(" " + mWeatherDetails.getTemp("celsius"));
         degreeSymbol.setText("℃");
@@ -417,7 +421,17 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                         if (null != deviceList && deviceList.size() > 0) {
                             default_text.setVisibility(View.GONE);
                             SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
+                            for(int i=0;i<deviceList.size();i++){
+                                if(deviceList.get(i).maindevice==1){
+                                    for( int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++ ) {
+                                        SlidingMenuMainActivity.m_mainDevice.addNodeToDeviceList(deviceList.get(i).devicenodes.get(lv_idx).nodeno, xltDevice.DEFAULT_DEVICE_TYPE, deviceList.get(i).devicenodes.get(lv_idx).devicenodename);
+                                    }
+                                    // Connect to Controller
+                                    SlidingMenuMainActivity.m_mainDevice.Connect(deviceList.get(i).coreid);
+                                }
+                            }
                         }
+
                     }
                 });
             }
@@ -539,8 +553,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         deviceList.remove(position);
         devicesListAdapter.notifyDataSetChanged();
     }
-
-
     /**
      * TODO  变更住设备，每次变更主设备后需要再次同步一下
      */

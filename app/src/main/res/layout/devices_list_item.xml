@@ -43,6 +43,15 @@
             android:paddingLeft="20dp"
             android:text="已启用计划"
             android:textColor="@color/textDarkGrey" />
+        <TextView
+            android:id="@+id/main_device"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/devicePlan"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:text="主设备"
+            android:textColor="@color/textDarkGrey" />
 
         <Switch
             android:id="@+id/deviceSwitch"

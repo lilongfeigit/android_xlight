@@ -29,7 +29,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 
     //TODO 测试数据
     public static final String[] deviceNames = {"Living Room", "Bedroom", "Bar"};
-    public static final int[] deviceNodeIDs = {1, 8, 11};
+//    public static final int[] deviceNodeIDs = {1, 8, 11};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,13 +54,13 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 
         //TODO 测试数据
         // Setup Device/Node List
-        for( int lv_idx = 0; lv_idx < 3; lv_idx++ ) {
-            m_mainDevice.addNodeToDeviceList(deviceNodeIDs[lv_idx], xltDevice.DEFAULT_DEVICE_TYPE, deviceNames[lv_idx]);
-        }
-        m_mainDevice.setDeviceID(deviceNodeIDs[0]);
-
-        // Connect to Controller
-        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
+//        for( int lv_idx = 0; lv_idx < 3; lv_idx++ ) {
+//            m_mainDevice.addNodeToDeviceList(deviceNodeIDs[lv_idx], xltDevice.DEFAULT_DEVICE_TYPE, deviceNames[lv_idx]);
+//        }
+//        m_mainDevice.setDeviceID(deviceNodeIDs[0]);
+//
+//        // Connect to Controller
+//        m_mainDevice.Connect(CloudAccount.DEVICE_ID);
 
     }
 

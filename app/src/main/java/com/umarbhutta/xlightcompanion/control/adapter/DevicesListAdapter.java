@@ -32,9 +32,6 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
         this.deviceList = deviceList;
         this.mActivity = activity;
     }
-    public DevicesListAdapter() {
-    }
-
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -67,13 +64,14 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
     }
 
     private class DevicesListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        private TextView mDeviceName;
+        private TextView mDeviceName,main_device;
         private Switch mDeviceSwitch;
         private int mPositon;
 
         public DevicesListViewHolder(View itemView) {
             super(itemView);
             mDeviceName = (TextView) itemView.findViewById(R.id.deviceName);
+            main_device = (TextView) itemView.findViewById(R.id.main_device);
             mDeviceSwitch = (Switch) itemView.findViewById(R.id.deviceSwitch);
 
             itemView.setOnClickListener(this);
@@ -86,7 +84,7 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
 //                        mOnSwitchStateChangeListener.onSwitchChange(mPositon, isChecked);
 //                    }
                     //TODO 测试sdk 这里的id 需要确定一下。 deviceList.get(mPositon).id 这里的id代表什么意思。
-                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceList.get(mPositon).id);
+                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceList.get(mPositon).devicenodes.get(0).nodeno);
                     SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
                 }
             });
@@ -97,6 +95,14 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
             Rows deviceInfo = deviceList.get(position);
             mDeviceName.setText(TextUtils.isEmpty(deviceInfo.devicename) ? "灯" : deviceInfo.devicename);
             mDeviceSwitch.setChecked(deviceInfo.ison > 0);
+            if(deviceInfo.maindevice==0){// 是否为主设备，0否，1是
+                main_device.setVisibility(View.GONE);
+            }else if(deviceInfo.maindevice==1){
+                main_device.setVisibility(View.VISIBLE);
+                main_device.setText("主设备");
+            }else{
+                main_device.setVisibility(View.GONE);
+            }
         }
 
         @Override

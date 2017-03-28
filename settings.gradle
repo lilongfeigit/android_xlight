@@ -1,1 +1,1 @@
-include ':app',':HoloColorPicker-master',':slidingmenu_library'
+include ':app',':HoloColorPicker-master',':slidingmenu_library',':cloudsdk'

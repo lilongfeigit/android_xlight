@@ -32,1126 +32,1126 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
 public class CustomViewAbove extends ViewGroup {
 
-	private static final String TAG = "CustomViewAbove";
-	private static final boolean DEBUG = false;
-
-	//ÊÇ·ñÊ¹ÓÃ»º´æ
-	private static final boolean USE_CACHE = false;
-
-	//×î´ó³ÖĞøµÄÊ±¼ä
-	private static final int MAX_SETTLE_DURATION = 600; // ms
-	
-	//×îĞ¡»¬¶¯µÄ¾àÀë
-	private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
-
-	/**
-	 * ¶¨ÒåÒ»¸öĞŞÊÎ¶¯»­µÄĞ§¹ûÀà
-	 * Interpolator±»ÓÃÀ´ĞŞÊÎ¶¯»­Ğ§¹û£¬¶¨Òå¶¯»­µÄ±ä»¯ÂÊ£¬¿ÉÒÔÊ¹´æÔÚµÄ¶¯»­Ğ§¹û¿ÉÒÔ accelerated(¼ÓËÙ)£¬decelerated(¼õËÙ),repeated(ÖØ¸´),bounced(µ¯Ìø)µÈ¡£
-	 */
-	private static final Interpolator sInterpolator = new Interpolator() {
-		public float getInterpolation(float t) {
-			t -= 1.0f;
-			return t * t * t * t * t + 1.0f;
-		}
-	};
-
-	//¶¨ÒåÄÚÈİÊÓÍ¼
-	private View mContent;
-
-	//µ±Ç°µÄÑ¡Ïî
-	private int mCurItem;
-	
-	//¹ö¶¯»¬ÂÖ
-	private Scroller mScroller;
-
-	//ÊÇ·ñÄÜ¹»Ê¹ÓÃ»¬¶¯»º´æ
-	private boolean mScrollingCacheEnabled;
-
-	//ÊÇ·ñÕıÔÚ»¬¶¯
-	private boolean mScrolling;
-
-	//ÊÇ·ñÕıÔÚÍÏ¶¯
-	private boolean mIsBeingDragged;
-	
-	//ÊÇ·ñÄÜ¹»ÍÏ¶¯
-	private boolean mIsUnableToDrag;
-	
-	//¶¨Òå´¥ÃşÒç³öµÄÖµ
-	private int mTouchSlop;
-	
-	//³õÊ¼»¯´¥ÃşÆÁÄ»XÖáµÄÖµ
-	private float mInitialMotionX;
-	
-	//×îºóÒÆ¶¯µ½µÄX¡¢YµÄ×ø±ê
-	private float mLastMotionX,mLastMotionY;
-	
-	/**
-	 * ¶¨ÒåÒ»¸ö»î¶¯Ö¸Õë£¬ÔÚ¶àµã´¥ÃşµÄÊ±ºòµ÷ÓÃ
-	 */
-	protected int mActivePointerId = INVALID_POINTER;
-	
-	/**
-	 * Îªµ±Ç°µÄ»î¶¯Ö¸Õë¸³Öµ
-	 */
-	private static final int INVALID_POINTER = -1;
-
-	/**
-	 * ´¥Ãş¹ö¶¯ÆÚ¼äµÄ¾ø¶ÔËÙ¶È
-	 */
-	protected VelocityTracker mVelocityTracker;
-	
-	//×îĞ¡»¬¶¯ËÙ¶ÈÖµ
-	private int mMinimumVelocity;
-	
-	//×î´ó»¬¶¯ËÙ¶ÈÖµ
-	protected int mMaximumVelocity;
-	
-	//»¬¶¯µÄ¾àÀë
-	private int mFlingDistance;
-
-	//¶¨ÒåÏÂ·½ÊÓÍ¼¶ÔÏó
-	private CustomViewBehind mViewBehind;
-
-	//ÊÇ·ñÄÜ¹»Ê¹ÓÃ
-	private boolean mEnabled = true;
-
-	//Ò³Ãæ¸Ä±ä¼àÌıÆ÷
-	private OnPageChangeListener mOnPageChangeListener;
-	
-	//ÄÚ²¿Ò³Ãæ¸Ä±ä¼àÌıÆ÷
-	private OnPageChangeListener mInternalPageChangeListener;
-
-	//¹Ø±Õ¼àÌıÆ÷
-	private OnClosedListener mClosedListener;
-	
-	//´ò¿ª¼àÌıÆ÷
-	private OnOpenedListener mOpenedListener;
-
-	//´æ·Å±»ºöÂÔµÄÊÓÍ¼×é¼şÁĞ±í
-	private List<View> mIgnoredViews = new ArrayList<View>();
-
-	/**
-	 * µ÷ÓÃ´Ë½Ó¿ÚÈ¥ÏìÓ¦¸Ä±äÑ¡ÖĞÒ³ÃæµÄ×´Ì¬
-	 */
-	public interface OnPageChangeListener {
-
-		/**
-		 * This method will be invoked when the current page is scrolled, either as part
-		 * of a programmatically initiated smooth scroll or a user initiated touch scroll.
-		 *
-		 * @param position Position index of the first page currently being displayed.
-		 *                 Page position+1 will be visible if positionOffset is nonzero.
-		 * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
-		 * @param positionOffsetPixels Value in pixels indicating the offset from position.
-		 */
-		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
-
-		/**
-		 * This method will be invoked when a new page becomes selected. Animation is not
-		 * necessarily complete.
-		 *
-		 * @param position Position index of the new selected page.
-		 */
-		public void onPageSelected(int position);
-
-	}
-
-	/**
-	 * Simple implementation of the {@link OnPageChangeListener} interface with stub
-	 * implementations of each method. Extend this if you do not intend to override
-	 * every method of {@link OnPageChangeListener}.
-	 */
-	public static class SimpleOnPageChangeListener implements OnPageChangeListener {
-
-		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			// This space for rent
-		}
-
-		public void onPageSelected(int position) {
-			// This space for rent
-		}
-
-		public void onPageScrollStateChanged(int state) {
-			// This space for rent
-		}
-
-	}
-
-	public CustomViewAbove(Context context) {
-		this(context, null);
-	}
-
-	public CustomViewAbove(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initCustomViewAbove();
-	}
-
-	/**
-	 * ³õÊ¼»¯×îÉÏ·½ÊÓÍ¼
-	 */
-	void initCustomViewAbove() {
-		//ÉèÖÃÊÇ·ñÄÜ¹»µ÷ÓÃ×Ô¶¨ÒåµÄ²¼¾Ö£¬falseÊÇ¿ÉÒÔ
-		setWillNotDraw(false);
-		//ÓÅÏÈÆä×ÓÀà¿Ø¼ş¶ø»ñÈ¡µ½½¹µã
-		setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
-		//ÉèÖÃÊÇ·ñÄÜ¹»»ñÈ¡½¹µã
-		setFocusable(true);
-		
-		//µÃµ½ÉÏÏÂÎÄ
-		final Context context = getContext();
-		
-		//ÊµÀı»¯¹ö¶¯Æ÷
-		mScroller = new Scroller(context, sInterpolator);
-		
-		final ViewConfiguration configuration = ViewConfiguration.get(context);
-		
-		//»ñµÃÄÜ¹»½øĞĞÊÖÊÆ»¬¶¯µÄ¾àÀë£¬±íÊ¾»¬¶¯µÄÊ±ºò£¬ÊÖµÄÒÆ¶¯Òª´óÓÚÕâ¸ö¾àÀë²Å¿ªÊ¼ÒÆ¶¯¿Ø¼ş
-		mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
-		
-		//»ñµÃÔÊĞíÖ´ĞĞÒ»¸öflingÊÖÊÆ¶¯×÷µÄ×îĞ¡ËÙ¶ÈÖµ
-		mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
-		
-		//»ñµÃÔÊĞíÖ´ĞĞÒ»¸öflingÊÖÊÆ¶¯×÷µÄ×î´óËÙ¶ÈÖµ
-		mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
-		
-		setInternalPageChangeListener(new SimpleOnPageChangeListener() {
-			public void onPageSelected(int position) {
-				if (mViewBehind != null) {
-					switch (position) {
-					case 0:
-					case 2:
-						mViewBehind.setChildrenEnabled(true);
-						break;
-					case 1:
-						mViewBehind.setChildrenEnabled(false);
-						break;
-					}
-				}
-			}
-		});
-		//»ñµÃ¸ÃÊÖ»úÉè±¸µÄÆÁÄ»ÃÜ¶ÈÖµ
-		final float density = context.getResources().getDisplayMetrics().density;
-		//»¬¶¯µÄ¾àÀë
-		mFlingDistance = (int) (MIN_DISTANCE_FOR_FLING * density);
-	}
-
-	/**
-	 * ÉèÖÃµ±Ç°Ñ¡ÖĞµÄÏî
-	 */
-	public void setCurrentItem(int item) {
-		setCurrentItemInternal(item, true, false);
-	}
-
-	/**
-	 * ÉèÖÃµ±Ç°Ñ¡ÖĞµÄÏî£¬ÊÇ·ñÆ½»¬µÄ¹ı¶Éµ½Ñ¡ÖĞÏîµÄÒ³Ãæ
-	 */
-	public void setCurrentItem(int item, boolean smoothScroll) {
-		setCurrentItemInternal(item, smoothScroll, false);
-	}
-
-	/**
-	 * µÃµ½µ±Ç°Ñ¡ÖĞµÄÏî
-	 */
-	public int getCurrentItem() {
-		return mCurItem;
-	}
-
-	/**
-	 * ÉèÖÃµ±Ç°ÄÚ²¿Ñ¡ÖĞµÄÏî
-	 */
-	void setCurrentItemInternal(int item, boolean smoothScroll, boolean always) {
-		setCurrentItemInternal(item, smoothScroll, always, 0);
-	}
-
-	/**
-	 * ÉèÖÃµ±Ç°ÄÚ²¿Ñ¡ÖĞµÄÏî
-	 */
-	void setCurrentItemInternal(int item, boolean smoothScroll, boolean always, int velocity) {
-		if (!always && mCurItem == item) {
-			setScrollingCacheEnabled(false);
-			return;
-		}
-
-		item = mViewBehind.getMenuPage(item);
-
-		final boolean dispatchSelected = mCurItem != item;
-		mCurItem = item;
-		final int destX = getDestScrollX(mCurItem);
-		if (dispatchSelected && mOnPageChangeListener != null) {
-			mOnPageChangeListener.onPageSelected(item);
-		}
-		if (dispatchSelected && mInternalPageChangeListener != null) {
-			mInternalPageChangeListener.onPageSelected(item);
-		}
-		if (smoothScroll) {
-			smoothScrollTo(destX, 0, velocity);
-		} else {
-			completeScroll();
-			scrollTo(destX, 0);
-		}
-	}
-
-	/**
-	 * ÉèÖÃÒ»¸ö¼àÌıÊÂ¼şµ±Ò³Ãæ¸Ä±ä»òÕß¼ÓËÙ¹ö¶¯µÄÊ±ºòµ÷ÓÃ
-	 */
-	public void setOnPageChangeListener(OnPageChangeListener listener) {
-		mOnPageChangeListener = listener;
-	}
-
-	/**
-	 * ÉèÖÃ´ò¿ª¼àÌıÊÂ¼ş
-	 */
-	public void setOnOpenedListener(OnOpenedListener l) {
-		mOpenedListener = l;
-	}
-
-	/**
-	 * ÉèÖÃ¹Ø±Õ¼àÌıÊÂ¼ş
-	 */
-	public void setOnClosedListener(OnClosedListener l) {
-		mClosedListener = l;
-	}
-
-	/**
-	 * Set a separate OnPageChangeListener for internal use by the support library.
-	 *
-	 * @param listener Listener to set
-	 * @return The old listener that was set, if any.
-	 */
-	OnPageChangeListener setInternalPageChangeListener(OnPageChangeListener listener) {
-		OnPageChangeListener oldListener = mInternalPageChangeListener;
-		mInternalPageChangeListener = listener;
-		return oldListener;
-	}
-
-	/**
-	 * Ìí¼Ó±»ºöÂÔµÄ×é¼ş
-	 */
-	public void addIgnoredView(View v) {
-		if (!mIgnoredViews.contains(v)) {
-			mIgnoredViews.add(v);
-		}
-	}
-
-	/**
-	 * ÒÆ³ı±»ºöÂÔµÄ×é¼ş
-	 */
-	public void removeIgnoredView(View v) {
-		mIgnoredViews.remove(v);
-	}
-
-	/**
-	 * Çå¿Õ±»ºöÂÔµÄ×é¼ş
-	 */
-	public void clearIgnoredViews() {
-		mIgnoredViews.clear();
-	}
-
-	// We want the duration of the page snap animation to be influenced by the distance that
-	// the screen has to travel, however, we don't want this duration to be effected in a
-	// purely linear fashion. Instead, we use this method to moderate the effect that the distance
-	// of travel has on the overall snap duration.
-	float distanceInfluenceForSnapDuration(float f) {
-		f -= 0.5f; // center the values about 0.
-		f *= 0.3f * Math.PI / 2.0f;
-		return (float) FloatMath.sin(f);
-	}
-
-	/**
-	 * µÃµ½»¬¶¯µ½µÄXÖáµÄ×ø±ê
-	 */
-	public int getDestScrollX(int page) {
-		switch (page) {
-		case 0:
-		case 2:
-			return mViewBehind.getMenuLeft(mContent, page);
-		case 1:
-			return mContent.getLeft();
-		}
-		return 0;
-	}
-
-	/**
-	 * µÃµ½×ó±ß¿ò
-	 */
-	private int getLeftBound() {
-		return mViewBehind.getAbsLeftBound(mContent);
-	}
-
-	/**
-	 * µÃµ½ÓÒ±ß¿ò
-	 */
-	private int getRightBound() {
-		return mViewBehind.getAbsRightBound(mContent);
-	}
-
-	public int getContentLeft() {
-		return mContent.getLeft() + mContent.getPaddingLeft();
-	}
-
-	/**
-	 * µÃµ½»¬¶¯²Ëµ¥ÊÇ·ñ´ò¿ª
-	 */
-	public boolean isMenuOpen() {
-		return mCurItem == 0 || mCurItem == 2;
-	}
-
-	/**
-	 * ÊÇ·ñºöÂÔÊÓÍ¼
-	 */
-	private boolean isInIgnoredView(MotionEvent ev) {
-		Rect rect = new Rect();
-		for (View v : mIgnoredViews) {
-			v.getHitRect(rect);
-			if (rect.contains((int)ev.getX(), (int)ev.getY())) return true;
-		}
-		return false;
-	}
-
-	/**
-	 * µÃµ½ÏÂ·½ÊÓÍ¼µÄ¿í¶È
-	 */
-	public int getBehindWidth() {
-		if (mViewBehind == null) {
-			return 0;
-		} else {
-			return mViewBehind.getBehindWidth();
-		}
-	}
-
-	/**
-	 * µÃµ½×Ó¿Ø¼şµÄ¿í¶È
-	 */
-	public int getChildWidth(int i) {
-		switch (i) {
-		case 0:
-			return getBehindWidth();
-		case 1:
-			return mContent.getWidth();
-		default:
-			return 0;
-		}
-	}
-
-	/**
-	 * µÃµ½ÊÇ·ñÄÜ¹»»¬¶¯
-	 */
-	public boolean isSlidingEnabled() {
-		return mEnabled;
-	}
-
-	/**
-	 * ÉèÖÃÊÇ·ñÄÜ¹»»¬¶¯
-	 */
-	public void setSlidingEnabled(boolean b) {
-		mEnabled = b;
-	}
-
-	/**
-	 * Æ½»¬µÄ»¬¶¯µ½Ö¸¶¨µÄÎ»ÖÃ
-	 */
-	void smoothScrollTo(int x, int y) {
-		smoothScrollTo(x, y, 0);
-	}
-
-	/**
-	 * Í¨¹ıÉèÖÃËÙ¶ÈÀ´Æ½»¬µÄ»¬¶¯µ½Ö¸¶¨µÄÎ»ÖÃ
-	 */
-	void smoothScrollTo(int x, int y, int velocity) {
-		if (getChildCount() == 0) {
-			// Nothing to do.
-			setScrollingCacheEnabled(false);
-			return;
-		}
-		//»ñµÃµ±Ç°ViewÏÔÊ¾²¿·ÖµÄ×ó±ßµ½µÚÒ»¸öViewµÄ×ó±ßµÄ¾àÀë
-		int sx = getScrollX();
-		int sy = getScrollY();
-		
-		int dx = x - sx;
-		int dy = y - sy;
-		
-		//Èç¹û¶¼µÈÓÚ0£¬ËµÃ÷ÕıºÃÊÇ»¬¶¯ÁËÒ»¸öÆÁÄ»µÄ¾àÀë
-		if (dx == 0 && dy == 0) {
-			completeScroll();
-			if (isMenuOpen()) {
-				if (mOpenedListener != null)
-					mOpenedListener.onOpened();
-			} else {
-				if (mClosedListener != null)
-					mClosedListener.onClosed();
-			}
-			return;
-		}
-
-		setScrollingCacheEnabled(true);
-		mScrolling = true;
-
-		//»ñµÃÏÂ·½ÊÓÍ¼µÄ¿í¶È
-		final int width = getBehindWidth();
-		
-		final int halfWidth = width / 2;
-		
-		//È¡Á½ÊıÖĞ×îĞ¡µÄÖµ¸³¸ø»¬¶¯¾àÀëÓëÏÂ·½ÊÓÍ¼¿í¶ÈµÄ±ÈÖµ
-		final float distanceRatio = Math.min(1f, 1.0f * Math.abs(dx) / width);
-		
-		//»ñµÃµ±Ç°»¬¶¯µÄ¾àÀë
-		final float distance = halfWidth + halfWidth * distanceInfluenceForSnapDuration(distanceRatio);
-
-		//³õÊ¼»¯³ÖĞøµÄÊ±¼ä
-		int duration = 0;
-		
-		//»ñµÃËÙ¶ÈµÄ¾ø¶ÔÖµ
-		velocity = Math.abs(velocity);
-		
-		if (velocity > 0) {
-			//Math.round()ËÄÉáÎåÈë
-			duration = 4 * Math.round(1000 * Math.abs(distance / velocity));
-		} else {
-			final float pageDelta = (float) Math.abs(dx) / width;
-			duration = (int) ((pageDelta + 1) * 100);
-			duration = MAX_SETTLE_DURATION;
-		}
-		//È¡Á½ÊıÖĞ×îĞ¡µÄÒ»¸öÖµ¸³¸ø³ÖĞøµÄÊ±¼ä
-		duration = Math.min(duration, MAX_SETTLE_DURATION);
-
-		//¿ªÊ¼»¬¶¯
-		mScroller.startScroll(sx, sy, dx, dy, duration);
-		
-		//Ë¢ĞÂ½çÃæ
-		invalidate();
-	}
-
-	/**
-	 * ÉèÖÃÄÚÈİÊÓÍ¼
-	 */
-	public void setContent(View v) {
-		if (mContent != null) 
-			this.removeView(mContent);
-		mContent = v;
-		addView(mContent);
-	}
-
-	/**
-	 * µÃµ½ÄÚÈİÊÓÍ¼
-	 */
-	public View getContent() {
-		return mContent;
-	}
-
-	/**
-	 * ÉèÖÃÏÂ·½ÊÓÍ¼
-	 */
-	public void setCustomViewBehind(CustomViewBehind cvb) {
-		mViewBehind = cvb;
-	}
-
-	/**
-	 * ÔÚ¸¸ÔªËØÕıÒª·ÅÖÃ¸Ã¿Ø¼şÊ±µ÷ÓÃ¡£Ëü»áÎÊÒ»¸öÎÊÌâ£¬¡°ÄãÏëÒªÓÃ¶à´óµØ·½°¡£¿¡±£¬È»ºó´«ÈëÁ½¸ö²ÎÊı¡ª¡ªwidthMeasureSpecºÍheightMeasureSpec¡£
-	 */
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int width = getDefaultSize(0, widthMeasureSpec);
-		int height = getDefaultSize(0, heightMeasureSpec);
-		setMeasuredDimension(width, height);
-
-		final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width);
-		final int contentHeight = getChildMeasureSpec(heightMeasureSpec, 0, height);
-		mContent.measure(contentWidth, contentHeight);
-	}
-
-	/**
-	 * µ±ÊÓÍ¼³ß´ç¸Ä±äµÄÊ±ºòµ÷ÓÃ
-	 */
-	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		super.onSizeChanged(w, h, oldw, oldh);
-		// Make sure scroll position is set correctly.
-		if (w != oldw) {
-			// [ChrisJ] - This fixes the onConfiguration change for orientation issue..
-			// maybe worth having a look why the recomputeScroll pos is screwing
-			// up?
-			completeScroll();
-			scrollTo(getDestScrollX(mCurItem), getScrollY());
-		}
-	}
-	
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		final int width = r - l;
-		final int height = b - t;
-		mContent.layout(0, 0, width, height);
-	}
-
-	/**
-	 * ÉèÖÃÉÏ·½ÊÓÍ¼µÄÆ«ÒÆÁ¿
-	 */
-	public void setAboveOffset(int i) {		
-		mContent.setPadding(i, mContent.getPaddingTop(), mContent.getPaddingRight(), mContent.getPaddingBottom());
-	}
-
-
-	@Override
-	public void computeScroll() {
-		if (!mScroller.isFinished()) {
-			if (mScroller.computeScrollOffset()) {
-				int oldX = getScrollX();
-				int oldY = getScrollY();
-				int x = mScroller.getCurrX();
-				int y = mScroller.getCurrY();
-
-				if (oldX != x || oldY != y) {
-					scrollTo(x, y);
-					pageScrolled(x);
-				}
-
-				// Keep on drawing until the animation has finished.
-				invalidate();
-				return;
-			}
-		}
-
-		//Íê³É»¬¶¯£¬Çå³ı×´Ì¬
-		completeScroll();
-	}
-
-	/**
-	 * Ò³Ãæ¹ö¶¯
-	 */
-	private void pageScrolled(int xpos) {
-		final int widthWithMargin = getWidth();
-		final int position = xpos / widthWithMargin;
-		final int offsetPixels = xpos % widthWithMargin;
-		final float offset = (float) offsetPixels / widthWithMargin;
-
-		onPageScrolled(position, offset, offsetPixels);
-	}
-
-	/**
-	 * Ò³Ãæ¹ö¶¯
-	 *
-	 * @param position Position index of the first page currently being displayed.
-	 *                 Page position+1 will be visible if positionOffset is nonzero.
-	 * @param offset Value from [0, 1) indicating the offset from the page at position.
-	 * @param offsetPixels Value in pixels indicating the offset from position.
-	 */
-	protected void onPageScrolled(int position, float offset, int offsetPixels) {
-		if (mOnPageChangeListener != null) {
-			mOnPageChangeListener.onPageScrolled(position, offset, offsetPixels);
-		}
-		if (mInternalPageChangeListener != null) {
-			mInternalPageChangeListener.onPageScrolled(position, offset, offsetPixels);
-		}
-	}
-
-	/**
-	 * Íê³É»¬¶¯
-	 */
-	private void completeScroll() {
-		//ÊÇ·ñĞèÒªÒÆ¶¯
-		boolean needPopulate = mScrolling;
-		
-		if (needPopulate) {
-			// Done with scroll, no longer want to cache view drawing.
-			setScrollingCacheEnabled(false);
-			//ÖÕÖ¹¶¯»­Ğ§¹û
-			mScroller.abortAnimation();
-			
-			//»ñµÃ¹ö¶¯Ìõ³õÊ¼µÄ×ø±ê
-			int oldX = getScrollX();
-			int oldY = getScrollY();
-			
-			//»ñµÃ¹ö¶¯Ìõµ±Ç°µÄ×ø±ê
-			int x = mScroller.getCurrX();
-			int y = mScroller.getCurrY();
-			
-			//Èç¹û¹ö¶¯Ìõ³õÊ¼µÄ×ø±êºÍµ±Ç°µÄ×ø±ê²»µÈÔò»¬¶¯
-			if (oldX != x || oldY != y) {
-				scrollTo(x, y);
-			}
-			if (isMenuOpen()) {
-				if (mOpenedListener != null)
-					mOpenedListener.onOpened();
-			} else {
-				if (mClosedListener != null)
-					mClosedListener.onClosed();
-			}
-		}
-		//½«»¬¶¯µÄ×´Ì¬ÉèÖÃÎªfalse
-		mScrolling = false;
-	}
-
-	//»ñµÃ´¥ÃşÄ£Ê½µÄÖµ
-	protected int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;
-
-	/**
-	 * ÉèÖÃ´¥ÃşµÄÄ£Ê½
-	 */
-	public void setTouchMode(int i) {
-		mTouchMode = i;
-	}
-
-	/**
-	 * µÃµ½´¥ÃşµÄÄ£Ê½
-	 */
-	public int getTouchMode() {
-		return mTouchMode;
-	}
-
-	/**
-	 * ÅĞ¶ÏÊÇ·ñÔÊĞí´¥Ãş´ò¿ª»¬¶¯²Ëµ¥
-	 */
-	private boolean thisTouchAllowed(MotionEvent ev) {
-		int x = (int) (ev.getX() + mScrollX);
-		if (isMenuOpen()) {
-			return mViewBehind.menuOpenTouchAllowed(mContent, mCurItem, x);
-		} else {
-			switch (mTouchMode) {
-			case SlidingMenu.TOUCHMODE_FULLSCREEN:
-				return !isInIgnoredView(ev);
-			case SlidingMenu.TOUCHMODE_NONE:
-				return false;
-			case SlidingMenu.TOUCHMODE_MARGIN:
-				return mViewBehind.marginTouchAllowed(mContent, x);
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * ÅĞ¶ÏÊÇ·ñÔÊĞí»¬¶¯
-	 */
-	private boolean thisSlideAllowed(float dx) {
-		boolean allowed = false;
-		if (isMenuOpen()) {
-			allowed = mViewBehind.menuOpenSlideAllowed(dx);
-		} else {
-			allowed = mViewBehind.menuClosedSlideAllowed(dx);
-		}
-		if (DEBUG)
-			Log.v(TAG, "this slide allowed " + allowed + " dx: " + dx);
-		return allowed;
-	}
-
-	/**
-	 * µÃµ½Ö¸ÕëµÄË÷ÒıÖµ
-	 */
-	private int getPointerIndex(MotionEvent ev, int id) {
-		int activePointerIndex = MotionEventCompat.findPointerIndex(ev, id);
-		if (activePointerIndex == -1)
-			mActivePointerId = INVALID_POINTER;
-		return activePointerIndex;
-	}
-
-	private boolean mQuickReturn = false;
-
-	@Override
-	public boolean onInterceptTouchEvent(MotionEvent ev) {
-
-		if (!mEnabled)
-			return false;
-
-		final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
-
-		if (DEBUG)
-			if (action == MotionEvent.ACTION_DOWN)
-				Log.v(TAG, "Received ACTION_DOWN");
-
-		if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP
-				|| (action != MotionEvent.ACTION_DOWN && mIsUnableToDrag)) {
-			endDrag();
-			return false;
-		}
-
-		switch (action) {
-		case MotionEvent.ACTION_MOVE:
-			determineDrag(ev);
-			break;
-		case MotionEvent.ACTION_DOWN:
-			int index = MotionEventCompat.getActionIndex(ev);
-			mActivePointerId = MotionEventCompat.getPointerId(ev, index);
-			if (mActivePointerId == INVALID_POINTER)
-				break;
-			mLastMotionX = mInitialMotionX = MotionEventCompat.getX(ev, index);
-			mLastMotionY = MotionEventCompat.getY(ev, index);
-			if (thisTouchAllowed(ev)) {
-				mIsBeingDragged = false;
-				mIsUnableToDrag = false;
-				if (isMenuOpen() && mViewBehind.menuTouchInQuickReturn(mContent, mCurItem, ev.getX() + mScrollX)) {
-					mQuickReturn = true;
-				}
-			} else {
-				mIsUnableToDrag = true;
-			}
-			break;
-		case MotionEventCompat.ACTION_POINTER_UP:
-			onSecondaryPointerUp(ev);
-			break;
-		}
-
-		if (!mIsBeingDragged) {
-			if (mVelocityTracker == null) {
-				mVelocityTracker = VelocityTracker.obtain();
-			}
-			mVelocityTracker.addMovement(ev);
-		}
-		return mIsBeingDragged || mQuickReturn;
-	}
-
-
-	@Override
-	public boolean onTouchEvent(MotionEvent ev) {
-
-		if (!mEnabled)
-			return false;
-
-		if (!mIsBeingDragged && !thisTouchAllowed(ev))
-			return false;
-
-		//		if (!mIsBeingDragged && !mQuickReturn)
-		//			return false;
-
-		final int action = ev.getAction();
-
-		if (mVelocityTracker == null) {
-			mVelocityTracker = VelocityTracker.obtain();
-		}
-		mVelocityTracker.addMovement(ev);
-
-		switch (action & MotionEventCompat.ACTION_MASK) {
-		case MotionEvent.ACTION_DOWN:
+    private static final String TAG = "CustomViewAbove";
+    private static final boolean DEBUG = false;
+
+    //æ˜¯å¦ä½¿ç”¨ç¼“å­˜
+    private static final boolean USE_CACHE = false;
+
+    //æœ€å¤§æŒç»­çš„æ—¶é—´
+    private static final int MAX_SETTLE_DURATION = 600; // ms
+
+    //æœ€å°æ»‘åŠ¨çš„è·ç¦»
+    private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
+
+    /**
+     * å®šä¹‰ä¸€ä¸ªä¿®é¥°åŠ¨ç”»çš„æ•ˆæœç±»
+     * Interpolatorè¢«ç”¨æ¥ä¿®é¥°åŠ¨ç”»æ•ˆæœï¼Œå®šä¹‰åŠ¨ç”»çš„å˜åŒ–ç‡ï¼Œå¯ä»¥ä½¿å­˜åœ¨çš„åŠ¨ç”»æ•ˆæœå¯ä»¥ accelerated(åŠ é€Ÿ)ï¼Œdecelerated(å‡é€Ÿ),repeated(é‡å¤),bounced(å¼¹è·³)ç­‰ã€‚
+     */
+    private static final Interpolator sInterpolator = new Interpolator() {
+        public float getInterpolation(float t) {
+            t -= 1.0f;
+            return t * t * t * t * t + 1.0f;
+        }
+    };
+
+    //å®šä¹‰å†…å®¹è§†å›¾
+    private View mContent;
+
+    //å½“å‰çš„é€‰é¡¹
+    private int mCurItem;
+
+    //æ»šåŠ¨æ»‘è½®
+    private Scroller mScroller;
+
+    //æ˜¯å¦èƒ½å¤Ÿä½¿ç”¨æ»‘åŠ¨ç¼“å­˜
+    private boolean mScrollingCacheEnabled;
+
+    //æ˜¯å¦æ­£åœ¨æ»‘åŠ¨
+    private boolean mScrolling;
+
+    //æ˜¯å¦æ­£åœ¨æ‹–åŠ¨
+    private boolean mIsBeingDragged;
+
+    //æ˜¯å¦èƒ½å¤Ÿæ‹–åŠ¨
+    private boolean mIsUnableToDrag;
+
+    //å®šä¹‰è§¦æ‘¸æº¢å‡ºçš„å€¼
+    private int mTouchSlop;
+
+    //åˆå§‹åŒ–è§¦æ‘¸å±å¹•Xè½´çš„å€¼
+    private float mInitialMotionX;
+
+    //æœ€åç§»åŠ¨åˆ°çš„Xã€Yçš„åæ ‡
+    private float mLastMotionX,mLastMotionY;
+
+    /**
+     * å®šä¹‰ä¸€ä¸ªæ´»åŠ¨æŒ‡é’ˆï¼Œåœ¨å¤šç‚¹è§¦æ‘¸çš„æ—¶å€™è°ƒç”¨
+     */
+    protected int mActivePointerId = INVALID_POINTER;
+
+    /**
+     * ä¸ºå½“å‰çš„æ´»åŠ¨æŒ‡é’ˆèµ‹å€¼
+     */
+    private static final int INVALID_POINTER = -1;
+
+    /**
+     * è§¦æ‘¸æ»šåŠ¨æœŸé—´çš„ç»å¯¹é€Ÿåº¦
+     */
+    protected VelocityTracker mVelocityTracker;
+
+    //æœ€å°æ»‘åŠ¨é€Ÿåº¦å€¼
+    private int mMinimumVelocity;
+
+    //æœ€å¤§æ»‘åŠ¨é€Ÿåº¦å€¼
+    protected int mMaximumVelocity;
+
+    //æ»‘åŠ¨çš„è·ç¦»
+    private int mFlingDistance;
+
+    //å®šä¹‰ä¸‹æ–¹è§†å›¾å¯¹è±¡
+    private CustomViewBehind mViewBehind;
+
+    //æ˜¯å¦èƒ½å¤Ÿä½¿ç”¨
+    private boolean mEnabled = true;
+
+    //é¡µé¢æ”¹å˜ç›‘å¬å™¨
+    private OnPageChangeListener mOnPageChangeListener;
+
+    //å†…éƒ¨é¡µé¢æ”¹å˜ç›‘å¬å™¨
+    private OnPageChangeListener mInternalPageChangeListener;
+
+    //å…³é—­ç›‘å¬å™¨
+    private OnClosedListener mClosedListener;
+
+    //æ‰“å¼€ç›‘å¬å™¨
+    private OnOpenedListener mOpenedListener;
+
+    //å­˜æ”¾è¢«å¿½ç•¥çš„è§†å›¾ç»„ä»¶åˆ—è¡¨
+    private List<View> mIgnoredViews = new ArrayList<View>();
+
+    /**
+     * è°ƒç”¨æ­¤æ¥å£å»å“åº”æ”¹å˜é€‰ä¸­é¡µé¢çš„çŠ¶æ€
+     */
+    public interface OnPageChangeListener {
+
+        /**
+         * This method will be invoked when the current page is scrolled, either as part
+         * of a programmatically initiated smooth scroll or a user initiated touch scroll.
+         *
+         * @param position Position index of the first page currently being displayed.
+         *                 Page position+1 will be visible if positionOffset is nonzero.
+         * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
+         * @param positionOffsetPixels Value in pixels indicating the offset from position.
+         */
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
+
+        /**
+         * This method will be invoked when a new page becomes selected. Animation is not
+         * necessarily complete.
+         *
+         * @param position Position index of the new selected page.
+         */
+        public void onPageSelected(int position);
+
+    }
+
+    /**
+     * Simple implementation of the {@link OnPageChangeListener} interface with stub
+     * implementations of each method. Extend this if you do not intend to override
+     * every method of {@link OnPageChangeListener}.
+     */
+    public static class SimpleOnPageChangeListener implements OnPageChangeListener {
+
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            // This space for rent
+        }
+
+        public void onPageSelected(int position) {
+            // This space for rent
+        }
+
+        public void onPageScrollStateChanged(int state) {
+            // This space for rent
+        }
+
+    }
+
+    public CustomViewAbove(Context context) {
+        this(context, null);
+    }
+
+    public CustomViewAbove(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initCustomViewAbove();
+    }
+
+    /**
+     * åˆå§‹åŒ–æœ€ä¸Šæ–¹è§†å›¾
+     */
+    void initCustomViewAbove() {
+        //è®¾ç½®æ˜¯å¦èƒ½å¤Ÿè°ƒç”¨è‡ªå®šä¹‰çš„å¸ƒå±€ï¼Œfalseæ˜¯å¯ä»¥
+        setWillNotDraw(false);
+        //ä¼˜å…ˆå…¶å­ç±»æ§ä»¶è€Œè·å–åˆ°ç„¦ç‚¹
+        setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+        //è®¾ç½®æ˜¯å¦èƒ½å¤Ÿè·å–ç„¦ç‚¹
+        setFocusable(true);
+
+        //å¾—åˆ°ä¸Šä¸‹æ–‡
+        final Context context = getContext();
+
+        //å®ä¾‹åŒ–æ»šåŠ¨å™¨
+        mScroller = new Scroller(context, sInterpolator);
+
+        final ViewConfiguration configuration = ViewConfiguration.get(context);
+
+        //è·å¾—èƒ½å¤Ÿè¿›è¡Œæ‰‹åŠ¿æ»‘åŠ¨çš„è·ç¦»ï¼Œè¡¨ç¤ºæ»‘åŠ¨çš„æ—¶å€™ï¼Œæ‰‹çš„ç§»åŠ¨è¦å¤§äºè¿™ä¸ªè·ç¦»æ‰å¼€å§‹ç§»åŠ¨æ§ä»¶
+        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+
+        //è·å¾—å…è®¸æ‰§è¡Œä¸€ä¸ªflingæ‰‹åŠ¿åŠ¨ä½œçš„æœ€å°é€Ÿåº¦å€¼
+        mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
+
+        //è·å¾—å…è®¸æ‰§è¡Œä¸€ä¸ªflingæ‰‹åŠ¿åŠ¨ä½œçš„æœ€å¤§é€Ÿåº¦å€¼
+        mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
+
+        setInternalPageChangeListener(new SimpleOnPageChangeListener() {
+            public void onPageSelected(int position) {
+                if (mViewBehind != null) {
+                    switch (position) {
+                        case 0:
+                        case 2:
+                            mViewBehind.setChildrenEnabled(true);
+                            break;
+                        case 1:
+                            mViewBehind.setChildrenEnabled(false);
+                            break;
+                    }
+                }
+            }
+        });
+        //è·å¾—è¯¥æ‰‹æœºè®¾å¤‡çš„å±å¹•å¯†åº¦å€¼
+        final float density = context.getResources().getDisplayMetrics().density;
+        //æ»‘åŠ¨çš„è·ç¦»
+        mFlingDistance = (int) (MIN_DISTANCE_FOR_FLING * density);
+    }
+
+    /**
+     * è®¾ç½®å½“å‰é€‰ä¸­çš„é¡¹
+     */
+    public void setCurrentItem(int item) {
+        setCurrentItemInternal(item, true, false);
+    }
+
+    /**
+     * è®¾ç½®å½“å‰é€‰ä¸­çš„é¡¹ï¼Œæ˜¯å¦å¹³æ»‘çš„è¿‡æ¸¡åˆ°é€‰ä¸­é¡¹çš„é¡µé¢
+     */
+    public void setCurrentItem(int item, boolean smoothScroll) {
+        setCurrentItemInternal(item, smoothScroll, false);
+    }
+
+    /**
+     * å¾—åˆ°å½“å‰é€‰ä¸­çš„é¡¹
+     */
+    public int getCurrentItem() {
+        return mCurItem;
+    }
+
+    /**
+     * è®¾ç½®å½“å‰å†…éƒ¨é€‰ä¸­çš„é¡¹
+     */
+    void setCurrentItemInternal(int item, boolean smoothScroll, boolean always) {
+        setCurrentItemInternal(item, smoothScroll, always, 0);
+    }
+
+    /**
+     * è®¾ç½®å½“å‰å†…éƒ¨é€‰ä¸­çš„é¡¹
+     */
+    void setCurrentItemInternal(int item, boolean smoothScroll, boolean always, int velocity) {
+        if (!always && mCurItem == item) {
+            setScrollingCacheEnabled(false);
+            return;
+        }
+
+        item = mViewBehind.getMenuPage(item);
+
+        final boolean dispatchSelected = mCurItem != item;
+        mCurItem = item;
+        final int destX = getDestScrollX(mCurItem);
+        if (dispatchSelected && mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageSelected(item);
+        }
+        if (dispatchSelected && mInternalPageChangeListener != null) {
+            mInternalPageChangeListener.onPageSelected(item);
+        }
+        if (smoothScroll) {
+            smoothScrollTo(destX, 0, velocity);
+        } else {
+            completeScroll();
+            scrollTo(destX, 0);
+        }
+    }
+
+    /**
+     * è®¾ç½®ä¸€ä¸ªç›‘å¬äº‹ä»¶å½“é¡µé¢æ”¹å˜æˆ–è€…åŠ é€Ÿæ»šåŠ¨çš„æ—¶å€™è°ƒç”¨
+     */
+    public void setOnPageChangeListener(OnPageChangeListener listener) {
+        mOnPageChangeListener = listener;
+    }
+
+    /**
+     * è®¾ç½®æ‰“å¼€ç›‘å¬äº‹ä»¶
+     */
+    public void setOnOpenedListener(OnOpenedListener l) {
+        mOpenedListener = l;
+    }
+
+    /**
+     * è®¾ç½®å…³é—­ç›‘å¬äº‹ä»¶
+     */
+    public void setOnClosedListener(OnClosedListener l) {
+        mClosedListener = l;
+    }
+
+    /**
+     * Set a separate OnPageChangeListener for internal use by the support library.
+     *
+     * @param listener Listener to set
+     * @return The old listener that was set, if any.
+     */
+    OnPageChangeListener setInternalPageChangeListener(OnPageChangeListener listener) {
+        OnPageChangeListener oldListener = mInternalPageChangeListener;
+        mInternalPageChangeListener = listener;
+        return oldListener;
+    }
+
+    /**
+     * æ·»åŠ è¢«å¿½ç•¥çš„ç»„ä»¶
+     */
+    public void addIgnoredView(View v) {
+        if (!mIgnoredViews.contains(v)) {
+            mIgnoredViews.add(v);
+        }
+    }
+
+    /**
+     * ç§»é™¤è¢«å¿½ç•¥çš„ç»„ä»¶
+     */
+    public void removeIgnoredView(View v) {
+        mIgnoredViews.remove(v);
+    }
+
+    /**
+     * æ¸…ç©ºè¢«å¿½ç•¥çš„ç»„ä»¶
+     */
+    public void clearIgnoredViews() {
+        mIgnoredViews.clear();
+    }
+
+    // We want the duration of the page snap animation to be influenced by the distance that
+    // the screen has to travel, however, we don't want this duration to be effected in a
+    // purely linear fashion. Instead, we use this method to moderate the effect that the distance
+    // of travel has on the overall snap duration.
+    float distanceInfluenceForSnapDuration(float f) {
+        f -= 0.5f; // center the values about 0.
+        f *= 0.3f * Math.PI / 2.0f;
+        return (float) FloatMath.sin(f);
+    }
+
+    /**
+     * å¾—åˆ°æ»‘åŠ¨åˆ°çš„Xè½´çš„åæ ‡
+     */
+    public int getDestScrollX(int page) {
+        switch (page) {
+            case 0:
+            case 2:
+                return mViewBehind.getMenuLeft(mContent, page);
+            case 1:
+                return mContent.getLeft();
+        }
+        return 0;
+    }
+
+    /**
+     * å¾—åˆ°å·¦è¾¹æ¡†
+     */
+    private int getLeftBound() {
+        return mViewBehind.getAbsLeftBound(mContent);
+    }
+
+    /**
+     * å¾—åˆ°å³è¾¹æ¡†
+     */
+    private int getRightBound() {
+        return mViewBehind.getAbsRightBound(mContent);
+    }
+
+    public int getContentLeft() {
+        return mContent.getLeft() + mContent.getPaddingLeft();
+    }
+
+    /**
+     * å¾—åˆ°æ»‘åŠ¨èœå•æ˜¯å¦æ‰“å¼€
+     */
+    public boolean isMenuOpen() {
+        return mCurItem == 0 || mCurItem == 2;
+    }
+
+    /**
+     * æ˜¯å¦å¿½ç•¥è§†å›¾
+     */
+    private boolean isInIgnoredView(MotionEvent ev) {
+        Rect rect = new Rect();
+        for (View v : mIgnoredViews) {
+            v.getHitRect(rect);
+            if (rect.contains((int)ev.getX(), (int)ev.getY())) return true;
+        }
+        return false;
+    }
+
+    /**
+     * å¾—åˆ°ä¸‹æ–¹è§†å›¾çš„å®½åº¦
+     */
+    public int getBehindWidth() {
+        if (mViewBehind == null) {
+            return 0;
+        } else {
+            return mViewBehind.getBehindWidth();
+        }
+    }
+
+    /**
+     * å¾—åˆ°å­æ§ä»¶çš„å®½åº¦
+     */
+    public int getChildWidth(int i) {
+        switch (i) {
+            case 0:
+                return getBehindWidth();
+            case 1:
+                return mContent.getWidth();
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * å¾—åˆ°æ˜¯å¦èƒ½å¤Ÿæ»‘åŠ¨
+     */
+    public boolean isSlidingEnabled() {
+        return mEnabled;
+    }
+
+    /**
+     * è®¾ç½®æ˜¯å¦èƒ½å¤Ÿæ»‘åŠ¨
+     */
+    public void setSlidingEnabled(boolean b) {
+        mEnabled = b;
+    }
+
+    /**
+     * å¹³æ»‘çš„æ»‘åŠ¨åˆ°æŒ‡å®šçš„ä½ç½®
+     */
+    void smoothScrollTo(int x, int y) {
+        smoothScrollTo(x, y, 0);
+    }
+
+    /**
+     * é€šè¿‡è®¾ç½®é€Ÿåº¦æ¥å¹³æ»‘çš„æ»‘åŠ¨åˆ°æŒ‡å®šçš„ä½ç½®
+     */
+    void smoothScrollTo(int x, int y, int velocity) {
+        if (getChildCount() == 0) {
+            // Nothing to do.
+            setScrollingCacheEnabled(false);
+            return;
+        }
+        //è·å¾—å½“å‰Viewæ˜¾ç¤ºéƒ¨åˆ†çš„å·¦è¾¹åˆ°ç¬¬ä¸€ä¸ªViewçš„å·¦è¾¹çš„è·ç¦»
+        int sx = getScrollX();
+        int sy = getScrollY();
+
+        int dx = x - sx;
+        int dy = y - sy;
+
+        //å¦‚æœéƒ½ç­‰äº0ï¼Œè¯´æ˜æ­£å¥½æ˜¯æ»‘åŠ¨äº†ä¸€ä¸ªå±å¹•çš„è·ç¦»
+        if (dx == 0 && dy == 0) {
+            completeScroll();
+            if (isMenuOpen()) {
+                if (mOpenedListener != null)
+                    mOpenedListener.onOpened();
+            } else {
+                if (mClosedListener != null)
+                    mClosedListener.onClosed();
+            }
+            return;
+        }
+
+        setScrollingCacheEnabled(true);
+        mScrolling = true;
+
+        //è·å¾—ä¸‹æ–¹è§†å›¾çš„å®½åº¦
+        final int width = getBehindWidth();
+
+        final int halfWidth = width / 2;
+
+        //å–ä¸¤æ•°ä¸­æœ€å°çš„å€¼èµ‹ç»™æ»‘åŠ¨è·ç¦»ä¸ä¸‹æ–¹è§†å›¾å®½åº¦çš„æ¯”å€¼
+        final float distanceRatio = Math.min(1f, 1.0f * Math.abs(dx) / width);
+
+        //è·å¾—å½“å‰æ»‘åŠ¨çš„è·ç¦»
+        final float distance = halfWidth + halfWidth * distanceInfluenceForSnapDuration(distanceRatio);
+
+        //åˆå§‹åŒ–æŒç»­çš„æ—¶é—´
+        int duration = 0;
+
+        //è·å¾—é€Ÿåº¦çš„ç»å¯¹å€¼
+        velocity = Math.abs(velocity);
+
+        if (velocity > 0) {
+            //Math.round()å››èˆäº”å…¥
+            duration = 4 * Math.round(1000 * Math.abs(distance / velocity));
+        } else {
+            final float pageDelta = (float) Math.abs(dx) / width;
+            duration = (int) ((pageDelta + 1) * 100);
+            duration = MAX_SETTLE_DURATION;
+        }
+        //å–ä¸¤æ•°ä¸­æœ€å°çš„ä¸€ä¸ªå€¼èµ‹ç»™æŒç»­çš„æ—¶é—´
+        duration = Math.min(duration, MAX_SETTLE_DURATION);
+
+        //å¼€å§‹æ»‘åŠ¨
+        mScroller.startScroll(sx, sy, dx, dy, duration);
+
+        //åˆ·æ–°ç•Œé¢
+        invalidate();
+    }
+
+    /**
+     * è®¾ç½®å†…å®¹è§†å›¾
+     */
+    public void setContent(View v) {
+        if (mContent != null)
+            this.removeView(mContent);
+        mContent = v;
+        addView(mContent);
+    }
+
+    /**
+     * å¾—åˆ°å†…å®¹è§†å›¾
+     */
+    public View getContent() {
+        return mContent;
+    }
+
+    /**
+     * è®¾ç½®ä¸‹æ–¹è§†å›¾
+     */
+    public void setCustomViewBehind(CustomViewBehind cvb) {
+        mViewBehind = cvb;
+    }
+
+    /**
+     * åœ¨çˆ¶å…ƒç´ æ­£è¦æ”¾ç½®è¯¥æ§ä»¶æ—¶è°ƒç”¨ã€‚å®ƒä¼šé—®ä¸€ä¸ªé—®é¢˜ï¼Œâ€œä½ æƒ³è¦ç”¨å¤šå¤§åœ°æ–¹å•Šï¼Ÿâ€ï¼Œç„¶åä¼ å…¥ä¸¤ä¸ªå‚æ•°â€”â€”widthMeasureSpecå’ŒheightMeasureSpecã€‚
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = getDefaultSize(0, widthMeasureSpec);
+        int height = getDefaultSize(0, heightMeasureSpec);
+        setMeasuredDimension(width, height);
+
+        final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width);
+        final int contentHeight = getChildMeasureSpec(heightMeasureSpec, 0, height);
+        mContent.measure(contentWidth, contentHeight);
+    }
+
+    /**
+     * å½“è§†å›¾å°ºå¯¸æ”¹å˜çš„æ—¶å€™è°ƒç”¨
+     */
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        // Make sure scroll position is set correctly.
+        if (w != oldw) {
+            // [ChrisJ] - This fixes the onConfiguration change for orientation issue..
+            // maybe worth having a look why the recomputeScroll pos is screwing
+            // up?
+            completeScroll();
+            scrollTo(getDestScrollX(mCurItem), getScrollY());
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        final int width = r - l;
+        final int height = b - t;
+        mContent.layout(0, 0, width, height);
+    }
+
+    /**
+     * è®¾ç½®ä¸Šæ–¹è§†å›¾çš„åç§»é‡
+     */
+    public void setAboveOffset(int i) {
+        mContent.setPadding(i, mContent.getPaddingTop(), mContent.getPaddingRight(), mContent.getPaddingBottom());
+    }
+
+
+    @Override
+    public void computeScroll() {
+        if (!mScroller.isFinished()) {
+            if (mScroller.computeScrollOffset()) {
+                int oldX = getScrollX();
+                int oldY = getScrollY();
+                int x = mScroller.getCurrX();
+                int y = mScroller.getCurrY();
+
+                if (oldX != x || oldY != y) {
+                    scrollTo(x, y);
+                    pageScrolled(x);
+                }
+
+                // Keep on drawing until the animation has finished.
+                invalidate();
+                return;
+            }
+        }
+
+        //å®Œæˆæ»‘åŠ¨ï¼Œæ¸…é™¤çŠ¶æ€
+        completeScroll();
+    }
+
+    /**
+     * é¡µé¢æ»šåŠ¨
+     */
+    private void pageScrolled(int xpos) {
+        final int widthWithMargin = getWidth();
+        final int position = xpos / widthWithMargin;
+        final int offsetPixels = xpos % widthWithMargin;
+        final float offset = (float) offsetPixels / widthWithMargin;
+
+        onPageScrolled(position, offset, offsetPixels);
+    }
+
+    /**
+     * é¡µé¢æ»šåŠ¨
+     *
+     * @param position Position index of the first page currently being displayed.
+     *                 Page position+1 will be visible if positionOffset is nonzero.
+     * @param offset Value from [0, 1) indicating the offset from the page at position.
+     * @param offsetPixels Value in pixels indicating the offset from position.
+     */
+    protected void onPageScrolled(int position, float offset, int offsetPixels) {
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrolled(position, offset, offsetPixels);
+        }
+        if (mInternalPageChangeListener != null) {
+            mInternalPageChangeListener.onPageScrolled(position, offset, offsetPixels);
+        }
+    }
+
+    /**
+     * å®Œæˆæ»‘åŠ¨
+     */
+    private void completeScroll() {
+        //æ˜¯å¦éœ€è¦ç§»åŠ¨
+        boolean needPopulate = mScrolling;
+
+        if (needPopulate) {
+            // Done with scroll, no longer want to cache view drawing.
+            setScrollingCacheEnabled(false);
+            //ç»ˆæ­¢åŠ¨ç”»æ•ˆæœ
+            mScroller.abortAnimation();
+
+            //è·å¾—æ»šåŠ¨æ¡åˆå§‹çš„åæ ‡
+            int oldX = getScrollX();
+            int oldY = getScrollY();
+
+            //è·å¾—æ»šåŠ¨æ¡å½“å‰çš„åæ ‡
+            int x = mScroller.getCurrX();
+            int y = mScroller.getCurrY();
+
+            //å¦‚æœæ»šåŠ¨æ¡åˆå§‹çš„åæ ‡å’Œå½“å‰çš„åæ ‡ä¸ç­‰åˆ™æ»‘åŠ¨
+            if (oldX != x || oldY != y) {
+                scrollTo(x, y);
+            }
+            if (isMenuOpen()) {
+                if (mOpenedListener != null)
+                    mOpenedListener.onOpened();
+            } else {
+                if (mClosedListener != null)
+                    mClosedListener.onClosed();
+            }
+        }
+        //å°†æ»‘åŠ¨çš„çŠ¶æ€è®¾ç½®ä¸ºfalse
+        mScrolling = false;
+    }
+
+    //è·å¾—è§¦æ‘¸æ¨¡å¼çš„å€¼
+    protected int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;
+
+    /**
+     * è®¾ç½®è§¦æ‘¸çš„æ¨¡å¼
+     */
+    public void setTouchMode(int i) {
+        mTouchMode = i;
+    }
+
+    /**
+     * å¾—åˆ°è§¦æ‘¸çš„æ¨¡å¼
+     */
+    public int getTouchMode() {
+        return mTouchMode;
+    }
+
+    /**
+     * åˆ¤æ–­æ˜¯å¦å…è®¸è§¦æ‘¸æ‰“å¼€æ»‘åŠ¨èœå•
+     */
+    private boolean thisTouchAllowed(MotionEvent ev) {
+        int x = (int) (ev.getX() + mScrollX);
+        if (isMenuOpen()) {
+            return mViewBehind.menuOpenTouchAllowed(mContent, mCurItem, x);
+        } else {
+            switch (mTouchMode) {
+                case SlidingMenu.TOUCHMODE_FULLSCREEN:
+                    return !isInIgnoredView(ev);
+                case SlidingMenu.TOUCHMODE_NONE:
+                    return false;
+                case SlidingMenu.TOUCHMODE_MARGIN:
+                    return mViewBehind.marginTouchAllowed(mContent, x);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * åˆ¤æ–­æ˜¯å¦å…è®¸æ»‘åŠ¨
+     */
+    private boolean thisSlideAllowed(float dx) {
+        boolean allowed = false;
+        if (isMenuOpen()) {
+            allowed = mViewBehind.menuOpenSlideAllowed(dx);
+        } else {
+            allowed = mViewBehind.menuClosedSlideAllowed(dx);
+        }
+        if (DEBUG)
+            Log.v(TAG, "this slide allowed " + allowed + " dx: " + dx);
+        return allowed;
+    }
+
+    /**
+     * å¾—åˆ°æŒ‡é’ˆçš„ç´¢å¼•å€¼
+     */
+    private int getPointerIndex(MotionEvent ev, int id) {
+        int activePointerIndex = MotionEventCompat.findPointerIndex(ev, id);
+        if (activePointerIndex == -1)
+            mActivePointerId = INVALID_POINTER;
+        return activePointerIndex;
+    }
+
+    private boolean mQuickReturn = false;
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+
+        if (!mEnabled)
+            return false;
+
+        final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
+
+        if (DEBUG)
+            if (action == MotionEvent.ACTION_DOWN)
+                Log.v(TAG, "Received ACTION_DOWN");
+
+        if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP
+                || (action != MotionEvent.ACTION_DOWN && mIsUnableToDrag)) {
+            endDrag();
+            return false;
+        }
+
+        switch (action) {
+            case MotionEvent.ACTION_MOVE:
+                determineDrag(ev);
+                break;
+            case MotionEvent.ACTION_DOWN:
+                int index = MotionEventCompat.getActionIndex(ev);
+                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                if (mActivePointerId == INVALID_POINTER)
+                    break;
+                mLastMotionX = mInitialMotionX = MotionEventCompat.getX(ev, index);
+                mLastMotionY = MotionEventCompat.getY(ev, index);
+                if (thisTouchAllowed(ev)) {
+                    mIsBeingDragged = false;
+                    mIsUnableToDrag = false;
+                    if (isMenuOpen() && mViewBehind.menuTouchInQuickReturn(mContent, mCurItem, ev.getX() + mScrollX)) {
+                        mQuickReturn = true;
+                    }
+                } else {
+                    mIsUnableToDrag = true;
+                }
+                break;
+            case MotionEventCompat.ACTION_POINTER_UP:
+                onSecondaryPointerUp(ev);
+                break;
+        }
+
+        if (!mIsBeingDragged) {
+            if (mVelocityTracker == null) {
+                mVelocityTracker = VelocityTracker.obtain();
+            }
+            mVelocityTracker.addMovement(ev);
+        }
+        return mIsBeingDragged || mQuickReturn;
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+
+        if (!mEnabled)
+            return false;
+
+        if (!mIsBeingDragged && !thisTouchAllowed(ev))
+            return false;
+
+        //		if (!mIsBeingDragged && !mQuickReturn)
+        //			return false;
+
+        final int action = ev.getAction();
+
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(ev);
+
+        switch (action & MotionEventCompat.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
 			/*
 			 * If being flinged and user touches, stop the fling. isFinished
 			 * will be false if being flinged.
 			 */
-			completeScroll();
+                completeScroll();
 
-			// Remember where the motion event started
-			int index = MotionEventCompat.getActionIndex(ev);
-			mActivePointerId = MotionEventCompat.getPointerId(ev, index);
-			mLastMotionX = mInitialMotionX = ev.getX();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if (!mIsBeingDragged) {	
-				determineDrag(ev);
-				if (mIsUnableToDrag)
-					return false;
-			}
-			if (mIsBeingDragged) {
-				// Scroll to follow the motion event
-				final int activePointerIndex = getPointerIndex(ev, mActivePointerId);
-				if (mActivePointerId == INVALID_POINTER)
-					break;
-				final float x = MotionEventCompat.getX(ev, activePointerIndex);
-				final float deltaX = mLastMotionX - x;
-				mLastMotionX = x;
-				float oldScrollX = getScrollX();
-				float scrollX = oldScrollX + deltaX;
-				final float leftBound = getLeftBound();
-				final float rightBound = getRightBound();
-				if (scrollX < leftBound) {
-					scrollX = leftBound;
-				} else if (scrollX > rightBound) {
-					scrollX = rightBound;
-				}
-				// Don't lose the rounded component
-				mLastMotionX += scrollX - (int) scrollX;
-				scrollTo((int) scrollX, getScrollY());
-				pageScrolled((int) scrollX);
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-			if (mIsBeingDragged) {
-				final VelocityTracker velocityTracker = mVelocityTracker;
-				velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
-				int initialVelocity = (int) VelocityTrackerCompat.getXVelocity(
-						velocityTracker, mActivePointerId);
-				final int scrollX = getScrollX();
-				//				final int widthWithMargin = getWidth();
-				//				final float pageOffset = (float) (scrollX % widthWithMargin) / widthWithMargin;
-				// TODO test this. should get better flinging behavior
-				final float pageOffset = (float) (scrollX - getDestScrollX(mCurItem)) / getBehindWidth();
-				final int activePointerIndex = getPointerIndex(ev, mActivePointerId);
-				if (mActivePointerId != INVALID_POINTER) {
-					final float x = MotionEventCompat.getX(ev, activePointerIndex);
-					final int totalDelta = (int) (x - mInitialMotionX);
-					int nextPage = determineTargetPage(pageOffset, initialVelocity, totalDelta);
-					setCurrentItemInternal(nextPage, true, true, initialVelocity);
-				} else {	
-					setCurrentItemInternal(mCurItem, true, true, initialVelocity);
-				}
-				mActivePointerId = INVALID_POINTER;
-				endDrag();
-			} else if (mQuickReturn && mViewBehind.menuTouchInQuickReturn(mContent, mCurItem, ev.getX() + mScrollX)) {
-				// close the menu
-				setCurrentItem(1);
-				endDrag();
-			}
-			break;
-		case MotionEvent.ACTION_CANCEL:
-			if (mIsBeingDragged) {
-				setCurrentItemInternal(mCurItem, true, true);
-				mActivePointerId = INVALID_POINTER;
-				endDrag();
-			}
-			break;
-		case MotionEventCompat.ACTION_POINTER_DOWN: {
-			final int indexx = MotionEventCompat.getActionIndex(ev);
-			mLastMotionX = MotionEventCompat.getX(ev, indexx);
-			mActivePointerId = MotionEventCompat.getPointerId(ev, indexx);
-			break;
-		}
-		case MotionEventCompat.ACTION_POINTER_UP:
-			onSecondaryPointerUp(ev);
-			int pointerIndex = getPointerIndex(ev, mActivePointerId);
-			if (mActivePointerId == INVALID_POINTER)
-				break;
-			mLastMotionX = MotionEventCompat.getX(ev, pointerIndex);
-			break;
-		}
-		return true;
-	}
-	
-	private void determineDrag(MotionEvent ev) {
-		final int activePointerId = mActivePointerId;
-		final int pointerIndex = getPointerIndex(ev, activePointerId);
-		if (activePointerId == INVALID_POINTER)
-			return;
-		final float x = MotionEventCompat.getX(ev, pointerIndex);
-		final float dx = x - mLastMotionX;
-		final float xDiff = Math.abs(dx);
-		final float y = MotionEventCompat.getY(ev, pointerIndex);
-		final float dy = y - mLastMotionY;
-		final float yDiff = Math.abs(dy);
-		if (xDiff > (isMenuOpen()?mTouchSlop/2:mTouchSlop) && xDiff > yDiff && thisSlideAllowed(dx)) {		
-			startDrag();
-			mLastMotionX = x;
-			mLastMotionY = y;
-			setScrollingCacheEnabled(true);
-			// TODO add back in touch slop check
-		} else if (xDiff > mTouchSlop) {
-			mIsUnableToDrag = true;
-		}
-	}
+                // Remember where the motion event started
+                int index = MotionEventCompat.getActionIndex(ev);
+                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                mLastMotionX = mInitialMotionX = ev.getX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (!mIsBeingDragged) {
+                    determineDrag(ev);
+                    if (mIsUnableToDrag)
+                        return false;
+                }
+                if (mIsBeingDragged) {
+                    // Scroll to follow the motion event
+                    final int activePointerIndex = getPointerIndex(ev, mActivePointerId);
+                    if (mActivePointerId == INVALID_POINTER)
+                        break;
+                    final float x = MotionEventCompat.getX(ev, activePointerIndex);
+                    final float deltaX = mLastMotionX - x;
+                    mLastMotionX = x;
+                    float oldScrollX = getScrollX();
+                    float scrollX = oldScrollX + deltaX;
+                    final float leftBound = getLeftBound();
+                    final float rightBound = getRightBound();
+                    if (scrollX < leftBound) {
+                        scrollX = leftBound;
+                    } else if (scrollX > rightBound) {
+                        scrollX = rightBound;
+                    }
+                    // Don't lose the rounded component
+                    mLastMotionX += scrollX - (int) scrollX;
+                    scrollTo((int) scrollX, getScrollY());
+                    pageScrolled((int) scrollX);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (mIsBeingDragged) {
+                    final VelocityTracker velocityTracker = mVelocityTracker;
+                    velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+                    int initialVelocity = (int) VelocityTrackerCompat.getXVelocity(
+                            velocityTracker, mActivePointerId);
+                    final int scrollX = getScrollX();
+                    //				final int widthWithMargin = getWidth();
+                    //				final float pageOffset = (float) (scrollX % widthWithMargin) / widthWithMargin;
+                    // TODO test this. should get better flinging behavior
+                    final float pageOffset = (float) (scrollX - getDestScrollX(mCurItem)) / getBehindWidth();
+                    final int activePointerIndex = getPointerIndex(ev, mActivePointerId);
+                    if (mActivePointerId != INVALID_POINTER) {
+                        final float x = MotionEventCompat.getX(ev, activePointerIndex);
+                        final int totalDelta = (int) (x - mInitialMotionX);
+                        int nextPage = determineTargetPage(pageOffset, initialVelocity, totalDelta);
+                        setCurrentItemInternal(nextPage, true, true, initialVelocity);
+                    } else {
+                        setCurrentItemInternal(mCurItem, true, true, initialVelocity);
+                    }
+                    mActivePointerId = INVALID_POINTER;
+                    endDrag();
+                } else if (mQuickReturn && mViewBehind.menuTouchInQuickReturn(mContent, mCurItem, ev.getX() + mScrollX)) {
+                    // close the menu
+                    setCurrentItem(1);
+                    endDrag();
+                }
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                if (mIsBeingDragged) {
+                    setCurrentItemInternal(mCurItem, true, true);
+                    mActivePointerId = INVALID_POINTER;
+                    endDrag();
+                }
+                break;
+            case MotionEventCompat.ACTION_POINTER_DOWN: {
+                final int indexx = MotionEventCompat.getActionIndex(ev);
+                mLastMotionX = MotionEventCompat.getX(ev, indexx);
+                mActivePointerId = MotionEventCompat.getPointerId(ev, indexx);
+                break;
+            }
+            case MotionEventCompat.ACTION_POINTER_UP:
+                onSecondaryPointerUp(ev);
+                int pointerIndex = getPointerIndex(ev, mActivePointerId);
+                if (mActivePointerId == INVALID_POINTER)
+                    break;
+                mLastMotionX = MotionEventCompat.getX(ev, pointerIndex);
+                break;
+        }
+        return true;
+    }
 
-	@Override
-	public void scrollTo(int x, int y) {
-		super.scrollTo(x, y);
-		mScrollX = x;
-		mViewBehind.scrollBehindTo(mContent, x, y);	
-		((SlidingMenu)getParent()).manageLayers(getPercentOpen());
-	}
+    private void determineDrag(MotionEvent ev) {
+        final int activePointerId = mActivePointerId;
+        final int pointerIndex = getPointerIndex(ev, activePointerId);
+        if (activePointerId == INVALID_POINTER)
+            return;
+        final float x = MotionEventCompat.getX(ev, pointerIndex);
+        final float dx = x - mLastMotionX;
+        final float xDiff = Math.abs(dx);
+        final float y = MotionEventCompat.getY(ev, pointerIndex);
+        final float dy = y - mLastMotionY;
+        final float yDiff = Math.abs(dy);
+        if (xDiff > (isMenuOpen()?mTouchSlop/2:mTouchSlop) && xDiff > yDiff && thisSlideAllowed(dx)) {
+            startDrag();
+            mLastMotionX = x;
+            mLastMotionY = y;
+            setScrollingCacheEnabled(true);
+            // TODO add back in touch slop check
+        } else if (xDiff > mTouchSlop) {
+            mIsUnableToDrag = true;
+        }
+    }
 
-	private int determineTargetPage(float pageOffset, int velocity, int deltaX) {
-		int targetPage = mCurItem;
-		if (Math.abs(deltaX) > mFlingDistance && Math.abs(velocity) > mMinimumVelocity) {
-			if (velocity > 0 && deltaX > 0) {
-				targetPage -= 1;
-			} else if (velocity < 0 && deltaX < 0){
-				targetPage += 1;
-			}
-		} else {
-			targetPage = (int) Math.round(mCurItem + pageOffset);
-		}
-		return targetPage;
-	}
+    @Override
+    public void scrollTo(int x, int y) {
+        super.scrollTo(x, y);
+        mScrollX = x;
+        mViewBehind.scrollBehindTo(mContent, x, y);
+        ((SlidingMenu)getParent()).manageLayers(getPercentOpen());
+    }
 
-	protected float getPercentOpen() {
-		return Math.abs(mScrollX-mContent.getLeft()) / getBehindWidth();
-	}
+    private int determineTargetPage(float pageOffset, int velocity, int deltaX) {
+        int targetPage = mCurItem;
+        if (Math.abs(deltaX) > mFlingDistance && Math.abs(velocity) > mMinimumVelocity) {
+            if (velocity > 0 && deltaX > 0) {
+                targetPage -= 1;
+            } else if (velocity < 0 && deltaX < 0){
+                targetPage += 1;
+            }
+        } else {
+            targetPage = (int) Math.round(mCurItem + pageOffset);
+        }
+        return targetPage;
+    }
 
-	@Override
-	protected void dispatchDraw(Canvas canvas) {
-		super.dispatchDraw(canvas);
-		// Draw the margin drawable if needed.
-		mViewBehind.drawShadow(mContent, canvas);
-		mViewBehind.drawFade(mContent, canvas, getPercentOpen());
-		mViewBehind.drawSelector(mContent, canvas, getPercentOpen());
-	}
+    protected float getPercentOpen() {
+        return Math.abs(mScrollX-mContent.getLeft()) / getBehindWidth();
+    }
 
-	// variables for drawing
-	private float mScrollX = 0.0f;
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        // Draw the margin drawable if needed.
+        mViewBehind.drawShadow(mContent, canvas);
+        mViewBehind.drawFade(mContent, canvas, getPercentOpen());
+        mViewBehind.drawSelector(mContent, canvas, getPercentOpen());
+    }
 
-	private void onSecondaryPointerUp(MotionEvent ev) {
-		if (DEBUG) Log.v(TAG, "onSecondaryPointerUp called");
-		final int pointerIndex = MotionEventCompat.getActionIndex(ev);
-		final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
-		if (pointerId == mActivePointerId) {
-			// This was our active pointer going up. Choose a new
-			// active pointer and adjust accordingly.
-			final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-			mLastMotionX = MotionEventCompat.getX(ev, newPointerIndex);
-			mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
-			if (mVelocityTracker != null) {
-				mVelocityTracker.clear();
-			}
-		}
-	}
+    // variables for drawing
+    private float mScrollX = 0.0f;
 
-	/**
-	 * ¿ªÊ¼ÍÏ¶¯
-	 */
-	private void startDrag() {
-		mIsBeingDragged = true;
-		mQuickReturn = false;
-	}
+    private void onSecondaryPointerUp(MotionEvent ev) {
+        if (DEBUG) Log.v(TAG, "onSecondaryPointerUp called");
+        final int pointerIndex = MotionEventCompat.getActionIndex(ev);
+        final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+        if (pointerId == mActivePointerId) {
+            // This was our active pointer going up. Choose a new
+            // active pointer and adjust accordingly.
+            final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+            mLastMotionX = MotionEventCompat.getX(ev, newPointerIndex);
+            mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+            if (mVelocityTracker != null) {
+                mVelocityTracker.clear();
+            }
+        }
+    }
 
-	/**
-	 * ½áÊøÍÏ¶¯
-	 */
-	private void endDrag() {
-		mQuickReturn = false;
-		mIsBeingDragged = false;
-		mIsUnableToDrag = false;
-		mActivePointerId = INVALID_POINTER;
+    /**
+     * å¼€å§‹æ‹–åŠ¨
+     */
+    private void startDrag() {
+        mIsBeingDragged = true;
+        mQuickReturn = false;
+    }
 
-		if (mVelocityTracker != null) {
-			mVelocityTracker.recycle();
-			mVelocityTracker = null;
-		}
-	}
+    /**
+     * ç»“æŸæ‹–åŠ¨
+     */
+    private void endDrag() {
+        mQuickReturn = false;
+        mIsBeingDragged = false;
+        mIsUnableToDrag = false;
+        mActivePointerId = INVALID_POINTER;
 
-	/**
-	 * ÉèÖÃÄÜ·ñÊ¹ÓÃ»¬¶¯»º´æ
-	 */
-	private void setScrollingCacheEnabled(boolean enabled) {
-		if (mScrollingCacheEnabled != enabled) {
-			mScrollingCacheEnabled = enabled;
-			if (USE_CACHE) {
-				final int size = getChildCount();
-				for (int i = 0; i < size; ++i) {
-					final View child = getChildAt(i);
-					if (child.getVisibility() != GONE) {
-						child.setDrawingCacheEnabled(enabled);
-					}
-				}
-			}
-		}
-	}
+        if (mVelocityTracker != null) {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
+        }
+    }
 
-	/**
-	 * Tests scrollability within child views of v given a delta of dx.
-	 *
-	 * @param v View to test for horizontal scrollability
-	 * @param checkV Whether the view v passed should itself be checked for scrollability (true),
-	 *               or just its children (false).
-	 * @param dx Delta scrolled in pixels
-	 * @param x X coordinate of the active touch point
-	 * @param y Y coordinate of the active touch point
-	 * @return true if child views of v can be scrolled by delta of dx.
-	 */
-	protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-		if (v instanceof ViewGroup) {
-			final ViewGroup group = (ViewGroup) v;
-			final int scrollX = v.getScrollX();
-			final int scrollY = v.getScrollY();
-			final int count = group.getChildCount();
-			// Count backwards - let topmost views consume scroll distance first.
-			for (int i = count - 1; i >= 0; i--) {
-				final View child = group.getChildAt(i);
-				if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight() &&
-						y + scrollY >= child.getTop() && y + scrollY < child.getBottom() &&
-						canScroll(child, true, dx, x + scrollX - child.getLeft(),
-								y + scrollY - child.getTop())) {
-					return true;
-				}
-			}
-		}
+    /**
+     * è®¾ç½®èƒ½å¦ä½¿ç”¨æ»‘åŠ¨ç¼“å­˜
+     */
+    private void setScrollingCacheEnabled(boolean enabled) {
+        if (mScrollingCacheEnabled != enabled) {
+            mScrollingCacheEnabled = enabled;
+            if (USE_CACHE) {
+                final int size = getChildCount();
+                for (int i = 0; i < size; ++i) {
+                    final View child = getChildAt(i);
+                    if (child.getVisibility() != GONE) {
+                        child.setDrawingCacheEnabled(enabled);
+                    }
+                }
+            }
+        }
+    }
 
-		return checkV && ViewCompat.canScrollHorizontally(v, -dx);
-	}
+    /**
+     * Tests scrollability within child views of v given a delta of dx.
+     *
+     * @param v View to test for horizontal scrollability
+     * @param checkV Whether the view v passed should itself be checked for scrollability (true),
+     *               or just its children (false).
+     * @param dx Delta scrolled in pixels
+     * @param x X coordinate of the active touch point
+     * @param y Y coordinate of the active touch point
+     * @return true if child views of v can be scrolled by delta of dx.
+     */
+    protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
+        if (v instanceof ViewGroup) {
+            final ViewGroup group = (ViewGroup) v;
+            final int scrollX = v.getScrollX();
+            final int scrollY = v.getScrollY();
+            final int count = group.getChildCount();
+            // Count backwards - let topmost views consume scroll distance first.
+            for (int i = count - 1; i >= 0; i--) {
+                final View child = group.getChildAt(i);
+                if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight() &&
+                        y + scrollY >= child.getTop() && y + scrollY < child.getBottom() &&
+                        canScroll(child, true, dx, x + scrollX - child.getLeft(),
+                                y + scrollY - child.getTop())) {
+                    return true;
+                }
+            }
+        }
+
+        return checkV && ViewCompat.canScrollHorizontally(v, -dx);
+    }
 
 
-	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
-		// Let the focused view and/or our descendants get the key first
-		return super.dispatchKeyEvent(event) || executeKeyEvent(event);
-	}
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Let the focused view and/or our descendants get the key first
+        return super.dispatchKeyEvent(event) || executeKeyEvent(event);
+    }
 
-	/**
-	 * Ö´ĞĞ°´¼üÏìÓ¦ÊÂ¼ş
-	 */
-	public boolean executeKeyEvent(KeyEvent event) {
-		boolean handled = false;
-		if (event.getAction() == KeyEvent.ACTION_DOWN) {
-			switch (event.getKeyCode()) {
-			case KeyEvent.KEYCODE_DPAD_LEFT:
-				handled = arrowScroll(FOCUS_LEFT);
-				break;
-			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				handled = arrowScroll(FOCUS_RIGHT);
-				break;
-			case KeyEvent.KEYCODE_TAB:
-				if (Build.VERSION.SDK_INT >= 11) {
-					// The focus finder had a bug handling FOCUS_FORWARD and FOCUS_BACKWARD
-					// before Android 3.0. Ignore the tab key on those devices.
-					if (KeyEventCompat.hasNoModifiers(event)) {
-						handled = arrowScroll(FOCUS_FORWARD);
-					} else if (KeyEventCompat.hasModifiers(event, KeyEvent.META_SHIFT_ON)) {
-						handled = arrowScroll(FOCUS_BACKWARD);
-					}
-				}
-				break;
-			}
-		}
-		return handled;
-	}
+    /**
+     * æ‰§è¡ŒæŒ‰é”®å“åº”äº‹ä»¶
+     */
+    public boolean executeKeyEvent(KeyEvent event) {
+        boolean handled = false;
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                    handled = arrowScroll(FOCUS_LEFT);
+                    break;
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                    handled = arrowScroll(FOCUS_RIGHT);
+                    break;
+                case KeyEvent.KEYCODE_TAB:
+                    if (Build.VERSION.SDK_INT >= 11) {
+                        // The focus finder had a bug handling FOCUS_FORWARD and FOCUS_BACKWARD
+                        // before Android 3.0. Ignore the tab key on those devices.
+                        if (KeyEventCompat.hasNoModifiers(event)) {
+                            handled = arrowScroll(FOCUS_FORWARD);
+                        } else if (KeyEventCompat.hasModifiers(event, KeyEvent.META_SHIFT_ON)) {
+                            handled = arrowScroll(FOCUS_BACKWARD);
+                        }
+                    }
+                    break;
+            }
+        }
+        return handled;
+    }
 
-	/**
-	 * »ñµÃ»¬¶¯µÄ·½Ïò
-	 */
-	public boolean arrowScroll(int direction) {
-		View currentFocused = findFocus();
-		if (currentFocused == this) currentFocused = null;
+    /**
+     * è·å¾—æ»‘åŠ¨çš„æ–¹å‘
+     */
+    public boolean arrowScroll(int direction) {
+        View currentFocused = findFocus();
+        if (currentFocused == this) currentFocused = null;
 
-		boolean handled = false;
+        boolean handled = false;
 
-		View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused,
-				direction);
-		if (nextFocused != null && nextFocused != currentFocused) {
-			if (direction == View.FOCUS_LEFT) {
-				handled = nextFocused.requestFocus();
-			} else if (direction == View.FOCUS_RIGHT) {
-				// If there is nothing to the right, or this is causing us to
-				// jump to the left, then what we really want to do is page right.
-				if (currentFocused != null && nextFocused.getLeft() <= currentFocused.getLeft()) {
-					handled = pageRight();
-				} else {
-					handled = nextFocused.requestFocus();
-				}
-			}
-		} else if (direction == FOCUS_LEFT || direction == FOCUS_BACKWARD) {
-			// Trying to move left and nothing there; try to page.
-			handled = pageLeft();
-		} else if (direction == FOCUS_RIGHT || direction == FOCUS_FORWARD) {
-			// Trying to move right and nothing there; try to page.
-			handled = pageRight();
-		}
-		if (handled) {
-			playSoundEffect(SoundEffectConstants.getContantForFocusDirection(direction));
-		}
-		return handled;
-	}
+        View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused,
+                direction);
+        if (nextFocused != null && nextFocused != currentFocused) {
+            if (direction == View.FOCUS_LEFT) {
+                handled = nextFocused.requestFocus();
+            } else if (direction == View.FOCUS_RIGHT) {
+                // If there is nothing to the right, or this is causing us to
+                // jump to the left, then what we really want to do is page right.
+                if (currentFocused != null && nextFocused.getLeft() <= currentFocused.getLeft()) {
+                    handled = pageRight();
+                } else {
+                    handled = nextFocused.requestFocus();
+                }
+            }
+        } else if (direction == FOCUS_LEFT || direction == FOCUS_BACKWARD) {
+            // Trying to move left and nothing there; try to page.
+            handled = pageLeft();
+        } else if (direction == FOCUS_RIGHT || direction == FOCUS_FORWARD) {
+            // Trying to move right and nothing there; try to page.
+            handled = pageRight();
+        }
+        if (handled) {
+            playSoundEffect(SoundEffectConstants.getContantForFocusDirection(direction));
+        }
+        return handled;
+    }
 
-	/**
-	 * Ò³ÃæÊÇ·ñÏò×óÒÆ¶¯
-	 */
-	boolean pageLeft() {
-		if (mCurItem > 0) {
-			setCurrentItem(mCurItem-1, true);
-			return true;
-		}
-		return false;
-	}
+    /**
+     * é¡µé¢æ˜¯å¦å‘å·¦ç§»åŠ¨
+     */
+    boolean pageLeft() {
+        if (mCurItem > 0) {
+            setCurrentItem(mCurItem-1, true);
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Ò³ÃæÊÇ·ñÏòÓÒÒÆ¶¯
-	 */
-	boolean pageRight() {
-		if (mCurItem < 1) {
-			setCurrentItem(mCurItem+1, true);
-			return true;
-		}
-		return false;
-	}
+    /**
+     * é¡µé¢æ˜¯å¦å‘å³ç§»åŠ¨
+     */
+    boolean pageRight() {
+        if (mCurItem < 1) {
+            setCurrentItem(mCurItem+1, true);
+            return true;
+        }
+        return false;
+    }
 
 }

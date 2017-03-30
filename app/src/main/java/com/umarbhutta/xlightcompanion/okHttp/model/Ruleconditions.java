@@ -20,6 +20,7 @@ public class Ruleconditions implements Serializable{
     public String weekdays;
     public String hour;
     public String minute;
+    public String isrepeat;
     public String status;
     public String createdAt;
     public String updatedAt;
@@ -40,6 +41,7 @@ public class Ruleconditions implements Serializable{
                 ", weekdays='" + weekdays + '\'' +
                 ", hour='" + hour + '\'' +
                 ", minute='" + minute + '\'' +
+                ", isrepeat='" + isrepeat + '\'' +
                 ", status='" + status + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +

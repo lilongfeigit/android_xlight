@@ -7,7 +7,6 @@ import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceGetRules;
-import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 
 /**
@@ -35,7 +34,7 @@ public class RequestDeviceRulesInfo implements HttpUtils.OnHttpRequestCallBack {
     @Override
     public void onHttpRequestSuccess(Object result) {
         DeviceGetRules info = (DeviceGetRules) result;
-        Logger.i("deviceInfo = " + info);
+        Logger.i("ruleInfo = " + info);
         if (null != mOnRequestFirstPageInfoCallback) {
             mOnRequestFirstPageInfoCallback.onRequestFirstPageInfoSuccess(info.data);
         }

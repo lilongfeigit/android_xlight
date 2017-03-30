@@ -56,4 +56,5 @@
     <string name="next">下一步</string>
     <string name="loading">加载中...</string>
     <string name="commiting">提交中</string>
+    <string name="wait">提交中</string>
 </resources>

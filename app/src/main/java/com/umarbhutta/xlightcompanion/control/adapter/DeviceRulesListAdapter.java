@@ -1,24 +1,21 @@
 package com.umarbhutta.xlightcompanion.control.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
-import com.umarbhutta.xlightcompanion.main.MainActivity;
-import com.umarbhutta.xlightcompanion.okHttp.model.DeviceGetRules;
-import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
-import com.umarbhutta.xlightcompanion.okHttp.requests.RequestRuleSwitchDevice;
-import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
+import com.umarbhutta.xlightcompanion.okHttp.model.RuleInfo;
+import com.umarbhutta.xlightcompanion.okHttp.model.Ruleactionnotify;
+import com.umarbhutta.xlightcompanion.okHttp.model.Ruleconditions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,23 +26,22 @@ public class DeviceRulesListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;//这个一定要懂它的用法及作用
     private Context mActivity;
-    private DeviceGetRules mDeviceInfoResult;
-//    private List<String> strLists;
+    private List<RuleInfo> mRuleInfoList;
 
-        public DeviceRulesListAdapter(Context activity, DeviceGetRules deviceInfoResult) {
+    public DeviceRulesListAdapter(Context activity, List<RuleInfo> mRuleInfoList) {
         this.mActivity = activity;
-        this.mDeviceInfoResult = deviceInfoResult;
+        this.mRuleInfoList = mRuleInfoList;
         this.inflater = LayoutInflater.from(mActivity);
     }
 
     @Override
     public int getCount() {
-        return mDeviceInfoResult.rows.size();
+        return mRuleInfoList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mDeviceInfoResult.rows.get(position);
+        return mRuleInfoList.get(position);
     }
 
     @Override
@@ -62,290 +58,166 @@ public class DeviceRulesListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.rules_list_item, null);
             //通过上面layout得到的view来获取里面的具体控件
             holder.mDeviceSwitch = (Switch) convertView.findViewById(R.id.deviceSwitch);
-            holder.listViewTerm = (ListView) convertView.findViewById(R.id.lv_term);
-            holder.listViewResult = (ListView) convertView.findViewById(R.id.lv_result);
+            holder.listViewTerm = (LinearLayout) convertView.findViewById(R.id.lv_term);
+            holder.listViewResult = (LinearLayout) convertView.findViewById(R.id.lv_result);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if(mDeviceInfoResult.rows.get(position).status==1){//1是开 0是关
-            holder.mDeviceSwitch.setChecked(true);
-        }else{
-            holder.mDeviceSwitch.setChecked(false);
-        }
-
+        holder.mDeviceSwitch.setChecked((mRuleInfoList.get(position).status == 1) ? true : false);
         holder.mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //右侧开关控制 status:1代表启用，0代表禁用
-                int isCheckedInt=0;
-                if(isChecked){
-                    isCheckedInt=1;
-                }else{
-                    isCheckedInt=0;
+                if (null != mOnItemActionListener) {
+                    mOnItemActionListener.onSwitchAction(position, isChecked);
                 }
-                RequestRuleSwitchDevice.getInstance().switchRule(mActivity,mDeviceInfoResult.rows.get(position).id,isCheckedInt,new CommentRequstCallback(){
-                    @Override
-                    public void onCommentRequstCallbackSuccess() {
-//                        ToastUtil.showToast(mActivity,"修改成功");
-                    }
-
-                    @Override
-                    public void onCommentRequstCallbackFail(int code, String errMsg) {
-//                        ToastUtil.showToast(mActivity,"errMsg="+errMsg);
-                    }
-                });
             }
         });
 
-        holder.listViewTerm.setAdapter(new TermAdapter(mActivity, mDeviceInfoResult.rows.get(position).ruleconditions));
-        //根据innerlistview的高度机损parentlistview item的高度
-        setListViewHeightBasedOnChildren(holder.listViewTerm);
-        holder.listViewResult.setAdapter(new ResultAdapter(mActivity, mDeviceInfoResult.rows.get(position).ruleactioncmds));
-        //根据innerlistview的高度机损parentlistview item的高度
-        setListViewHeightBasedOnChildren(holder.listViewResult);
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (null != mOnItemActionListener) {
+                    mOnItemActionListener.onItemLongClick(position);
+                }
+                return true;
+            }
+        });
+
+        conditionInfo(position, convertView, parent, holder);
+        resultInfo(position, convertView, parent, holder);
+
 
         return convertView;
     }
 
-    class ViewHolder {
-        private Switch mDeviceSwitch;
-        private ListView listViewTerm, listViewResult;
-    }
-
-//    private Context mActivity;
-////    private DeviceInfoResult mDeviceInfoResult;
-//    private List<String> strLists;
-//
-////    public DeviceRulesListAdapter(Context activity, DeviceInfoResult deviceInfoResult) {
-////        this.mActivity = activity;
-////        this.mDeviceInfoResult = deviceInfoResult;
-////    }
-//    public DeviceRulesListAdapter(Context activity, List<String> strLists) {
-//        this.mActivity = activity;
-//        this.strLists = strLists;
-//    }
-//
-//    private Handler m_handlerDeviceList;
-//
-//    private class MyStatusRuleReceiver extends StatusReceiver {
-//        public Switch m_mainSwitch = null;
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (m_mainSwitch != null) {
-//                m_mainSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-//            }
-//        }
-//    }
-//
-//    private final MyStatusRuleReceiver m_StatusReceiver = new MyStatusRuleReceiver();
-//
-//    @Override
-//    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-//        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
-//            IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
-//            intentFilter.setPriority(3);
-//            recyclerView.getContext().registerReceiver(m_StatusReceiver, intentFilter);
-//        }
-//        super.onAttachedToRecyclerView(recyclerView);
-//    }
-//
-//    @Override
-//    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rules_list_item, parent, false);
-//        return new DevicesRuleViewHolder(view);
-//    }
-//
-//    @Override
-//    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-//        if (m_handlerDeviceList != null) {
-//            MainActivity.m_mainDevice.removeDeviceEventHandler(m_handlerDeviceList);
-//        }
-//        if (MainActivity.m_mainDevice.getEnableEventBroadcast()) {
-//            recyclerView.getContext().unregisterReceiver(m_StatusReceiver);
-//        }
-//        super.onDetachedFromRecyclerView(recyclerView);
-//    }
-//
-//    @Override
-//    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-//        super.onViewDetachedFromWindow(holder);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//        ((DevicesRuleViewHolder) holder).bindView(position);
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return 3;
-//    }
-//
-//    private class DevicesRuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-////        private TextView rule_time_one;
-////        private TextView rule_time_two;
-////        private TextView ruleMsg;
-//        private Switch mDeviceSwitch;
-//        private RecyclerView listViewTerm, listViewResult;
-//
-//        public DevicesRuleViewHolder(View itemView) {
-//            super(itemView);
-////            rule_time_one = (TextView) itemView.findViewById(R.id.rule_time_one);
-////            rule_time_two = (TextView) itemView.findViewById(R.id.rule_time_two);
-////            ruleMsg = (TextView) itemView.findViewById(R.id.ruleMsg);
-//            mDeviceSwitch = (Switch) itemView.findViewById(R.id.deviceSwitch);
-//            listViewTerm = (RecyclerView) itemView.findViewById(R.id.lv_term);
-//            listViewResult = (RecyclerView) itemView.findViewById(R.id.lv_result);
-//            List<String> strListTerm = new ArrayList<String>();
-//            strListTerm.add("09:00");
-//            strListTerm.add("09:00");
-//            strListTerm.add("09:00");
-//            strListTerm.add("09:00");
-//            List<String> strListResult = new ArrayList<String>();
-//            strListResult.add("卧室灯开");
-//            strListResult.add("卧室灯开");
-//            strListResult.add("卧室灯开");
-//            strListResult.add("卧室灯开");
-//
-//            listViewTerm.setAdapter(new TermAdapter(mActivity, strListTerm));
-//            //根据innerlistview的高度机损parentlistview item的高度
-////            setListViewHeightBasedOnChildren(listViewTerm);
-//            listViewResult.setAdapter(new ResultAdapter(mActivity, strListResult));
-//            //根据innerlistview的高度机损parentlistview item的高度
-////            setListViewHeightBasedOnChildren(listViewResult);
-//
-//            itemView.setOnClickListener(this);
-//            itemView.setOnLongClickListener(this);
-//
-//            mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, isChecked);
-//                    MainActivity.m_mainDevice.PowerSwitch(isChecked);
-//                    //TODO 右侧开关控制
-//                }
-//            });
-//        }
-//
-//        public void bindView(int position) {
-////            String devicename = mDeviceInfoResult.rows.get(position).devicename;
-////            rule_time_one.setText(MainActivity.deviceNames[position]);
-////            rule_time_one.setText("09:00");
-////            rule_time_two.setText("18:00");
-////            ruleMsg.setText("卧室灯  开灯 亮度60 色温50");
-//
-//            if (position == 0) {
-//                // Main device
-//                mDeviceSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-//                m_StatusReceiver.m_mainSwitch = mDeviceSwitch;
-//
-//                if (MainActivity.m_mainDevice.getEnableEventSendMessage()) {
-//                    m_handlerDeviceList = new Handler() {
-//                        public void handleMessage(Message msg) {
-//                            int intValue = msg.getData().getInt("State", -255);
-//                            if (intValue != -255) {
-//                                mDeviceSwitch.setChecked(MainActivity.m_mainDevice.getState() > 0);
-//                            }
-//                        }
-//                    };
-//                    MainActivity.m_mainDevice.addDeviceEventHandler(m_handlerDeviceList);
-//                }
-//            }
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//            //点击事件 跳转到编辑设备页面
-//            onFabPressed(AddControlRuleActivity.class);
-//        }
-//
-//        @Override
-//        public boolean onLongClick(View view) {
-//            //TODO 长按事件  长按删除设备
-////            showDeleteSceneDialog(position);
-//            return true;
-//        }
-//    }
-//
-//    private void onFabPressed(Class activity) {
-//        Intent intent = new Intent(mActivity, activity);
-//        mActivity.startActivity(intent);
-//    }
-//
-//    /**
-//     * 删除规则
-//     */
-//    private void showDeleteSceneDialog(final int position) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-//        builder.setTitle("删除规则提示");
-//        builder.setMessage("确定删除此规则吗？");
-//        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-////                deleteScene(position);
-//            }
-//        });
-//        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
-//
-//        builder.show();
-//    }
-////    private void deleteScene(final int position) {
-////        Rows mSceneInfo = mDeviceInfoResult.rows.get(position);
-////        RequestDeleteScene.getInstance().deleteScene(getActivity(), mSceneInfo.id, new CommentRequstCallback() {
-////            @Override
-////            public void onCommentRequstCallbackSuccess() {
-////                getActivity().runOnUiThread(new Runnable() {
-////                    @Override
-////                    public void run() {
-////                        ToastUtil.showToast(getActivity(), "删除成功");
-////                        mDeviceInfoResult.rows.remove(position);
-////                        scenarioListAdapter.notifyDataSetChanged();
-////                    }
-////                });
-////            }
-////
-////            @Override
-////            public void onCommentRequstCallbackFail(int code, final String errMsg) {
-////                mActivity.runOnUiThread(new Runnable() {
-////                    @Override
-////                    public void run() {
-////                        ToastUtil.showToast(mActivity, "" + errMsg);
-////                    }
-////                });
-////            }
-////        });
-////    }
-//
 
     /**
-     * @param listView 此方法是本次listview嵌套listview的核心方法：计算parentlistview item的高度。
-     *                 如果不使用此方法，无论innerlistview有多少个item，则只会显示一个item。
-     **/
-    public void setListViewHeightBasedOnChildren(ListView listView) {
-        // 获取ListView对应的Adapter
-        ListAdapter listAdapter = listView.getAdapter();
-        listView.setFocusable(false);
-        listView.setClickable(false);
-        if (listAdapter == null) {
-            return;
+     * 条件
+     *
+     * @param position
+     * @param convertView
+     * @param parent
+     */
+    private void conditionInfo(final int position, View convertView, ViewGroup parent, ViewHolder holder) {
+        RuleInfo mRuleInfo = mRuleInfoList.get(position);
+        holder.listViewTerm.removeAllViews();
+
+        if (null != mRuleInfo && null != mRuleInfo.ruleconditions && mRuleInfo.ruleconditions.size() > 0) {
+            for (Ruleconditions mRuleconditions : mRuleInfo.ruleconditions) {
+                TextView textView = new TextView(mActivity);
+                textView.setSingleLine(true);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setText((getText(mRuleconditions.ruleconditionname) + getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
+                        + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays) + getText(mRuleconditions.hour) + getText(mRuleconditions.minute)
+                        + getText(mRuleconditions.isrepeat)).trim());
+                holder.listViewTerm.addView(textView);
+            }
         }
-        int totalHeight = 0;
-        for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
-            // listAdapter.getCount()返回数据项的数目
-            View listItem = listAdapter.getView(i, null, listView);
-            // 计算子项View 的宽高
-            listItem.measure(0, 0);
-            // 统计所有子项的总高度
-            totalHeight += listItem.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
+
+    /**
+     * 执行
+     *
+     * @param position
+     * @param convertView
+     * @param parent
+     */
+    private void resultInfo(final int position, View convertView, ViewGroup parent, ViewHolder holder) {
+        holder.listViewResult.removeAllViews();
+        RuleInfo mRuleInfo = mRuleInfoList.get(position);
+
+        if (null != mRuleInfo && null != mRuleInfo.ruleactionnotifies && mRuleInfo.ruleactionnotifies.size() > 0) {
+            for (Ruleactionnotify mRuleactionnotify : mRuleInfo.ruleactionnotifies) {
+                TextView textView = new TextView(mActivity);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setSingleLine(true);
+                textView.setText("" + (getText(mRuleactionnotify.msisdn) + getText(mRuleactionnotify.content) + getText(mRuleactionnotify.emailaddress) + getText(mRuleactionnotify.subject)).trim());
+                holder.listViewResult.addView(textView);
+            }
+        }
+    }
+
+    /**
+     * [1,3,5]  返回 周一，周二
+     *
+     * @param weekdays
+     * @return
+     */
+    private String getweekdays(String weekdays) {
+        if (TextUtils.isEmpty(weekdays) || "null".equals(weekdays)) {
+            return " ";
+        }
+
+        String mWeekDays = weekdays.replace("[", "").replace("]", "");
+        String[] weekArrs = mWeekDays.split(",");
+        StringBuilder builder = new StringBuilder();
+        if (null != weekArrs && weekArrs.length > 0) {
+            for (int i = 0; i < weekArrs.length; i++) {
+                switch (weekArrs[i]) {
+                    case "1":
+                        builder.append("周一,");
+                        break;
+                    case "2":
+                        builder.append("周二,");
+                        break;
+                    case "3":
+                        builder.append("周三,");
+                        break;
+                    case "4":
+                        builder.append("周四,");
+                        break;
+                    case "5":
+                        builder.append("周五,");
+                        break;
+                    case "6":
+                        builder.append("周六,");
+                        break;
+                    default:
+                        builder.append("周日,");
+                        break;
+                }
+            }
+            return builder.toString().substring(0, builder.length() - 1) + " ";
+        }
+
+        return " ";
+
+    }
+
+    private String getText(String text) {
+        if (TextUtils.isEmpty(text) || "null".equals(text)) {
+            return " ";
+        }
+
+        return text + " ";
+    }
+
+
+    class ViewHolder {
+        private Switch mDeviceSwitch;
+        private LinearLayout listViewTerm, listViewResult;
+    }
+
+    private OnItemActionListener mOnItemActionListener;
+
+    /**
+     * 添加item事件回调
+     *
+     * @param mOnItemActionListener
+     */
+    public void addOnItemActionListener(OnItemActionListener mOnItemActionListener) {
+        this.mOnItemActionListener = mOnItemActionListener;
+    }
+
+    public interface OnItemActionListener {
+        /**
+         * 规则开关执行
+         *
+         * @param isChecked
+         */
+        void onSwitchAction(int position, boolean isChecked);
+        void onItemLongClick(int position);
+    }
+
 }

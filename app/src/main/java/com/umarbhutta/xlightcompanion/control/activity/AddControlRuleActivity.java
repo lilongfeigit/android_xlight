@@ -3,9 +3,7 @@ package com.umarbhutta.xlightcompanion.control.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +45,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
     private TextView btnSure;
     private TextView tvTitle;
     private ImageButton ib_add_term, ib_add_result;
-    private ListView lv_term, lv_control_actioncmd, lv_term_time,lv_control_actionnotify;
+    private ListView lv_term, lv_control_actioncmd, lv_term_time, lv_control_actionnotify;
 
     private TextView tv_no_data1, tv_no_data2;
 
@@ -127,10 +125,10 @@ public class AddControlRuleActivity extends AppCompatActivity {
         if (resultBottomAdapter != null) {
             resultBottomAdapter.notifyDataSetChanged();
         }
-        if(mScheduleList.size()>0 || mConditionList.size()>0){
+        if (mScheduleList.size() > 0 || mConditionList.size() > 0) {
             tv_no_data1.setVisibility(View.GONE);
         }
-        if(mActioncmdList.size()>0 || mActionnotify.size()>0){
+        if (mActioncmdList.size() > 0 || mActionnotify.size() > 0) {
             tv_no_data2.setVisibility(View.GONE);
         }
     }
@@ -149,34 +147,34 @@ public class AddControlRuleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //确定提交按钮
-                rules.rulename="rule1";
-                rules.relationtype=1;
-                rules.type=1;
-                rules.status=1;
-                rules.userId= UserUtils.getUserInfo(getApplicationContext()).getId();
+                rules.rulename = "rule1";
+                rules.relationtype = 1;
+                rules.type = 1;
+                rules.status = 1;
+                rules.userId = UserUtils.getUserInfo(getApplicationContext()).getId();
                 List<Rulecondition> rulecondition = new ArrayList<Rulecondition>();
                 List<Ruleresult> ruleresult = new ArrayList<Ruleresult>();
                 mRulecondition.schedule = mScheduleList;
                 mRulecondition.condition = mConditionList;
-                mRuleresult.actionnotify=mActionnotify;
-                mRuleresult.actioncmd=mActioncmdList;
+                mRuleresult.actionnotify = mActionnotify;
+                mRuleresult.actioncmd = mActioncmdList;
                 rulecondition.add(mRulecondition);
                 ruleresult.add(mRuleresult);
-                rules.rulecondition=rulecondition;
-                rules.ruleresult=ruleresult;
-                RequestAddRules.getInstance().createRule(AddControlRuleActivity.this,rules,new RequestAddRules.OnCreateRuleCallback() {
+                rules.rulecondition = rulecondition;
+                rules.ruleresult = ruleresult;
+                RequestAddRules.getInstance().createRule(AddControlRuleActivity.this, rules, new RequestAddRules.OnCreateRuleCallback() {
 
                     @Override
                     public void mOnCreateRuleCallbackFail(int code, String errMsg) {
-                        Logger.e(TAG,"errMsg=" + errMsg);
-                        ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);//
+                        Logger.e(TAG, "errMsg=" + errMsg);
+                        ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);
                     }
 
                     @Override
                     public void mOnCreateRuleCallbackSuccess(CreateRuleResult mCreateRuleResult) {
-                        Logger.e(TAG,"mCreateRuleResult=" + mCreateRuleResult.code);
-                        ToastUtil.showToast(AddControlRuleActivity.this, "mCreateRuleResult=" + mCreateRuleResult.msg);//
-//                        finish();
+                        Logger.e(TAG, "mCreateRuleResult=" + mCreateRuleResult.code);
+                        ToastUtil.showToast(AddControlRuleActivity.this, "规则创建成功");
+                        finish();
                     }
                 });
             }
@@ -336,7 +334,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     mScheduleListStr.remove(position);
                     mTopTermsList.remove(schedule);
-                    if(mScheduleList.size()>0 || mConditionList.size()>0){
+                    if (mScheduleList.size() > 0 || mConditionList.size() > 0) {
                         tv_no_data1.setVisibility(View.GONE);
                     }
                     notifyDataSetChanged();
@@ -398,7 +396,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     mTermsBottomList.remove(condition);
-                    if(mScheduleList.size()>0 || mConditionList.size()>0){
+                    if (mScheduleList.size() > 0 || mConditionList.size() > 0) {
                         tv_no_data1.setVisibility(View.GONE);
                     }
                     notifyDataSetChanged();
@@ -514,12 +512,12 @@ public class AddControlRuleActivity extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
             final Actioncmd actioncmd = mResultsList.get(position);
-            holder.tvStr.setText(actioncmd.actioncmdfield.get(0).cmd+" "+actioncmd.actioncmdfield.get(0).paralist.replace("{","").replace("}",""));
+            holder.tvStr.setText(actioncmd.actioncmdfield.get(0).cmd + " " + actioncmd.actioncmdfield.get(0).paralist.replace("{", "").replace("}", ""));
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mResultsList.remove(actioncmd);
-                    if(mActioncmdList.size()>0 || mActionnotify.size()>0){
+                    if (mActioncmdList.size() > 0 || mActionnotify.size() > 0) {
                         tv_no_data2.setVisibility(View.GONE);
                     }
                     notifyDataSetChanged();
@@ -577,17 +575,17 @@ public class AddControlRuleActivity extends AppCompatActivity {
             }
 
             final Actionnotify actionnotify = mResultsList.get(position);
-            if(StringUtil.isNotEmpty(actionnotify.msisdn,true)){
-                holder.tvStr.setText(actionnotify.msisdn+" "+actionnotify.content);
-            }else{
-                holder.tvStr.setText(actionnotify.emailaddress+" "+actionnotify.content);
+            if (StringUtil.isNotEmpty(actionnotify.msisdn, true)) {
+                holder.tvStr.setText(actionnotify.msisdn + " " + actionnotify.content);
+            } else {
+                holder.tvStr.setText(actionnotify.emailaddress + " " + actionnotify.content);
             }
 
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mResultsList.remove(actionnotify);
-                    if(mActioncmdList.size()>0 || mActionnotify.size()>0){
+                    if (mActioncmdList.size() > 0 || mActionnotify.size() > 0) {
                         tv_no_data2.setVisibility(View.GONE);
                     }
                     notifyDataSetChanged();

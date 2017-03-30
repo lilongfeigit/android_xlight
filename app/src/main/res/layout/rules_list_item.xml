@@ -25,6 +25,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="6"
             android:orientation="vertical"
             android:paddingLeft="5dp"
@@ -33,69 +34,40 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left|start"
                 android:text="条件："
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/rule_time_one"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:fontFamily="sans-serif-light"-->
-            <!--android:gravity="left|start"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:text="每天 18:00"-->
-            <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/rule_time_two"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:fontFamily="sans-serif-light"-->
-            <!--android:gravity="left|start"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:text="每天 16:00"-->
-            <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
-            <ListView
+            <LinearLayout
                 android:id="@+id/lv_term"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@null"
-                android:scrollbars="none" />
+                android:orientation="vertical" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left|start"
                 android:text="执行动作："
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <ListView
+            <LinearLayout
                 android:id="@+id/lv_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@null"
-                android:scrollbars="none" />
-            <!--<TextView-->
-            <!--android:id="@+id/ruleMsg"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:fontFamily="sans-serif-light"-->
-            <!--android:gravity="left|start"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:text="卧室灯  开灯 亮度60 色温50"-->
-            <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+                android:orientation="vertical" />
         </LinearLayout>
 
         <Switch
             android:id="@+id/deviceSwitch"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:drawableRight="@drawable/switch_selector"
             android:thumb="@null"
             android:track="@null" />

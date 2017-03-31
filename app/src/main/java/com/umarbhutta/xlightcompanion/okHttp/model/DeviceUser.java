@@ -19,6 +19,10 @@ public class DeviceUser implements Serializable{
     public String createdAt;
     public String updatedAt;
     public int usergroupId;
+    public int sex;
+    public String nickname;
+    public String verificationcode;
+    public String expirationtime;
 
     @Override
     public String toString() {
@@ -35,6 +39,10 @@ public class DeviceUser implements Serializable{
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
                 ", usergroupId=" + usergroupId +
+                ", sex=" + sex +
+                ", nickname='" + nickname + '\'' +
+                ", verificationcode='" + verificationcode + '\'' +
+                ", expirationtime='" + expirationtime + '\'' +
                 '}';
     }
 }

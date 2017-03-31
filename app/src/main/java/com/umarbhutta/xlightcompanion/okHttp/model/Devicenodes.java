@@ -12,12 +12,13 @@ public class Devicenodes implements Serializable{
     public int deviceId;
     public String devicenodename;
     public int nodeno;
-    public String ison;
+    public int ison;
     public int brightness;
     public int cct;
     public String scenarioId;
     public String createdAt;
     public String updatedAt;
+    public String devicenodetype;
     //    public List<String> sensorsdata;
     public List<Devicerings> devicerings;
     public List<Ruleconditions> ruleconditions;
@@ -35,7 +36,7 @@ public class Devicenodes implements Serializable{
                 ", scenarioId='" + scenarioId + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
-//                ", sensorsdata=" + sensorsdata +
+                ", devicenodetype='" + devicenodetype + '\'' +
                 ", devicerings=" + devicerings +
                 ", ruleconditions=" + ruleconditions +
                 '}';

@@ -42,12 +42,14 @@ import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesListAdapter;
+import com.umarbhutta.xlightcompanion.control.adapter.DevicesMainListAdapter;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestFirstPageInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestUnBindDevice;
@@ -84,7 +86,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      * 设备列表
      */
     public static List<Rows> deviceList = new ArrayList<Rows>();
-    private DevicesListAdapter devicesListAdapter;
+    private DevicesMainListAdapter devicesListAdapter;
     private TextView default_text;
 
     @Override
@@ -223,7 +225,11 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
         //setup recycler view
         devicesRecyclerView = (RecyclerView) view.findViewById(R.id.devicesRecyclerView);
-        devicesListAdapter = new DevicesListAdapter(getContext(), deviceList);
+        List<Devicenodes> devicenodes = new ArrayList<Devicenodes>();
+        for(int i=0;i<deviceList.size();i++){
+            devicenodes.addAll(deviceList.get(i).devicenodes);
+        }
+        devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
         devicesRecyclerView.setAdapter(devicesListAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         devicesRecyclerView.setLayoutManager(layoutManager);
@@ -394,7 +400,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             return;
         }
 
-        devicesListAdapter.setOnSwitchStateChangeListener(new DevicesListAdapter.OnSwitchStateChangeListener() {
+        devicesListAdapter.setOnSwitchStateChangeListener(new DevicesMainListAdapter.OnSwitchStateChangeListener() {
             @Override
             public void onLongClick(int position) { //长按删除
                 showDeleteSceneDialog(position);

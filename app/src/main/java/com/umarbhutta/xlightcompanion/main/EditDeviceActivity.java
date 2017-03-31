@@ -99,7 +99,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
 
     private Handler m_handlerControl;
     private CircleDotView circleIcon;
-
+    private TextView cctLabelColor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +143,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         tvTitle.setText("编辑设备");
         mscenarioName = (TextView) findViewById(R.id.scenarioName);
         mscenarioName.setOnClickListener(this);
+        cctLabelColor = (TextView) findViewById(R.id.cctLabelColor);
 
         scenarioSpinner = (Spinner) findViewById(R.id.scenarioSpinner);
         ArrayAdapter<String> scenarioAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, scenarioDropdown);
@@ -243,6 +244,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 //ParticleAdapter.JSONCommandCCT(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress()+2700);
+                if(seekBar.getProgress()>3300){
+                    cctLabelColor.setText("冷色");
+                }
                 SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBar.getProgress() + 2700);
             }
         });

@@ -50,6 +50,7 @@
             android:layout_toRightOf="@+id/devicePlan"
             android:gravity="center"
             android:paddingLeft="10dp"
+            android:visibility="gone"
             android:text="主设备"
             android:textColor="@color/textDarkGrey" />
 

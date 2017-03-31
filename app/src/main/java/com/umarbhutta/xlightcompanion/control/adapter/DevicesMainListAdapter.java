@@ -89,6 +89,7 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
                     //mDevicenodes
                     SlidingMenuMainActivity.m_mainDevice.setDeviceID(mDevicenodes.get(mPositon).nodeno);
                     SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
+                    mDevicenodes.get(mPositon).ison = isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
                 }
             });
         }

@@ -360,6 +360,7 @@
                         android:gravity="left|start"
                         android:layout_gravity="center_vertical"
                         android:text="冷色"
+                        android:textSize="14sp"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <RelativeLayout

@@ -225,12 +225,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
         //setup recycler view
         devicesRecyclerView = (RecyclerView) view.findViewById(R.id.devicesRecyclerView);
-        List<Devicenodes> devicenodes = new ArrayList<Devicenodes>();
-        for(int i=0;i<deviceList.size();i++){
-            devicenodes.addAll(deviceList.get(i).devicenodes);
-        }
-        devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
-        devicesRecyclerView.setAdapter(devicesListAdapter);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         devicesRecyclerView.setLayoutManager(layoutManager);
         devicesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
@@ -400,18 +395,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             return;
         }
 
-        devicesListAdapter.setOnSwitchStateChangeListener(new DevicesMainListAdapter.OnSwitchStateChangeListener() {
-            @Override
-            public void onLongClick(int position) { //长按删除
-                showDeleteSceneDialog(position);
-            }
-
-            @Override
-            public void onSwitchChange(int position, boolean checked) {
-                deviceList.get(position).ison = checked ? 1 : 0;
-                switchLight(checked, deviceList.get(position));
-            }
-        });
 
         RequestFirstPageInfo.getInstance(getActivity()).getBaseInfo(new RequestFirstPageInfo.OnRequestFirstPageInfoCallback() {
             @Override
@@ -423,7 +406,10 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                         Logger.i("mDeviceInfoResult = " + devices.toString());
                         deviceList.clear();
                         deviceList.addAll(devices);
-                        devicesListAdapter.notifyDataSetChanged();
+                        if(devicesListAdapter!=null){
+                            devicesListAdapter.notifyDataSetChanged();
+                        }
+
                         if (null != deviceList && deviceList.size() > 0) {
                             default_text.setVisibility(View.GONE);
                             SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
@@ -435,6 +421,18 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                                     // Connect to Controller
                                     SlidingMenuMainActivity.m_mainDevice.Connect(deviceList.get(i).coreid);
                                 }
+                            }
+                            List<Devicenodes> devicenodes = new ArrayList<Devicenodes>();
+                            for(int i=0;i<deviceList.size();i++){
+                                devicenodes.addAll(deviceList.get(i).devicenodes);
+                            }
+                            devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
+                            devicesRecyclerView.setAdapter(devicesListAdapter);
+                            devicesListAdapter.notifyDataSetChanged();
+                            if (null != deviceList && deviceList.size() > 0) {
+                                default_text.setVisibility(View.GONE);
+                            } else {
+                                default_text.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -453,12 +451,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         getBaseInfos();
-        devicesListAdapter.notifyDataSetChanged();
-        if (null != deviceList && deviceList.size() > 0) {
-            default_text.setVisibility(View.GONE);
-        } else {
-            default_text.setVisibility(View.VISIBLE);
-        }
     }
 
     /**

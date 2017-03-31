@@ -35,12 +35,10 @@ import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.control.ControlFragment;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
-import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
@@ -101,6 +99,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     private Handler m_handlerControl;
     private CircleDotView circleIcon;
     private TextView cctLabelColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,15 +157,24 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
 
         SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.nodeno);
 
-        Log.e(TAG, "CCT="+SlidingMenuMainActivity.m_mainDevice.getCCT()+";State="+SlidingMenuMainActivity.m_mainDevice.getState()+";blue="+
-                SlidingMenuMainActivity.m_mainDevice.getBlue()+";red="+SlidingMenuMainActivity.m_mainDevice.getRed()+";green="+SlidingMenuMainActivity.m_mainDevice.getGreen()+";Brightness"+
+        Log.e(TAG, "CCT=" + SlidingMenuMainActivity.m_mainDevice.getCCT() + ";State=" + SlidingMenuMainActivity.m_mainDevice.getState() + ";blue=" +
+                SlidingMenuMainActivity.m_mainDevice.getBlue() + ";red=" + SlidingMenuMainActivity.m_mainDevice.getRed() + ";green=" + SlidingMenuMainActivity.m_mainDevice.getGreen() + ";Brightness" +
                 SlidingMenuMainActivity.m_mainDevice.getBrightness()
         );
 
         mscenarioName.setText(deviceInfo.devicenodename);
-        powerSwitch.setChecked(deviceInfo.ison > 0);
-        brightnessSeekBar.setProgress(deviceInfo.brightness);
-        cctSeekBar.setProgress(deviceInfo.cct - 2700);
+        powerSwitch.setChecked(SlidingMenuMainActivity.m_mainDevice.getState() == 1 ? true : false);
+        brightnessSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getBrightness());
+        cctSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getCCT());
+
+        int R = SlidingMenuMainActivity.m_mainDevice.getRed();
+        int G = SlidingMenuMainActivity.m_mainDevice.getGreen();
+        int B = SlidingMenuMainActivity.m_mainDevice.getBlue();
+
+        int color = Color.rgb(R, G, B);
+        circleIcon.setColor(color);
+        colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
+
 
         if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
@@ -196,22 +204,22 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             SlidingMenuMainActivity.m_mainDevice.addDeviceEventHandler(m_handlerControl);
         }
 
-        powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //check if on or off
-                state = isChecked;
-                SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
-            }
-        });
-
-        findViewById(R.id.colorLayout).setOnClickListener(new View.OnClickListener() {
+        findViewById(com.umarbhutta.xlightcompanion.R.id.colorLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onFabPressed();
             }
         });
 
+        powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //check if on or off
+                state = isChecked;
+                SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
+                deviceInfo.ison = isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
+            }
+        });
         /**
          * 亮度
          */
@@ -227,13 +235,13 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.e(TAG, "The brightness value is " + seekBar.getProgress());
-                //ParticleAdapter.JSONCommandBrightness(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress());
                 SlidingMenuMainActivity.m_mainDevice.ChangeBrightness(seekBar.getProgress());
+                deviceInfo.brightness = seekBar.getProgress();
             }
         });
 
         /**
-         *
+         *色温
          */
         cctSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -248,16 +256,17 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 //ParticleAdapter.JSONCommandCCT(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress()+2700);
-                if(seekBar.getProgress()>2700&&seekBar.getProgress()<3500){
+                int seekBarProgress = seekBar.getProgress() + 2700;
+                if (seekBarProgress > 2700 && seekBarProgress < 3500) {
                     cctLabelColor.setText("暖白");
                 }
-                if(seekBar.getProgress()>3500&&seekBar.getProgress()<5500){
+                if (seekBarProgress > 3500 && seekBarProgress < 5500) {
                     cctLabelColor.setText("正白");
                 }
-                if(seekBar.getProgress()>5500&&seekBar.getProgress()<6500){
+                if (seekBarProgress > 5500 && seekBarProgress < 6500) {
                     cctLabelColor.setText("冷白");
                 }
-                SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBar.getProgress() + 2700);
+                SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
             }
         });
 
@@ -631,9 +640,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             }
             circleIcon.setColor(color);
             colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
-            SlidingMenuMainActivity.m_mainDevice.setRed(xltDevice.RING_ID_1, red);
-            SlidingMenuMainActivity.m_mainDevice.setGreen(xltDevice.RING_ID_1, green);
-            SlidingMenuMainActivity.m_mainDevice.setBlue(xltDevice.RING_ID_1, blue);
+            SlidingMenuMainActivity.m_mainDevice.setRed(xltDevice.RING_ID_ALL, red);
+            SlidingMenuMainActivity.m_mainDevice.setGreen(xltDevice.RING_ID_ALL, green);
+            SlidingMenuMainActivity.m_mainDevice.setBlue(xltDevice.RING_ID_ALL, blue);
         }
     }
 

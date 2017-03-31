@@ -46,6 +46,6 @@
     <color name="pickerview_wheelview_textcolor_divider">#d5d5d5</color>
     <color name="bar_color">#3590BF</color>
     <color name="line_color">#979797</color>
-    <color name="color_select_bg">#80000000</color>
+    <color name="color_select_bg">#BB000000</color>
 
 </resources>

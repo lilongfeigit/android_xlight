@@ -90,7 +90,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
 
         File file = new File(picPath);
         if (!file.exists()) {
-            Toast.makeText(UserMsgModifyActivity.this, "文件不存在", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UserMsgModifyActivity.this, R.string.file_has_no, Toast.LENGTH_SHORT).show();
         } else {
             RequestBody fileBody = RequestBody.create(MediaType.parse(TYPE), file);
             RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("lightscrop.jpg", file.getName(), fileBody).build();
@@ -105,7 +105,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
+                            ToastUtil.showToast(UserMsgModifyActivity.this, getString(R.string.avar_set_fail));
                         }
                     });
                 }
@@ -126,10 +126,10 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                                     infos.image = NetConfig.SERVER_ADDRESS + filePath;
                                     UserUtils.saveUserInfo(UserMsgModifyActivity.this, infos);
                                 } else {
-                                    ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
+                                    ToastUtil.showToast(UserMsgModifyActivity.this, getString(R.string.avar_setting_fail));
                                 }
                             } catch (JSONException e) {
-                                ToastUtil.showToast(UserMsgModifyActivity.this, "头像设置失败，请稍后重试");
+                                ToastUtil.showToast(UserMsgModifyActivity.this, getString(R.string.avar_setting_fail));
                                 e.printStackTrace();
                             }
 
@@ -188,10 +188,10 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         btnSure.setVisibility(View.GONE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("用户信息");
-        sexList.add("女");
-        sexList.add("男");
-        sexList.add("不确定");
+        tvTitle.setText(R.string.user_info);
+        sexList.add(getString(R.string.women));
+        sexList.add(getString(R.string.man));
+        sexList.add(getString(R.string.bu_queding));
 
 
         findViewById(R.id.nick_name_layout).setOnClickListener(this);
@@ -209,7 +209,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         LoginResult info = UserUtils.getUserInfo(this);
         user_name.setText("" + info.username);
         nick_name.setText("" + ((TextUtils.isEmpty(info.nickname) ? "" : info.nickname)));
-        sex.setText("" + ((TextUtils.isEmpty(info.sex)) ? "不确定" : ("0".equals(info.sex) ? "女" : "男")));
+        sex.setText("" + ((TextUtils.isEmpty(info.sex)) ? getString(R.string.bu_queding) : ("0".equals(info.sex) ? getString(R.string.women) : getString(R.string.man))));
         if (StringUtil.isNotEmpty(info.username, false)) {
             user_name.setText(info.username);
         } else {
@@ -222,14 +222,14 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         }
         if (StringUtil.isNotEmpty(info.sex, true)) {
             if (info.sex.equals("0")) {
-                sex.setText("女");
+                sex.setText(R.string.women);
             } else if (info.sex.equals("1")) {
-                sex.setText("男");
+                sex.setText(R.string.man);
             } else if (info.sex.equals("2")) {
-                sex.setText("不确定");
+                sex.setText(R.string.bu_queding);
             }
         } else {
-            sex.setText("不确定");
+            sex.setText(R.string.bu_queding);
         }
         ImageLoader.getInstance().displayImage(info.getImage(), user_icon, ImageLoaderOptions.getImageLoaderOptions());
     }
@@ -258,10 +258,10 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
 
         String title;
         if (R.id.account_layout == view.getId()) {
-            title = "修改账号";
+            title = getString(R.string.modify_account);
             type = 0;
         } else {
-            title = "修改呢称";
+            title = getString(R.string.modify_nick);
             type = 1;
         }
 
@@ -342,7 +342,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                     @Override
                     public void run() {
                         saveUserInfo();
-                        ToastUtil.showToast(UserMsgModifyActivity.this, "修改成功");
+                        ToastUtil.showToast(UserMsgModifyActivity.this, R.string.modify_success);
                     }
                 });
             }
@@ -372,11 +372,11 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                 break;
             case 2:
                 if ("0".equals(sexResResult)) {
-                    mLoginResult.sex = "女";
+                    mLoginResult.sex = getString(R.string.women);
                 } else if ("1".equals(sexResResult)) {
-                    mLoginResult.sex = "男";
+                    mLoginResult.sex = getString(R.string.man);
                 } else {
-                    mLoginResult.sex = "不确定";
+                    mLoginResult.sex = getString(R.string.bu_queding);
                 }
                 break;
         }

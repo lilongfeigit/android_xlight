@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
@@ -40,7 +39,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
     public static String SCENARIO_NAME = "SCENARIO_NAME";
     public static String SCENARIO_INFO = "SCENARIO_INFO";
 
-    public static ArrayList<String> name = new ArrayList<>(Arrays.asList("预设 1", "预设 2", "关闭"));
+    public static ArrayList<String> name = null;
     public static ArrayList<String> info = new ArrayList<>(Arrays.asList("A bright, party room preset", "A relaxed atmosphere with yellow tones", "Turn the chandelier rings off"));
 
     ScenarioSelectListAdapter scenarioListAdapter;
@@ -54,11 +53,11 @@ public class SelectScenarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_scenario);
-
+        name = new ArrayList<String>(Arrays.asList(getString(R.string.beforehand) + " 1", getString(R.string.beforehand) + " 2",getString(R.string.close)));
         //hide nav bar
         getSupportActionBar().hide();
 
-        ((App)getApplicationContext()).setActivity(this);
+        ((App) getApplicationContext()).setActivity(this);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +67,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("选择场景");
+        tvTitle.setText(R.string.select_scene);
         btnSure.setVisibility(View.GONE);
 
         mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
@@ -146,7 +145,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
     }
 
     private void initList() {
-        scenarioListAdapter = new ScenarioSelectListAdapter(SelectScenarioActivity.this, mDeviceInfoResult,mActioncmd);
+        scenarioListAdapter = new ScenarioSelectListAdapter(SelectScenarioActivity.this, mDeviceInfoResult, mActioncmd);
         scenarioRecyclerView.setAdapter(scenarioListAdapter);
     }
 }

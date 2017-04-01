@@ -45,7 +45,7 @@ public class UserResProtocalActivity extends AppCompatActivity {
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         findViewById(R.id.tvEditSure).setVisibility(View.GONE);
-        tvTitle.setText("注册协议");
+        tvTitle.setText(R.string.regist_protocal);
         //启用支持javascript
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);

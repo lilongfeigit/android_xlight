@@ -62,12 +62,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         //divider lines
         settingRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
-        settingStr.add("个人信息");
-        settingStr.add("修改密码");
-        settingStr.add("摇一摇");
+        settingStr.add(getString(R.string.persion_inco));
+        settingStr.add(getString(R.string.modify_pwd));
+        settingStr.add(getString(R.string.shake));
 //        settingStr.add("用户邀请");
 //        settingStr.add("快速绑定");
-        settingStr.add("退出登录");
+        settingStr.add(getString(R.string.logout));
         settingListAdapter.notifyDataSetChanged();
         settingListAdapter.setmOnItemClickListener(new SettingListAdapter.OnItemClickListener() {
             @Override

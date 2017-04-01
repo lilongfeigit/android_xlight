@@ -13,7 +13,6 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
-import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
 
 /**
@@ -37,7 +36,7 @@ public class AppNotifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_notify);
         //hide nav bar
         getSupportActionBar().hide();
-        ((App)getApplicationContext()).setActivity(this);
+        ((App) getApplicationContext()).setActivity(this);
         mActionnotify = (Actionnotify) getIntent().getSerializableExtra("MACTIONNOTIFY");
         initViews();
     }
@@ -55,24 +54,24 @@ public class AppNotifyActivity extends AppCompatActivity {
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("APP通知");
-        btnSure.setText("完成");
+        tvTitle.setText(R.string.app_notify);
+        btnSure.setText(R.string.complete);
         et_time = (EditText) findViewById(R.id.tv_time);
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //确定提交按钮
                 String appContext = et_time.getText().toString();
-                if(TextUtils.isEmpty(appContext)){
-                    ToastUtil.showToast(getApplicationContext(),"请输入通知内容");
+                if (TextUtils.isEmpty(appContext)) {
+                    ToastUtil.showToast(getApplicationContext(), getString(R.string.please_input_notify_content));
                     return;
                 }
                 mActionnotify.msisdn = UserUtils.getUserInfo(AppNotifyActivity.this.getApplicationContext()).getUsergroupId();
                 mActionnotify.content = appContext;
-                mActionnotify.subject = "App通知";
+                mActionnotify.subject = getString(R.string.app_notify);
 
                 AddControlRuleActivity.mActionnotify.add(mActionnotify);
-                ((App)getApplicationContext()).finishActivity();
+                ((App) getApplicationContext()).finishActivity();
             }
         });
     }

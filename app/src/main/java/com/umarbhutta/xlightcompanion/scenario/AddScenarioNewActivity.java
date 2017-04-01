@@ -107,7 +107,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
 
 
                 if (TextUtils.isEmpty(scenarioName)) {
-                    ToastUtil.showToast(AddScenarioNewActivity.this, "请输入场景名称");
+                    ToastUtil.showToast(AddScenarioNewActivity.this, getString(R.string.input_scene_name));
                     return;
                 }
 
@@ -196,9 +196,9 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         }
 
         if (!TextUtils.isEmpty(from) && "list".equals(from)) {
-            tvTitle.setText("编辑场景");
+            tvTitle.setText(R.string.edit_scene);
         } else {
-            tvTitle.setText("添加场景");
+            tvTitle.setText(R.string.edit_scene);
         }
 
 
@@ -276,7 +276,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
 
         String sceneName = nameEditText.getText().toString();
         if (TextUtils.isEmpty(sceneName)) {
-            ToastUtil.showToast(this, "请填写场景名称");
+            ToastUtil.showToast(this, getString(R.string.please_input_scene_name));
             return;
         }
 
@@ -289,7 +289,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         mProgressDialog.cancel();
-                        ToastUtil.showToast(AddScenarioNewActivity.this, "编辑场景成功");
+                        ToastUtil.showToast(AddScenarioNewActivity.this, getString(R.string.edit_scene_success));
                         AddScenarioNewActivity.this.finish();
                     }
                 });
@@ -327,7 +327,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
 
         String sceneName = nameEditText.getText().toString();
         if (TextUtils.isEmpty(sceneName)) {
-            ToastUtil.showToast(this, "请填写场景名称");
+            ToastUtil.showToast(this, R.string.please_input_scene_name);
             return;
         }
 
@@ -340,7 +340,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         mProgressDialog.cancel();
-                        ToastUtil.showToast(AddScenarioNewActivity.this, "场景添加成功");
+                        ToastUtil.showToast(AddScenarioNewActivity.this, getString(R.string.add_scene_success));
                         AddScenarioNewActivity.this.finish();
                     }
                 });

@@ -98,7 +98,7 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
         public void bindView(int position) {
             mPositon = position;
             Devicenodes devicenodes = mDevicenodes.get(position);
-            mDeviceName.setText(TextUtils.isEmpty(devicenodes.devicenodename) ? "灯" : devicenodes.devicenodename);
+            mDeviceName.setText(TextUtils.isEmpty(devicenodes.devicenodename) ? mActivity.getString(R.string.lamp) : devicenodes.devicenodename);
             mDeviceSwitch.setChecked(devicenodes.ison==0?false:true);
         }
 

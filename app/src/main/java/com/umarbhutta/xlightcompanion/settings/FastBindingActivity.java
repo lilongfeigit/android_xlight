@@ -46,8 +46,8 @@ public class FastBindingActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        faseBings.add("扫描二维码");
-        faseBings.add("输入口令码");
+        faseBings.add(getString(R.string.scan_qr));
+        faseBings.add(getString(R.string.input_order));
         mFastBindingAdapter.notifyDataSetChanged();
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +64,6 @@ public class FastBindingActivity extends AppCompatActivity {
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("快速绑定");
+        tvTitle.setText(R.string.bind_quick);
     }
 }

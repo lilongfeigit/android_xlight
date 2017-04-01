@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,11 +16,8 @@ import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogTemActivity;
-import com.umarbhutta.xlightcompanion.control.adapter.DialogListAdapter;
 import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
-
-import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/3/13.
@@ -75,7 +70,7 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("温度设置");
+        tvTitle.setText(R.string.temp_setting);
         llTem = (RelativeLayout) findViewById(R.id.llTem);
         llTem.setOnClickListener(this);
         llMore = (RelativeLayout) findViewById(R.id.llMore);
@@ -97,11 +92,11 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()){ // 8是大于，小于，等于 ，9是温度
             case R.id.tvEditSure:
                 if(TextUtils.isEmpty(tv_more.getText().toString())){
-                    ToastUtil.showToast(this,"请选择状态");
+                    ToastUtil.showToast(this,getString(R.string.please_select_status));
                     return;
                 }
                 if(TextUtils.isEmpty(tv_tem.getText().toString())){
-                    ToastUtil.showToast(this,"请选择温度");
+                    ToastUtil.showToast(this,getString(R.string.please_select_temp));
                     return;
                 }
                 //确定按钮
@@ -126,13 +121,13 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
             case 31:
                 mCondition = (Condition) data.getSerializableExtra("MCONDITION");
                 if(mCondition.operator.equals(">")) {
-                    tv_more.setText("高于");
+                    tv_more.setText(R.string.higer);
                 }
                 if(mCondition.operator.equals("=")) {
-                    tv_more.setText("等于");
+                    tv_more.setText(R.string.equal);
                 }
                 if(mCondition.operator.equals("<")) {
-                    tv_more.setText("低于");
+                    tv_more.setText(R.string.lower);
                 }
                 Logger.e(TAG,"mCondition="+mCondition.toString());
                 break;

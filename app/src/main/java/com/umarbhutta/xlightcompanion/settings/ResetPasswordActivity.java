@@ -62,7 +62,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements HttpUtil
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("重置密码");
+        tvTitle.setText(R.string.reset_pwd);
 
 
         et_old_passwordTv = (EditText) findViewById(R.id.et_old_password);
@@ -99,7 +99,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements HttpUtil
         }
 
         if (TextUtils.isEmpty(et_new_password_againTvStr)) {
-            ToastUtil.showToast(this, "请输入验证码");
+            ToastUtil.showToast(this, getString(R.string.please_input_verifycode));
             return;
         }
 
@@ -126,7 +126,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements HttpUtil
             @Override
             public void run() {
                 dialog.cancel();
-                ToastUtil.showToast(ResetPasswordActivity.this, "密码重置成功");
+                ToastUtil.showToast(ResetPasswordActivity.this, getString(R.string.pwd_reset_success));
                 ResetPasswordActivity.this.finish();
             }
         });

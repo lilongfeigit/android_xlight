@@ -42,7 +42,7 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
         iv_menu = (ImageView) view.findViewById(R.id.iv_menu);
         iv_menu.setOnClickListener(this);
         textTitle = (TextView) view.findViewById(R.id.tvTitle);
-        textTitle.setText("设置");
+        textTitle.setText(R.string.setting);
         btn_add = (Button) view.findViewById(R.id.btn_add);
         btn_add.setVisibility(View.INVISIBLE);
 

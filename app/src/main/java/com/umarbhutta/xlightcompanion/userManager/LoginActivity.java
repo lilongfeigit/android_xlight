@@ -59,9 +59,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
         llBack.setVisibility(View.INVISIBLE);
         btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setText("关闭");
+        btnSure.setText(R.string.close);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("登录");
+        tvTitle.setText(R.string.login);
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

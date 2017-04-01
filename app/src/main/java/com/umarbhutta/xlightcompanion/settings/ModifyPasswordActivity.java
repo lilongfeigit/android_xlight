@@ -59,7 +59,7 @@ public class ModifyPasswordActivity extends AppCompatActivity implements HttpUti
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("修改密码");
+        tvTitle.setText(R.string.modify_pwd);
 
 
         et_old_passwordTv = (EditText) findViewById(R.id.et_old_password);

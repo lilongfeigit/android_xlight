@@ -102,7 +102,7 @@ public class DevicesListAdapter extends RecyclerView.Adapter {
                 main_device.setVisibility(View.GONE);
             } else if (deviceInfo.maindevice == 1) {
                 main_device.setVisibility(View.VISIBLE);
-                main_device.setText("主设备");
+                main_device.setText(R.string.main_device);
             } else {
                 main_device.setVisibility(View.GONE);
             }

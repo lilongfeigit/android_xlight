@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.control.activity.condition;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -64,7 +63,7 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("定时设置");
+        tvTitle.setText(R.string.timer_setting);
         llStartTime = (RelativeLayout) findViewById(R.id.llStartTime);
         llWeek = (RelativeLayout) findViewById(R.id.llWeek);
         llWeek.setOnClickListener(this);
@@ -97,11 +96,11 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.tvEditSure:
                 if(TextUtils.isEmpty(tv_week.getText().toString())){
-                    ToastUtil.showToast(TimingActivity.this,"请选择重复周期");
+                    ToastUtil.showToast(TimingActivity.this,getString(R.string.select_repeate_time));
                     return;
                 }
                 if(TextUtils.isEmpty(tv_time.getText().toString())){
-                    ToastUtil.showToast(TimingActivity.this,"请选择时间");
+                    ToastUtil.showToast(TimingActivity.this,getString(R.string.please_select_time));
                     return;
                 }
                AddControlRuleActivity.mScheduleList.add(mSchedule);

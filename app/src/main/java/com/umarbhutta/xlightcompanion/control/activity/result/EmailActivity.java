@@ -1,6 +1,5 @@
 package com.umarbhutta.xlightcompanion.control.activity.result;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -55,9 +54,9 @@ public class EmailActivity extends AppCompatActivity {
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setText("完成");
+        btnSure.setText(R.string.complete);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("通知Email");
+        tvTitle.setText(R.string.email_notify);
 
         et_email = (EditText) findViewById(R.id.et_email);
         et_title = (EditText) findViewById(R.id.et_title);
@@ -70,19 +69,19 @@ public class EmailActivity extends AppCompatActivity {
                 String emailTitle = et_title.getText().toString();
                 String emailContext = et_context.getText().toString();
                 if(TextUtils.isEmpty(email)){
-                    ToastUtil.showToast(getApplicationContext(),"请输入邮箱");
+                    ToastUtil.showToast(getApplicationContext(),getString(R.string.please_input_email));
                     return;
                 }
                 if(!StringUtil.isEmail(email)){
-                    ToastUtil.showToast(getApplicationContext(),"请输入正确的邮箱");
+                    ToastUtil.showToast(getApplicationContext(),getString(R.string.please_input_right_email));
                     return;
                 }
                 if(TextUtils.isEmpty(emailTitle)){
-                    ToastUtil.showToast(getApplicationContext(),"请输入通知邮箱的主题");
+                    ToastUtil.showToast(getApplicationContext(),getString(R.string.please_input_notify_email_theme));
                     return;
                 }
                 if(TextUtils.isEmpty(emailContext)){
-                    ToastUtil.showToast(getApplicationContext(),"请输入通知内容");
+                    ToastUtil.showToast(getApplicationContext(),getString(R.string.please_input_notify_content));
                     return;
                 }
                 mActionnotify.emailaddress = email;

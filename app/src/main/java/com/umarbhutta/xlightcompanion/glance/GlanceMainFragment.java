@@ -41,13 +41,10 @@ import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
-import com.umarbhutta.xlightcompanion.control.adapter.DevicesListAdapter;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesMainListAdapter;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
-import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
-import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
@@ -67,7 +64,7 @@ import java.util.List;
  */
 public class GlanceMainFragment extends Fragment implements View.OnClickListener {
     private ImageButton fab;
-    TextView txtLocation,outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
+    TextView txtLocation, outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
     ImageView imgWeather;
     private ImageButton home_menu, home_setting;
 
@@ -249,6 +246,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 @Override
                 public void onFailure(Request request, IOException e) {
                 }
+
                 @Override
                 public void onResponse(Response response) throws IOException {
                     try {
@@ -283,15 +281,15 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_choose_add_wifi_device: // 扫描设备添加
-                    Toast.makeText(getActivity(), "扫描设备添加", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.scan_device_add), Toast.LENGTH_SHORT).show();
                     break;
                 //扫描二维码添加
                 case R.id.btn_choose_scan_add_device:
-                    Toast.makeText(getActivity(), "扫描二维码添加", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.scan_qr_add), Toast.LENGTH_SHORT).show();
                     break;
                 // 输入口令添加
                 case R.id.btn_choose_add_line_device:
-                    Toast.makeText(getActivity(), "输入口令添加", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.input_order_add), Toast.LENGTH_SHORT).show();
                     break;
                 // 取消
                 case R.id.btn_cancel:
@@ -389,9 +387,9 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 deviceList.clear();
                 deviceList.addAll(devices);
             }
-            if(null!=devicenodes && devicenodes.size()>0){
+            if (null != devicenodes && devicenodes.size() > 0) {
                 devicenodes.clear();
-                for(int i=0;i<deviceList.size();i++){
+                for (int i = 0; i < deviceList.size(); i++) {
                     devicenodes.addAll(deviceList.get(i).devicenodes);
                 }
             }
@@ -413,16 +411,16 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                         Logger.i("mDeviceInfoResult = " + devices.toString());
                         deviceList.clear();
                         deviceList.addAll(devices);
-                        if(devicesListAdapter!=null){
+                        if (devicesListAdapter != null) {
                             devicesListAdapter.notifyDataSetChanged();
                         }
 
                         if (null != deviceList && deviceList.size() > 0) {
                             default_text.setVisibility(View.GONE);
                             SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
-                            for(int i=0;i<deviceList.size();i++){
-                                if(deviceList.get(i).maindevice==1){
-                                    for( int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++ ) {
+                            for (int i = 0; i < deviceList.size(); i++) {
+                                if (deviceList.get(i).maindevice == 1) {
+                                    for (int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++) {
                                         SlidingMenuMainActivity.m_mainDevice.addNodeToDeviceList(deviceList.get(i).devicenodes.get(lv_idx).nodeno, xltDevice.DEFAULT_DEVICE_TYPE, deviceList.get(i).devicenodes.get(lv_idx).devicenodename);
                                         deviceList.get(i).devicenodes.get(lv_idx).coreid = deviceList.get(i).coreid;
                                     }
@@ -431,7 +429,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                                 }
                             }
                             devicenodes.clear();
-                            for(int i=0;i<deviceList.size();i++){
+                            for (int i = 0; i < deviceList.size(); i++) {
                                 devicenodes.addAll(deviceList.get(i).devicenodes);
                             }
                             devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
@@ -493,15 +491,15 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      */
     private void showDeleteSceneDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("解绑设备提示");
-        builder.setMessage("确定解绑此设备吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.unbind_device_tap));
+        builder.setMessage(getString(R.string.sure_unbind_device));
+        builder.setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 unBindDevice(position);
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -559,6 +557,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         deviceList.remove(position);
         devicesListAdapter.notifyDataSetChanged();
     }
+
     /**
      * TODO  变更住设备，每次变更主设备后需要再次同步一下
      */

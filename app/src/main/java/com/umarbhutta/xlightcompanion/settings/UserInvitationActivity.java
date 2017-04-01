@@ -43,6 +43,6 @@ public class UserInvitationActivity extends AppCompatActivity {
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("邀请绑定");
+        tvTitle.setText(R.string.invite_bind);
     }
 }

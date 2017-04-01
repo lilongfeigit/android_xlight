@@ -59,7 +59,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
         iv_menu = (ImageView) view.findViewById(R.id.iv_menu);
         iv_menu.setOnClickListener(this);
         textTitle = (TextView) view.findViewById(R.id.tvTitle);
-        textTitle.setText("规则");
+        textTitle.setText(R.string.rule);
         btn_add = (Button) view.findViewById(R.id.btn_add);
         btn_add.setVisibility(View.VISIBLE);
         btn_add.setBackground(getActivity().getDrawable(R.drawable.control_add));
@@ -97,7 +97,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                                 mRuleInfoList.addAll(deviceInfoResult.rows);
                                 initList();
                             } else {
-                                ToastUtil.showToast(getActivity(), "数据为空");
+                                ToastUtil.showToast(getActivity(), getString(R.string.data_is_null));
                             }
 
                         }
@@ -195,7 +195,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToast(getActivity(), "修改成功");
+                        ToastUtil.showToast(getActivity(), getString(R.string.modify_success));
                     }
                 });
                 if (1 == mRuleInfoList.get(position).status) {
@@ -219,9 +219,9 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
 
     private void showDeleteDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("删除规则提示");
-        builder.setMessage("确定删除此规则吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.delete_rule_tap));
+        builder.setMessage(getString(R.string.delete_this_rule));
+        builder.setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -241,7 +241,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                                 mDialog.dismiss();
                                 mRuleInfoList.remove(position);
                                 initList();
-                                ToastUtil.showToast(getActivity(), "删除成功");
+                                ToastUtil.showToast(getActivity(), getString(R.string.delete_success));
                             }
                         });
 
@@ -254,14 +254,14 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                             @Override
                             public void run() {
                                 mDialog.dismiss();
-                                ToastUtil.showToast(getActivity(), "删除失败" + errMsg);
+                                ToastUtil.showToast(getActivity(), getString(R.string.delete_fail) + errMsg);
                             }
                         });
                     }
                 });
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

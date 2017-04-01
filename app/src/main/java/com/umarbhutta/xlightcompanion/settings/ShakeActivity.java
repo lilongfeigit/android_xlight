@@ -63,6 +63,6 @@ public class ShakeActivity extends AppCompatActivity {
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("摇一摇");
+        tvTitle.setText(R.string.shake);
     }
 }

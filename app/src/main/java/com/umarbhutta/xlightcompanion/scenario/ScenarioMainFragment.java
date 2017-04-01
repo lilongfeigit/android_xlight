@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
@@ -56,7 +55,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
         iv_menu = (ImageView) view.findViewById(R.id.iv_menu);
         iv_menu.setOnClickListener(this);
         textTitle = (TextView) view.findViewById(R.id.tvTitle);
-        textTitle.setText("场景");
+        textTitle.setText(R.string.scene);
         btn_add = (Button) view.findViewById(R.id.btn_add);
         btn_add.setVisibility(View.VISIBLE);
         btn_add.setBackground(getActivity().getDrawable(R.drawable.control_add));
@@ -86,15 +85,15 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
      */
     private void showDeleteSceneDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("删除场景提示");
-        builder.setMessage("确定删除此场景吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.delete_scene_tap);
+        builder.setMessage(R.string.sure_delete_this_scene);
+        builder.setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deleteScene(position);
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -112,7 +111,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToast(getActivity(), "删除成功");
+                        ToastUtil.showToast(getActivity(), R.string.delete_success);
                         mSceneList.remove(position);
                         scenarioListAdapter.notifyDataSetChanged();
                     }
@@ -202,7 +201,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_menu:
                 switchFragment();
                 break;
@@ -212,6 +211,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
                 break;
         }
     }
+
     // the meat of switching the above fragment
     private void switchFragment() {
         if (getActivity() == null)

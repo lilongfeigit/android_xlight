@@ -49,7 +49,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         btnSure.setVisibility(View.INVISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("选择主设备");
+        tvTitle.setText(R.string.select_main_device);
         listView = (ListView) findViewById(R.id.lv_devices);
         tv_select_main_device = (TextView) findViewById(R.id.tv_select_main_device);
         tv_no_device = (TextView) findViewById(R.id.tv_no_device);
@@ -90,7 +90,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
                     public void run() {
                         updateDeviceListInfo();
                         cancelProgressDialog();
-                        ToastUtil.showToast(DeviceListActivity.this, "设置成功");
+                        ToastUtil.showToast(DeviceListActivity.this, getString(R.string.setting_success));
                     }
                 });
             }
@@ -101,7 +101,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
                     @Override
                     public void run() {
                         cancelProgressDialog();
-                        ToastUtil.showToast(DeviceListActivity.this, "设置失败" + errMsg);
+                        ToastUtil.showToast(DeviceListActivity.this, getString(R.string.setting_fail) + errMsg);
                     }
                 });
             }

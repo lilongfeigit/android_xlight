@@ -143,7 +143,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         btnSure.setVisibility(View.INVISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("编辑设备");
+        tvTitle.setText(R.string.edit_device);
         mscenarioName = (TextView) findViewById(R.id.scenarioName);
         mscenarioName.setOnClickListener(this);
         cctLabelColor = (TextView) findViewById(R.id.cctLabelColor);
@@ -258,13 +258,13 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int seekBarProgress = seekBar.getProgress() + 2700;
                 if (seekBarProgress > 2700 && seekBarProgress < 3500) {
-                    cctLabelColor.setText("暖白");
+                    cctLabelColor.setText(com.umarbhutta.xlightcompanion.R.string.nuan_bai);
                 }
                 if (seekBarProgress > 3500 && seekBarProgress < 5500) {
-                    cctLabelColor.setText("正白");
+                    cctLabelColor.setText(com.umarbhutta.xlightcompanion.R.string.zhengbai);
                 }
                 if (seekBarProgress > 5500 && seekBarProgress < 6500) {
-                    cctLabelColor.setText("冷白");
+                    cctLabelColor.setText(com.umarbhutta.xlightcompanion.R.string.lengbai);
                 }
             }
 
@@ -350,7 +350,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scenarioName:
-                String title = "编辑设备名称";
+                String title = getString(R.string.edit_device_name);
                 final EditText et = new EditText(this);
                 new AlertDialog.Builder(this).setTitle(title)
                         .setView(et)
@@ -561,7 +561,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
 
         String deviceName = mscenarioName.getText().toString();
         if (TextUtils.isEmpty(deviceName)) {
-            ToastUtil.showToast(this, "请设置灯的名称");
+            ToastUtil.showToast(this, getString(R.string.please_set_lamp_name));
             return;
         }
 
@@ -617,7 +617,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtil.showToast(EditDeviceActivity.this, "修改成功");
+                                ToastUtil.showToast(EditDeviceActivity.this, getString(R.string.modify_success));
 //                                setResult(0);
 //                                EditDeviceActivity.this.finish();
                             }
@@ -630,7 +630,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtil.showToast(EditDeviceActivity.this, "编辑失败" + errMsg);
+                                ToastUtil.showToast(EditDeviceActivity.this, getString(R.string.modify_fail) + errMsg);
 
                             }
                         });

@@ -91,7 +91,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("客厅灯");
+        tvTitle.setText(R.string.living_room_lamp);
 
         powerSwitch.setChecked(true);
         brightnessSeekBar.setProgress(20);
@@ -103,7 +103,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DeviceControlSelectActivity.this, DialogRowNameActivity.class);
-                startActivityForResult(intent,29);
+                startActivityForResult(intent, 29);
             }
         });
 
@@ -280,7 +280,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                                 view = mInflater.inflate(R.layout.add_scenario_zdy_item,
                                         linear, false);
                                 TextView sceneName = (TextView) view.findViewById(R.id.textView);
-                                sceneName.setText("自定义");
+                                sceneName.setText(R.string.custom);
                             } else {
                                 view = mInflater.inflate(R.layout.add_scenario_item,
                                         linear, false);
@@ -304,46 +304,50 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             }
         });
     }
+
     private int red = 130;
     private int green = 255;
     private int blue = 0;
     private CircleDotView circleIcon;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode){
+        switch (resultCode) {
             case 35:
                 curMainRows = (Rows) data.getSerializableExtra("ROW");
                 mActioncmd.devicenodeId = curMainRows.id;
                 Actioncmdfield actioncmdfield = new Actioncmdfield();
-                actioncmdfield.cmd=curMainRows.devicename;
-                actioncmdfield.paralist = "{"+"亮度"+":"+curMainRows.brightness+",色温"+":"+curMainRows.devicenodes+",颜色"+":"+curMainRows.cct+",场景"+":"+curMainRows.scenarioname+"}";
-                if( mActioncmd.actioncmdfield==null){
-                    mActioncmd.actioncmdfield = new ArrayList<Actioncmdfield>();
-                }
-                mActioncmd.actioncmdfield.add(actioncmdfield);
-                updateViews();
-                break;
-            default:
-                if(resultCode==-1){
-                    int color = data.getIntExtra("color", -1);
-                    if (-1 != color) {
-                        red = (color & 0xff0000) >> 16;
-                        green = (color & 0x00ff00) >> 8;
-                        blue = (color & 0x0000ff);
-                    }
-                    circleIcon.setColor(color);
-                    colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
-                }
-                break;
+                actioncmdfield.cmd = curMainRows.devicename;
+                actioncmdfield.paralist = "{" + getString(R.string.brightness) + ":" + curMainRows.brightness + "," + getString(R.string.color_temp) + ":"
+                        + curMainRows.devicenodes + "," + getString(R.string.color) +":"+curMainRows.cct+","+getString(R.string.scene)+":"+curMainRows.scenarioname+"} ";
+        if (mActioncmd.actioncmdfield == null) {
+            mActioncmd.actioncmdfield = new ArrayList<Actioncmdfield>();
         }
+        mActioncmd.actioncmdfield.add(actioncmdfield);
+        updateViews();
+        break;
+        default:
+        if (resultCode == -1) {
+            int color = data.getIntExtra("color", -1);
+            if (-1 != color) {
+                red = (color & 0xff0000) >> 16;
+                green = (color & 0x00ff00) >> 8;
+                blue = (color & 0x0000ff);
+            }
+            circleIcon.setColor(color);
+            colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
+        }
+        break;
     }
+
+}
 
     private void updateViews() {
 
         cctSeekBar.setMax(6500 - 2700);
         scenarioNoneLL.setAlpha(1);
-        tvTitle.setText("客厅灯");
+        tvTitle.setText(R.string.living_room_lamp);
 
         powerSwitch.setChecked(true);
         brightnessSeekBar.setProgress(20);

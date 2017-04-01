@@ -157,7 +157,7 @@ public abstract class ShowPicSelectBaseActivity extends BaseActivity {
 //        Logger.i("需要裁剪的图片地址 = " + uri.toString());
 
         if (null == uri) {
-            ToastUtil.showToast(this, "图片选择失败");
+            ToastUtil.showToast(this, getString(R.string.pic_select_fail));
             return;
         }
 
@@ -231,7 +231,7 @@ public abstract class ShowPicSelectBaseActivity extends BaseActivity {
         public void onClick(View v) {
             mPopSelector.dismiss();
             if (TextUtils.isEmpty(tempFile.getAbsolutePath())) {
-                ToastUtil.showToast(ShowPicSelectBaseActivity.this, "您的存储卡有问题，暂时不能修改头像哦");
+                ToastUtil.showToast(ShowPicSelectBaseActivity.this, getString(R.string.your_sdcard_error));
                 return;
             }
             int id = v.getId();

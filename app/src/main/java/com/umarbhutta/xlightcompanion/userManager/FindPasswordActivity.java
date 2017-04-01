@@ -52,7 +52,7 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
         });
         findViewById(R.id.tvEditSure).setVisibility(View.GONE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("找回密码");
+        tvTitle.setText(R.string.find_pwd);
 
         et_user_account = (EditText) findViewById(R.id.et_user_account);
 

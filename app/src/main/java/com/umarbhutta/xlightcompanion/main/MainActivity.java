@@ -90,14 +90,14 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
         // Check Bluetooth
         BLEPairedDeviceList.init(this);
-        if( BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled() ) {
+        if (BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, BLEPairedDeviceList.REQUEST_ENABLE_BT);
         }
 
         //TODO 测试数据
         // Setup Device/Node List
-        for( int lv_idx = 0; lv_idx < 3; lv_idx++ ) {
+        for (int lv_idx = 0; lv_idx < 3; lv_idx++) {
             m_mainDevice.addNodeToDeviceList(deviceNodeIDs[lv_idx], xltDevice.DEFAULT_DEVICE_TYPE, deviceNames[lv_idx]);
         }
         m_mainDevice.setDeviceID(deviceNodeIDs[0]);
@@ -217,7 +217,7 @@ public class MainActivity extends BaseActivity
                 btnRight.setVisibility(View.VISIBLE);
                 btnRight.setBackground(getDrawable(R.drawable.home_setting));
                 fragment = new GlanceFragment();//首页
-                title = "首页";
+                title = getString(R.string.first_page);
                 break;
             case R.id.nav_control:
                 if (!UserUtils.isLogin(MainActivity.this)) {
@@ -228,7 +228,7 @@ public class MainActivity extends BaseActivity
                 btnRight.setVisibility(View.VISIBLE);
                 btnRight.setBackground(getDrawable(R.drawable.control_add));
                 fragment = new ControlRuleFragment();//规则
-                title = "规则";
+                title = getString(R.string.rule);
                 break;
             case R.id.nav_schedule:
                 if (!UserUtils.isLogin(MainActivity.this)) {
@@ -239,7 +239,7 @@ public class MainActivity extends BaseActivity
                 btnRight.setVisibility(View.GONE);
 //                fragment = new ScheduleFragment();//时间表
                 fragment = new ReportFragment();//报表
-                title = "报表";
+                title = getString(R.string.baobiao);
                 break;
             case R.id.nav_scenario:
                 if (!UserUtils.isLogin(MainActivity.this)) {
@@ -250,7 +250,7 @@ public class MainActivity extends BaseActivity
                 btnRight.setVisibility(View.VISIBLE);
                 btnRight.setBackground(getDrawable(R.drawable.control_add));
                 fragment = new ScenarioFragment();//场景
-                title = "场景";
+                title = getString(R.string.scene);
                 break;
             case R.id.nav_settings:
                 if (!UserUtils.isLogin(MainActivity.this)) {
@@ -259,13 +259,13 @@ public class MainActivity extends BaseActivity
                 }
                 btnRight.setVisibility(View.GONE);
                 fragment = new SettingFragment();//设置
-                title = "设置";
+                title = getString(R.string.setting);
                 break;
             case R.id.nav_help:
                 type = 0;
                 btnRight.setVisibility(View.GONE);
                 fragment = new HelpFragment();//帮助
-                title = "帮助";
+                title = getString(R.string.help);
                 break;
         }
 

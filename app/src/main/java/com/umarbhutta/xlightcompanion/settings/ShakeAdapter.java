@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -57,17 +56,17 @@ public class ShakeAdapter extends RecyclerView.Adapter {
         public void bindView(final View itemView,final int position) {
             switch (position){
                 case 0:
-                    tv_name.setText("设备（选择摇一摇默认设备）");
+                    tv_name.setText(R.string.device_select_device);
                     tvMsg.setVisibility(View.VISIBLE);
                     shakeSwitch.setVisibility(View.GONE);
                     break;
                 case 1:
-                    tv_name.setText("开关切换");
+                    tv_name.setText(R.string.kaiguan_switch);
                     tvMsg.setVisibility(View.GONE);
                     shakeSwitch.setVisibility(View.VISIBLE);
                     break;
                 case 2:
-                    tv_name.setText("场景切换");
+                    tv_name.setText(R.string.scene_switch);
                     tvMsg.setVisibility(View.GONE);
                     shakeSwitch.setVisibility(View.VISIBLE);
                     break;

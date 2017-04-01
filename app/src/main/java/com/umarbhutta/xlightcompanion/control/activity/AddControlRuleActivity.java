@@ -173,14 +173,14 @@ public class AddControlRuleActivity extends AppCompatActivity {
                     @Override
                     public void mOnCreateRuleCallbackSuccess(CreateRuleResult mCreateRuleResult) {
                         Logger.e(TAG, "mCreateRuleResult=" + mCreateRuleResult.code);
-                        ToastUtil.showToast(AddControlRuleActivity.this, "规则创建成功");
+                        ToastUtil.showToast(AddControlRuleActivity.this, getString(R.string.rule_create_success));
                         finish();
                     }
                 });
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("新建规则");
+        tvTitle.setText(R.string.create_rule);
         ib_add_term = (ImageButton) findViewById(R.id.ib_add_term);
         ib_add_result = (ImageButton) findViewById(R.id.ib_add_result);
         lv_term = (ListView) findViewById(R.id.lv_term);

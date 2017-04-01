@@ -87,15 +87,15 @@ public class ScenarioFragment extends Fragment {
      */
     private void showDeleteSceneDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("删除场景提示");
-        builder.setMessage("确定删除此场景吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.delete_scene_tap));
+        builder.setMessage(getString(R.string.sure_delete_this_scene));
+        builder.setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deleteScene(position);
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -119,7 +119,7 @@ public class ScenarioFragment extends Fragment {
                     @Override
                     public void run() {
                         mProgressDialog.cancel();
-                        ToastUtil.showToast(getActivity(), "删除成功");
+                        ToastUtil.showToast(getActivity(), R.string.delete_success);
                         mSceneList.remove(position);
                         scenarioListAdapter.notifyDataSetChanged();
                     }

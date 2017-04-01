@@ -43,7 +43,6 @@ import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesListAdapter;
 import com.umarbhutta.xlightcompanion.main.MainActivity;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
-import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
@@ -65,7 +64,7 @@ import java.util.List;
  */
 public class GlanceFragment extends Fragment {
     private com.github.clans.fab.FloatingActionButton fab;
-    TextView txtLocation, outsideTemp, degreeSymbol, roomTemp, roomHumidity, roomBrightness,outsideHumidity, apparentTemp;
+    TextView txtLocation, outsideTemp, degreeSymbol, roomTemp, roomHumidity, roomBrightness, outsideHumidity, apparentTemp;
     ImageView imgWeather;
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -247,15 +246,15 @@ public class GlanceFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_choose_add_wifi_device: // 扫描设备添加
-                    Toast.makeText(getActivity(), "扫描设备添加", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.scan_device_add, Toast.LENGTH_SHORT).show();
                     break;
                 //扫描二维码添加
                 case R.id.btn_choose_scan_add_device:
-                    Toast.makeText(getActivity(), "扫描二维码添加", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.scan_qr_add, Toast.LENGTH_SHORT).show();
                     break;
                 // 输入口令添加
                 case R.id.btn_choose_add_line_device:
-                    Toast.makeText(getActivity(), "输入口令添加", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.input_order_add, Toast.LENGTH_SHORT).show();
                     break;
                 // 取消
                 case R.id.btn_cancel:
@@ -442,15 +441,15 @@ public class GlanceFragment extends Fragment {
      */
     private void showDeleteSceneDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("解绑设备提示");
-        builder.setMessage("确定解绑此设备吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.unbind_device_tap));
+        builder.setMessage(getString(R.string.sure_unbind_device));
+        builder.setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 unBindDevice(position);
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

@@ -50,7 +50,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
     private void initViews() {
         et_user_account = (EditText) findViewById(R.id.et_user_account);
         et_user_password = (EditText) findViewById(R.id.et_user_password);
-        et_user_password.setHint("请输入密码");
+        et_user_password.setHint(R.string.input_pwd);
         et_user_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         et_verification_code = (EditText) findViewById(R.id.et_verification_code);
         et_verification_code.setVisibility(View.GONE);
@@ -64,9 +64,9 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setText("关闭");
+        btnSure.setText(R.string.close);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("注册");
+        tvTitle.setText(R.string.regist);
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +111,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
         }
 
         if (!StringUtil.isEmail(et_user_accountStr)) {
-            ToastUtil.showToast(this, "邮箱格式不正确");
+            ToastUtil.showToast(this, R.string.email_error);
             return;
         }
 

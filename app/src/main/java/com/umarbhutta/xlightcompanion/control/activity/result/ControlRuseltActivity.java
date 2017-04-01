@@ -12,10 +12,6 @@ import android.widget.TextView;
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.control.activity.result.AppNotifyActivity;
-import com.umarbhutta.xlightcompanion.control.activity.result.DeviceControlSelectActivity;
-import com.umarbhutta.xlightcompanion.control.activity.result.EmailActivity;
-import com.umarbhutta.xlightcompanion.control.activity.result.SelectScenarioActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.ControlResultListAdapter;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
@@ -50,12 +46,12 @@ public class ControlRuseltActivity extends AppCompatActivity {
         setContentView(R.layout.activity_entry);
         //hide nav bar
         getSupportActionBar().hide();
-        ((App)getApplicationContext()).setActivity(this);
+        ((App) getApplicationContext()).setActivity(this);
         mActionnotify = new Actionnotify();
         mActioncmd = new Actioncmd();
 
         settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
-        controlResultListAdapter = new ControlResultListAdapter(this, settingStr,imgInter);
+        controlResultListAdapter = new ControlResultListAdapter(this, settingStr, imgInter);
         settingRecyclerView.setAdapter(controlResultListAdapter);
 
         //set LayoutManager for recycler view
@@ -74,7 +70,7 @@ public class ControlRuseltActivity extends AppCompatActivity {
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("执行结果");
+        tvTitle.setText(R.string.execute_result);
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,14 +78,14 @@ public class ControlRuseltActivity extends AppCompatActivity {
             }
         });
 
-        settingStr.add("灯具控制");
-        imgInter.add( R.drawable.result_control);
-        settingStr.add("场景切换（切换主设备场景）");
-        imgInter.add( R.drawable.result_scenario);
-        settingStr.add("Email通知");
-        imgInter.add( R.drawable.result_email);
-        settingStr.add("APP通知");
-        imgInter.add( R.drawable.result_notify);
+        settingStr.add(getString(R.string.lamp_control));
+        imgInter.add(R.drawable.result_control);
+        settingStr.add(getString(R.string.scene_switch));
+        imgInter.add(R.drawable.result_scenario);
+        settingStr.add(getString(R.string.email_notify));
+        imgInter.add(R.drawable.result_email);
+        settingStr.add(getString(R.string.app_notify));
+        imgInter.add(R.drawable.result_notify);
 
         controlResultListAdapter.notifyDataSetChanged();
         controlResultListAdapter.setmOnItemClickListener(new ControlResultListAdapter.OnItemClickListener() {
@@ -116,8 +112,8 @@ public class ControlRuseltActivity extends AppCompatActivity {
 
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra("MACTIONNOTIFY",mActionnotify);
-        intent.putExtra("MACTIONCMD",mActioncmd);
+        intent.putExtra("MACTIONNOTIFY", mActionnotify);
+        intent.putExtra("MACTIONCMD", mActioncmd);
         startActivity(intent);
     }
 

@@ -56,31 +56,31 @@ public class UserMsgModifyAdapter extends RecyclerView.Adapter {
         public void bindView(final View itemView,final int position) {
             switch (position){
                 case 0:
-                    tv_name.setText("账号");
+                    tv_name.setText(R.string.account);
                     tvUserMsg.setText(mUserMsgList.get(position));
                     tvUserMsg.setVisibility(View.VISIBLE);
                     imageViewHeadImg.setVisibility(View.GONE);
                     break;
                 case 1:
-                    tv_name.setText("昵称");
+                    tv_name.setText(R.string.nick_name);
                     tvUserMsg.setText(mUserMsgList.get(position));
                     tvUserMsg.setVisibility(View.VISIBLE);
                     imageViewHeadImg.setVisibility(View.GONE);
                     break;
                 case 2:
-                    tv_name.setText("头像");
+                    tv_name.setText(R.string.touxiang);
                     tvUserMsg.setVisibility(View.GONE);
                     imageViewHeadImg.setVisibility(View.VISIBLE);
                     imageViewHeadImg.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.logo));
                     break;
                 case 3:
-                    tv_name.setText("性别");
+                    tv_name.setText(R.string.sex);
                     tvUserMsg.setText(mUserMsgList.get(position));
                     tvUserMsg.setVisibility(View.VISIBLE);
                     imageViewHeadImg.setVisibility(View.GONE);
                     break;
                 case 4:
-                    tv_name.setText("出生年月");
+                    tv_name.setText(R.string.birthday);
                     tvUserMsg.setText(mUserMsgList.get(position));
                     tvUserMsg.setVisibility(View.VISIBLE);
                     imageViewHeadImg.setVisibility(View.GONE);

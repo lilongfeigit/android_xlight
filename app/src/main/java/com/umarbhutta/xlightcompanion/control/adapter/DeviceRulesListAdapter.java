@@ -156,25 +156,25 @@ public class DeviceRulesListAdapter extends BaseAdapter {
             for (int i = 0; i < weekArrs.length; i++) {
                 switch (weekArrs[i]) {
                     case "1":
-                        builder.append("周一,");
+                        builder.append(mActivity.getString(R.string.zhouyi)+",");
                         break;
                     case "2":
-                        builder.append("周二,");
+                        builder.append(mActivity.getString(R.string.zhouer)+",");
                         break;
                     case "3":
-                        builder.append("周三,");
+                        builder.append(mActivity.getString(R.string.zhousan)+",");
                         break;
                     case "4":
-                        builder.append("周四,");
+                        builder.append(mActivity.getString(R.string.zhousi)+",");
                         break;
                     case "5":
-                        builder.append("周五,");
+                        builder.append(mActivity.getString(R.string.zhouwu)+",");
                         break;
                     case "6":
-                        builder.append("周六,");
+                        builder.append(mActivity.getString(R.string.zhouilu)+",");
                         break;
                     default:
-                        builder.append("周日,");
+                        builder.append(mActivity.getString(R.string.zhouri)+",");
                         break;
                 }
             }

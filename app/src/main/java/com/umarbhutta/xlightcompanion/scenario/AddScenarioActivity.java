@@ -9,12 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,7 +67,7 @@ public class AddScenarioActivity extends AppCompatActivity {
 
         linear = (LinearLayout) findViewById(R.id.ll_horizontal_scrollview);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("添加场景");
+        tvTitle.setText(R.string.add_scene);
         filterSpinner = (Spinner) findViewById(R.id.filterSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> filterAdapter = new ArrayAdapter<>(this, R.layout.control_scenario_spinner_item, MainActivity.filterNames);

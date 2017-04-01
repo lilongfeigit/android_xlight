@@ -68,7 +68,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         btnSure.setVisibility(View.GONE);
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText("连接Wifi");
+        tvTitle.setText(R.string.link_wifi);
 
         ssidEdit = (EditText) findViewById(R.id.ssid);
         wifiPwdEdit = (EditText) findViewById(R.id.wifi_pwd);
@@ -196,7 +196,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {// 允许
                     getCurWifiInfo();
                 } else { // 不允许
-                    ToastUtil.showToast(this, "您拒绝了获取wifi列表权限");
+                    ToastUtil.showToast(this, getString(R.string.you_refuse_wifi_list));
                 }
                 break;
         }
@@ -204,7 +204,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
 
     private void getCurWifiInfo() {
         if (!isWifiContect()) {
-            ToastUtil.showToast(this, "请打开WiFi");
+            ToastUtil.showToast(this, getString(R.string.please_open_wifi));
             return;
         }
         getWifiList();
@@ -298,7 +298,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToast(BindDeviceFirstActivity.this, "设备连接失败" + errMsg);
+                        ToastUtil.showToast(BindDeviceFirstActivity.this, getString(R.string.device_link_fail) + errMsg);
                     }
                 });
             }
@@ -309,7 +309,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
                     @Override
                     public void run() {
                         setResult(100);
-                        ToastUtil.showToast(BindDeviceFirstActivity.this, "设备连接成功");
+                        ToastUtil.showToast(BindDeviceFirstActivity.this, getString(R.string.device_link_success));
                         BindDeviceFirstActivity.this.finish();
                     }
                 });

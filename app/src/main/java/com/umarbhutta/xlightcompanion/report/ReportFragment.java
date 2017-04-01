@@ -20,7 +20,6 @@ import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
-import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +46,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         iv_menu = (ImageView) view.findViewById(R.id.iv_menu);
         iv_menu.setOnClickListener(this);
         textTitle = (TextView) view.findViewById(R.id.tvTitle);
-        textTitle.setText("报表");
+        textTitle.setText(R.string.baobiao);
         btn_add = (Button) view.findViewById(R.id.btn_add);
         btn_add.setVisibility(View.INVISIBLE);
 

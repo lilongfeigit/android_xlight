@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.adapter.DialogWeekListAdapter;
 import com.umarbhutta.xlightcompanion.control.adapter.DialogWeeksListAdapter;
@@ -38,7 +37,7 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
 
     BaseAdapter dialogConditionListAdapter;
     ListView dialoglist;
-    private Button cancel,sure;
+    private Button cancel, sure;
 
     private ArrayList<SelectTime> settingSelectStr = new ArrayList<SelectTime>();
 
@@ -58,31 +57,31 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
 
     private void initData() {
         type = 0;
-       settingStr.clear();
+        settingStr.clear();
         settingSelectStr.clear();
-        long time=System.currentTimeMillis();
-        Date date=new Date(time);
-        SimpleDateFormat format=new SimpleDateFormat("E");
+        long time = System.currentTimeMillis();
+        Date date = new Date(time);
+        SimpleDateFormat format = new SimpleDateFormat("E");
         String weekday = format.format(date);
-        if(weekday.equals("周一")){
-            settingStr.add(new SelectTime("执行一次",false,"1",0));
-        }else  if(weekday.equals("周二")){
-            settingStr.add(new SelectTime("执行一次",false,"2",0));
-        }else  if(weekday.equals("周三")){
-            settingStr.add(new SelectTime("执行一次",false,"3",0));
-        }else  if(weekday.equals("周四")){
-            settingStr.add(new SelectTime("执行一次",false,"4",0));
-        }else  if(weekday.equals("周五")){
-            settingStr.add(new SelectTime("执行一次",false,"5",0));
-        }else  if(weekday.equals("周六")){
-            settingStr.add(new SelectTime("执行一次",false,"6",0));
-        }else  if(weekday.equals("周日")){
-            settingStr.add(new SelectTime("执行一次",false,"7",0));
+        if (weekday.equals(getString(R.string.zhouyi))) {
+            settingStr.add(new SelectTime(getString(R.string.execute_once), false, "1", 0));
+        } else if (weekday.equals(getString(R.string.zhouer))) {
+            settingStr.add(new SelectTime(getString(R.string.execute_once), false, "2", 0));
+        } else if (weekday.equals(getString(R.string.zhousan))) {
+            settingStr.add(new SelectTime(getString(R.string.execute_once), false, "3", 0));
+        } else if (weekday.equals(getString(R.string.zhousi))) {
+            settingStr.add(new SelectTime(getString(R.string.execute_once), false, "4", 0));
+        } else if (weekday.equals(getString(R.string.zhouwu))) {
+            settingStr.add(new SelectTime(getString(R.string.execute_once), false, "5", 0));
+        } else if (weekday.equals(getString(R.string.zhouilu))) {
+            settingStr.add(new SelectTime(getString(R.string.execute_once), false, "6", 0));
+        } else if (weekday.equals(getString(R.string.zhouri))) {
+            settingStr.add(new SelectTime(getString(R.string.execute_once), false, "7", 0));
         }
 
-       settingStr.add(new SelectTime("每天",false,"1,2,3,4,5,6,7",0));
-       settingStr.add(new SelectTime("周一至周五",false,"1,2,3,4,5",0));
-       settingStr.add(new SelectTime("自定义",false,"0",0));
+        settingStr.add(new SelectTime(getString(R.string.everyday), false, "1,2,3,4,5,6,7", 0));
+        settingStr.add(new SelectTime(getString(R.string.zhouyi_zhouwu), false, "1,2,3,4,5", 0));
+        settingStr.add(new SelectTime(getString(R.string.custom), false, "0", 0));
     }
 
     /**
@@ -97,10 +96,10 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
         dialoglist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               if(type==0){
-                    if(settingStr.get(position).name.equals("自定义")){
+                if (type == 0) {
+                    if (settingStr.get(position).name.equals(getString(R.string.custom))) {
                         initWeeks();
-                    }else {
+                    } else {
                         if (!settingStr.get(position).isSelect) {
                             for (int i = 0; i < settingStr.size(); i++) {
                                 if (settingStr.get(i).isSelect) {
@@ -111,18 +110,18 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
                             settingStr.get(position).isSelect = true;
                             settingSelectStr.add(settingStr.get(position));
                         }
-                            Intent in = new Intent();
-                            in.putExtra("SELECTTIME",settingStr.get(position));
-                            setResult(10, in );
-                            finish();
+                        Intent in = new Intent();
+                        in.putExtra("SELECTTIME", settingStr.get(position));
+                        setResult(10, in);
+                        finish();
                     }
 
-                }else{
-                    if(!settingWeekStr.get(position).isSelect){
-                        settingWeekStr.get(position).isSelect=true;
+                } else {
+                    if (!settingWeekStr.get(position).isSelect) {
+                        settingWeekStr.get(position).isSelect = true;
                         settingSelectWeekStr.add(settingWeekStr.get(position));
-                    }else{
-                        settingWeekStr.get(position).isSelect=false;
+                    } else {
+                        settingWeekStr.get(position).isSelect = false;
                         settingSelectWeekStr.remove(settingWeekStr.get(position));
                     }
                 }
@@ -137,8 +136,8 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
      */
     private void initWeeks() {
 
-        LayoutInflater.from(this).inflate( R.layout.foot_view, null);
-        View footView = LayoutInflater.from(this).inflate( R.layout.foot_view, null);
+        LayoutInflater.from(this).inflate(R.layout.foot_view, null);
+        View footView = LayoutInflater.from(this).inflate(R.layout.foot_view, null);
         dialoglist.addFooterView(footView);
         cancel = (Button) footView.findViewById(R.id.cancel);
         cancel.setOnClickListener(this);
@@ -148,13 +147,13 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
         type = 1;
         settingWeekStr.clear();
         settingSelectWeekStr.clear();
-        settingWeekStr.add(new SelectWeek("星期一",false,"1",1));
-        settingWeekStr.add(new SelectWeek("星期二",false,"2",1));
-        settingWeekStr.add(new SelectWeek("星期三",false,"3",1));
-        settingWeekStr.add(new SelectWeek("星期四",false,"4",1));
-        settingWeekStr.add(new SelectWeek("星期五",false,"5",1));
-        settingWeekStr.add(new SelectWeek("星期六",false,"6",1));
-        settingWeekStr.add(new SelectWeek("星期日",false,"7",1));
+        settingWeekStr.add(new SelectWeek(getString(R.string.xingqiyi), false, "1", 1));
+        settingWeekStr.add(new SelectWeek(getString(R.string.xingqier), false, "2", 1));
+        settingWeekStr.add(new SelectWeek(getString(R.string.xingqisan), false, "3", 1));
+        settingWeekStr.add(new SelectWeek(getString(R.string.xingqisi), false, "4", 1));
+        settingWeekStr.add(new SelectWeek(getString(R.string.xingqiwu), false, "5", 1));
+        settingWeekStr.add(new SelectWeek(getString(R.string.xingqiliu), false, "6", 1));
+        settingWeekStr.add(new SelectWeek(getString(R.string.xingqiri), false, "7", 1));
 
         dialogConditionListAdapter = new DialogWeeksListAdapter(DialogWeelActivity.this.getApplicationContext(), settingWeekStr);
         dialoglist.setAdapter(dialogConditionListAdapter);
@@ -163,18 +162,18 @@ public class DialogWeelActivity extends Activity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.cancel:
                 finish();
                 break;
             case R.id.sure:
                 Intent in = new Intent();
-                if(settingSelectWeekStr.size()>0){
-                    in.putParcelableArrayListExtra("SELECTWEEK",settingSelectWeekStr);
-                    setResult(20, in );
+                if (settingSelectWeekStr.size() > 0) {
+                    in.putParcelableArrayListExtra("SELECTWEEK", settingSelectWeekStr);
+                    setResult(20, in);
                     finish();
-                }else{
-                    ToastUtil.showToast(this,"请选择");
+                } else {
+                    ToastUtil.showToast(this, getString(R.string.please_select));
                 }
 
                 break;

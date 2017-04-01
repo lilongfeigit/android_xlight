@@ -88,6 +88,7 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
                     }
                     //mDevicenodes
                     SlidingMenuMainActivity.m_mainDevice.setDeviceID(mDevicenodes.get(mPositon).nodeno);
+                    SlidingMenuMainActivity.m_mainDevice.Connect(mDevicenodes.get(mPositon).coreid);
                     SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
                     mDevicenodes.get(mPositon).ison = isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
                 }
@@ -98,15 +99,7 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
             mPositon = position;
             Devicenodes devicenodes = mDevicenodes.get(position);
             mDeviceName.setText(TextUtils.isEmpty(devicenodes.devicenodename) ? "灯" : devicenodes.devicenodename);
-            mDeviceSwitch.setChecked(devicenodes.ison==0?true:false);
-//            if (deviceInfo.maindevice == 0) {// 是否为主设备，0否，1是
-//                main_device.setVisibility(View.GONE);
-//            } else if (deviceInfo.maindevice == 1) {
-//                main_device.setVisibility(View.VISIBLE);
-//                main_device.setText("主设备");
-//            } else {
-//                main_device.setVisibility(View.GONE);
-//            }
+            mDeviceSwitch.setChecked(devicenodes.ison==0?false:true);
         }
 
         @Override
@@ -114,6 +107,7 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
             // 点击事件 跳转到编辑设备页面
             Intent intent = new Intent(mActivity, EditDeviceActivity.class);
             intent.putExtra("info", mDevicenodes.get(mPositon));
+            intent.putExtra("position", mPositon);
             mActivity.startActivity(intent);
         }
 

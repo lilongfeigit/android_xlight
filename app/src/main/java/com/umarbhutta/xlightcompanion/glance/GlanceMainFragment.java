@@ -86,6 +86,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      * 设备列表
      */
     public static List<Rows> deviceList = new ArrayList<Rows>();
+    public static List<Devicenodes> devicenodes = new ArrayList<Devicenodes>();
     private DevicesMainListAdapter devicesListAdapter;
     private TextView default_text;
 
@@ -388,6 +389,12 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 deviceList.clear();
                 deviceList.addAll(devices);
             }
+            if(null!=devicenodes && devicenodes.size()>0){
+                devicenodes.clear();
+                for(int i=0;i<deviceList.size();i++){
+                    devicenodes.addAll(deviceList.get(i).devicenodes);
+                }
+            }
             return;
         }
 
@@ -417,12 +424,13 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                                 if(deviceList.get(i).maindevice==1){
                                     for( int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++ ) {
                                         SlidingMenuMainActivity.m_mainDevice.addNodeToDeviceList(deviceList.get(i).devicenodes.get(lv_idx).nodeno, xltDevice.DEFAULT_DEVICE_TYPE, deviceList.get(i).devicenodes.get(lv_idx).devicenodename);
+                                        deviceList.get(i).devicenodes.get(lv_idx).coreid = deviceList.get(i).coreid;
                                     }
                                     // Connect to Controller
-                                    SlidingMenuMainActivity.m_mainDevice.Connect(deviceList.get(i).coreid);
+//                                    SlidingMenuMainActivity.m_mainDevice.Connect(deviceList.get(i).coreid);
                                 }
                             }
-                            List<Devicenodes> devicenodes = new ArrayList<Devicenodes>();
+                            devicenodes.clear();
                             for(int i=0;i<deviceList.size();i++){
                                 devicenodes.addAll(deviceList.get(i).devicenodes);
                             }

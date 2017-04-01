@@ -35,6 +35,7 @@ import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
@@ -61,6 +62,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     private TextView tvTitle;
     public SceneListResult mDeviceInfoResult;
     private Devicenodes deviceInfo;
+    private int mPositon;
     private int red = 130;
     private int green = 255;
     private int blue = 0;
@@ -109,6 +111,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         getSupportActionBar().hide();
 
         deviceInfo = (Devicenodes) getIntent().getSerializableExtra("info");
+        mPositon = getIntent().getIntExtra("position",0);
 
         scenarioDropdown = new ArrayList<>(ScenarioFragment.name);
         scenarioDropdown.add(0, "None");
@@ -155,7 +158,11 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
         dotLayout.addView(circleIcon);
 
+        Log.e("EditDeviceActivity","nodeno="+deviceInfo.nodeno+";;;coreid="+deviceInfo.coreid);
+
         SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.nodeno);
+
+        SlidingMenuMainActivity.m_mainDevice.Connect(deviceInfo.coreid);
 
         Log.e(TAG, "CCT=" + SlidingMenuMainActivity.m_mainDevice.getCCT() + ";State=" + SlidingMenuMainActivity.m_mainDevice.getState() + ";blue=" +
                 SlidingMenuMainActivity.m_mainDevice.getBlue() + ";red=" + SlidingMenuMainActivity.m_mainDevice.getRed() + ";green=" + SlidingMenuMainActivity.m_mainDevice.getGreen() + ";Brightness" +
@@ -165,7 +172,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         mscenarioName.setText(deviceInfo.devicenodename);
         powerSwitch.setChecked(SlidingMenuMainActivity.m_mainDevice.getState() == 1 ? true : false);
         brightnessSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getBrightness());
-        cctSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getCCT());
+        cctSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getCCT()-2700);
 
         int R = SlidingMenuMainActivity.m_mainDevice.getRed();
         int G = SlidingMenuMainActivity.m_mainDevice.getGreen();
@@ -215,9 +222,12 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //check if on or off
+                Log.e(TAG, "The power value is " + (isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF));
                 state = isChecked;
                 SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
                 deviceInfo.ison = isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
+                GlanceMainFragment.devicenodes.remove(mPositon);
+                GlanceMainFragment.devicenodes.add(mPositon,deviceInfo);
             }
         });
         /**
@@ -246,16 +256,6 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         cctSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
-                //ParticleAdapter.JSONCommandCCT(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress()+2700);
                 int seekBarProgress = seekBar.getProgress() + 2700;
                 if (seekBarProgress > 2700 && seekBarProgress < 3500) {
                     cctLabelColor.setText("暖白");
@@ -266,6 +266,16 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                 if (seekBarProgress > 5500 && seekBarProgress < 6500) {
                     cctLabelColor.setText("冷白");
                 }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
+                int seekBarProgress = seekBar.getProgress() + 2700;
                 SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
             }
         });

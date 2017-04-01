@@ -22,6 +22,7 @@ public class Devicenodes implements Serializable{
     //    public List<String> sensorsdata;
     public List<Devicerings> devicerings;
     public List<Ruleconditions> ruleconditions;
+    public String coreid;
 
     @Override
     public String toString() {

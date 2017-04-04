@@ -12,16 +12,12 @@ import android.widget.ListView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DeviceNameAdapter;
-import com.umarbhutta.xlightcompanion.control.adapter.DialogListAdapter;
-import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
-import com.umarbhutta.xlightcompanion.glance.GlanceFragment;
-import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
+import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 
 /**
  * Created by Administrator on 2017/3/15.
- * 弹出框Activity
+ * 选择设备Activity
  */
 
 public class DialogRowNameActivity extends Activity {
@@ -35,7 +31,7 @@ public class DialogRowNameActivity extends Activity {
         setContentView(R.layout.activity_row_dialog);
         getWindow().setGravity(Gravity.BOTTOM);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        ((App)getApplicationContext()).setActivity(this);
+        ((App) getApplicationContext()).setActivity(this);
         initViews();
     }
 
@@ -44,19 +40,18 @@ public class DialogRowNameActivity extends Activity {
      */
     private void initViews() {
         dialoglist = (ListView) findViewById(R.id.dialoglist);
-        dialogConditionListAdapter = new DeviceNameAdapter(DialogRowNameActivity.this.getApplicationContext(), GlanceFragment.deviceList);
+        dialogConditionListAdapter = new DeviceNameAdapter(DialogRowNameActivity.this.getApplicationContext(), GlanceMainFragment.deviceList);
         dialoglist.setAdapter(dialogConditionListAdapter);
 
         dialoglist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
-                intent.putExtra("ROW", GlanceFragment.deviceList.get(position));
-                setResult(35,intent);
+                intent.putExtra("deviceInfo", GlanceMainFragment.deviceList.get(position));
+                setResult(35, intent);
                 finish();
             }
         });
-        dialogConditionListAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="cloudsdk-0.4.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/cloudsdk/build/intermediates/bundles/default/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/cloudsdk/build/intermediates/bundles/default/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

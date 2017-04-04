@@ -101,6 +101,8 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     private Handler m_handlerControl;
     private CircleDotView circleIcon;
     private TextView cctLabelColor;
+    private RelativeLayout rl_scenario;
+    private LinearLayout colorLL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +113,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         getSupportActionBar().hide();
 
         deviceInfo = (Devicenodes) getIntent().getSerializableExtra("info");
-        mPositon = getIntent().getIntExtra("position",0);
+        mPositon = getIntent().getIntExtra("position", 0);
 
         scenarioDropdown = new ArrayList<>(ScenarioFragment.name);
         scenarioDropdown.add(0, "None");
@@ -157,30 +159,29 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
 
         RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
         dotLayout.addView(circleIcon);
+        rl_scenario = (RelativeLayout) findViewById(R.id.rl_scenario);
+        colorLL = (LinearLayout) findViewById(R.id.colorLL);
 
-        Log.e("EditDeviceActivity","nodeno="+deviceInfo.nodeno+";;;coreid="+deviceInfo.coreid);
+        if(deviceInfo.devicenodetype==1){
+            rl_scenario.setVisibility(View.GONE);
+            colorLL.setVisibility(View.GONE);
+        }else {
+            rl_scenario.setVisibility(View.VISIBLE);
+            colorLL.setVisibility(View.VISIBLE);
+        }
+
+        Log.e("EditDeviceActivity", "nodeno=" + deviceInfo.nodeno + ";;;coreid=" + deviceInfo.coreid
+        +";devicenodetype="+deviceInfo.devicenodetype);
 
         SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.nodeno);
 
-        SlidingMenuMainActivity.m_mainDevice.Connect(deviceInfo.coreid);
+//        boolean isControlConnect = SlidingMenuMainActivity.m_mainDevice.Connect(deviceInfo.coreid);
+//
+//        Log.e(TAG, "isControlConnect=" + isControlConnect);
 
-        Log.e(TAG, "CCT=" + SlidingMenuMainActivity.m_mainDevice.getCCT() + ";State=" + SlidingMenuMainActivity.m_mainDevice.getState() + ";blue=" +
-                SlidingMenuMainActivity.m_mainDevice.getBlue() + ";red=" + SlidingMenuMainActivity.m_mainDevice.getRed() + ";green=" + SlidingMenuMainActivity.m_mainDevice.getGreen() + ";Brightness" +
-                SlidingMenuMainActivity.m_mainDevice.getBrightness()
-        );
-
-        mscenarioName.setText(deviceInfo.devicenodename);
-        powerSwitch.setChecked(SlidingMenuMainActivity.m_mainDevice.getState() == 1 ? true : false);
-        brightnessSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getBrightness());
-        cctSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getCCT()-2700);
-
-        int R = SlidingMenuMainActivity.m_mainDevice.getRed();
-        int G = SlidingMenuMainActivity.m_mainDevice.getGreen();
-        int B = SlidingMenuMainActivity.m_mainDevice.getBlue();
-
-        int color = Color.rgb(R, G, B);
-        circleIcon.setColor(color);
-        colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
+        Log.e(TAG, "CCT=" + SlidingMenuMainActivity.m_mainDevice.getCCT(deviceInfo.nodeno)+ ";State=" + SlidingMenuMainActivity.m_mainDevice.getState(deviceInfo.nodeno) + ";blue=" +
+                SlidingMenuMainActivity.m_mainDevice.getBlue(deviceInfo.nodeno) + ";red=" + SlidingMenuMainActivity.m_mainDevice.getRed(deviceInfo.nodeno) + ";green=" + SlidingMenuMainActivity.m_mainDevice.getGreen(deviceInfo.nodeno) + ";Brightness" +
+                SlidingMenuMainActivity.m_mainDevice.getBrightness(deviceInfo.nodeno));
 
 
         if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
@@ -210,7 +211,18 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             };
             SlidingMenuMainActivity.m_mainDevice.addDeviceEventHandler(m_handlerControl);
         }
+        mscenarioName.setText(deviceInfo.devicenodename);
+        powerSwitch.setChecked((SlidingMenuMainActivity.m_mainDevice.getState(deviceInfo.nodeno) == 0)?false : true);
+        brightnessSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getBrightness(deviceInfo.nodeno));
+        cctSeekBar.setProgress(SlidingMenuMainActivity.m_mainDevice.getCCT(deviceInfo.nodeno) - 2700);
 
+        int R = SlidingMenuMainActivity.m_mainDevice.getRed(deviceInfo.nodeno);
+        int G = SlidingMenuMainActivity.m_mainDevice.getGreen(deviceInfo.nodeno);
+        int B = SlidingMenuMainActivity.m_mainDevice.getBlue(deviceInfo.nodeno);
+
+        int color = Color.rgb(R, G, B);
+        circleIcon.setColor(color);
+        colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
         findViewById(com.umarbhutta.xlightcompanion.R.id.colorLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,10 +236,11 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                 //check if on or off
                 Log.e(TAG, "The power value is " + (isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF));
                 state = isChecked;
-                SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
+                int stateInt = SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
+                Log.e(TAG, "stateInt value is= " + stateInt);
                 deviceInfo.ison = isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
                 GlanceMainFragment.devicenodes.remove(mPositon);
-                GlanceMainFragment.devicenodes.add(mPositon,deviceInfo);
+                GlanceMainFragment.devicenodes.add(mPositon, deviceInfo);
             }
         });
         /**
@@ -245,7 +258,8 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.e(TAG, "The brightness value is " + seekBar.getProgress());
-                SlidingMenuMainActivity.m_mainDevice.ChangeBrightness(seekBar.getProgress());
+                int brightnessInt = SlidingMenuMainActivity.m_mainDevice.ChangeBrightness(seekBar.getProgress());
+                Log.e(TAG, "brightnessInt value is= " + brightnessInt);
                 deviceInfo.brightness = seekBar.getProgress();
             }
         });
@@ -276,7 +290,8 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 int seekBarProgress = seekBar.getProgress() + 2700;
-                SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
+               int cctInt =  SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
+                Log.e(TAG, "cctInt value is= " + cctInt);
             }
         });
 

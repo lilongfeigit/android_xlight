@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -425,7 +426,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                                         deviceList.get(i).devicenodes.get(lv_idx).coreid = deviceList.get(i).coreid;
                                     }
                                     // Connect to Controller
-//                                    SlidingMenuMainActivity.m_mainDevice.Connect(deviceList.get(i).coreid);
+                                    boolean isControlConnect = SlidingMenuMainActivity.m_mainDevice.Connect(deviceList.get(i).coreid);
+                                    Logger.e(TAG, "isControlConnect=" + isControlConnect);
                                 }
                             }
                             devicenodes.clear();

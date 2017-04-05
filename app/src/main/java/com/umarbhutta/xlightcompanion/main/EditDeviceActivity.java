@@ -665,6 +665,10 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             }
             circleIcon.setColor(color);
             colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
+
+            int br = brightnessSeekBar.getProgress();
+            int ww = 0;
+            SlidingMenuMainActivity.m_mainDevice.ChangeColor(xltDevice.RING_ID_ALL, state, br, ww, red, green, blue);
             SlidingMenuMainActivity.m_mainDevice.setRed(xltDevice.RING_ID_ALL, red);
             SlidingMenuMainActivity.m_mainDevice.setGreen(xltDevice.RING_ID_ALL, green);
             SlidingMenuMainActivity.m_mainDevice.setBlue(xltDevice.RING_ID_ALL, blue);

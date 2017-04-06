@@ -31,7 +31,8 @@ public class RequestFirstPageInfo implements HttpUtils.OnHttpRequestCallBack {
     public void getBaseInfo(OnRequestFirstPageInfoCallback mOnRequestFirstPageInfoCallback) {
         this.mOnRequestFirstPageInfoCallback = mOnRequestFirstPageInfoCallback;
         if (UserUtils.isLogin(context)) {
-            HttpUtils.getInstance().getRequestInfo(NetConfig.URL_FIRST_PAGE_INFO + UserUtils.getUserInfo(context).getAccess_token() + "&userId=" + UserUtils.getUserInfo(context).getId(), DeviceInfoResult.class, this);
+            HttpUtils.getInstance().getRequestInfo(NetConfig.URL_FIRST_PAGE_INFO + UserUtils.getUserInfo(context).getAccess_token() + "&userId=" + UserUtils.getUserInfo(context).getId(),
+                    DeviceInfoResult.class, this);
         }
     }
 

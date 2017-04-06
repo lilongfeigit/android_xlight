@@ -4,10 +4,36 @@
     android:layout_height="30dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_device_name"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/home_device_list" />
+
+        <TextView
+            android:id="@+id/tv_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/iv"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:text="客厅灯"
+            android:textColor="@color/textDarkGrey" />
+
+
+    </RelativeLayout>
 </LinearLayout>

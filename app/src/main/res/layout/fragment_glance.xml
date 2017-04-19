@@ -92,7 +92,7 @@
                             android:id="@+id/lblLocalHumidity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="体感温度"
+                            android:text="@string/ti_gan_temp"
                             android:textAlignment="center"
                             android:textColor="@color/white" />
 
@@ -119,7 +119,7 @@
                             android:id="@+id/lblApparentTemp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="湿度"
+                            android:text="@string/shidu"
                             android:textAlignment="center"
                             android:textColor="@color/white" />
 
@@ -268,7 +268,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="本月已为您节省电费约¥ --"
+                android:text="@string/this_month_has_save_money"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
@@ -293,7 +293,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
-                android:text="我的设备"
+                android:text="@string/my_device"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
@@ -306,7 +306,7 @@
         android:layout_below="@id/toolbar"
         android:layout_marginTop="12dp"
         android:gravity="center_horizontal"
-        android:text="您还没有设备，点击右上角+添加设备" />
+        android:text="@string/you_have_no_device_and_add" />
 
 
     <android.support.v7.widget.RecyclerView

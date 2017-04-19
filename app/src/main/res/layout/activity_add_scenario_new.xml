@@ -84,7 +84,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/blue"
-            android:hint="自定义"
+            android:hint="@string/zidingyi"
             android:textAlignment="textEnd" />
 
     </RelativeLayout>
@@ -159,7 +159,7 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="sans-serif-light"
             android:gravity="left|start"
-            android:text="色温"
+            android:text="@string/color_temp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/textColorPrimary" />
 
@@ -171,7 +171,7 @@
             android:layout_marginLeft="2dp"
             android:fontFamily="sans-serif-light"
             android:gravity="left|start"
-            android:text="冷色"
+            android:text="@string/cold_color"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
@@ -387,7 +387,7 @@
         android:scaleX=".8"
         android:scaleY=".8"
         android:src="@drawable/go_back"
-        android:text="确定"
+        android:text="@string/ok"
         android:textColor="@color/white"
         android:visibility="gone" />
 

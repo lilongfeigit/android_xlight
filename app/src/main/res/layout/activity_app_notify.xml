@@ -23,7 +23,7 @@
             android:layout_alignParentLeft="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
-            android:text="您要的通知的内容"
+            android:text="@string/you_want_notify_content"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText

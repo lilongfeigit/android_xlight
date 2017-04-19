@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
-        android:text="自定义"
+        android:text="@string/zidingyi"
         android:textColor="@color/white" />
 
 </LinearLayout>

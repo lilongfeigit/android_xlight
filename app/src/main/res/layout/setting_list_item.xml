@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:fontFamily="sans-serif-light"
-        android:text="个人中心"
+        android:text="@string/persion_center"
         android:gravity="center|left"
         style="@style/SettingsItem"
         android:textAppearance="?android:attr/textAppearanceLarge"

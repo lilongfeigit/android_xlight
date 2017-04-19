@@ -5,27 +5,27 @@
         <item
             android:id="@+id/nav_glance"
             android:icon="@drawable/home"
-            android:title="首页" />
+            android:title="@string/first_page" />
         <item
             android:id="@+id/nav_control"
             android:icon="@drawable/home_nav_control"
-            android:title="规则" />
+            android:title="@string/rule" />
         <item
             android:id="@+id/nav_scenario"
             android:icon="@drawable/home_scenario"
-            android:title="场景" />
+            android:title="@string/scene" />
         <item
             android:id="@+id/nav_schedule"
             android:icon="@drawable/home_schedule"
-            android:title="报表" />
+            android:title="@string/report" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/home_setting"
-            android:title="设置" />
+            android:title="@string/setting" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/home_help"
-            android:title="帮助" />
+            android:title="@string/help" />
     </group>
 
     <item android:title="Manage" android:visible="false">

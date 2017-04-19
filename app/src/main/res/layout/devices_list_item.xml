@@ -31,7 +31,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:paddingLeft="20dp"
-            android:text="客厅灯"
+            android:text="@string/living_room_lamp"
             android:textColor="@color/textDarkGrey" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_toRightOf="@+id/deviceName"
             android:gravity="center"
             android:paddingLeft="20dp"
-            android:text="已启用计划"
+            android:text="@string/has_start_plan"
             android:textColor="@color/textDarkGrey" />
         <TextView
             android:id="@+id/main_device"
@@ -51,7 +51,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:visibility="gone"
-            android:text="主设备"
+            android:text="@string/main_device"
             android:textColor="@color/textDarkGrey" />
 
         <Switch

@@ -154,6 +154,11 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_glance, container, false);
+        if(SlidingMenuMainActivity.m_mainDevice==null){
+            SlidingMenuMainActivity.m_mainDevice = new xltDevice();
+            SlidingMenuMainActivity.m_mainDevice.Init(getActivity());
+        }
+
         //        hide nav bar
         fab = (ImageButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -388,12 +393,10 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 deviceList.clear();
                 deviceList.addAll(devices);
             }
-            if (null != devicenodes && devicenodes.size() > 0) {
-                devicenodes.clear();
-                for (int i = 0; i < deviceList.size(); i++) {
-                    devicenodes.addAll(deviceList.get(i).devicenodes);
-                }
+            if (devicesListAdapter != null) {
+                devicesListAdapter.notifyDataSetChanged();
             }
+            addDeviceMapsSDK(deviceList);
             return;
         }
 
@@ -415,35 +418,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                         if (devicesListAdapter != null) {
                             devicesListAdapter.notifyDataSetChanged();
                         }
-
-                        if (null != deviceList && deviceList.size() > 0) {
-                            default_text.setVisibility(View.GONE);
-                            SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
-                            for (int i = 0; i < deviceList.size(); i++) {
-                                if (deviceList.get(i).maindevice == 1) {
-                                    for (int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++) {
-                                        SlidingMenuMainActivity.m_mainDevice.addNodeToDeviceList(deviceList.get(i).devicenodes.get(lv_idx).nodeno, xltDevice.DEFAULT_DEVICE_TYPE, deviceList.get(i).devicenodes.get(lv_idx).devicenodename);
-                                        deviceList.get(i).devicenodes.get(lv_idx).coreid = deviceList.get(i).coreid;
-                                    }
-                                    // Connect to Controller
-                                    boolean isControlConnect = SlidingMenuMainActivity.m_mainDevice.Connect(deviceList.get(i).coreid);
-                                    Logger.e(TAG, "isControlConnect=" + isControlConnect);
-                                }
-                            }
-                            devicenodes.clear();
-                            for (int i = 0; i < deviceList.size(); i++) {
-                                devicenodes.addAll(deviceList.get(i).devicenodes);
-                            }
-                            devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
-                            devicesRecyclerView.setAdapter(devicesListAdapter);
-                            devicesListAdapter.notifyDataSetChanged();
-                            if (null != deviceList && deviceList.size() > 0) {
-                                default_text.setVisibility(View.GONE);
-                            } else {
-                                default_text.setVisibility(View.VISIBLE);
-                            }
-                        }
-
+                        addDeviceMapsSDK(deviceList);
                     }
                 });
             }
@@ -459,6 +434,47 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         getBaseInfos();
+    }
+
+    public void addDeviceMapsSDK(List<Rows> deviceList){
+        if (null != deviceList && deviceList.size() > 0) {
+            default_text.setVisibility(View.GONE);
+            SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
+            if(SlidingMenuMainActivity.xltDeviceMaps!=null){
+                SlidingMenuMainActivity.xltDeviceMaps.clear();
+            }
+            for (int i = 0; i < deviceList.size(); i++) {
+                // Initialize SmartDevice SDK
+                xltDevice m_XltDevice = new xltDevice();
+                m_XltDevice.Init(getActivity());
+
+                for (int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++) {
+                    m_XltDevice.addNodeToDeviceList(deviceList.get(i).devicenodes.get(lv_idx).nodeno, xltDevice.DEFAULT_DEVICE_TYPE, deviceList.get(i).devicenodes.get(lv_idx).devicenodename);
+                    deviceList.get(i).devicenodes.get(lv_idx).coreid = deviceList.get(i).coreid;
+                }
+                // Connect to Controller
+                boolean isControlConnect = m_XltDevice.Connect(deviceList.get(i).coreid);
+                Logger.e(TAG, "isControlConnect=" + isControlConnect);
+
+                SlidingMenuMainActivity.xltDeviceMaps.put(deviceList.get(i).coreid,m_XltDevice);
+
+                if (deviceList.get(i).maindevice == 1) {//主设备
+                    SlidingMenuMainActivity.m_mainDevice = m_XltDevice;
+                }
+            }
+            devicenodes.clear();
+            for (int i = 0; i < deviceList.size(); i++) {
+                devicenodes.addAll(deviceList.get(i).devicenodes);
+            }
+            devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
+            devicesRecyclerView.setAdapter(devicesListAdapter);
+            devicesListAdapter.notifyDataSetChanged();
+            if (null != deviceList && deviceList.size() > 0) {
+                default_text.setVisibility(View.GONE);
+            } else {
+                default_text.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**

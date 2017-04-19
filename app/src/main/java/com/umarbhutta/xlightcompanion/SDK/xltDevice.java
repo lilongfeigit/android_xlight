@@ -11,6 +11,7 @@ import com.umarbhutta.xlightcompanion.SDK.BLE.BLEBridge;
 import com.umarbhutta.xlightcompanion.SDK.Cloud.CloudBridge;
 import com.umarbhutta.xlightcompanion.SDK.Cloud.ParticleAdapter;
 import com.umarbhutta.xlightcompanion.SDK.LAN.LANBridge;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 
 import java.util.ArrayList;
 
@@ -258,13 +259,15 @@ public class xltDevice {
         bleBridge.setName(DEFAULT_DEVICE_BLENAME);
 
         // Connect to Cloud
-        ConnectCloud();
+        boolean isConnectCloud = ConnectCloud();
+        Logger.e(TAG,"isConnectCloud="+isConnectCloud);
 
         // Connect to BLE
-        ConnectBLE();
-
+        boolean isConnectBLE = ConnectBLE();
+        Logger.e(TAG,"isConnectBLE="+isConnectBLE);
         // Connect to LAN
-        ConnectLAN();
+        boolean isConnectLAN = ConnectLAN();
+        Logger.e(TAG,"isConnectLAN="+isConnectLAN);
 
         return true;
     }

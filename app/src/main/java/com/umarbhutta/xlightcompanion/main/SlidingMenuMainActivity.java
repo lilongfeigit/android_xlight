@@ -18,12 +18,19 @@ import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.settings.BaseFragmentActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Administrator
  */
 
 public class SlidingMenuMainActivity extends BaseFragmentActivity {
     private Fragment mContent;
+
+//    public static xltDevice m_mainDevice;
+
+    public static Map<String,xltDevice> xltDeviceMaps;
 
     public static xltDevice m_mainDevice;
 
@@ -48,9 +55,10 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
             startActivityForResult(enableBtIntent, BLEPairedDeviceList.REQUEST_ENABLE_BT);
         }
 
+        xltDeviceMaps = new HashMap<String,xltDevice>();
         // Initialize SmartDevice SDK
-        m_mainDevice = new xltDevice();
-        m_mainDevice.Init(this);
+//        m_mainDevice = new xltDevice();
+//        m_mainDevice.Init(this);
 
         //TODO 测试数据
         // Setup Device/Node List

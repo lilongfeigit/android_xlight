@@ -22,14 +22,14 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:textColor="@color/black"
-            android:text="零上"/>
+            android:text="@string/over_zero"/>
 
         <RadioButton
             android:id="@+id/rb_miu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="零下"/>
+            android:text="@string/below_zero"/>
 
     </RadioGroup>
 

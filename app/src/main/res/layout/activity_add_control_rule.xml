@@ -26,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:gravity="center_vertical"
-                android:text="满足条件时" />
+                android:text="@string/manzu_tiaojian" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"
-            android:text="未添加条件" />
+            android:text="@string/wei_tianjia_tiaojian" />
 
         <ListView
             android:id="@+id/lv_term_time"
@@ -90,7 +90,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:gravity="center_vertical"
-                android:text="将执行结果" />
+                android:text="@string/jiang_zhixing_jieguo" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -113,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"
-            android:text="未添加结果" />
+            android:text="@string/wei_tianjia_jieguo" />
 
         <ListView
             android:id="@+id/lv_control_actionnotify"

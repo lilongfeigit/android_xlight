@@ -123,7 +123,7 @@
                     android:layout_weight="1"
                     android:fontFamily="sans-serif-light"
                     android:gravity="left|start"
-                    android:text="名称"
+                    android:text="@string/mingcheng"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColorPrimary" />
 
@@ -134,7 +134,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="5dp"
                     android:gravity="right"
-                    android:text="请选择" />
+                    android:text="@string/please_select" />
 
                 <ImageView
                     android:id="@+id/spinner"
@@ -218,7 +218,7 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:text="电源"
+                        android:text="@string/power"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
@@ -263,7 +263,7 @@
                         android:layout_marginLeft="0dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:text="场景"
+                        android:text="@string/scene"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
@@ -313,7 +313,7 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:text="亮度"
+                        android:text="@string/brightness"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
@@ -357,7 +357,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:text="色温"
+                        android:text="@string/color_temp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
@@ -369,7 +369,7 @@
                         android:layout_marginLeft="2dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:text="冷色"
+                        android:text="@string/cold_color"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <RelativeLayout
@@ -428,7 +428,7 @@
                         android:layout_marginLeft="0dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:text="颜色"
+                        android:text="@string/color"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 

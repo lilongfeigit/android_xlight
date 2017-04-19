@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:fontFamily="sans-serif-light"
         android:gravity="center|left"
-        android:text="定时"
+        android:text="@string/dingshi"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageView

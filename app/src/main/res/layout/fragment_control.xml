@@ -132,7 +132,7 @@
                     android:layout_marginRight="20dp"
                     android:background="#00ffffff"
                     android:gravity="right"
-                    android:hint="客厅灯"
+                    android:hint="@string/living_room_lamp"
                     android:paddingRight="20dp" />
 
 
@@ -255,7 +255,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:text="场景"
+                        android:text="@string/scene"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
@@ -305,7 +305,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:text="亮度"
+                        android:text="@string/lightness"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
@@ -347,7 +347,7 @@
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:layout_gravity="center_vertical"
-                        android:text="色温"
+                        android:text="@string/color_temp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
@@ -359,7 +359,7 @@
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:layout_gravity="center_vertical"
-                        android:text="冷色"
+                        android:text="@string/cold_color"
                         android:textSize="14sp"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -420,7 +420,7 @@
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:layout_gravity="center_vertical"
-                        android:text="颜色"
+                        android:text="@string/color"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 

@@ -20,7 +20,7 @@
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:textSize="16sp"
-            android:text="账号" />
+            android:text="@string/zhanghao" />
 
         <TextView
             android:id="@+id/tv_msg"

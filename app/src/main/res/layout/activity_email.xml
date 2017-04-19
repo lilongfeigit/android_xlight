@@ -22,7 +22,7 @@
             android:layout_alignParentLeft="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
-            android:text="您要通知的Email"
+            android:text="@string/email"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
@@ -51,7 +51,7 @@
             android:layout_alignParentLeft="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
-            android:text="邮件标题"
+            android:text="@string/email_title"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
@@ -79,7 +79,7 @@
             android:layout_alignParentLeft="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
-            android:text="邮件内容"
+            android:text="@string/email_content"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText

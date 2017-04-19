@@ -23,13 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="快速绑定允许家庭成员快速绑定设备，可以采用如下3种方式：" />
+                android:text="@string/quick_bind" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="1,直接输入家庭成员的邮件地址" />
+                android:text="@string/one_input_family_email" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -44,14 +44,14 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:background="@color/accent_color"
-                android:text="完 成"
+                android:text="@string/__complete"
                 android:textColor="@color/white" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="1,家庭成员可以通过扫描下面二维码绑定设备" />
+                android:text="@string/one_scan_code" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="3,家庭成员可以通过输入如下关联口令绑定设备" />
+                android:text="@string/three_bind_order" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="关联口令：" />
+                    android:text="@string/link_order" />
 
                 <EditText
                     android:layout_width="wrap_content"

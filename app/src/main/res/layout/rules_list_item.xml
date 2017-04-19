@@ -37,7 +37,7 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left|start"
-                android:text="条件："
+                android:text="@string/adt"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout
@@ -54,7 +54,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left|start"
-                android:text="执行动作："
+                android:text="@string/excute_ad"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout

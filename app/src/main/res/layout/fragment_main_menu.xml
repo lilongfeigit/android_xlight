@@ -68,7 +68,7 @@
             android:drawablePadding="20dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:text="首页"
+            android:text="@string/first_page"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium" />
 
@@ -86,7 +86,7 @@
             android:drawablePadding="20dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:text="规则"
+            android:text="@string/rule"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium" />
 
@@ -121,7 +121,7 @@
             android:drawableLeft="@drawable/home_schedule"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:text="报表"
+            android:text="@string/report"
             android:drawablePadding="20dp"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/white" />
@@ -139,7 +139,7 @@
             android:drawableLeft="@drawable/home_setting"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:text="设置"
+            android:text="@string/setting"
             android:drawablePadding="20dp"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/white" />
@@ -157,7 +157,7 @@
             android:drawableLeft="@drawable/home_help"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:text="帮助"
+            android:text="@string/help"
             android:drawablePadding="20dp"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/white" />

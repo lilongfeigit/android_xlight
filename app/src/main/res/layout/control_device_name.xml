@@ -31,7 +31,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:paddingLeft="20dp"
-            android:text="客厅灯"
+            android:text="@string/living_room_lamp"
             android:textColor="@color/textDarkGrey" />
 
 

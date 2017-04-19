@@ -20,7 +20,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="left|start"
             android:paddingTop="10dp"
-            android:text="全部规则"
+            android:text="@string/all_rules"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="16sp" />
 

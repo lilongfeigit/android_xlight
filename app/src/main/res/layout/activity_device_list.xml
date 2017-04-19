@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
-        android:text="请选择主设备"
+        android:text="@string/please_select_main_device"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/tv_no_device"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingTop="10dp"
-        android:text="您还没有添加设备"
+        android:text="@string/you_have_no_device"
         android:visibility="gone"
         android:textSize="16sp" />
 

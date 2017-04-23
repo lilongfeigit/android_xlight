@@ -16,6 +16,7 @@ import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogTemActivity;
+import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 
@@ -31,7 +32,7 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
     private LinearLayout llBack;
     private TextView btnSure;
     private TextView tvTitle;
-    private RelativeLayout llTem,llMore;
+    private RelativeLayout llTem, llMore;
     private int requestCode = 310;
 
     private Condition mCondition;
@@ -40,7 +41,7 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
 
     private Ruleconditions ruleconditions;
 
-    private TextView tv_tem,tv_more;
+    private TextView tv_tem, tv_more;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
         type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
         ruleconditions = (Ruleconditions) getIntent().getBundleExtra("BUNDLE").getSerializable("RULECONDITIONS");
-        ((App)getApplicationContext()).setActivity(this);
+        ((App) getApplicationContext()).setActivity(this);
         initViews();
     }
 
@@ -77,39 +78,42 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         llMore.setOnClickListener(this);
         btnSure.setOnClickListener(this);
     }
-    private void onFabPressed(Class activity,int type) {
+
+    private void onFabPressed(Class activity, int type) {
         Intent intent = new Intent(this, activity);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("CONDITION",mCondition);
-        bundle.putSerializable("RULECONDITIONS",ruleconditions);
-        bundle.putInt("TYPE",type);
-        intent.putExtra("BUNDLE",bundle);
-        startActivityForResult(intent,100);
+        bundle.putSerializable("CONDITION", mCondition);
+        bundle.putSerializable("RULECONDITIONS", ruleconditions);
+        bundle.putInt("TYPE", type);
+        intent.putExtra("BUNDLE", bundle);
+        startActivityForResult(intent, 100);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){ // 8是大于，小于，等于 ，9是温度
+        switch (v.getId()) { // 8是大于，小于，等于 ，9是温度
             case R.id.tvEditSure:
-                if(TextUtils.isEmpty(tv_more.getText().toString())){
-                    ToastUtil.showToast(this,getString(R.string.please_select_status));
+                if (TextUtils.isEmpty(tv_more.getText().toString())) {
+                    ToastUtil.showToast(this, getString(R.string.please_select_status));
                     return;
                 }
-                if(TextUtils.isEmpty(tv_tem.getText().toString())){
-                    ToastUtil.showToast(this,getString(R.string.please_select_temp));
+                if (TextUtils.isEmpty(tv_tem.getText().toString())) {
+                    ToastUtil.showToast(this, getString(R.string.please_select_temp));
                     return;
                 }
                 //确定按钮
-                AddControlRuleActivity.mConditionList.add(mCondition);
-                ((App)getApplicationContext()).finishActivity();
+                NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+                mNewRuleItemInfo.setmCondition(mCondition);
+                AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo);
+                ((App) getApplicationContext()).finishActivity();
                 break;
             case R.id.llMore:
                 requestCode = 313;
-                onFabPressed(DialogActivity.class,8);
+                onFabPressed(DialogActivity.class, 8);
                 break;
             case R.id.llTem:
                 requestCode = 314;
-                onFabPressed(DialogTemActivity.class,9);
+                onFabPressed(DialogTemActivity.class, 9);
                 break;
         }
     }
@@ -117,24 +121,24 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode){
+        switch (resultCode) {
             case 31:
                 mCondition = (Condition) data.getSerializableExtra("MCONDITION");
-                if(mCondition.operator.equals(">")) {
+                if (mCondition.operator.equals(">")) {
                     tv_more.setText(R.string.higer);
                 }
-                if(mCondition.operator.equals("=")) {
+                if (mCondition.operator.equals("=")) {
                     tv_more.setText(R.string.equal);
                 }
-                if(mCondition.operator.equals("<")) {
+                if (mCondition.operator.equals("<")) {
                     tv_more.setText(R.string.lower);
                 }
-                Logger.e(TAG,"mCondition="+mCondition.toString());
+                Logger.e(TAG, "mCondition=" + mCondition.toString());
                 break;
             case 32:
                 mCondition = (Condition) data.getSerializableExtra("MCONDITION");
                 tv_tem.setText(mCondition.rightValue);
-                Logger.e(TAG,"mCondition="+mCondition.toString());
+                Logger.e(TAG, "mCondition=" + mCondition.toString());
                 break;
         }
     }

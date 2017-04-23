@@ -28,7 +28,7 @@ public class RuleInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "RuleInfo{" +
+        return "NewRuleInfo{" +
                 "id=" + id +
                 ", rulename='" + rulename + '\'' +
                 ", relationtype=" + relationtype +

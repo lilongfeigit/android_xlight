@@ -13,6 +13,7 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
+import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
 
 /**
@@ -87,7 +88,14 @@ public class EmailActivity extends AppCompatActivity {
                 mActionnotify.emailaddress = email;
                 mActionnotify.content = emailContext;
                 mActionnotify.subject = emailTitle;
-                AddControlRuleActivity.mActionnotify.add(mActionnotify);
+
+
+
+
+                NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+                mNewRuleItemInfo.setmActionnotify(mActionnotify);
+                AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
+
                 ((App)getApplicationContext()).finishActivity();
             }
         });

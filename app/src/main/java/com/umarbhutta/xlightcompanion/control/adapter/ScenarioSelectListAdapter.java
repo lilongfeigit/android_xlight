@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
+import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
@@ -97,7 +98,10 @@ public class ScenarioSelectListAdapter extends RecyclerView.Adapter {
             mActioncmd.actioncmdfield = new ArrayList<Actioncmdfield>();
         }
         mActioncmd.actioncmdfield.add(actioncmdfield);
-        AddControlRuleActivity.mActioncmdList.add(mActioncmd);
+
+        NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+        mNewRuleItemInfo.setmActioncmd(mActioncmd);
+        AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
         ((App) mContext.getApplicationContext()).finishActivity();
     }
 

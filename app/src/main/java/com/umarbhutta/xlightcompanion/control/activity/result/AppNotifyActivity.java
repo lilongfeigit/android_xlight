@@ -13,6 +13,7 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
+import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
 
 /**
@@ -70,7 +71,10 @@ public class AppNotifyActivity extends AppCompatActivity {
                 mActionnotify.content = appContext;
                 mActionnotify.subject = getString(R.string.app_notify);
 
-                AddControlRuleActivity.mActionnotify.add(mActionnotify);
+
+                NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+                mNewRuleItemInfo.setmActionnotify(mActionnotify);
+                AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
                 ((App) getApplicationContext()).finishActivity();
             }
         });

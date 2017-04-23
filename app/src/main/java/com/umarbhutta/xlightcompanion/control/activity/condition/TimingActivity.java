@@ -14,6 +14,7 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogWeelActivity;
+import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.control.bean.SelectTime;
 import com.umarbhutta.xlightcompanion.control.bean.SelectWeek;
 import com.umarbhutta.xlightcompanion.okHttp.model.Schedule;
@@ -103,7 +104,12 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
                     ToastUtil.showToast(TimingActivity.this,getString(R.string.please_select_time));
                     return;
                 }
-               AddControlRuleActivity.mScheduleList.add(mSchedule);
+
+
+                NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+                mNewRuleItemInfo.setmSchedule(mSchedule);
+                AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo);
+
                 if(resultCodeA==1){
                     AddControlRuleActivity.mScheduleListStr.add(selectTime.name);
                 }else if(resultCodeA==2){

@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
@@ -106,7 +107,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
                 mNewRuleItemInfo.setmControlRuleDevice(mContolRuleDevice);
                 AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
-                finish();
+                ((App) mContext.getApplicationContext()).finishActivity();
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);

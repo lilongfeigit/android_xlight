@@ -56,6 +56,14 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
         dialogAddlist = (ListView) findViewById(R.id.dialogAddlist);
         dialogMiuList = (ListView) findViewById(R.id.dialogMiulist);
 
+//        LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) dialogAddlist.getLayoutParams();
+//        params1.height = DisplayUtils.getScreenHeight(this) / 2;
+//        dialogAddlist.setLayoutParams(params1);
+//
+//        LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) dialogMiuList.getLayoutParams();
+//        params2.height = DisplayUtils.getScreenHeight(this) / 2;
+//        dialogAddlist.setLayoutParams(params2);
+
         rb_add = (RadioButton) findViewById(R.id.rb_add);
         rb_add.setOnClickListener(this);
         rb_miu = (RadioButton) findViewById(R.id.rb_miu);

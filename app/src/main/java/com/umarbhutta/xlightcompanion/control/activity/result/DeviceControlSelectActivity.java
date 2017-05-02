@@ -107,7 +107,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
                 mNewRuleItemInfo.setmControlRuleDevice(mContolRuleDevice);
                 AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
-                ((App) mContext.getApplicationContext()).finishActivity();
+                ((App)getApplicationContext()).finishActivity();
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);

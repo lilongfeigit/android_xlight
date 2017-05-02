@@ -19,7 +19,10 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.ControlFragment;
+import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
+import com.umarbhutta.xlightcompanion.control.bean.ControlRuleDevice;
+import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
@@ -93,7 +96,16 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 确定提交按钮
+                //确定提交按钮
+                ControlRuleDevice mContolRuleDevice = new ControlRuleDevice();
+                mContolRuleDevice.roomName = lampName.getText().toString();
+                mContolRuleDevice.brightness = brightnessSeekBar.getProgress();
+                mContolRuleDevice.cct = cctSeekBar.getProgress();
+                mContolRuleDevice.statues = (state==false?"关":"开");
+
+                NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+                mNewRuleItemInfo.setmControlRuleDevice(mContolRuleDevice);
+                AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
                 finish();
             }
         });
@@ -122,10 +134,10 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                 //ParticleAdapter.JSONCommandPower(ParticleAdapter.DEFAULT_DEVICE_ID, state);
                 //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, state);
                 //TODO 测试sdk 这里的id 需要确定一下。 deviceList.get(mPositon).id 这里的id代表什么意思。
-                if (null != SlidingMenuMainActivity.m_mainDevice && null != curMainRows) {
-                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(curMainRows.id);
-                    SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
-                }
+//                if (null != SlidingMenuMainActivity.m_mainDevice && null != curMainRows) {
+//                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(curMainRows.id);
+//                    SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
+//                }
             }
         });
 

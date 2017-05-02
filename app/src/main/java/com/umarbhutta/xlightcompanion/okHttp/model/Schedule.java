@@ -14,6 +14,7 @@ public class Schedule implements Serializable{
     public int minute;
     public int status;
     public int isrepeat;//0代表不重复，1代表重复
+    public String scheduleName;
 
     @Override
     public String toString() {
@@ -24,6 +25,8 @@ public class Schedule implements Serializable{
                 ", hour=" + hour +
                 ", minute=" + minute +
                 ", status=" + status +
+                ", isrepeat=" + isrepeat +
+                ", scheduleName='" + scheduleName + '\'' +
                 '}';
     }
 }

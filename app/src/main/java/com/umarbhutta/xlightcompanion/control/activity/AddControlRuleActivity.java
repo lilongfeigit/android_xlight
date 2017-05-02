@@ -15,6 +15,7 @@ import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.adapter.NewRuleAdapter;
 import com.umarbhutta.xlightcompanion.control.activity.condition.EntryConditionActivity;
 import com.umarbhutta.xlightcompanion.control.activity.result.ControlRuseltActivity;
+import com.umarbhutta.xlightcompanion.control.bean.ControlRuleDevice;
 import com.umarbhutta.xlightcompanion.control.bean.NewRuleInfo;
 import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
@@ -184,7 +185,9 @@ public class AddControlRuleActivity extends AppCompatActivity {
         List<Condition> mConditionList = new ArrayList<Condition>();
         List<Actioncmd> mActioncmdList = new ArrayList<Actioncmd>();
         List<Actionnotify> mActionnotifyList = new ArrayList<Actionnotify>();
+        List<ControlRuleDevice> mControlRuleDeviceList = new ArrayList<ControlRuleDevice>();
 
+        //条件
         for (NewRuleItemInfo info : mNewRuleConditionInfoList) {
             switch (info.getType()) {
                 case 0:
@@ -202,7 +205,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
             }
         }
 
-
+        //结果
         for (NewRuleItemInfo info : mNewRuleResultInfoList) {
             switch (info.getType()) {
                 case 0:
@@ -216,6 +219,9 @@ public class AddControlRuleActivity extends AppCompatActivity {
                     break;
                 case 3:
                     mActionnotifyList.add(info.getmActionnotify());
+                    break;
+                case 4:
+                    mControlRuleDeviceList.add(info.getmControlRuleDevice());
                     break;
             }
         }

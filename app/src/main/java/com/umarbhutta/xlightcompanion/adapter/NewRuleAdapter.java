@@ -213,7 +213,6 @@ public class NewRuleAdapter extends BaseAdapter {
             }
         });
 
-
         return convertView;
     }
 

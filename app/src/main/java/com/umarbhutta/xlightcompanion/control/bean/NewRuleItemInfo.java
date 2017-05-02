@@ -22,6 +22,8 @@ public class NewRuleItemInfo {
     private Actioncmd mActioncmd;
     private Actionnotify mActionnotify;
 
+    private ControlRuleDevice mControlRuleDevice;//控制的结果
+
     /**
      * 用于显示添加规则页面的item
      */
@@ -41,7 +43,7 @@ public class NewRuleItemInfo {
 
     public void setmSchedule(Schedule mSchedule) {
         this.mSchedule = mSchedule;
-        setShowText(mSchedule.hour + ":" + mSchedule.minute + "     ");
+        setShowText(mSchedule.hour + ":" + mSchedule.minute + " "+mSchedule.scheduleName);
     }
 
     public Condition getmCondition() {
@@ -80,6 +82,15 @@ public class NewRuleItemInfo {
                 setShowText(mActionnotify.emailaddress + " " + mActionnotify.content);
             }
         }
+    }
+
+    public ControlRuleDevice getmControlRuleDevice() {
+        return mControlRuleDevice;
+    }
+
+    public void setmControlRuleDevice(ControlRuleDevice mControlRuleDevice) {
+        this.mControlRuleDevice = mControlRuleDevice;
+        setShowText(mControlRuleDevice.roomName + " " + mControlRuleDevice.statues+" 亮度："+mControlRuleDevice.brightness+" 色温："+mControlRuleDevice.cct);
     }
 
     /**

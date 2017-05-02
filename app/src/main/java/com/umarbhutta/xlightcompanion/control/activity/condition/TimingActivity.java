@@ -105,7 +105,6 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
                     return;
                 }
 
-
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
                 mNewRuleItemInfo.setmSchedule(mSchedule);
                 AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo);
@@ -142,6 +141,7 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
                 tv_week.setText(selectTime.name);
                 mSchedule.weekdays=selectTime.weekdays;
                 mSchedule.isrepeat = selectTime.isrepeat;
+                mSchedule.scheduleName = selectTime.name;
                 break;
             case 20:
                 resultCodeA=2;
@@ -154,11 +154,11 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 mSchedule.weekdays="["+weekDays.substring(0,weekDays.length()-1)+"]";
                 mSchedule.isrepeat =1;
+                mSchedule.scheduleName = strWeekList.substring(0,strWeekList.length()-1);
                 tv_week.setText(strWeekList.substring(0,strWeekList.length()-1));
                 break;
             default:
                 break;
         }
-
     }
 }

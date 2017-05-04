@@ -31,879 +31,879 @@ import com.jeremyfeinstein.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 
 public class SlidingMenu extends RelativeLayout {
 
-	private static final String TAG = "SlidingMenu";
-
-	public static final int SLIDING_WINDOW = 0;
-	public static final int SLIDING_CONTENT = 1;
-	private boolean mActionbarOverlay = false;
-
-	/**
-	 * ÎªsetTouchModeAbove()·½·¨ÉèÖÃÒ»¸ö³£Á¿Öµ£¬ÔÊĞí»¬¶¯²Ëµ¥Í¨¹ı»¬¶¯ÆÁÄ»µÄ±ßÔµ±»´ò¿ª 
-	 */
-	public static final int TOUCHMODE_MARGIN = 0;
-
-	/** 
-	 * ÎªsetTouchModeAbove()·½·¨ÉèÖÃÒ»¸ö³£Á¿Öµ£¬ÔÊĞí»¬¶¯²Ëµ¥Í¨¹ı»¬¶¯ÆÁÄ»µÄÈÎºÎµØ·½±»´ò¿ª
-	 */
-	public static final int TOUCHMODE_FULLSCREEN = 1;
-
-	/** 
-	 * ÎªsetTouchModeAbove()·½·¨ÉèÖÃÒ»¸ö³£Á¿Öµ£¬²»ÔÊĞí»¬¶¯²Ëµ¥Í¨¹ı»¬¶¯ÆÁÄ»±»´ò¿ª
-	 */
-	public static final int TOUCHMODE_NONE = 2;
-
-	/** 
-	 * ÎªsetMode()·½·¨ÉèÖÃÒ»¸ö³£Á¿Öµ£¬°Ñ»¬¶¯²Ëµ¥·ÅÔÚ×ó±ß
-	 */
-	public static final int LEFT = 0;
-
-	/** 
-	 * ÎªsetMode()·½·¨ÉèÖÃÒ»¸ö³£Á¿Öµ£¬°Ñ»¬¶¯²Ëµ¥·ÅÔÚÓÒ±ß
-	 */
-	public static final int RIGHT = 1;
-
-	/** 
-	 * ÎªsetMode()·½·¨ÉèÖÃÒ»¸ö³£Á¿Öµ£¬°Ñ»¬¶¯²Ëµ¥·ÅÔÚ×óÓÒÁ½±ß
-	 */
-	public static final int LEFT_RIGHT = 2;
-
-	/**
-	 * ¶¨ÒåÉÏ·½ÊÓÍ¼¶ÔÏó
-	 */
-	private CustomViewAbove mViewAbove;
-
-	/**
-	 * ¶¨ÒåÏÂ·½ÊÓÍ¼¶ÔÏó
-	 */
-	private CustomViewBehind mViewBehind;
-
-	/**
-	 * ¶¨Òå»¬¶¯²Ëµ¥´ò¿ªµÄ¼àÌı¶ÔÏó
-	 */
-	private OnOpenListener mOpenListener;
-
-	/**
-	 * ¶¨Òå»¬¶¯²Ëµ¥¹Ø±ÕµÄ¼àÌı¶ÔÏó
-	 */
-	private OnCloseListener mCloseListener;
-
-	/**
-	 * »¬¶¯²Ëµ¥´ò¿ªÊ±µÄ¼àÌıÊÂ¼ş
-	 */
-	public interface OnOpenListener {	
-		public void onOpen();
-	}
-
-	/**
-	 * ¼à²â»¬¶¯²Ëµ¥ÊÇ·ñÒÑ¾­´ò¿ªµÄ¼àÌıÊÂ¼ş
-	 */
-	public interface OnOpenedListener {
-		public void onOpened();
-	}
-
-	/**
-	 * »¬¶¯²Ëµ¥¹Ø±ÕÊ±µÄ¼àÌıÊÂ¼ş
-	 */
-	public interface OnCloseListener {
-		public void onClose();
-	}
-
-	/**
-	 * ¼à²â»¬¶¯²Ëµ¥ÊÇ·ñÒÑ¾­¹Ø±ÕµÄ¼àÌıÊÂ¼ş
-	 */
-	public interface OnClosedListener {
-		public void onClosed();
-	}
-
-	/**
-	 * The Interface CanvasTransformer.
-	 */
-	public interface CanvasTransformer {
-
-		/**
-		 * Transform canvas.
-		 *
-		 * @param canvas the canvas
-		 * @param percentOpen the percent open
-		 */
-		public void transformCanvas(Canvas canvas, float percentOpen);
-	}
-
-	/**
-	 * ³õÊ¼»¯»¬¶¯²Ëµ¥
-	 *
-	 * @param context the associated Context
-	 */
-	public SlidingMenu(Context context) {
-		this(context, null);
-	}
-
-	/**
-	 * ³õÊ¼»¯»¬¶¯²Ëµ¥
-	 *
-	 * @param activity the activity to attach slidingmenu
-	 * @param slideStyle the slidingmenu style
-	 */
-	public SlidingMenu(Activity activity, int slideStyle) {
-		this(activity, null);
-		this.attachToActivity(activity, slideStyle);
-	}
-
-	/**
-	 * ³õÊ¼»¯»¬¶¯²Ëµ¥
-	 *
-	 * @param context the associated Context
-	 * @param attrs the attrs
-	 */
-	public SlidingMenu(Context context, AttributeSet attrs) {
-		this(context, attrs, 0);
-	}
-
-	/**
-	 * ³õÊ¼»¯»¬¶¯²Ëµ¥
-	 *
-	 * @param context the associated Context
-	 * @param attrs the attrs
-	 * @param defStyle the def style
-	 */
-	public SlidingMenu(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		
-		LayoutParams behindParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		mViewBehind = new CustomViewBehind(context);
-		addView(mViewBehind, behindParams);
-		LayoutParams aboveParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		mViewAbove = new CustomViewAbove(context);
-		addView(mViewAbove, aboveParams);
-		// register the CustomViewBehind with the CustomViewAbove
-		mViewAbove.setCustomViewBehind(mViewBehind);
-		mViewBehind.setCustomViewAbove(mViewAbove);
-		mViewAbove.setOnPageChangeListener(new OnPageChangeListener() {
-			public static final int POSITION_OPEN = 0;
-			public static final int POSITION_CLOSE = 1;
-
-			public void onPageScrolled(int position, float positionOffset,
-					int positionOffsetPixels) { }
-
-			public void onPageSelected(int position) {
-				if (position == POSITION_OPEN && mOpenListener != null) {
-					mOpenListener.onOpen();
-				} else if (position == POSITION_CLOSE && mCloseListener != null) {
-					mCloseListener.onClose();
-				}
-			}
-		});
-
-		// now style everything!
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SlidingMenu);
-		// set the above and behind views if defined in xml
-		int mode = ta.getInt(R.styleable.SlidingMenu_mode, LEFT);
-		setMode(mode);
-		int viewAbove = ta.getResourceId(R.styleable.SlidingMenu_viewAbove, -1);
-		if (viewAbove != -1) {
-			setContent(viewAbove);
-		} else {
-			setContent(new FrameLayout(context));
-		}
-		int viewBehind = ta.getResourceId(R.styleable.SlidingMenu_viewBehind, -1);
-		if (viewBehind != -1) {
-			setMenu(viewBehind); 
-		} else {
-			setMenu(new FrameLayout(context));
-		}
-		int touchModeAbove = ta.getInt(R.styleable.SlidingMenu_touchModeAbove, TOUCHMODE_MARGIN);
-		setTouchModeAbove(touchModeAbove);
-		int touchModeBehind = ta.getInt(R.styleable.SlidingMenu_touchModeBehind, TOUCHMODE_MARGIN);
-		setTouchModeBehind(touchModeBehind);
-
-		int offsetBehind = (int) ta.getDimension(R.styleable.SlidingMenu_behindOffset, -1);
-		int widthBehind = (int) ta.getDimension(R.styleable.SlidingMenu_behindWidth, -1);
-		if (offsetBehind != -1 && widthBehind != -1)
-			throw new IllegalStateException("Cannot set both behindOffset and behindWidth for a SlidingMenu");
-		else if (offsetBehind != -1)
-			setBehindOffset(offsetBehind);
-		else if (widthBehind != -1)
-			setBehindWidth(widthBehind);
-		else
-			setBehindOffset(0);
-		float scrollOffsetBehind = ta.getFloat(R.styleable.SlidingMenu_behindScrollScale, 0.33f);
-		setBehindScrollScale(scrollOffsetBehind);
-		int shadowRes = ta.getResourceId(R.styleable.SlidingMenu_shadowDrawable, -1);
-		if (shadowRes != -1) {
-			setShadowDrawable(shadowRes);
-		}
-		int shadowWidth = (int) ta.getDimension(R.styleable.SlidingMenu_shadowWidth, 0);
-		setShadowWidth(shadowWidth);
-		boolean fadeEnabled = ta.getBoolean(R.styleable.SlidingMenu_fadeEnabled, true);
-		setFadeEnabled(fadeEnabled);
-		float fadeDeg = ta.getFloat(R.styleable.SlidingMenu_fadeDegree, 0.33f);
-		setFadeDegree(fadeDeg);
-		boolean selectorEnabled = ta.getBoolean(R.styleable.SlidingMenu_selectorEnabled, false);
-		setSelectorEnabled(selectorEnabled);
-		int selectorRes = ta.getResourceId(R.styleable.SlidingMenu_selectorDrawable, -1);
-		if (selectorRes != -1)
-			setSelectorDrawable(selectorRes);
-		ta.recycle();
-	}
-
-	/**
-	 * °Ñ»¬¶¯²Ëµ¥Ìí¼Ó½øËùÓĞµÄActivityÖĞ
-	 * 
-	 * @param activity the Activity
-	 * @param slideStyle either SLIDING_CONTENT or SLIDING_WINDOW
-	 */
-	public void attachToActivity(Activity activity, int slideStyle) {
-		attachToActivity(activity, slideStyle, false);
-	}
-
-	/**
-	 * °Ñ»¬¶¯²Ëµ¥Ìí¼Ó½øËùÓĞµÄActivityÖĞ
-	 * 
-	 * @param activity the Activity
-	 * @param slideStyle either SLIDING_CONTENT or SLIDING_WINDOW
-	 * @param actionbarOverlay whether or not the ActionBar is overlaid
-	 */
-	public void attachToActivity(Activity activity, int slideStyle, boolean actionbarOverlay) {
-		if (slideStyle != SLIDING_WINDOW && slideStyle != SLIDING_CONTENT)
-			throw new IllegalArgumentException("slideStyle must be either SLIDING_WINDOW or SLIDING_CONTENT");
-
-		if (getParent() != null)
-			throw new IllegalStateException("This SlidingMenu appears to already be attached");
-
-		// get the window background
-		TypedArray a = activity.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowBackground});
-		int background = a.getResourceId(0, 0);
-		a.recycle();
-
-		switch (slideStyle) {
-		case SLIDING_WINDOW:
-			mActionbarOverlay = false;
-			ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
-			ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
-			// save ActionBar themes that have transparent assets
-			decorChild.setBackgroundResource(background);
-			decor.removeView(decorChild);
-			decor.addView(this);
-			setContent(decorChild);
-			break;
-		case SLIDING_CONTENT:
-			mActionbarOverlay = actionbarOverlay;
-			// take the above view out of
-			ViewGroup contentParent = (ViewGroup)activity.findViewById(android.R.id.content);
-			View content = contentParent.getChildAt(0);
-			contentParent.removeView(content);
-			contentParent.addView(this);
-			setContent(content);
-			// save people from having transparent backgrounds
-			if (content.getBackground() == null)
-				content.setBackgroundResource(background);
-			break;
-		}
-	}
-
-	/**
-	 * ´Ó²¼¾Ö×ÊÔ´ÎÄ¼şÖĞÉèÖÃÉÏ·½µÄÊÓÍ¼ÄÚÈİ£¬Õâ¸ö²¼¾Ö»á±»Ìî³äÌí¼Óµ½ËùÓĞÍ¼²ãµÄ×îÉÏ·½
-	 */
-	public void setContent(int res) {
-		setContent(LayoutInflater.from(getContext()).inflate(res, null));
-	}
-
-	/**
-	 * Í¨¹ıViewÀ´ÉèÖÃÉÏ·½µÄÊÓÍ¼ÄÚÈİ
-	 */
-	public void setContent(View view) {
-		mViewAbove.setContent(view);
-		showContent();
-	}
-
-	/**
-	 * µÃµ½ÉÏ·½µÄÊÓÍ¼ÄÚÈİ
-	 */
-	public View getContent() {
-		return mViewAbove.getContent();
-	}
-
-	/**
-	 * ´Ó²¼¾Ö×ÊÔ´ÎÄ¼şÖĞÉèÖÃÏÂ·½£¨»¬¶¯²Ëµ¥£©µÄÊÓÍ¼ÄÚÈİ£¬Õâ¸ö²¼¾Ö»á±»Ìî³äÌí¼Óµ½ËùÓĞÍ¼²ãµÄ×îÏÂ·½
-	 * 
-	 * @param res the new content
-	 */
-	public void setMenu(int res) {
-		setMenu(LayoutInflater.from(getContext()).inflate(res, null));
-	}
-
-	/**
-	 * µÃµ½ÏÂ·½£¨»¬¶¯²Ëµ¥£©µÄÊÓÍ¼ÄÚÈİ
-	 *
-	 * @param view The desired content to display.
-	 */
-	public void setMenu(View v) {
-		mViewBehind.setContent(v);
-	}
-
-	/**
-	 * µÃµ½ÏÂ·½£¨»¬¶¯²Ëµ¥£©µÄÊÓÍ¼ÄÚÈİ
-	 */
-	public View getMenu() {
-		return mViewBehind.getContent();
-	}
-
-	/**
-	 * ´Ó²¼¾Ö×ÊÔ´ÎÄ¼şÖĞÉèÖÃÏÂ·½£¨ÓÒ±ß»¬¶¯²Ëµ¥£©µÄÊÓÍ¼ÄÚÈİ£¬Õâ¸ö²¼¾Ö»á±»Ìî³äÌí¼Óµ½ËùÓĞÍ¼²ãµÄ×îÏÂ·½
-	 */
-	public void setSecondaryMenu(int res) {
-		setSecondaryMenu(LayoutInflater.from(getContext()).inflate(res, null));
-	}
-
-	/**
-	 * ÉèÖÃÏÂ·½£¨ÓÒ±ß»¬¶¯²Ëµ¥£©µÄÊÓÍ¼ÄÚÈİ
-	 */
-	public void setSecondaryMenu(View v) {
-		mViewBehind.setSecondaryContent(v);
-	}
-
-	/**
-	 * µÃµ½ÏÂ·½£¨ÓÒ±ß»¬¶¯²Ëµ¥£©µÄÊÓÍ¼ÄÚÈİ
-	 */
-	public View getSecondaryMenu() {
-		return mViewBehind.getSecondaryContent();
-	}
-
-	/**
-	 * ÉèÖÃÉÏ·½ÊÓÍ¼ÊÇ·ñÄÜ¹»»¬¶¯
-	 */
-	public void setSlidingEnabled(boolean b) {
-		mViewAbove.setSlidingEnabled(b);
-	}
-
-	/**
-	 * ¼ì²âÉÏ·½ÊÓÍ¼ÊÇ·ñÄÜ¹»»¬¶¯
-	 */
-	public boolean isSlidingEnabled() {
-		return mViewAbove.isSlidingEnabled();
-	}
-
-	/**
-	 * ÉèÖÃ»¬¶¯²Ëµ¥³öÏÖÔÚÊÓÍ¼ÖĞµÄÎ»ÖÃ
-	 * 
-	 * @param mode must be either SlidingMenu.LEFT or SlidingMenu.RIGHT
-	 */
-	public void setMode(int mode) {
-		if (mode != LEFT && mode != RIGHT && mode != LEFT_RIGHT) {
-			throw new IllegalStateException("SlidingMenu mode must be LEFT, RIGHT, or LEFT_RIGHT");
-		}
-		mViewBehind.setMode(mode);
-	}
-
-	/**
-	 * µÃµ½»¬¶¯²Ëµ¥ÔÚÊÓÍ¼ÖĞµÄÎ»ÖÃ
-	 * 
-	 * @return the current mode, either SlidingMenu.LEFT or SlidingMenu.RIGHT
-	 */
-	public int getMode() {
-		return mViewBehind.getMode();
-	}
-
-	/**
-	 * ÉèÖÃ»¬¶¯²Ëµ¥ÊÇ·ñÊÇ¾²Ì¬Ä£Ê½(²»ÄÜ¹»Ê¹ÓÃ»¬¶¯²Ëµ¥)
-	 */
-	public void setStatic(boolean b) {
-		if (b) {
-			setSlidingEnabled(false);
-			mViewAbove.setCustomViewBehind(null);
-			mViewAbove.setCurrentItem(1);
-			//			mViewBehind.setCurrentItem(0);	
-		} else {
-			mViewAbove.setCurrentItem(1);
-			//			mViewBehind.setCurrentItem(1);
-			mViewAbove.setCustomViewBehind(mViewBehind);
-			setSlidingEnabled(true);
-		}
-	}
-
-	/**
-	 * ´ò¿ª»¬¶¯²Ëµ¥²¢ÏÔÊ¾²Ëµ¥µÄÊÓÍ¼
-	 */
-	public void showMenu() {
-		showMenu(true);
-	}
-
-	/**
-	 * ÊÇ·ñÊ¹ÓÃ¶¯»­Ğ§¹û´ò¿ª»¬¶¯²Ëµ¥²¢ÏÔÊ¾²Ëµ¥µÄÊÓÍ¼
-	 */
-	public void showMenu(boolean animate) {
-		mViewAbove.setCurrentItem(0, animate);
-	}
-
-	/**
-	 * ´ò¿ªÓÒ±ßµÄ»¬¶¯²Ëµ¥²¢ÏÔÊ¾²Ëµ¥µÄÊÓÍ¼ 
-	 */
-	public void showSecondaryMenu() {
-		showSecondaryMenu(true);
-	}
-
-	/**
-	 * ÊÇ·ñÊ¹ÓÃ¶¯»­Ğ§¹û´ò¿ªÓÒ±ßµÄ»¬¶¯²Ëµ¥²¢ÏÔÊ¾²Ëµ¥µÄÊÓÍ¼
-	 */
-	public void showSecondaryMenu(boolean animate) {
-		mViewAbove.setCurrentItem(2, animate);
-	}
-
-	/**
-	 * ¹Ø±Õ²Ëµ¥²¢ÏÔÊ¾ÉÏ·½µÄÊÓÍ¼
-	 */
-	public void showContent() {
-		showContent(true);
-	}
-
-	/**
-	 * ÊÇ·ñÊ¹ÓÃ¶¯»­Ğ§¹û¹Ø±Õ²Ëµ¥²¢ÏÔÊ¾ÉÏ·½µÄÊÓÍ¼
-	 */
-	public void showContent(boolean animate) {
-		mViewAbove.setCurrentItem(1, animate);
-	}
-
-	/**
-	 * »¬¶¯²Ëµ¥µÄ¿ª¹Ø
-	 */
-	public void toggle() {
-		toggle(true);
-	}
-
-	/**
-	 * ÊÇ·ñÊ¹ÓÃ¶¯»­Ğ§¹û´ò¿ª»ò¹Ø±Õ»¬¶¯²Ëµ¥
-	 */
-	public void toggle(boolean animate) {
-		if (isMenuShowing()) {
-			showContent(animate);
-		} else {
-			showMenu(animate);
-		}
-	}
-
-	/**
-	 * ¼ì²â»¬¶¯²Ëµ¥ÊÇ·ñÕıÔÚ±»ÏÔÊ¾
-	 */
-	public boolean isMenuShowing() {
-		return mViewAbove.getCurrentItem() == 0 || mViewAbove.getCurrentItem() == 2;
-	}
-	
-	/**
-	 * ¼ì²âÓÒ±ß»¬¶¯²Ëµ¥ÊÇ·ñÕıÔÚ±»ÏÔÊ¾
-	 */
-	public boolean isSecondaryMenuShowing() {
-		return mViewAbove.getCurrentItem() == 2;
-	}
-
-	/**
-	 * µÃµ½ÏÂ·½ÊÓÍ¼µÄÆ«ÒÆÁ¿
-	 */
-	public int getBehindOffset() {
-		return ((RelativeLayout.LayoutParams)mViewBehind.getLayoutParams()).rightMargin;
-	}
-
-	/**
-	 * ¸ù¾İÏñËØµÄÖµÀ´ÉèÖÃÏÂ·½ÊÓÍ¼µÄÆ«ÒÆÁ¿
-	 *
-	 * @param i The margin, in pixels, on the right of the screen that the behind view scrolls to.
-	 */
-	public void setBehindOffset(int i) {		
-		mViewBehind.setWidthOffset(i);
-	}
-
-	/**
-	 * ¸ù¾İdimension×ÊÔ´ÎÄ¼şµÄIDÀ´ÉèÖÃÏÂ·½ÊÓÍ¼µÄÆ«ÒÆÁ¿
-	 *
-	 * @param resID The dimension resource id to be set as the behind offset.
-	 * The menu, when open, will leave this width margin on the right of the screen.
-	 */
-	public void setBehindOffsetRes(int resID) {
-		int i = (int) getContext().getResources().getDimension(resID);
-		setBehindOffset(i);
-	}
-
-	/**
-	 * ¸ù¾İÏñËØµÄÖµÀ´ÉèÖÃÉÏ·½ÊÓÍ¼µÄÆ«ÒÆÁ¿
-	 *
-	 * @param i the new above offset, in pixels
-	 */
-	public void setAboveOffset(int i) {
-		mViewAbove.setAboveOffset(i);
-	}
-
-	/**
-	 * ¸ù¾İdimension×ÊÔ´ÎÄ¼şµÄIDÀ´ÉèÖÃÉÏ·½ÊÓÍ¼µÄÆ«ÒÆÁ¿
-	 *
-	 * @param resID The dimension resource id to be set as the above offset.
-	 */
-	public void setAboveOffsetRes(int resID) {
-		int i = (int) getContext().getResources().getDimension(resID);
-		setAboveOffset(i);
-	}
-
-	/**
-	 * ¸ù¾İÏñËØµÄÖµÀ´ÉèÖÃÏÂ·½ÊÓÍ¼µÄ¿í¶È
-	 *
-	 * @param i The width the Sliding Menu will open to, in pixels
-	 */
-	public void setBehindWidth(int i) {
-		int width;
-		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
-				.getDefaultDisplay();
-		try {
-			Class<?> cls = Display.class;
-			Class<?>[] parameterTypes = {Point.class};
-			Point parameter = new Point();
-			Method method = cls.getMethod("getSize", parameterTypes);
-			method.invoke(display, parameter);
-			width = parameter.x;
-		} catch (Exception e) {
-			width = display.getWidth();
-		}
-		setBehindOffset(width-i);
-	}
-
-	/**
-	 * ¸ù¾İdimension×ÊÔ´ÎÄ¼şµÄIDÀ´ÉèÖÃÏÂ·½ÊÓÍ¼µÄ¿í¶È
-	 *
-	 * @param res The dimension resource id to be set as the behind width offset.
-	 * The menu, when open, will open this wide.
-	 */
-	public void setBehindWidthRes(int res) {
-		int i = (int) getContext().getResources().getDimension(res);
-		setBehindWidth(i);
-	}
-
-	/**
-	 * µÃµ½ÏÂ·½ÊÓÍ¼µÄÔÚ¹ö¶¯Ê±µÄËõ·Å±ÈÀı
-	 *
-	 * @return The scale of the parallax scroll
-	 */
-	public float getBehindScrollScale() {
-		return mViewBehind.getScrollScale();
-	}
-	
-	/**
-	 * ÉèÖÃÏÂ·½ÊÓÍ¼µÄÔÚ¹ö¶¯Ê±µÄËõ·Å±ÈÀı
-	 *
-	 * @param f The scale of the parallax scroll (i.e. 1.0f scrolls 1 pixel for every
-	 * 1 pixel that the above view scrolls and 0.0f scrolls 0 pixels)
-	 */
-	public void setBehindScrollScale(float f) {
-		if (f < 0 && f > 1)
-			throw new IllegalStateException("ScrollScale must be between 0 and 1");
-		mViewBehind.setScrollScale(f);
-	}
-	
-	/**
-	 * µÃµ½±ßÔµ´¥ÃşµÄÁÙ½çÖµ
-	 */
-	public int getTouchmodeMarginThreshold() {
-		return mViewBehind.getMarginThreshold();
-	}
-	
-	/**
-	 * µ±´¥ÃşµÄµÄÄ£Ê½Îª±ßÔµ´¥ÃşÊ±£¬ÉèÖÃ±ßÔµ´¥ÃşµÄÁÙ½çÖµ
-	 */
-	public void setTouchmodeMarginThreshold(int touchmodeMarginThreshold) {
-		mViewBehind.setMarginThreshold(touchmodeMarginThreshold);
-	}
-
-	/**
-	 * Sets the behind canvas transformer.
-	 *
-	 * @param t the new behind canvas transformer
-	 */
-	public void setBehindCanvasTransformer(CanvasTransformer t) {
-		mViewBehind.setCanvasTransformer(t);
-	}
-
-	/**
-	 * µÃµ½ÉÏ·½ÊÓÍ¼µÄ´¥ÃşÄ£Ê½µÄÖµ
-	 */
-	public int getTouchModeAbove() {
-		return mViewAbove.getTouchMode();
-	}
-
-
-	/**
-	 * ÉèÖÃÉÏ·½ÊÓÍ¼µÄ´¥ÃşÄ£Ê½µÄÖµ
-	 */
-	public void setTouchModeAbove(int i) {
-		if (i != TOUCHMODE_FULLSCREEN && i != TOUCHMODE_MARGIN
-				&& i != TOUCHMODE_NONE) {
-			throw new IllegalStateException("TouchMode must be set to either" +
-					"TOUCHMODE_FULLSCREEN or TOUCHMODE_MARGIN or TOUCHMODE_NONE.");
-		}
-		mViewAbove.setTouchMode(i);
-	}
-
-	/**
-	 * ÉèÖÃÏÂ·½ÊÓÍ¼µÄ´¥ÃşÄ£Ê½µÄÖµ
-	 */
-	public void setTouchModeBehind(int i) {
-		if (i != TOUCHMODE_FULLSCREEN && i != TOUCHMODE_MARGIN
-				&& i != TOUCHMODE_NONE) {
-			throw new IllegalStateException("TouchMode must be set to either" +
-					"TOUCHMODE_FULLSCREEN or TOUCHMODE_MARGIN or TOUCHMODE_NONE.");
-		}
-		mViewBehind.setTouchMode(i);
-	}
-
-	/**
-	 * ¸ù¾İ×ÊÔ´ÎÄ¼şIDÀ´ÉèÖÃ»¬¶¯²Ëµ¥µÄÒõÓ°Ğ§¹û
-	 *
-	 * @param resId the resource ID of the new shadow drawable
-	 */
-	public void setShadowDrawable(int resId) {
-		setShadowDrawable(getContext().getResources().getDrawable(resId));
-	}
-
-	/**
-	 * ¸ù¾İDrawableÀ´ÉèÖÃ»¬¶¯²Ëµ¥µÄÒõÓ°Ğ§¹û
-	 *
-	 * @param d the new shadow drawable
-	 */
-	public void setShadowDrawable(Drawable d) {
-		mViewBehind.setShadowDrawable(d);
-	}
-
-	/**
-	 * ¸ù¾İ×ÊÔ´ÎÄ¼şIDÀ´ÉèÖÃÓÒ±ß»¬¶¯²Ëµ¥µÄÒõÓ°Ğ§¹û
-	 *
-	 * @param resId the resource ID of the new shadow drawable
-	 */
-	public void setSecondaryShadowDrawable(int resId) {
-		setSecondaryShadowDrawable(getContext().getResources().getDrawable(resId));
-	}
-
-	/**
-	 * ¸ù¾İDrawableÀ´ÉèÖÃ»¬¶¯²Ëµ¥µÄÒõÓ°Ğ§¹û
-	 *
-	 * @param d the new shadow drawable
-	 */
-	public void setSecondaryShadowDrawable(Drawable d) {
-		mViewBehind.setSecondaryShadowDrawable(d);
-	}
-
-	/**
-	 * ¸ù¾İdimension×ÊÔ´ÎÄ¼şµÄIDÀ´ÉèÖÃÒõÓ°µÄ¿í¶È
-	 *
-	 * @param resId The dimension resource id to be set as the shadow width.
-	 */
-	public void setShadowWidthRes(int resId) {
-		setShadowWidth((int)getResources().getDimension(resId));
-	}
-
-	/**
-	 * ¸ù¾İÏñËØµÄÖµÀ´ÉèÖÃÒõÓ°µÄ¿í¶È
-	 *
-	 * @param pixels the new shadow width, in pixels
-	 */
-	public void setShadowWidth(int pixels) {
-		mViewBehind.setShadowWidth(pixels);
-	}
-
-	/**
-	 * ÉèÖÃÊÇ·ñÄÜ¹»Ê¹ÓÃ»¬¶¯²Ëµ¥½¥Èë½¥³öµÄĞ§¹û
-	 **/
-	public void setFadeEnabled(boolean b) {
-		mViewBehind.setFadeEnabled(b);
-	}
-
-	/**
-	 * ÉèÖÃ½¥Èë½¥³öĞ§¹ûµÄÖµ
-	 *
-	 * @param f the new fade degree, between 0.0f and 1.0f
-	 */
-	public void setFadeDegree(float f) {
-		mViewBehind.setFadeDegree(f);
-	}
-
-	/**
-	 * Enables or disables whether the selector is drawn
-	 *
-	 * @param b true to draw the selector, false to not draw the selector
-	 */
-	public void setSelectorEnabled(boolean b) {
-		mViewBehind.setSelectorEnabled(true);
-	}
-
-	/**
-	 * Sets the selected view. The selector will be drawn here
-	 *
-	 * @param v the new selected view
-	 */
-	public void setSelectedView(View v) {
-		mViewBehind.setSelectedView(v);
-	}
-
-	/**
-	 * Sets the selector drawable.
-	 *
-	 * @param res a resource ID for the selector drawable
-	 */
-	public void setSelectorDrawable(int res) {
-		mViewBehind.setSelectorBitmap(BitmapFactory.decodeResource(getResources(), res));
-	}
-
-	/**
-	 * Sets the selector drawable.
-	 *
-	 * @param b the new selector bitmap
-	 */
-	public void setSelectorBitmap(Bitmap b) {
-		mViewBehind.setSelectorBitmap(b);
-	}
-
-	/**
-	 * Ìí¼Ó±»ºöÂÔµÄÊÓÍ¼
-	 */
-	public void addIgnoredView(View v) {
-		mViewAbove.addIgnoredView(v);
-	}
-
-	/**
-	 * ÒÆ³ı±»ºöÂÔµÄÊÓÍ¼
-	 */
-	public void removeIgnoredView(View v) {
-		mViewAbove.removeIgnoredView(v);
-	}
-
-	/**
-	 * µ±Ä£Ê½ÎªFullscreenÄ£Ê½Ê±£¬´¥ÃşÆÁÄ»Çå³ıËùÓĞ±»ºöÂÔµÄÊÓÍ¼
-	 */
-	public void clearIgnoredViews() {
-		mViewAbove.clearIgnoredViews();
-	}
-
-	/**
-	 * ÉèÖÃ´ò¿ª¼àÌıÊÂ¼ş£¬µ±»¬¶¯²Ëµ¥±»´ò¿ªÊ±µ÷ÓÃ
-	 */
-	public void setOnOpenListener(OnOpenListener listener) {
-		mOpenListener = listener;
-	}
-
-	/**
-	 * ÉèÖÃ¹Ø±Õ¼àÌıÊÂ¼ş£¬µ±»¬¶¯²Ëµ¥±»¹Ø±ÕÊ±µ÷ÓÃ
-	 */
-	public void setOnCloseListener(OnCloseListener listener) {
-		//mViewAbove.setOnCloseListener(listener);
-		mCloseListener = listener;
-	}
-
-	/**
-	 * ÉèÖÃ´ò¿ª¼àÌıÊÂ¼ş£¬µ±»¬¶¯²Ëµ¥±»´ò¿ª¹ıÖ®ºóµ÷ÓÃ
-	 */
-	public void setOnOpenedListener(OnOpenedListener listener) {
-		mViewAbove.setOnOpenedListener(listener);
-	}
-
-	/**
-	 * ÉèÖÃ¹Ø±Õ¼àÌıÊÂ¼ş£¬µ±»¬¶¯²Ëµ¥±»¹Ø±Õ¹ıÖ®ºóµ÷ÓÃ
-	 */
-	public void setOnClosedListener(OnClosedListener listener) {
-		mViewAbove.setOnClosedListener(listener);
-	}
-
-	/**
-	 * ¹¦ÄÜÃèÊö£º±£´æ×´Ì¬µÄÀà£¬¼Ì³Ğ×ÔBaseSavedState
-	 */
-	public static class SavedState extends BaseSavedState {
-		private final int mItem;
-
-		public SavedState(Parcelable superState, int item) {
-			super(superState);
-			mItem = item;
-		}
-
-		private SavedState(Parcel in) {
-			super(in);
-			mItem = in.readInt();
-		}
-
-		public int getItem() {
-			return mItem;
-		}
-
-		/* (non-Javadoc)
-		 * @see android.view.AbsSavedState#writeToParcel(android.os.Parcel, int)
-		 */
-		public void writeToParcel(Parcel out, int flags) {
-			super.writeToParcel(out, flags);
-			out.writeInt(mItem);
-		}
-
-		public static final Parcelable.Creator<SavedState> CREATOR =
-				new Parcelable.Creator<SavedState>() {
-			public SavedState createFromParcel(Parcel in) {
-				return new SavedState(in);
-			}
-
-			public SavedState[] newArray(int size) {
-				return new SavedState[size];
-			}
-		};
-	}
-
-	/* (non-Javadoc)
-	 * @see android.view.View#onSaveInstanceState()
-	 */
-	@Override
-	protected Parcelable onSaveInstanceState() {
-		Parcelable superState = super.onSaveInstanceState();
-		SavedState ss = new SavedState(superState, mViewAbove.getCurrentItem());
-		return ss;
-	}
-
-	/* (non-Javadoc)
-	 * @see android.view.View#onRestoreInstanceState(android.os.Parcelable)
-	 */
-	@Override
-	protected void onRestoreInstanceState(Parcelable state) {
-		SavedState ss = (SavedState)state;
-		super.onRestoreInstanceState(ss.getSuperState());
-		mViewAbove.setCurrentItem(ss.getItem());
-	}
-
-	/* (non-Javadoc)
-	 * @see android.view.ViewGroup#fitSystemWindows(android.graphics.Rect)
-	 */
-	@SuppressLint("NewApi")
-	@Override
-	protected boolean fitSystemWindows(Rect insets) {
-		int leftPadding = insets.left;
-		int rightPadding = insets.right;
-		int topPadding = insets.top;
-		int bottomPadding = insets.bottom;
-		if (!mActionbarOverlay) {
-			Log.v(TAG, "setting padding!");
-			setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
-		}
-		return true;
-	}
-	
-	private Handler mHandler = new Handler();
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public void manageLayers(float percentOpen) {
-		if (Build.VERSION.SDK_INT < 11) return;
-
-		boolean layer = percentOpen > 0.0f && percentOpen < 1.0f;
-		final int layerType = layer ? View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_NONE;
-
-		if (layerType != getContent().getLayerType()) {
-			mHandler.post(new Runnable() {
-				public void run() {
-					Log.v(TAG, "changing layerType. hardware? " + (layerType == View.LAYER_TYPE_HARDWARE));
-					getContent().setLayerType(layerType, null);
-					getMenu().setLayerType(layerType, null);
-					if (getSecondaryMenu() != null) {
-						getSecondaryMenu().setLayerType(layerType, null);
-					}
-				}
-			});
-		}
-	}
+    private static final String TAG = "SlidingMenu";
+
+    public static final int SLIDING_WINDOW = 0;
+    public static final int SLIDING_CONTENT = 1;
+    private boolean mActionbarOverlay = false;
+
+    /**
+     * ä¸ºsetTouchModeAbove()æ–¹æ³•è®¾ç½®ä¸€ä¸ªå¸¸é‡å€¼ï¼Œå…è®¸æ»‘åŠ¨èœå•é€šè¿‡æ»‘åŠ¨å±å¹•çš„è¾¹ç¼˜è¢«æ‰“å¼€
+     */
+    public static final int TOUCHMODE_MARGIN = 0;
+
+    /**
+     * ä¸ºsetTouchModeAbove()æ–¹æ³•è®¾ç½®ä¸€ä¸ªå¸¸é‡å€¼ï¼Œå…è®¸æ»‘åŠ¨èœå•é€šè¿‡æ»‘åŠ¨å±å¹•çš„ä»»ä½•åœ°æ–¹è¢«æ‰“å¼€
+     */
+    public static final int TOUCHMODE_FULLSCREEN = 1;
+
+    /**
+     * ä¸ºsetTouchModeAbove()æ–¹æ³•è®¾ç½®ä¸€ä¸ªå¸¸é‡å€¼ï¼Œä¸å…è®¸æ»‘åŠ¨èœå•é€šè¿‡æ»‘åŠ¨å±å¹•è¢«æ‰“å¼€
+     */
+    public static final int TOUCHMODE_NONE = 2;
+
+    /**
+     * ä¸ºsetMode()æ–¹æ³•è®¾ç½®ä¸€ä¸ªå¸¸é‡å€¼ï¼ŒæŠŠæ»‘åŠ¨èœå•æ”¾åœ¨å·¦è¾¹
+     */
+    public static final int LEFT = 0;
+
+    /**
+     * ä¸ºsetMode()æ–¹æ³•è®¾ç½®ä¸€ä¸ªå¸¸é‡å€¼ï¼ŒæŠŠæ»‘åŠ¨èœå•æ”¾åœ¨å³è¾¹
+     */
+    public static final int RIGHT = 1;
+
+    /**
+     * ä¸ºsetMode()æ–¹æ³•è®¾ç½®ä¸€ä¸ªå¸¸é‡å€¼ï¼ŒæŠŠæ»‘åŠ¨èœå•æ”¾åœ¨å·¦å³ä¸¤è¾¹
+     */
+    public static final int LEFT_RIGHT = 2;
+
+    /**
+     * å®šä¹‰ä¸Šæ–¹è§†å›¾å¯¹è±¡
+     */
+    private CustomViewAbove mViewAbove;
+
+    /**
+     * å®šä¹‰ä¸‹æ–¹è§†å›¾å¯¹è±¡
+     */
+    private CustomViewBehind mViewBehind;
+
+    /**
+     * å®šä¹‰æ»‘åŠ¨èœå•æ‰“å¼€çš„ç›‘å¬å¯¹è±¡
+     */
+    private OnOpenListener mOpenListener;
+
+    /**
+     * å®šä¹‰æ»‘åŠ¨èœå•å…³é—­çš„ç›‘å¬å¯¹è±¡
+     */
+    private OnCloseListener mCloseListener;
+
+    /**
+     * æ»‘åŠ¨èœå•æ‰“å¼€æ—¶çš„ç›‘å¬äº‹ä»¶
+     */
+    public interface OnOpenListener {
+        public void onOpen();
+    }
+
+    /**
+     * ç›‘æµ‹æ»‘åŠ¨èœå•æ˜¯å¦å·²ç»æ‰“å¼€çš„ç›‘å¬äº‹ä»¶
+     */
+    public interface OnOpenedListener {
+        public void onOpened();
+    }
+
+    /**
+     * æ»‘åŠ¨èœå•å…³é—­æ—¶çš„ç›‘å¬äº‹ä»¶
+     */
+    public interface OnCloseListener {
+        public void onClose();
+    }
+
+    /**
+     * ç›‘æµ‹æ»‘åŠ¨èœå•æ˜¯å¦å·²ç»å…³é—­çš„ç›‘å¬äº‹ä»¶
+     */
+    public interface OnClosedListener {
+        public void onClosed();
+    }
+
+    /**
+     * The Interface CanvasTransformer.
+     */
+    public interface CanvasTransformer {
+
+        /**
+         * Transform canvas.
+         *
+         * @param canvas the canvas
+         * @param percentOpen the percent open
+         */
+        public void transformCanvas(Canvas canvas, float percentOpen);
+    }
+
+    /**
+     * åˆå§‹åŒ–æ»‘åŠ¨èœå•
+     *
+     * @param context the associated Context
+     */
+    public SlidingMenu(Context context) {
+        this(context, null);
+    }
+
+    /**
+     * åˆå§‹åŒ–æ»‘åŠ¨èœå•
+     *
+     * @param activity the activity to attach slidingmenu
+     * @param slideStyle the slidingmenu style
+     */
+    public SlidingMenu(Activity activity, int slideStyle) {
+        this(activity, null);
+        this.attachToActivity(activity, slideStyle);
+    }
+
+    /**
+     * åˆå§‹åŒ–æ»‘åŠ¨èœå•
+     *
+     * @param context the associated Context
+     * @param attrs the attrs
+     */
+    public SlidingMenu(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    /**
+     * åˆå§‹åŒ–æ»‘åŠ¨èœå•
+     *
+     * @param context the associated Context
+     * @param attrs the attrs
+     * @param defStyle the def style
+     */
+    public SlidingMenu(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
+        LayoutParams behindParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        mViewBehind = new CustomViewBehind(context);
+        addView(mViewBehind, behindParams);
+        LayoutParams aboveParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        mViewAbove = new CustomViewAbove(context);
+        addView(mViewAbove, aboveParams);
+        // register the CustomViewBehind with the CustomViewAbove
+        mViewAbove.setCustomViewBehind(mViewBehind);
+        mViewBehind.setCustomViewAbove(mViewAbove);
+        mViewAbove.setOnPageChangeListener(new OnPageChangeListener() {
+            public static final int POSITION_OPEN = 0;
+            public static final int POSITION_CLOSE = 1;
+
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) { }
+
+            public void onPageSelected(int position) {
+                if (position == POSITION_OPEN && mOpenListener != null) {
+                    mOpenListener.onOpen();
+                } else if (position == POSITION_CLOSE && mCloseListener != null) {
+                    mCloseListener.onClose();
+                }
+            }
+        });
+
+        // now style everything!
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SlidingMenu);
+        // set the above and behind views if defined in xml
+        int mode = ta.getInt(R.styleable.SlidingMenu_mode, LEFT);
+        setMode(mode);
+        int viewAbove = ta.getResourceId(R.styleable.SlidingMenu_viewAbove, -1);
+        if (viewAbove != -1) {
+            setContent(viewAbove);
+        } else {
+            setContent(new FrameLayout(context));
+        }
+        int viewBehind = ta.getResourceId(R.styleable.SlidingMenu_viewBehind, -1);
+        if (viewBehind != -1) {
+            setMenu(viewBehind);
+        } else {
+            setMenu(new FrameLayout(context));
+        }
+        int touchModeAbove = ta.getInt(R.styleable.SlidingMenu_touchModeAbove, TOUCHMODE_MARGIN);
+        setTouchModeAbove(touchModeAbove);
+        int touchModeBehind = ta.getInt(R.styleable.SlidingMenu_touchModeBehind, TOUCHMODE_MARGIN);
+        setTouchModeBehind(touchModeBehind);
+
+        int offsetBehind = (int) ta.getDimension(R.styleable.SlidingMenu_behindOffset, -1);
+        int widthBehind = (int) ta.getDimension(R.styleable.SlidingMenu_behindWidth, -1);
+        if (offsetBehind != -1 && widthBehind != -1)
+            throw new IllegalStateException("Cannot set both behindOffset and behindWidth for a SlidingMenu");
+        else if (offsetBehind != -1)
+            setBehindOffset(offsetBehind);
+        else if (widthBehind != -1)
+            setBehindWidth(widthBehind);
+        else
+            setBehindOffset(0);
+        float scrollOffsetBehind = ta.getFloat(R.styleable.SlidingMenu_behindScrollScale, 0.33f);
+        setBehindScrollScale(scrollOffsetBehind);
+        int shadowRes = ta.getResourceId(R.styleable.SlidingMenu_shadowDrawable, -1);
+        if (shadowRes != -1) {
+            setShadowDrawable(shadowRes);
+        }
+        int shadowWidth = (int) ta.getDimension(R.styleable.SlidingMenu_shadowWidth, 0);
+        setShadowWidth(shadowWidth);
+        boolean fadeEnabled = ta.getBoolean(R.styleable.SlidingMenu_fadeEnabled, true);
+        setFadeEnabled(fadeEnabled);
+        float fadeDeg = ta.getFloat(R.styleable.SlidingMenu_fadeDegree, 0.33f);
+        setFadeDegree(fadeDeg);
+        boolean selectorEnabled = ta.getBoolean(R.styleable.SlidingMenu_selectorEnabled, false);
+        setSelectorEnabled(selectorEnabled);
+        int selectorRes = ta.getResourceId(R.styleable.SlidingMenu_selectorDrawable, -1);
+        if (selectorRes != -1)
+            setSelectorDrawable(selectorRes);
+        ta.recycle();
+    }
+
+    /**
+     * æŠŠæ»‘åŠ¨èœå•æ·»åŠ è¿›æ‰€æœ‰çš„Activityä¸­
+     *
+     * @param activity the Activity
+     * @param slideStyle either SLIDING_CONTENT or SLIDING_WINDOW
+     */
+    public void attachToActivity(Activity activity, int slideStyle) {
+        attachToActivity(activity, slideStyle, false);
+    }
+
+    /**
+     * æŠŠæ»‘åŠ¨èœå•æ·»åŠ è¿›æ‰€æœ‰çš„Activityä¸­
+     *
+     * @param activity the Activity
+     * @param slideStyle either SLIDING_CONTENT or SLIDING_WINDOW
+     * @param actionbarOverlay whether or not the ActionBar is overlaid
+     */
+    public void attachToActivity(Activity activity, int slideStyle, boolean actionbarOverlay) {
+        if (slideStyle != SLIDING_WINDOW && slideStyle != SLIDING_CONTENT)
+            throw new IllegalArgumentException("slideStyle must be either SLIDING_WINDOW or SLIDING_CONTENT");
+
+        if (getParent() != null)
+            throw new IllegalStateException("This SlidingMenu appears to already be attached");
+
+        // get the window background
+        TypedArray a = activity.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowBackground});
+        int background = a.getResourceId(0, 0);
+        a.recycle();
+
+        switch (slideStyle) {
+            case SLIDING_WINDOW:
+                mActionbarOverlay = false;
+                ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
+                ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
+                // save ActionBar themes that have transparent assets
+                decorChild.setBackgroundResource(background);
+                decor.removeView(decorChild);
+                decor.addView(this);
+                setContent(decorChild);
+                break;
+            case SLIDING_CONTENT:
+                mActionbarOverlay = actionbarOverlay;
+                // take the above view out of
+                ViewGroup contentParent = (ViewGroup)activity.findViewById(android.R.id.content);
+                View content = contentParent.getChildAt(0);
+                contentParent.removeView(content);
+                contentParent.addView(this);
+                setContent(content);
+                // save people from having transparent backgrounds
+                if (content.getBackground() == null)
+                    content.setBackgroundResource(background);
+                break;
+        }
+    }
+
+    /**
+     * ä»å¸ƒå±€èµ„æºæ–‡ä»¶ä¸­è®¾ç½®ä¸Šæ–¹çš„è§†å›¾å†…å®¹ï¼Œè¿™ä¸ªå¸ƒå±€ä¼šè¢«å¡«å……æ·»åŠ åˆ°æ‰€æœ‰å›¾å±‚çš„æœ€ä¸Šæ–¹
+     */
+    public void setContent(int res) {
+        setContent(LayoutInflater.from(getContext()).inflate(res, null));
+    }
+
+    /**
+     * é€šè¿‡Viewæ¥è®¾ç½®ä¸Šæ–¹çš„è§†å›¾å†…å®¹
+     */
+    public void setContent(View view) {
+        mViewAbove.setContent(view);
+        showContent();
+    }
+
+    /**
+     * å¾—åˆ°ä¸Šæ–¹çš„è§†å›¾å†…å®¹
+     */
+    public View getContent() {
+        return mViewAbove.getContent();
+    }
+
+    /**
+     * ä»å¸ƒå±€èµ„æºæ–‡ä»¶ä¸­è®¾ç½®ä¸‹æ–¹ï¼ˆæ»‘åŠ¨èœå•ï¼‰çš„è§†å›¾å†…å®¹ï¼Œè¿™ä¸ªå¸ƒå±€ä¼šè¢«å¡«å……æ·»åŠ åˆ°æ‰€æœ‰å›¾å±‚çš„æœ€ä¸‹æ–¹
+     *
+     * @param res the new content
+     */
+    public void setMenu(int res) {
+        setMenu(LayoutInflater.from(getContext()).inflate(res, null));
+    }
+
+    /**
+     * å¾—åˆ°ä¸‹æ–¹ï¼ˆæ»‘åŠ¨èœå•ï¼‰çš„è§†å›¾å†…å®¹
+     *
+     * @param view The desired content to display.
+     */
+    public void setMenu(View v) {
+        mViewBehind.setContent(v);
+    }
+
+    /**
+     * å¾—åˆ°ä¸‹æ–¹ï¼ˆæ»‘åŠ¨èœå•ï¼‰çš„è§†å›¾å†…å®¹
+     */
+    public View getMenu() {
+        return mViewBehind.getContent();
+    }
+
+    /**
+     * ä»å¸ƒå±€èµ„æºæ–‡ä»¶ä¸­è®¾ç½®ä¸‹æ–¹ï¼ˆå³è¾¹æ»‘åŠ¨èœå•ï¼‰çš„è§†å›¾å†…å®¹ï¼Œè¿™ä¸ªå¸ƒå±€ä¼šè¢«å¡«å……æ·»åŠ åˆ°æ‰€æœ‰å›¾å±‚çš„æœ€ä¸‹æ–¹
+     */
+    public void setSecondaryMenu(int res) {
+        setSecondaryMenu(LayoutInflater.from(getContext()).inflate(res, null));
+    }
+
+    /**
+     * è®¾ç½®ä¸‹æ–¹ï¼ˆå³è¾¹æ»‘åŠ¨èœå•ï¼‰çš„è§†å›¾å†…å®¹
+     */
+    public void setSecondaryMenu(View v) {
+        mViewBehind.setSecondaryContent(v);
+    }
+
+    /**
+     * å¾—åˆ°ä¸‹æ–¹ï¼ˆå³è¾¹æ»‘åŠ¨èœå•ï¼‰çš„è§†å›¾å†…å®¹
+     */
+    public View getSecondaryMenu() {
+        return mViewBehind.getSecondaryContent();
+    }
+
+    /**
+     * è®¾ç½®ä¸Šæ–¹è§†å›¾æ˜¯å¦èƒ½å¤Ÿæ»‘åŠ¨
+     */
+    public void setSlidingEnabled(boolean b) {
+        mViewAbove.setSlidingEnabled(b);
+    }
+
+    /**
+     * æ£€æµ‹ä¸Šæ–¹è§†å›¾æ˜¯å¦èƒ½å¤Ÿæ»‘åŠ¨
+     */
+    public boolean isSlidingEnabled() {
+        return mViewAbove.isSlidingEnabled();
+    }
+
+    /**
+     * è®¾ç½®æ»‘åŠ¨èœå•å‡ºç°åœ¨è§†å›¾ä¸­çš„ä½ç½®
+     *
+     * @param mode must be either SlidingMenu.LEFT or SlidingMenu.RIGHT
+     */
+    public void setMode(int mode) {
+        if (mode != LEFT && mode != RIGHT && mode != LEFT_RIGHT) {
+            throw new IllegalStateException("SlidingMenu mode must be LEFT, RIGHT, or LEFT_RIGHT");
+        }
+        mViewBehind.setMode(mode);
+    }
+
+    /**
+     * å¾—åˆ°æ»‘åŠ¨èœå•åœ¨è§†å›¾ä¸­çš„ä½ç½®
+     *
+     * @return the current mode, either SlidingMenu.LEFT or SlidingMenu.RIGHT
+     */
+    public int getMode() {
+        return mViewBehind.getMode();
+    }
+
+    /**
+     * è®¾ç½®æ»‘åŠ¨èœå•æ˜¯å¦æ˜¯é™æ€æ¨¡å¼(ä¸èƒ½å¤Ÿä½¿ç”¨æ»‘åŠ¨èœå•)
+     */
+    public void setStatic(boolean b) {
+        if (b) {
+            setSlidingEnabled(false);
+            mViewAbove.setCustomViewBehind(null);
+            mViewAbove.setCurrentItem(1);
+            //			mViewBehind.setCurrentItem(0);
+        } else {
+            mViewAbove.setCurrentItem(1);
+            //			mViewBehind.setCurrentItem(1);
+            mViewAbove.setCustomViewBehind(mViewBehind);
+            setSlidingEnabled(true);
+        }
+    }
+
+    /**
+     * æ‰“å¼€æ»‘åŠ¨èœå•å¹¶æ˜¾ç¤ºèœå•çš„è§†å›¾
+     */
+    public void showMenu() {
+        showMenu(true);
+    }
+
+    /**
+     * æ˜¯å¦ä½¿ç”¨åŠ¨ç”»æ•ˆæœæ‰“å¼€æ»‘åŠ¨èœå•å¹¶æ˜¾ç¤ºèœå•çš„è§†å›¾
+     */
+    public void showMenu(boolean animate) {
+        mViewAbove.setCurrentItem(0, animate);
+    }
+
+    /**
+     * æ‰“å¼€å³è¾¹çš„æ»‘åŠ¨èœå•å¹¶æ˜¾ç¤ºèœå•çš„è§†å›¾
+     */
+    public void showSecondaryMenu() {
+        showSecondaryMenu(true);
+    }
+
+    /**
+     * æ˜¯å¦ä½¿ç”¨åŠ¨ç”»æ•ˆæœæ‰“å¼€å³è¾¹çš„æ»‘åŠ¨èœå•å¹¶æ˜¾ç¤ºèœå•çš„è§†å›¾
+     */
+    public void showSecondaryMenu(boolean animate) {
+        mViewAbove.setCurrentItem(2, animate);
+    }
+
+    /**
+     * å…³é—­èœå•å¹¶æ˜¾ç¤ºä¸Šæ–¹çš„è§†å›¾
+     */
+    public void showContent() {
+        showContent(true);
+    }
+
+    /**
+     * æ˜¯å¦ä½¿ç”¨åŠ¨ç”»æ•ˆæœå…³é—­èœå•å¹¶æ˜¾ç¤ºä¸Šæ–¹çš„è§†å›¾
+     */
+    public void showContent(boolean animate) {
+        mViewAbove.setCurrentItem(1, animate);
+    }
+
+    /**
+     * æ»‘åŠ¨èœå•çš„å¼€å…³
+     */
+    public void toggle() {
+        toggle(true);
+    }
+
+    /**
+     * æ˜¯å¦ä½¿ç”¨åŠ¨ç”»æ•ˆæœæ‰“å¼€æˆ–å…³é—­æ»‘åŠ¨èœå•
+     */
+    public void toggle(boolean animate) {
+        if (isMenuShowing()) {
+            showContent(animate);
+        } else {
+            showMenu(animate);
+        }
+    }
+
+    /**
+     * æ£€æµ‹æ»‘åŠ¨èœå•æ˜¯å¦æ­£åœ¨è¢«æ˜¾ç¤º
+     */
+    public boolean isMenuShowing() {
+        return mViewAbove.getCurrentItem() == 0 || mViewAbove.getCurrentItem() == 2;
+    }
+
+    /**
+     * æ£€æµ‹å³è¾¹æ»‘åŠ¨èœå•æ˜¯å¦æ­£åœ¨è¢«æ˜¾ç¤º
+     */
+    public boolean isSecondaryMenuShowing() {
+        return mViewAbove.getCurrentItem() == 2;
+    }
+
+    /**
+     * å¾—åˆ°ä¸‹æ–¹è§†å›¾çš„åç§»é‡
+     */
+    public int getBehindOffset() {
+        return ((RelativeLayout.LayoutParams)mViewBehind.getLayoutParams()).rightMargin;
+    }
+
+    /**
+     * æ ¹æ®åƒç´ çš„å€¼æ¥è®¾ç½®ä¸‹æ–¹è§†å›¾çš„åç§»é‡
+     *
+     * @param i The margin, in pixels, on the right of the screen that the behind view scrolls to.
+     */
+    public void setBehindOffset(int i) {
+        mViewBehind.setWidthOffset(i);
+    }
+
+    /**
+     * æ ¹æ®dimensionèµ„æºæ–‡ä»¶çš„IDæ¥è®¾ç½®ä¸‹æ–¹è§†å›¾çš„åç§»é‡
+     *
+     * @param resID The dimension resource id to be set as the behind offset.
+     * The menu, when open, will leave this width margin on the right of the screen.
+     */
+    public void setBehindOffsetRes(int resID) {
+        int i = (int) getContext().getResources().getDimension(resID);
+        setBehindOffset(i);
+    }
+
+    /**
+     * æ ¹æ®åƒç´ çš„å€¼æ¥è®¾ç½®ä¸Šæ–¹è§†å›¾çš„åç§»é‡
+     *
+     * @param i the new above offset, in pixels
+     */
+    public void setAboveOffset(int i) {
+        mViewAbove.setAboveOffset(i);
+    }
+
+    /**
+     * æ ¹æ®dimensionèµ„æºæ–‡ä»¶çš„IDæ¥è®¾ç½®ä¸Šæ–¹è§†å›¾çš„åç§»é‡
+     *
+     * @param resID The dimension resource id to be set as the above offset.
+     */
+    public void setAboveOffsetRes(int resID) {
+        int i = (int) getContext().getResources().getDimension(resID);
+        setAboveOffset(i);
+    }
+
+    /**
+     * æ ¹æ®åƒç´ çš„å€¼æ¥è®¾ç½®ä¸‹æ–¹è§†å›¾çš„å®½åº¦
+     *
+     * @param i The width the Sliding Menu will open to, in pixels
+     */
+    public void setBehindWidth(int i) {
+        int width;
+        Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay();
+        try {
+            Class<?> cls = Display.class;
+            Class<?>[] parameterTypes = {Point.class};
+            Point parameter = new Point();
+            Method method = cls.getMethod("getSize", parameterTypes);
+            method.invoke(display, parameter);
+            width = parameter.x;
+        } catch (Exception e) {
+            width = display.getWidth();
+        }
+        setBehindOffset(width-i);
+    }
+
+    /**
+     * æ ¹æ®dimensionèµ„æºæ–‡ä»¶çš„IDæ¥è®¾ç½®ä¸‹æ–¹è§†å›¾çš„å®½åº¦
+     *
+     * @param res The dimension resource id to be set as the behind width offset.
+     * The menu, when open, will open this wide.
+     */
+    public void setBehindWidthRes(int res) {
+        int i = (int) getContext().getResources().getDimension(res);
+        setBehindWidth(i);
+    }
+
+    /**
+     * å¾—åˆ°ä¸‹æ–¹è§†å›¾çš„åœ¨æ»šåŠ¨æ—¶çš„ç¼©æ”¾æ¯”ä¾‹
+     *
+     * @return The scale of the parallax scroll
+     */
+    public float getBehindScrollScale() {
+        return mViewBehind.getScrollScale();
+    }
+
+    /**
+     * è®¾ç½®ä¸‹æ–¹è§†å›¾çš„åœ¨æ»šåŠ¨æ—¶çš„ç¼©æ”¾æ¯”ä¾‹
+     *
+     * @param f The scale of the parallax scroll (i.e. 1.0f scrolls 1 pixel for every
+     * 1 pixel that the above view scrolls and 0.0f scrolls 0 pixels)
+     */
+    public void setBehindScrollScale(float f) {
+        if (f < 0 && f > 1)
+            throw new IllegalStateException("ScrollScale must be between 0 and 1");
+        mViewBehind.setScrollScale(f);
+    }
+
+    /**
+     * å¾—åˆ°è¾¹ç¼˜è§¦æ‘¸çš„ä¸´ç•Œå€¼
+     */
+    public int getTouchmodeMarginThreshold() {
+        return mViewBehind.getMarginThreshold();
+    }
+
+    /**
+     * å½“è§¦æ‘¸çš„çš„æ¨¡å¼ä¸ºè¾¹ç¼˜è§¦æ‘¸æ—¶ï¼Œè®¾ç½®è¾¹ç¼˜è§¦æ‘¸çš„ä¸´ç•Œå€¼
+     */
+    public void setTouchmodeMarginThreshold(int touchmodeMarginThreshold) {
+        mViewBehind.setMarginThreshold(touchmodeMarginThreshold);
+    }
+
+    /**
+     * Sets the behind canvas transformer.
+     *
+     * @param t the new behind canvas transformer
+     */
+    public void setBehindCanvasTransformer(CanvasTransformer t) {
+        mViewBehind.setCanvasTransformer(t);
+    }
+
+    /**
+     * å¾—åˆ°ä¸Šæ–¹è§†å›¾çš„è§¦æ‘¸æ¨¡å¼çš„å€¼
+     */
+    public int getTouchModeAbove() {
+        return mViewAbove.getTouchMode();
+    }
+
+
+    /**
+     * è®¾ç½®ä¸Šæ–¹è§†å›¾çš„è§¦æ‘¸æ¨¡å¼çš„å€¼
+     */
+    public void setTouchModeAbove(int i) {
+        if (i != TOUCHMODE_FULLSCREEN && i != TOUCHMODE_MARGIN
+                && i != TOUCHMODE_NONE) {
+            throw new IllegalStateException("TouchMode must be set to either" +
+                    "TOUCHMODE_FULLSCREEN or TOUCHMODE_MARGIN or TOUCHMODE_NONE.");
+        }
+        mViewAbove.setTouchMode(i);
+    }
+
+    /**
+     * è®¾ç½®ä¸‹æ–¹è§†å›¾çš„è§¦æ‘¸æ¨¡å¼çš„å€¼
+     */
+    public void setTouchModeBehind(int i) {
+        if (i != TOUCHMODE_FULLSCREEN && i != TOUCHMODE_MARGIN
+                && i != TOUCHMODE_NONE) {
+            throw new IllegalStateException("TouchMode must be set to either" +
+                    "TOUCHMODE_FULLSCREEN or TOUCHMODE_MARGIN or TOUCHMODE_NONE.");
+        }
+        mViewBehind.setTouchMode(i);
+    }
+
+    /**
+     * æ ¹æ®èµ„æºæ–‡ä»¶IDæ¥è®¾ç½®æ»‘åŠ¨èœå•çš„é˜´å½±æ•ˆæœ
+     *
+     * @param resId the resource ID of the new shadow drawable
+     */
+    public void setShadowDrawable(int resId) {
+        setShadowDrawable(getContext().getResources().getDrawable(resId));
+    }
+
+    /**
+     * æ ¹æ®Drawableæ¥è®¾ç½®æ»‘åŠ¨èœå•çš„é˜´å½±æ•ˆæœ
+     *
+     * @param d the new shadow drawable
+     */
+    public void setShadowDrawable(Drawable d) {
+        mViewBehind.setShadowDrawable(d);
+    }
+
+    /**
+     * æ ¹æ®èµ„æºæ–‡ä»¶IDæ¥è®¾ç½®å³è¾¹æ»‘åŠ¨èœå•çš„é˜´å½±æ•ˆæœ
+     *
+     * @param resId the resource ID of the new shadow drawable
+     */
+    public void setSecondaryShadowDrawable(int resId) {
+        setSecondaryShadowDrawable(getContext().getResources().getDrawable(resId));
+    }
+
+    /**
+     * æ ¹æ®Drawableæ¥è®¾ç½®æ»‘åŠ¨èœå•çš„é˜´å½±æ•ˆæœ
+     *
+     * @param d the new shadow drawable
+     */
+    public void setSecondaryShadowDrawable(Drawable d) {
+        mViewBehind.setSecondaryShadowDrawable(d);
+    }
+
+    /**
+     * æ ¹æ®dimensionèµ„æºæ–‡ä»¶çš„IDæ¥è®¾ç½®é˜´å½±çš„å®½åº¦
+     *
+     * @param resId The dimension resource id to be set as the shadow width.
+     */
+    public void setShadowWidthRes(int resId) {
+        setShadowWidth((int)getResources().getDimension(resId));
+    }
+
+    /**
+     * æ ¹æ®åƒç´ çš„å€¼æ¥è®¾ç½®é˜´å½±çš„å®½åº¦
+     *
+     * @param pixels the new shadow width, in pixels
+     */
+    public void setShadowWidth(int pixels) {
+        mViewBehind.setShadowWidth(pixels);
+    }
+
+    /**
+     * è®¾ç½®æ˜¯å¦èƒ½å¤Ÿä½¿ç”¨æ»‘åŠ¨èœå•æ¸å…¥æ¸å‡ºçš„æ•ˆæœ
+     **/
+    public void setFadeEnabled(boolean b) {
+        mViewBehind.setFadeEnabled(b);
+    }
+
+    /**
+     * è®¾ç½®æ¸å…¥æ¸å‡ºæ•ˆæœçš„å€¼
+     *
+     * @param f the new fade degree, between 0.0f and 1.0f
+     */
+    public void setFadeDegree(float f) {
+        mViewBehind.setFadeDegree(f);
+    }
+
+    /**
+     * Enables or disables whether the selector is drawn
+     *
+     * @param b true to draw the selector, false to not draw the selector
+     */
+    public void setSelectorEnabled(boolean b) {
+        mViewBehind.setSelectorEnabled(true);
+    }
+
+    /**
+     * Sets the selected view. The selector will be drawn here
+     *
+     * @param v the new selected view
+     */
+    public void setSelectedView(View v) {
+        mViewBehind.setSelectedView(v);
+    }
+
+    /**
+     * Sets the selector drawable.
+     *
+     * @param res a resource ID for the selector drawable
+     */
+    public void setSelectorDrawable(int res) {
+        mViewBehind.setSelectorBitmap(BitmapFactory.decodeResource(getResources(), res));
+    }
+
+    /**
+     * Sets the selector drawable.
+     *
+     * @param b the new selector bitmap
+     */
+    public void setSelectorBitmap(Bitmap b) {
+        mViewBehind.setSelectorBitmap(b);
+    }
+
+    /**
+     * æ·»åŠ è¢«å¿½ç•¥çš„è§†å›¾
+     */
+    public void addIgnoredView(View v) {
+        mViewAbove.addIgnoredView(v);
+    }
+
+    /**
+     * ç§»é™¤è¢«å¿½ç•¥çš„è§†å›¾
+     */
+    public void removeIgnoredView(View v) {
+        mViewAbove.removeIgnoredView(v);
+    }
+
+    /**
+     * å½“æ¨¡å¼ä¸ºFullscreenæ¨¡å¼æ—¶ï¼Œè§¦æ‘¸å±å¹•æ¸…é™¤æ‰€æœ‰è¢«å¿½ç•¥çš„è§†å›¾
+     */
+    public void clearIgnoredViews() {
+        mViewAbove.clearIgnoredViews();
+    }
+
+    /**
+     * è®¾ç½®æ‰“å¼€ç›‘å¬äº‹ä»¶ï¼Œå½“æ»‘åŠ¨èœå•è¢«æ‰“å¼€æ—¶è°ƒç”¨
+     */
+    public void setOnOpenListener(OnOpenListener listener) {
+        mOpenListener = listener;
+    }
+
+    /**
+     * è®¾ç½®å…³é—­ç›‘å¬äº‹ä»¶ï¼Œå½“æ»‘åŠ¨èœå•è¢«å…³é—­æ—¶è°ƒç”¨
+     */
+    public void setOnCloseListener(OnCloseListener listener) {
+        //mViewAbove.setOnCloseListener(listener);
+        mCloseListener = listener;
+    }
+
+    /**
+     * è®¾ç½®æ‰“å¼€ç›‘å¬äº‹ä»¶ï¼Œå½“æ»‘åŠ¨èœå•è¢«æ‰“å¼€è¿‡ä¹‹åè°ƒç”¨
+     */
+    public void setOnOpenedListener(OnOpenedListener listener) {
+        mViewAbove.setOnOpenedListener(listener);
+    }
+
+    /**
+     * è®¾ç½®å…³é—­ç›‘å¬äº‹ä»¶ï¼Œå½“æ»‘åŠ¨èœå•è¢«å…³é—­è¿‡ä¹‹åè°ƒç”¨
+     */
+    public void setOnClosedListener(OnClosedListener listener) {
+        mViewAbove.setOnClosedListener(listener);
+    }
+
+    /**
+     * åŠŸèƒ½æè¿°ï¼šä¿å­˜çŠ¶æ€çš„ç±»ï¼Œç»§æ‰¿è‡ªBaseSavedState
+     */
+    public static class SavedState extends BaseSavedState {
+        private final int mItem;
+
+        public SavedState(Parcelable superState, int item) {
+            super(superState);
+            mItem = item;
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            mItem = in.readInt();
+        }
+
+        public int getItem() {
+            return mItem;
+        }
+
+        /* (non-Javadoc)
+         * @see android.view.AbsSavedState#writeToParcel(android.os.Parcel, int)
+         */
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(mItem);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
+
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
+    }
+
+    /* (non-Javadoc)
+     * @see android.view.View#onSaveInstanceState()
+     */
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState, mViewAbove.getCurrentItem());
+        return ss;
+    }
+
+    /* (non-Javadoc)
+     * @see android.view.View#onRestoreInstanceState(android.os.Parcelable)
+     */
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState)state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        mViewAbove.setCurrentItem(ss.getItem());
+    }
+
+    /* (non-Javadoc)
+     * @see android.view.ViewGroup#fitSystemWindows(android.graphics.Rect)
+     */
+    @SuppressLint("NewApi")
+    @Override
+    protected boolean fitSystemWindows(Rect insets) {
+        int leftPadding = insets.left;
+        int rightPadding = insets.right;
+        int topPadding = insets.top;
+        int bottomPadding = insets.bottom;
+        if (!mActionbarOverlay) {
+            Log.v(TAG, "setting padding!");
+            setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
+        }
+        return true;
+    }
+
+    private Handler mHandler = new Handler();
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void manageLayers(float percentOpen) {
+        if (Build.VERSION.SDK_INT < 11) return;
+
+        boolean layer = percentOpen > 0.0f && percentOpen < 1.0f;
+        final int layerType = layer ? View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_NONE;
+
+        if (layerType != getContent().getLayerType()) {
+            mHandler.post(new Runnable() {
+                public void run() {
+                    Log.v(TAG, "changing layerType. hardware? " + (layerType == View.LAYER_TYPE_HARDWARE));
+                    getContent().setLayerType(layerType, null);
+                    getMenu().setLayerType(layerType, null);
+                    if (getSecondaryMenu() != null) {
+                        getSecondaryMenu().setLayerType(layerType, null);
+                    }
+                }
+            });
+        }
+    }
 
 }

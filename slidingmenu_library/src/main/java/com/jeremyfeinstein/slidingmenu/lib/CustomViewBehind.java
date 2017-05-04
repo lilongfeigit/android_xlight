@@ -17,539 +17,539 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 
 public class CustomViewBehind extends ViewGroup {
 
-	private static final String TAG = "CustomViewBehind";
+    private static final String TAG = "CustomViewBehind";
 
-	//±ﬂ‘µª¨∂Øµƒ¡ŸΩÁ÷µ
-	private static final int MARGIN_THRESHOLD = 48; // dips
-	
-	//≥ı ºªØ¥•√˛µƒƒ£ Ω
-	private int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;
+    //ËæπÁºòÊªëÂä®ÁöÑ‰∏¥ÁïåÂÄº
+    private static final int MARGIN_THRESHOLD = 48; // dips
 
-	//∂®“Â…œ∑Ω ”Õº
-	private CustomViewAbove mViewAbove;
+    //ÂàùÂßãÂåñËß¶Êë∏ÁöÑÊ®°Âºè
+    private int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;
 
-	//∂®“Âƒ⁄»› ”Õº
-	private View mContent;
-	private View mSecondaryContent;
-	
-	//∂®“Âª¨∂Ø±ﬂ‘µµƒ¡ŸΩÁ÷µ
-	private int mMarginThreshold;
-	
-	//øÌ∂»µƒ∆´“∆¡ø
-	private int mWidthOffset;
-	
-	private CanvasTransformer mTransformer;
-	
-	// «∑Òƒ‹πª π”√◊” ”Õº
-	private boolean mChildrenEnabled;
+    //ÂÆö‰πâ‰∏äÊñπËßÜÂõæ
+    private CustomViewAbove mViewAbove;
 
-	public CustomViewBehind(Context context) {
-		this(context, null);
-	}
+    //ÂÆö‰πâÂÜÖÂÆπËßÜÂõæ
+    private View mContent;
+    private View mSecondaryContent;
 
-	public CustomViewBehind(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		mMarginThreshold = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
-				MARGIN_THRESHOLD, getResources().getDisplayMetrics());
-	}
+    //ÂÆö‰πâÊªëÂä®ËæπÁºòÁöÑ‰∏¥ÁïåÂÄº
+    private int mMarginThreshold;
 
-	public void setCustomViewAbove(CustomViewAbove customViewAbove) {
-		mViewAbove = customViewAbove;
-	}
+    //ÂÆΩÂ∫¶ÁöÑÂÅèÁßªÈáè
+    private int mWidthOffset;
 
-	public void setCanvasTransformer(CanvasTransformer t) {
-		mTransformer = t;
-	}
+    private CanvasTransformer mTransformer;
 
-	/**
-	 * …Ë÷√øÌ∂»µƒ∆´“∆¡ø
-	 */
-	public void setWidthOffset(int i) {
-		mWidthOffset = i;
-		requestLayout();
-	}
-	
-	/**
-	 * …Ë÷√±ﬂ‘µª¨∂Øµƒ¡ŸΩÁ÷µ
-	 */
-	public void setMarginThreshold(int marginThreshold) {
-		mMarginThreshold = marginThreshold;
-	}
-	
-	/**
-	 * µ√µΩ±ﬂ‘µª¨∂Øµƒ¡ŸΩÁ÷µ
-	 */
-	public int getMarginThreshold() {
-		return mMarginThreshold;
-	}
+    //ÊòØÂê¶ËÉΩÂ§ü‰ΩøÁî®Â≠êËßÜÂõæ
+    private boolean mChildrenEnabled;
 
-	/**
-	 * µ√µΩ ”ÕºµƒøÌ∂»
-	 */
-	public int getBehindWidth() {
-		return mContent.getWidth();
-	}
+    public CustomViewBehind(Context context) {
+        this(context, null);
+    }
 
-	/**
-	 * …Ë÷√ ”Õºµƒƒ⁄»›
-	 */
-	public void setContent(View v) {
-		if (mContent != null)
-			removeView(mContent);
-		mContent = v;
-		addView(mContent);
-	}
+    public CustomViewBehind(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mMarginThreshold = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                MARGIN_THRESHOLD, getResources().getDisplayMetrics());
+    }
 
-	/**
-	 * µ√µΩ ”Õºµƒƒ⁄»›
-	 */
-	public View getContent() {
-		return mContent;
-	}
+    public void setCustomViewAbove(CustomViewAbove customViewAbove) {
+        mViewAbove = customViewAbove;
+    }
 
-	/**
-	 * …Ë÷√”“±ﬂª¨∂Ø≤Àµ•µƒƒ⁄»›£¨µ±ƒ£ Ω…Ë÷√Œ™LEFT_RIGHTƒ£ Ω ±
-	 */
-	public void setSecondaryContent(View v) {
-		if (mSecondaryContent != null)
-			removeView(mSecondaryContent);
-		mSecondaryContent = v;
-		addView(mSecondaryContent);
-	}
+    public void setCanvasTransformer(CanvasTransformer t) {
+        mTransformer = t;
+    }
 
-	/**
-	 * µ√µΩ”“±ﬂª¨∂Ø≤Àµ•µƒƒ⁄»›
-	 */
-	public View getSecondaryContent() {
-		return mSecondaryContent;
-	}
+    /**
+     * ËÆæÁΩÆÂÆΩÂ∫¶ÁöÑÂÅèÁßªÈáè
+     */
+    public void setWidthOffset(int i) {
+        mWidthOffset = i;
+        requestLayout();
+    }
 
-	/**
-	 * …Ë÷√ «∑Òƒ‹πª π”√◊” ”Õº
-	 */
-	public void setChildrenEnabled(boolean enabled) {
-		mChildrenEnabled = enabled;
-	}
+    /**
+     * ËÆæÁΩÆËæπÁºòÊªëÂä®ÁöÑ‰∏¥ÁïåÂÄº
+     */
+    public void setMarginThreshold(int marginThreshold) {
+        mMarginThreshold = marginThreshold;
+    }
 
-	@Override
-	public void scrollTo(int x, int y) {
-		super.scrollTo(x, y);
-		if (mTransformer != null)
-			invalidate();
-	}
+    /**
+     * ÂæóÂà∞ËæπÁºòÊªëÂä®ÁöÑ‰∏¥ÁïåÂÄº
+     */
+    public int getMarginThreshold() {
+        return mMarginThreshold;
+    }
 
-	@Override
-	public boolean onInterceptTouchEvent(MotionEvent e) {
-		return !mChildrenEnabled;
-	}
+    /**
+     * ÂæóÂà∞ËßÜÂõæÁöÑÂÆΩÂ∫¶
+     */
+    public int getBehindWidth() {
+        return mContent.getWidth();
+    }
 
-	@Override
-	public boolean onTouchEvent(MotionEvent e) {
-		return !mChildrenEnabled;
-	}
+    /**
+     * ËÆæÁΩÆËßÜÂõæÁöÑÂÜÖÂÆπ
+     */
+    public void setContent(View v) {
+        if (mContent != null)
+            removeView(mContent);
+        mContent = v;
+        addView(mContent);
+    }
 
-	@Override
-	protected void dispatchDraw(Canvas canvas) {
-		if (mTransformer != null) {
-			canvas.save();
-			mTransformer.transformCanvas(canvas, mViewAbove.getPercentOpen());
-			super.dispatchDraw(canvas);
-			canvas.restore();
-		} else
-			super.dispatchDraw(canvas);
-	}
+    /**
+     * ÂæóÂà∞ËßÜÂõæÁöÑÂÜÖÂÆπ
+     */
+    public View getContent() {
+        return mContent;
+    }
 
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		final int width = r - l;
-		final int height = b - t;
-		mContent.layout(0, 0, width-mWidthOffset, height);
-		if (mSecondaryContent != null)
-			mSecondaryContent.layout(0, 0, width-mWidthOffset, height);
-	}
+    /**
+     * ËÆæÁΩÆÂè≥ËæπÊªëÂä®ËèúÂçïÁöÑÂÜÖÂÆπÔºåÂΩìÊ®°ÂºèËÆæÁΩÆ‰∏∫LEFT_RIGHTÊ®°ÂºèÊó∂
+     */
+    public void setSecondaryContent(View v) {
+        if (mSecondaryContent != null)
+            removeView(mSecondaryContent);
+        mSecondaryContent = v;
+        addView(mSecondaryContent);
+    }
 
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int width = getDefaultSize(0, widthMeasureSpec);
-		int height = getDefaultSize(0, heightMeasureSpec);
-		setMeasuredDimension(width, height);
-		final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width-mWidthOffset);
-		final int contentHeight = getChildMeasureSpec(heightMeasureSpec, 0, height);
-		mContent.measure(contentWidth, contentHeight);
-		if (mSecondaryContent != null)
-			mSecondaryContent.measure(contentWidth, contentHeight);
-	}
+    /**
+     * ÂæóÂà∞Âè≥ËæπÊªëÂä®ËèúÂçïÁöÑÂÜÖÂÆπ
+     */
+    public View getSecondaryContent() {
+        return mSecondaryContent;
+    }
 
-	//∂®“Âƒ£ Ωµƒ÷µ
-	private int mMode;
-	
-	// «∑Òƒ‹πª π”√Ω•»ÎΩ•≥ˆ–ßπ˚
-	private boolean mFadeEnabled;
-	
-	//∂®“ÂΩ•»ÎΩ•≥ˆµƒ÷µ
-	private float mFadeDegree;
-	
-	//∂®“ÂΩ•»ÎΩ•≥ˆ–ßπ˚ª≠± 
-	private final Paint mFadePaint = new Paint();
-	
-	//∂®“Âª¨∂ØÀı∑≈µƒ÷µ
-	private float mScrollScale;
-	
-	//∂®“Âª¨∂Ø≤Àµ•µƒ“ı”∞
-	private Drawable mShadowDrawable;
-	
-	//∂®“Â”“±ﬂª¨∂Ø≤Àµ•µƒ“ı”∞Õº∆¨
-	private Drawable mSecondaryShadowDrawable;
-	
-	//∂®“Â“ı”∞µƒøÌ∂»
-	private int mShadowWidth;
-	
-	/**
-	 * …Ë÷√ƒ£ Ωµƒ÷µ
-	 */
-	public void setMode(int mode) {
-		if (mode == SlidingMenu.LEFT || mode == SlidingMenu.RIGHT) {
-			if (mContent != null)
-				mContent.setVisibility(View.VISIBLE);
-			if (mSecondaryContent != null)
-				mSecondaryContent.setVisibility(View.INVISIBLE);
-		}
-		mMode = mode;
-	}
+    /**
+     * ËÆæÁΩÆÊòØÂê¶ËÉΩÂ§ü‰ΩøÁî®Â≠êËßÜÂõæ
+     */
+    public void setChildrenEnabled(boolean enabled) {
+        mChildrenEnabled = enabled;
+    }
 
-	/**
-	 * µ√µΩƒ£ Ωµƒ÷µ
-	 */
-	public int getMode() {
-		return mMode;
-	}
+    @Override
+    public void scrollTo(int x, int y) {
+        super.scrollTo(x, y);
+        if (mTransformer != null)
+            invalidate();
+    }
 
-	/**
-	 * …Ë÷√ª¨∂ØÀı∑≈µƒ÷µ
-	 */
-	public void setScrollScale(float scrollScale) {
-		mScrollScale = scrollScale;
-	}
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent e) {
+        return !mChildrenEnabled;
+    }
 
-	/**
-	 * µ√µΩª¨∂ØÀı∑≈µƒ÷µ
-	 */
-	public float getScrollScale() {
-		return mScrollScale;
-	}
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        return !mChildrenEnabled;
+    }
 
-	/**
-	 * …Ë÷√ª¨∂Ø≤Àµ•µƒ“ı”∞
-	 */
-	public void setShadowDrawable(Drawable shadow) {
-		mShadowDrawable = shadow;
-		invalidate();
-	}
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        if (mTransformer != null) {
+            canvas.save();
+            mTransformer.transformCanvas(canvas, mViewAbove.getPercentOpen());
+            super.dispatchDraw(canvas);
+            canvas.restore();
+        } else
+            super.dispatchDraw(canvas);
+    }
 
-	/**
-	 * …Ë÷√”“±ﬂª¨∂Ø≤Àµ•µƒ“ı”∞
-	 */
-	public void setSecondaryShadowDrawable(Drawable shadow) {
-		mSecondaryShadowDrawable = shadow;
-		invalidate();
-	}
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        final int width = r - l;
+        final int height = b - t;
+        mContent.layout(0, 0, width-mWidthOffset, height);
+        if (mSecondaryContent != null)
+            mSecondaryContent.layout(0, 0, width-mWidthOffset, height);
+    }
 
-	/**
-	 * …Ë÷√“ı”∞µƒøÌ∂»
-	 */
-	public void setShadowWidth(int width) {
-		mShadowWidth = width;
-		invalidate();
-	}
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = getDefaultSize(0, widthMeasureSpec);
+        int height = getDefaultSize(0, heightMeasureSpec);
+        setMeasuredDimension(width, height);
+        final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width-mWidthOffset);
+        final int contentHeight = getChildMeasureSpec(heightMeasureSpec, 0, height);
+        mContent.measure(contentWidth, contentHeight);
+        if (mSecondaryContent != null)
+            mSecondaryContent.measure(contentWidth, contentHeight);
+    }
 
-	/**
-	 * …Ë÷√ƒ‹∑Ò π”√Ω•»ÎΩ•≥ˆ–ßπ˚
-	 */
-	public void setFadeEnabled(boolean b) {
-		mFadeEnabled = b;
-	}
+    //ÂÆö‰πâÊ®°ÂºèÁöÑÂÄº
+    private int mMode;
 
-	/**
-	 * …Ë÷√Ω•»ÎΩ•≥ˆµƒ÷µ
-	 */
-	public void setFadeDegree(float degree) {
-		if (degree > 1.0f || degree < 0.0f)
-			throw new IllegalStateException("The BehindFadeDegree must be between 0.0f and 1.0f");
-		mFadeDegree = degree;
-	}
+    //ÊòØÂê¶ËÉΩÂ§ü‰ΩøÁî®Ê∏êÂÖ•Ê∏êÂá∫ÊïàÊûú
+    private boolean mFadeEnabled;
 
-	/**
-	 * µ√µΩ≤Àµ•“≥√Ê
-	 */
-	public int getMenuPage(int page) {
-		page = (page > 1) ? 2 : ((page < 1) ? 0 : page);
-		if (mMode == SlidingMenu.LEFT && page > 1) {
-			return 0;
-		} else if (mMode == SlidingMenu.RIGHT && page < 1) {
-			return 2;
-		} else {
-			return page;
-		}
-	}
+    //ÂÆö‰πâÊ∏êÂÖ•Ê∏êÂá∫ÁöÑÂÄº
+    private float mFadeDegree;
 
-	/**
-	 * ª¨∂Øœ¬∑Ω ”ÕºµΩ¥ÔµƒŒª÷√
-	 */
-	public void scrollBehindTo(View content, int x, int y) {
-		int vis = View.VISIBLE;		
-		if (mMode == SlidingMenu.LEFT) {
-			if (x >= content.getLeft()) vis = View.INVISIBLE;
-			scrollTo((int)((x + getBehindWidth())*mScrollScale), y);
-		} else if (mMode == SlidingMenu.RIGHT) {
-			if (x <= content.getLeft()) vis = View.INVISIBLE;
-			scrollTo((int)(getBehindWidth() - getWidth() + 
-					(x-getBehindWidth())*mScrollScale), y);
-		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			mContent.setVisibility(x >= content.getLeft() ? View.INVISIBLE : View.VISIBLE);
-			mSecondaryContent.setVisibility(x <= content.getLeft() ? View.INVISIBLE : View.VISIBLE);
-			vis = x == 0 ? View.INVISIBLE : View.VISIBLE;
-			if (x <= content.getLeft()) {
-				scrollTo((int)((x + getBehindWidth())*mScrollScale), y);				
-			} else {
-				scrollTo((int)(getBehindWidth() - getWidth() + 
-						(x-getBehindWidth())*mScrollScale), y);				
-			}
-		}
-		if (vis == View.INVISIBLE)
-			Log.v(TAG, "behind INVISIBLE");
-		setVisibility(vis);
-	}
+    //ÂÆö‰πâÊ∏êÂÖ•Ê∏êÂá∫ÊïàÊûúÁîªÁ¨î
+    private final Paint mFadePaint = new Paint();
 
-	/**
-	 * µ√µΩ◊Û±ﬂ≤Àµ•µƒ ”Õº
-	 */
-	public int getMenuLeft(View content, int page) {
-		if (mMode == SlidingMenu.LEFT) {
-			switch (page) {
-			case 0:
-				return content.getLeft() - getBehindWidth();
-			case 2:
-				return content.getLeft();
-			}
-		} else if (mMode == SlidingMenu.RIGHT) {
-			switch (page) {
-			case 0:
-				return content.getLeft();
-			case 2:
-				return content.getLeft() + getBehindWidth();	
-			}
-		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			switch (page) {
-			case 0:
-				return content.getLeft() - getBehindWidth();
-			case 2:
-				return content.getLeft() + getBehindWidth();
-			}
-		}
-		return content.getLeft();
-	}
+    //ÂÆö‰πâÊªëÂä®Áº©ÊîæÁöÑÂÄº
+    private float mScrollScale;
 
-	/**
-	 * µ√µΩ◊Û±ﬂøÚ ”Õº
-	 */
-	public int getAbsLeftBound(View content) {
-		if (mMode == SlidingMenu.LEFT || mMode == SlidingMenu.LEFT_RIGHT) {
-			return content.getLeft() - getBehindWidth();
-		} else if (mMode == SlidingMenu.RIGHT) {
-			return content.getLeft();
-		}
-		return 0;
-	}
+    //ÂÆö‰πâÊªëÂä®ËèúÂçïÁöÑÈò¥ÂΩ±
+    private Drawable mShadowDrawable;
 
-	/**
-	 * µ√µΩ”“±ﬂøÚ ”Õº
-	 */
-	public int getAbsRightBound(View content) {
-		if (mMode == SlidingMenu.LEFT) {
-			return content.getLeft();
-		} else if (mMode == SlidingMenu.RIGHT || mMode == SlidingMenu.LEFT_RIGHT) {
-			return content.getLeft() + getBehindWidth();
-		}
-		return 0;
-	}
+    //ÂÆö‰πâÂè≥ËæπÊªëÂä®ËèúÂçïÁöÑÈò¥ÂΩ±ÂõæÁâá
+    private Drawable mSecondaryShadowDrawable;
 
-	/**
-	 *  «∑Ò‘ –Ì¥•√˛∆¡ƒªµƒ±ﬂ‘µ
-	 */
-	public boolean marginTouchAllowed(View content, int x) {
-		int left = content.getLeft();
-		int right = content.getRight();
-		if (mMode == SlidingMenu.LEFT) {
-			return (x >= left && x <= mMarginThreshold + left);
-		} else if (mMode == SlidingMenu.RIGHT) {
-			return (x <= right && x >= right - mMarginThreshold);
-		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			return (x >= left && x <= mMarginThreshold + left) || 
-					(x <= right && x >= right - mMarginThreshold);
-		}
-		return false;
-	}
+    //ÂÆö‰πâÈò¥ÂΩ±ÁöÑÂÆΩÂ∫¶
+    private int mShadowWidth;
 
-	/**
-	 * …Ë÷√¥•√˛ƒ£ Ωµƒ÷µ
-	 */
-	public void setTouchMode(int i) {
-		mTouchMode = i;
-	}
+    /**
+     * ËÆæÁΩÆÊ®°ÂºèÁöÑÂÄº
+     */
+    public void setMode(int mode) {
+        if (mode == SlidingMenu.LEFT || mode == SlidingMenu.RIGHT) {
+            if (mContent != null)
+                mContent.setVisibility(View.VISIBLE);
+            if (mSecondaryContent != null)
+                mSecondaryContent.setVisibility(View.INVISIBLE);
+        }
+        mMode = mode;
+    }
 
-	/**
-	 *  «∑Ò‘ –ÌÕ®π˝¥•√˛¥Úø™ª¨∂Ø≤Àµ•
-	 */
-	public boolean menuOpenTouchAllowed(View content, int currPage, float x) {
-		switch (mTouchMode) {
-		case SlidingMenu.TOUCHMODE_FULLSCREEN:
-			return true;
-		case SlidingMenu.TOUCHMODE_MARGIN:
-			return menuTouchInQuickReturn(content, currPage, x);
-		}
-		return false;
-	}
+    /**
+     * ÂæóÂà∞Ê®°ÂºèÁöÑÂÄº
+     */
+    public int getMode() {
+        return mMode;
+    }
 
-	/**
-	 * ª¨∂Ø≤Àµ•øÏÀŸ∑µªÿ
-	 */
-	public boolean menuTouchInQuickReturn(View content, int currPage, float x) {
-		if (mMode == SlidingMenu.LEFT || (mMode == SlidingMenu.LEFT_RIGHT && currPage == 0)) {
-			return x >= content.getLeft();
-		} else if (mMode == SlidingMenu.RIGHT || (mMode == SlidingMenu.LEFT_RIGHT && currPage == 2)) {
-			return x <= content.getRight();
-		}
-		return false;
-	}
+    /**
+     * ËÆæÁΩÆÊªëÂä®Áº©ÊîæÁöÑÂÄº
+     */
+    public void setScrollScale(float scrollScale) {
+        mScrollScale = scrollScale;
+    }
 
-	/**
-	 *  «∑Ò‘ –Ìπÿ±’ª¨∂Ø≤Àµ•
-	 */
-	public boolean menuClosedSlideAllowed(float dx) {
-		if (mMode == SlidingMenu.LEFT) {
-			return dx > 0;
-		} else if (mMode == SlidingMenu.RIGHT) {
-			return dx < 0;
-		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			return true;
-		}
-		return false;
-	}
+    /**
+     * ÂæóÂà∞ÊªëÂä®Áº©ÊîæÁöÑÂÄº
+     */
+    public float getScrollScale() {
+        return mScrollScale;
+    }
 
-	/**
-	 *  «∑Ò‘ –Ì¥Úø™ª¨∂Ø≤Àµ•
-	 */
-	public boolean menuOpenSlideAllowed(float dx) {
-		if (mMode == SlidingMenu.LEFT) {
-			return dx < 0;
-		} else if (mMode == SlidingMenu.RIGHT) {
-			return dx > 0;
-		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			return true;
-		}
-		return false;
-	}
+    /**
+     * ËÆæÁΩÆÊªëÂä®ËèúÂçïÁöÑÈò¥ÂΩ±
+     */
+    public void setShadowDrawable(Drawable shadow) {
+        mShadowDrawable = shadow;
+        invalidate();
+    }
 
-	/**
-	 * ª≠ª¨∂Ø≤Àµ•µƒ“ı”∞
-	 */
-	public void drawShadow(View content, Canvas canvas) {
-		if (mShadowDrawable == null || mShadowWidth <= 0) return;
-		int left = 0;
-		if (mMode == SlidingMenu.LEFT) {
-			left = content.getLeft() - mShadowWidth;
-		} else if (mMode == SlidingMenu.RIGHT) {
-			left = content.getRight();
-		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			if (mSecondaryShadowDrawable != null) {
-				left = content.getRight();
-				mSecondaryShadowDrawable.setBounds(left, 0, left + mShadowWidth, getHeight());
-				mSecondaryShadowDrawable.draw(canvas);
-			}
-			left = content.getLeft() - mShadowWidth;
-		}
-		mShadowDrawable.setBounds(left, 0, left + mShadowWidth, getHeight());
-		mShadowDrawable.draw(canvas);
-	}
+    /**
+     * ËÆæÁΩÆÂè≥ËæπÊªëÂä®ËèúÂçïÁöÑÈò¥ÂΩ±
+     */
+    public void setSecondaryShadowDrawable(Drawable shadow) {
+        mSecondaryShadowDrawable = shadow;
+        invalidate();
+    }
 
-	/**
-	 * ª≠≥ˆΩ•»ÎΩ•≥ˆ–ßπ˚
-	 */
-	public void drawFade(View content, Canvas canvas, float openPercent) {
-		if (!mFadeEnabled) return;
-		final int alpha = (int) (mFadeDegree * 255 * Math.abs(1-openPercent));
-		mFadePaint.setColor(Color.argb(alpha, 0, 0, 0));
-		int left = 0;
-		int right = 0;
-		if (mMode == SlidingMenu.LEFT) {
-			left = content.getLeft() - getBehindWidth();
-			right = content.getLeft();
-		} else if (mMode == SlidingMenu.RIGHT) {
-			left = content.getRight();
-			right = content.getRight() + getBehindWidth();			
-		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			left = content.getLeft() - getBehindWidth();
-			right = content.getLeft();
-			canvas.drawRect(left, 0, right, getHeight(), mFadePaint);
-			left = content.getRight();
-			right = content.getRight() + getBehindWidth();			
-		}
-		canvas.drawRect(left, 0, right, getHeight(), mFadePaint);
-	}
-	
-	private boolean mSelectorEnabled = true;
-	private Bitmap mSelectorDrawable;
-	private View mSelectedView;
-	
-	public void drawSelector(View content, Canvas canvas, float openPercent) {
-		if (!mSelectorEnabled) return;
-		if (mSelectorDrawable != null && mSelectedView != null) {
-			String tag = (String) mSelectedView.getTag(R.id.selected_view);
-			if (tag.equals(TAG+"SelectedView")) {
-				canvas.save();
-				int left, right, offset;
-				offset = (int) (mSelectorDrawable.getWidth() * openPercent);
-				if (mMode == SlidingMenu.LEFT) {
-					right = content.getLeft();
-					left = right - offset;
-					canvas.clipRect(left, 0, right, getHeight());
-					canvas.drawBitmap(mSelectorDrawable, left, getSelectorTop(), null);		
-				} else if (mMode == SlidingMenu.RIGHT) {
-					left = content.getRight();
-					right = left + offset;
-					canvas.clipRect(left, 0, right, getHeight());
-					canvas.drawBitmap(mSelectorDrawable, right - mSelectorDrawable.getWidth(), getSelectorTop(), null);
-				}
-				canvas.restore();
-			}
-		}
-	}
-	
-	public void setSelectorEnabled(boolean b) {
-		mSelectorEnabled = b;
-	}
+    /**
+     * ËÆæÁΩÆÈò¥ÂΩ±ÁöÑÂÆΩÂ∫¶
+     */
+    public void setShadowWidth(int width) {
+        mShadowWidth = width;
+        invalidate();
+    }
 
-	public void setSelectedView(View v) {
-		if (mSelectedView != null) {
-			mSelectedView.setTag(R.id.selected_view, null);
-			mSelectedView = null;
-		}
-		if (v != null && v.getParent() != null) {
-			mSelectedView = v;
-			mSelectedView.setTag(R.id.selected_view, TAG+"SelectedView");
-			invalidate();
-		}
-	}
+    /**
+     * ËÆæÁΩÆËÉΩÂê¶‰ΩøÁî®Ê∏êÂÖ•Ê∏êÂá∫ÊïàÊûú
+     */
+    public void setFadeEnabled(boolean b) {
+        mFadeEnabled = b;
+    }
 
-	private int getSelectorTop() {
-		int y = mSelectedView.getTop();
-		y += (mSelectedView.getHeight() - mSelectorDrawable.getHeight()) / 2;
-		return y;
-	}
+    /**
+     * ËÆæÁΩÆÊ∏êÂÖ•Ê∏êÂá∫ÁöÑÂÄº
+     */
+    public void setFadeDegree(float degree) {
+        if (degree > 1.0f || degree < 0.0f)
+            throw new IllegalStateException("The BehindFadeDegree must be between 0.0f and 1.0f");
+        mFadeDegree = degree;
+    }
 
-	public void setSelectorBitmap(Bitmap b) {
-		mSelectorDrawable = b;
-		refreshDrawableState();
-	}
+    /**
+     * ÂæóÂà∞ËèúÂçïÈ°µÈù¢
+     */
+    public int getMenuPage(int page) {
+        page = (page > 1) ? 2 : ((page < 1) ? 0 : page);
+        if (mMode == SlidingMenu.LEFT && page > 1) {
+            return 0;
+        } else if (mMode == SlidingMenu.RIGHT && page < 1) {
+            return 2;
+        } else {
+            return page;
+        }
+    }
+
+    /**
+     * ÊªëÂä®‰∏ãÊñπËßÜÂõæÂà∞ËææÁöÑ‰ΩçÁΩÆ
+     */
+    public void scrollBehindTo(View content, int x, int y) {
+        int vis = View.VISIBLE;
+        if (mMode == SlidingMenu.LEFT) {
+            if (x >= content.getLeft()) vis = View.INVISIBLE;
+            scrollTo((int)((x + getBehindWidth())*mScrollScale), y);
+        } else if (mMode == SlidingMenu.RIGHT) {
+            if (x <= content.getLeft()) vis = View.INVISIBLE;
+            scrollTo((int)(getBehindWidth() - getWidth() +
+                    (x-getBehindWidth())*mScrollScale), y);
+        } else if (mMode == SlidingMenu.LEFT_RIGHT) {
+            mContent.setVisibility(x >= content.getLeft() ? View.INVISIBLE : View.VISIBLE);
+            mSecondaryContent.setVisibility(x <= content.getLeft() ? View.INVISIBLE : View.VISIBLE);
+            vis = x == 0 ? View.INVISIBLE : View.VISIBLE;
+            if (x <= content.getLeft()) {
+                scrollTo((int)((x + getBehindWidth())*mScrollScale), y);
+            } else {
+                scrollTo((int)(getBehindWidth() - getWidth() +
+                        (x-getBehindWidth())*mScrollScale), y);
+            }
+        }
+        if (vis == View.INVISIBLE)
+            Log.v(TAG, "behind INVISIBLE");
+        setVisibility(vis);
+    }
+
+    /**
+     * ÂæóÂà∞Â∑¶ËæπËèúÂçïÁöÑËßÜÂõæ
+     */
+    public int getMenuLeft(View content, int page) {
+        if (mMode == SlidingMenu.LEFT) {
+            switch (page) {
+                case 0:
+                    return content.getLeft() - getBehindWidth();
+                case 2:
+                    return content.getLeft();
+            }
+        } else if (mMode == SlidingMenu.RIGHT) {
+            switch (page) {
+                case 0:
+                    return content.getLeft();
+                case 2:
+                    return content.getLeft() + getBehindWidth();
+            }
+        } else if (mMode == SlidingMenu.LEFT_RIGHT) {
+            switch (page) {
+                case 0:
+                    return content.getLeft() - getBehindWidth();
+                case 2:
+                    return content.getLeft() + getBehindWidth();
+            }
+        }
+        return content.getLeft();
+    }
+
+    /**
+     * ÂæóÂà∞Â∑¶ËæπÊ°ÜËßÜÂõæ
+     */
+    public int getAbsLeftBound(View content) {
+        if (mMode == SlidingMenu.LEFT || mMode == SlidingMenu.LEFT_RIGHT) {
+            return content.getLeft() - getBehindWidth();
+        } else if (mMode == SlidingMenu.RIGHT) {
+            return content.getLeft();
+        }
+        return 0;
+    }
+
+    /**
+     * ÂæóÂà∞Âè≥ËæπÊ°ÜËßÜÂõæ
+     */
+    public int getAbsRightBound(View content) {
+        if (mMode == SlidingMenu.LEFT) {
+            return content.getLeft();
+        } else if (mMode == SlidingMenu.RIGHT || mMode == SlidingMenu.LEFT_RIGHT) {
+            return content.getLeft() + getBehindWidth();
+        }
+        return 0;
+    }
+
+    /**
+     * ÊòØÂê¶ÂÖÅËÆ∏Ëß¶Êë∏Â±èÂπïÁöÑËæπÁºò
+     */
+    public boolean marginTouchAllowed(View content, int x) {
+        int left = content.getLeft();
+        int right = content.getRight();
+        if (mMode == SlidingMenu.LEFT) {
+            return (x >= left && x <= mMarginThreshold + left);
+        } else if (mMode == SlidingMenu.RIGHT) {
+            return (x <= right && x >= right - mMarginThreshold);
+        } else if (mMode == SlidingMenu.LEFT_RIGHT) {
+            return (x >= left && x <= mMarginThreshold + left) ||
+                    (x <= right && x >= right - mMarginThreshold);
+        }
+        return false;
+    }
+
+    /**
+     * ËÆæÁΩÆËß¶Êë∏Ê®°ÂºèÁöÑÂÄº
+     */
+    public void setTouchMode(int i) {
+        mTouchMode = i;
+    }
+
+    /**
+     * ÊòØÂê¶ÂÖÅËÆ∏ÈÄöËøáËß¶Êë∏ÊâìÂºÄÊªëÂä®ËèúÂçï
+     */
+    public boolean menuOpenTouchAllowed(View content, int currPage, float x) {
+        switch (mTouchMode) {
+            case SlidingMenu.TOUCHMODE_FULLSCREEN:
+                return true;
+            case SlidingMenu.TOUCHMODE_MARGIN:
+                return menuTouchInQuickReturn(content, currPage, x);
+        }
+        return false;
+    }
+
+    /**
+     * ÊªëÂä®ËèúÂçïÂø´ÈÄüËøîÂõû
+     */
+    public boolean menuTouchInQuickReturn(View content, int currPage, float x) {
+        if (mMode == SlidingMenu.LEFT || (mMode == SlidingMenu.LEFT_RIGHT && currPage == 0)) {
+            return x >= content.getLeft();
+        } else if (mMode == SlidingMenu.RIGHT || (mMode == SlidingMenu.LEFT_RIGHT && currPage == 2)) {
+            return x <= content.getRight();
+        }
+        return false;
+    }
+
+    /**
+     * ÊòØÂê¶ÂÖÅËÆ∏ÂÖ≥Èó≠ÊªëÂä®ËèúÂçï
+     */
+    public boolean menuClosedSlideAllowed(float dx) {
+        if (mMode == SlidingMenu.LEFT) {
+            return dx > 0;
+        } else if (mMode == SlidingMenu.RIGHT) {
+            return dx < 0;
+        } else if (mMode == SlidingMenu.LEFT_RIGHT) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * ÊòØÂê¶ÂÖÅËÆ∏ÊâìÂºÄÊªëÂä®ËèúÂçï
+     */
+    public boolean menuOpenSlideAllowed(float dx) {
+        if (mMode == SlidingMenu.LEFT) {
+            return dx < 0;
+        } else if (mMode == SlidingMenu.RIGHT) {
+            return dx > 0;
+        } else if (mMode == SlidingMenu.LEFT_RIGHT) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * ÁîªÊªëÂä®ËèúÂçïÁöÑÈò¥ÂΩ±
+     */
+    public void drawShadow(View content, Canvas canvas) {
+        if (mShadowDrawable == null || mShadowWidth <= 0) return;
+        int left = 0;
+        if (mMode == SlidingMenu.LEFT) {
+            left = content.getLeft() - mShadowWidth;
+        } else if (mMode == SlidingMenu.RIGHT) {
+            left = content.getRight();
+        } else if (mMode == SlidingMenu.LEFT_RIGHT) {
+            if (mSecondaryShadowDrawable != null) {
+                left = content.getRight();
+                mSecondaryShadowDrawable.setBounds(left, 0, left + mShadowWidth, getHeight());
+                mSecondaryShadowDrawable.draw(canvas);
+            }
+            left = content.getLeft() - mShadowWidth;
+        }
+        mShadowDrawable.setBounds(left, 0, left + mShadowWidth, getHeight());
+        mShadowDrawable.draw(canvas);
+    }
+
+    /**
+     * ÁîªÂá∫Ê∏êÂÖ•Ê∏êÂá∫ÊïàÊûú
+     */
+    public void drawFade(View content, Canvas canvas, float openPercent) {
+        if (!mFadeEnabled) return;
+        final int alpha = (int) (mFadeDegree * 255 * Math.abs(1-openPercent));
+        mFadePaint.setColor(Color.argb(alpha, 0, 0, 0));
+        int left = 0;
+        int right = 0;
+        if (mMode == SlidingMenu.LEFT) {
+            left = content.getLeft() - getBehindWidth();
+            right = content.getLeft();
+        } else if (mMode == SlidingMenu.RIGHT) {
+            left = content.getRight();
+            right = content.getRight() + getBehindWidth();
+        } else if (mMode == SlidingMenu.LEFT_RIGHT) {
+            left = content.getLeft() - getBehindWidth();
+            right = content.getLeft();
+            canvas.drawRect(left, 0, right, getHeight(), mFadePaint);
+            left = content.getRight();
+            right = content.getRight() + getBehindWidth();
+        }
+        canvas.drawRect(left, 0, right, getHeight(), mFadePaint);
+    }
+
+    private boolean mSelectorEnabled = true;
+    private Bitmap mSelectorDrawable;
+    private View mSelectedView;
+
+    public void drawSelector(View content, Canvas canvas, float openPercent) {
+        if (!mSelectorEnabled) return;
+        if (mSelectorDrawable != null && mSelectedView != null) {
+            String tag = (String) mSelectedView.getTag(R.id.selected_view);
+            if (tag.equals(TAG+"SelectedView")) {
+                canvas.save();
+                int left, right, offset;
+                offset = (int) (mSelectorDrawable.getWidth() * openPercent);
+                if (mMode == SlidingMenu.LEFT) {
+                    right = content.getLeft();
+                    left = right - offset;
+                    canvas.clipRect(left, 0, right, getHeight());
+                    canvas.drawBitmap(mSelectorDrawable, left, getSelectorTop(), null);
+                } else if (mMode == SlidingMenu.RIGHT) {
+                    left = content.getRight();
+                    right = left + offset;
+                    canvas.clipRect(left, 0, right, getHeight());
+                    canvas.drawBitmap(mSelectorDrawable, right - mSelectorDrawable.getWidth(), getSelectorTop(), null);
+                }
+                canvas.restore();
+            }
+        }
+    }
+
+    public void setSelectorEnabled(boolean b) {
+        mSelectorEnabled = b;
+    }
+
+    public void setSelectedView(View v) {
+        if (mSelectedView != null) {
+            mSelectedView.setTag(R.id.selected_view, null);
+            mSelectedView = null;
+        }
+        if (v != null && v.getParent() != null) {
+            mSelectedView = v;
+            mSelectedView.setTag(R.id.selected_view, TAG+"SelectedView");
+            invalidate();
+        }
+    }
+
+    private int getSelectorTop() {
+        int y = mSelectedView.getTop();
+        y += (mSelectedView.getHeight() - mSelectorDrawable.getHeight()) / 2;
+        return y;
+    }
+
+    public void setSelectorBitmap(Bitmap b) {
+        mSelectorDrawable = b;
+        refreshDrawableState();
+    }
 
 }

@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 finish();
-                overridePendingTransition(0,R.anim.activity_close);
+                overridePendingTransition(0, R.anim.activity_close);
             }
         });
 
@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ToastUtil.showToast(LoginActivity.this, getString(R.string.login_fail) + errMsg);
+                ToastUtil.showToast(LoginActivity.this, "" + errMsg);
             }
         });
     }

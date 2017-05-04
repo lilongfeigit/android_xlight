@@ -48,6 +48,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             textView.setText(UserUtils.getUserInfo(getActivity()).getEmail());
             ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
         } else {
+            ImageLoader.getInstance().displayImage("", userIcon, ImageLoaderOptions.getImageLoaderOptions());
             btnLogin.setVisibility(View.VISIBLE);
             llPerName.setVisibility(View.GONE);
         }

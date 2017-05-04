@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
+        android:listSelector="@color/white"
         android:scrollbars="none" />
 
 </LinearLayout>

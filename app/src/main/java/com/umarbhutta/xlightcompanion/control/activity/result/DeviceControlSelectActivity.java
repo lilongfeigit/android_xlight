@@ -308,7 +308,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
-            case 35:
+            case 35: //TODO
                 curMainRows = (Rows) data.getSerializableExtra("deviceInfo");
                 mActioncmd.devicenodeId = curMainRows.id;
                 Actioncmdfield actioncmdfield = new Actioncmdfield();

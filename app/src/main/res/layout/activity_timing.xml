@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
             android:paddingLeft="5dp"
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv1"
             android:fontFamily="sans-serif-light"
+            android:layout_centerVertical="true"
             android:paddingLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -43,9 +45,14 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
             android:layout_margin="6dp"
+            android:layout_centerVertical="true"
             android:src="@drawable/icon_left_arrow" />
     </RelativeLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/line_color" />
     <RelativeLayout
         android:id="@+id/llWeek"
         android:layout_width="match_parent"
@@ -53,7 +60,7 @@
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingTop="20dp">
+        android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/tv2"
@@ -63,6 +70,7 @@
             android:layout_alignParentLeft="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
+            android:layout_centerVertical="true"
             android:paddingLeft="5dp"
             android:text="@string/__repeat"
             android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -75,15 +83,24 @@
             android:layout_toRightOf="@+id/tv2"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
+            android:layout_toLeftOf="@+id/iv_arrow"
+            android:paddingRight="5dp"
             android:paddingLeft="10dp"
+            android:layout_centerVertical="true"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
+            android:id="@+id/iv_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_gravity="center"
+            android:layout_centerVertical="true"
             android:layout_margin="6dp"
             android:src="@drawable/icon_left_arrow" />
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/line_color" />
 </LinearLayout>

@@ -69,14 +69,9 @@ public class ControlRuseltActivity extends AppCompatActivity {
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
+        btnSure.setVisibility(View.VISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.execute_result);
-        btnSure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 确定提交按钮
-            }
-        });
 
         settingStr.add(getString(R.string.lamp_control));
         imgInter.add(R.drawable.result_control);

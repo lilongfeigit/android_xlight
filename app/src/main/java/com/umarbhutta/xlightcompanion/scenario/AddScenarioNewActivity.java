@@ -56,6 +56,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
     private String colorHex, scenarioName, scenarioInfo, scenarioFilter;
     private TextView tvTitle;
     private SeekBar colorTemperatureSeekBar;
+    private TextView cctLabelColor;
     private int red = 130;
     private int green = 255;
     private int blue = 0;
@@ -75,10 +76,12 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         addButton = (Button) findViewById(R.id.addButton);
+        cctLabelColor = (TextView) findViewById(R.id.cctLabelColor);
 
         colorTemperatureSeekBar = (SeekBar) findViewById(R.id.colorTemperatureSeekBar);
-        colorTemperatureSeekBar.setMax(3800);
-        colorTemperatureSeekBar.setProgress(1800);
+        colorTemperatureSeekBar.setMax(6500 - 2700);
+
+        colorTemperatureSeekBar.setProgress(1200);
 
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         backImageView = (ImageView) findViewById(R.id.backImageView);
@@ -156,7 +159,33 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 scenarioBrightness = seekBar.getProgress();
             }
         });
+        colorTemperatureSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int seekBarProgress = seekBar.getProgress() + 2700;
+                if (seekBarProgress > 2700 && seekBarProgress < 3500) {
+                    cctLabelColor.setText(com.umarbhutta.xlightcompanion.R.string.nuan_bai);
+                }
+                if (seekBarProgress > 3500 && seekBarProgress < 5500) {
+                    cctLabelColor.setText(com.umarbhutta.xlightcompanion.R.string.zhengbai);
+                }
+                if (seekBarProgress > 5500 && seekBarProgress < 6500) {
+                    cctLabelColor.setText(com.umarbhutta.xlightcompanion.R.string.lengbai);
+                }
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
+                int seekBarProgress = seekBar.getProgress() + 2700;
+                int cctInt = SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
+                Log.e(TAG, "cctInt value is= " + cctInt);
+            }
+        });
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

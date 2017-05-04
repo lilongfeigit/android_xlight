@@ -77,7 +77,7 @@ public class SignUpInfo implements Parcelable {
         this.accountInfo = in.readParcelable(AccountInfo.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<SignUpInfo> CREATOR = new Parcelable.Creator<SignUpInfo>() {
+    public static final Creator<SignUpInfo> CREATOR = new Creator<SignUpInfo>() {
         @Override
         public SignUpInfo createFromParcel(Parcel source) {
             return new SignUpInfo(source);

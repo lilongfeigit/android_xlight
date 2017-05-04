@@ -271,10 +271,10 @@ public class Responses {
 
         public final T result;
 
-        public final Models.CoreInfo coreInfo;
+        public final CoreInfo coreInfo;
 
         public ReadVariableResponse(String commandName, String variableName,
-                                    Models.CoreInfo coreInfo, T result) {
+                                    CoreInfo coreInfo, T result) {
             this.commandName = commandName;
             this.variableName = variableName;
             this.result = result;

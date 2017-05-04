@@ -59,20 +59,20 @@ public class EventSourceImpl extends EventSource {
      */
     public ReadyState getReadyState() {
         if (stream == null) {
-            return EventSource.ReadyState.CONNECTING;
+            return ReadyState.CONNECTING;
         }
         else {
             switch (stream.getReadyState()) {
             case CONNECTING:
-                return EventSource.ReadyState.CONNECTING;
+                return ReadyState.CONNECTING;
                 
             case OPEN:
-                return EventSource.ReadyState.OPEN;
+                return ReadyState.OPEN;
 
             case CLOSING:
             case CLOSED:
             default:
-                return EventSource.ReadyState.CLOSED;
+                return ReadyState.CLOSED;
             }
         }        
     }

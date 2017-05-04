@@ -348,7 +348,7 @@ public class DefaultDispatchChallengeHandler extends DispatchChallengeHandler {
     /**
      * A Node instance has a kind, holds a list of {@link #values} (parameterized type instances),
      * and a sub-tree of nodes called {@link #children}.  It is used as a model for
-     * holding typed {@link org.kaazing.net.auth.ChallengeHandler} instances at "locations".
+     * holding typed {@link ChallengeHandler} instances at "locations".
      * <p/>
      * {@link org.kaazing.net.auth.impl.DefaultDispatchChallengeHandler.Node} instances are mutable.  Nodes have {@link #name}s.  One can add children
      * with distinct names, add {@link #values} and recall them.

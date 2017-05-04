@@ -37,7 +37,7 @@ public class DeviceStateChange implements Parcelable {
                 ParticleDevice.ParticleDeviceState.values()[tmpState];
     }
 
-    public static final Parcelable.Creator<DeviceStateChange> CREATOR = new Parcelable.Creator<DeviceStateChange>() {
+    public static final Creator<DeviceStateChange> CREATOR = new Creator<DeviceStateChange>() {
         @Override
         public DeviceStateChange createFromParcel(Parcel source) {
             return new DeviceStateChange(source);

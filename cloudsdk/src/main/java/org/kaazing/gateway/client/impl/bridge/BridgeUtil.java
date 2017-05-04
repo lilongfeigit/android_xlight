@@ -95,7 +95,7 @@ public class BridgeUtil {
             obj.eventReceived(handlerId, name, params);
         }
         finally {
-            if (eventType.equals(XoaEvent.XoaEventKind.CLOSED) || eventType.equals(XoaEvent.XoaEventKind.ERROR)) {
+            if (eventType.equals(XoaEventKind.CLOSED) || eventType.equals(XoaEventKind.ERROR)) {
                 handlerIdToHtml5ObjectMap.remove(handlerId);
             }
         }

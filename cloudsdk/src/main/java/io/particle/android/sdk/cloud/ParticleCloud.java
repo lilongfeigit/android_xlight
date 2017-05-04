@@ -72,10 +72,10 @@ public class ParticleCloud {
         return ParticleCloudSDK.getCloud();
     }
 
-    private final ApiDefs.CloudApi mainApi;
+    private final CloudApi mainApi;
     private final ApiDefs.IdentityApi identityApi;
     // FIXME: document why this exists (and try to make it not exist...)
-    private final ApiDefs.CloudApi deviceFastTimeoutApi;
+    private final CloudApi deviceFastTimeoutApi;
     private final AppDataStorage appDataStorage;
     private final TokenDelegate tokenDelegate = new TokenDelegate();
     private final LocalBroadcastManager broadcastManager;
@@ -93,9 +93,9 @@ public class ParticleCloud {
     private volatile ParticleUser user;
 
     ParticleCloud(Uri schemeAndHostname,
-                  ApiDefs.CloudApi mainApi,
+                  CloudApi mainApi,
                   ApiDefs.IdentityApi identityApi,
-                  ApiDefs.CloudApi perDeviceFastTimeoutApi,
+                  CloudApi perDeviceFastTimeoutApi,
                   AppDataStorage appDataStorage, LocalBroadcastManager broadcastManager,
                   Gson gson, ExecutorService executor) {
         this.mainApi = mainApi;
@@ -243,7 +243,7 @@ public class ParticleCloud {
      */
     @WorkerThread
     public List<ParticleDevice> getDevices() throws ParticleCloudException {
-        List<Models.SimpleDevice> simpleDevices;
+        List<SimpleDevice> simpleDevices;
         try {
             simpleDevices = mainApi.getDevices();
 
@@ -251,7 +251,7 @@ public class ParticleCloud {
 
             List<ParticleDevice> result = list();
 
-            for (Models.SimpleDevice simpleDevice : simpleDevices) {
+            for (SimpleDevice simpleDevice : simpleDevices) {
                 ParticleDevice device;
                 if (simpleDevice.isConnected) {
                     device = getDevice(simpleDevice.id, false);
@@ -277,18 +277,18 @@ public class ParticleCloud {
     @WorkerThread
     List<ParticleDevice> getDevicesParallel(boolean useShortTimeout)
             throws PartialDeviceListResultException, ParticleCloudException {
-        List<Models.SimpleDevice> simpleDevices;
+        List<SimpleDevice> simpleDevices;
         try {
             simpleDevices = mainApi.getDevices();
             appDataStorage.saveUserHasClaimedDevices(truthy(simpleDevices));
 
 
             // divide up into online and offline
-            List<Models.SimpleDevice> offlineDevices = list();
-            List<Models.SimpleDevice> onlineDevices = list();
+            List<SimpleDevice> offlineDevices = list();
+            List<SimpleDevice> onlineDevices = list();
 
-            for (Models.SimpleDevice simpleDevice : simpleDevices) {
-                List<Models.SimpleDevice> targetList = (simpleDevice.isConnected)
+            for (SimpleDevice simpleDevice : simpleDevices) {
+                List<SimpleDevice> targetList = (simpleDevice.isConnected)
                         ? onlineDevices
                         : offlineDevices;
                 targetList.add(simpleDevice);
@@ -589,7 +589,7 @@ public class ParticleCloud {
         return device;
     }
 
-    private ParticleDevice getOfflineDevice(Models.SimpleDevice offlineDevice) {
+    private ParticleDevice getOfflineDevice(SimpleDevice offlineDevice) {
         DeviceState newDeviceState = fromSimpleDeviceModel(offlineDevice);
         ParticleDevice device = getDeviceFromState(newDeviceState);
         updateDeviceState(newDeviceState, false);
@@ -643,7 +643,7 @@ public class ParticleCloud {
     }
 
     // for offline devices
-    private DeviceState fromSimpleDeviceModel(Models.SimpleDevice offlineDevice) {
+    private DeviceState fromSimpleDeviceModel(SimpleDevice offlineDevice) {
         Set<String> functions = new HashSet<>();
         Map<String, VariableType> variables = new ArrayMap<>();
 

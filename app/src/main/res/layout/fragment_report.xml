@@ -10,7 +10,7 @@
         android:id="@+id/helpWebview"
         android:layout_width="match_parent"
         android:layout_below="@+id/ll_main_top"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/llBottom" />
 
     <RelativeLayout

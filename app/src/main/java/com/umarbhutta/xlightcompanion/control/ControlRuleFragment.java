@@ -62,7 +62,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
         textTitle.setText(R.string.rule);
         btn_add = (Button) view.findViewById(R.id.btn_add);
         btn_add.setVisibility(View.VISIBLE);
-        btn_add.setBackground(getActivity().getDrawable(R.drawable.control_add));
+        btn_add.setBackground(getContext().getDrawable(R.drawable.control_add));
         btn_add.setOnClickListener(this);
 
         return view;
@@ -81,8 +81,10 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
             return;
         }
 
-        mDialog = ProgressDialogUtils.showProgressDialog(getActivity(), getString(R.string.wait));
-
+        mDialog = ProgressDialogUtils.showProgressDialog(getActivity(), getString(R.string.loading));
+        if(mDialog!=null){
+            mDialog.show();
+        }
         RequestDeviceRulesInfo.getInstance().getRules(getActivity(), new RequestDeviceRulesInfo.OnRequestFirstPageInfoCallback() {
 
             @Override
@@ -91,7 +93,9 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mDialog.dismiss();
+                            if(mDialog!=null){
+                                mDialog.dismiss();
+                            }
                             mRuleInfoList.clear();
                             if (null != deviceInfoResult && null != deviceInfoResult.rows) {
                                 mRuleInfoList.addAll(deviceInfoResult.rows);
@@ -107,7 +111,9 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mDialog.dismiss();
+                            if(mDialog!=null){
+                                mDialog.dismiss();
+                            }
                         }
                     });
                 }
@@ -119,7 +125,9 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mDialog.dismiss();
+                            if(mDialog!=null){
+                                mDialog.dismiss();
+                            }
                             ToastUtil.showToast(getActivity(), errMsg);
                         }
                     });

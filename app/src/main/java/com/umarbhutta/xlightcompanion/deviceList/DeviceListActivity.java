@@ -53,17 +53,18 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         listView = (ListView) findViewById(R.id.lv_devices);
         tv_select_main_device = (TextView) findViewById(R.id.tv_select_main_device);
         tv_no_device = (TextView) findViewById(R.id.tv_no_device);
-        if(GlanceMainFragment.deviceList!=null && GlanceMainFragment.deviceList.size()>0){
+        if(UserUtils.isLogin(getApplicationContext()) && GlanceMainFragment.deviceList!=null && GlanceMainFragment.deviceList.size()>0){
             tv_no_device.setVisibility(View.GONE);
             tv_select_main_device.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.VISIBLE);
+            adapter = new DeviceListAdapter(this, GlanceMainFragment.deviceList);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(this);
         }else{
             tv_no_device.setVisibility(View.VISIBLE);
             tv_select_main_device.setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
         }
-
-        adapter = new DeviceListAdapter(this, GlanceMainFragment.deviceList);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
     }
 
     @Override

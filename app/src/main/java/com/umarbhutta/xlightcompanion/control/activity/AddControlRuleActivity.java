@@ -129,6 +129,14 @@ public class AddControlRuleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if(mNewRuleConditionInfoList.size()==0){
+                    ToastUtil.showToast(AddControlRuleActivity.this,getString(R.string.no_conditions));
+                    return;
+                }
+                if(mNewRuleResultInfoList.size()==0 ){
+                    ToastUtil.showToast(AddControlRuleActivity.this,getString(R.string.no_results));
+                    return;
+                }
                 Ruleresult mRuleresult = new Ruleresult();
                 Rulecondition mRulecondition = new Rulecondition();
                 //确定提交按钮

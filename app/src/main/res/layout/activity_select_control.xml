@@ -363,13 +363,14 @@
 
                     <TextView
                         android:id="@+id/cctLabelColor"
-                        android:layout_width="40dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="2dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="@string/cold_color"
+                        android:textSize="14sp"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <RelativeLayout

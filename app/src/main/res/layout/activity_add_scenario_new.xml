@@ -172,6 +172,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="left|start"
             android:text="@string/cold_color"
+            android:textSize="14sp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
 

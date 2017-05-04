@@ -243,4 +243,8 @@
     <string name="calary_select">Choose from Album</string>
     <string name="back">Back</string>
     <string name="title">Title</string>
+
+    <string name="no_conditions">Please set the conditions</string>
+    <string name="no_results">Please set the results</string>
+    <string name="lodding">Lodding</string>
 </resources>

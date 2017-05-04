@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.glance;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,6 +53,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestFirstPageInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestUnBindDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -403,14 +405,19 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         if (!UserUtils.isLogin(getActivity())) {
             return;
         }
-
-
+        final ProgressDialog progressDialog =  ProgressDialogUtils.showProgressDialog(getContext(),getString(R.string.loading));
+        if(progressDialog!=null) {
+            progressDialog.show();
+        }
         RequestFirstPageInfo.getInstance(getActivity()).getBaseInfo(new RequestFirstPageInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(final DeviceInfoResult mDeviceInfoResult) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(progressDialog!=null){
+                            progressDialog.dismiss();
+                        }
                         List<Rows> devices = mDeviceInfoResult.rows;
                         Logger.i("mDeviceInfoResult = " + devices.toString());
                         deviceList.clear();

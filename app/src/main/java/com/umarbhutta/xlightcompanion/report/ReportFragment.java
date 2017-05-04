@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.report;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +39,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
     private ImageView iv_menu;
     private TextView textTitle;
     private Button btn_add;
-
+    private ProgressDialog mDialog;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,8 +85,11 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                 if (newProgress == 100) {
                     // 网页加载完成
 
-                } else {
-                    // 加载中
+                } else if(newProgress == 60){
+                    if(mDialog!=null){
+                        mDialog.dismiss();
+                    }
+                }else{
 
                 }
 
@@ -123,6 +128,11 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
      * 获取报表的url
      */
     public void getReportForm() {
+        // 加载中
+        mDialog = ProgressDialogUtils.showProgressDialog(getActivity(), getString(R.string.loading));
+        if(mDialog!=null){
+            mDialog.show();
+        }
         HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_REPORT_FORM + UserUtils.getUserInfo(getActivity()).getAccess_token(), null, new HttpUtils.OnHttpRequestCallBack() {
             @Override
             public void onHttpRequestSuccess(final Object result) {

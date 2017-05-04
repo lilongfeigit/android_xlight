@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.help;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,6 +74,10 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
                 if (newProgress == 100) {
                     // 网页加载完成
 
+                } else if(newProgress == 60){
+                    if(mDialog!=null){
+                        mDialog.dismiss();
+                    }
                 } else {
                     // 加载中
 
@@ -82,11 +88,15 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
         getHelpUrl();
         return view;
     }
-
+    private ProgressDialog mDialog;
     /**
      * 获取帮助的url
      */
     public void getHelpUrl() {
+        mDialog = ProgressDialogUtils.showProgressDialog(getActivity(), getString(R.string.loading));
+        if(mDialog!=null){
+            mDialog.show();
+        }
         HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_HELP_URL, null, new HttpUtils.OnHttpRequestCallBack() {
             @Override
             public void onHttpRequestSuccess(final Object result) {

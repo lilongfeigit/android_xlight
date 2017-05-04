@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.scenario;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -154,8 +156,13 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
     }
 
     public List<Rows> mSceneList = new ArrayList<Rows>();
+    private ProgressDialog mDialog;
 
     private void getSceneList() {
+        mDialog = ProgressDialogUtils.showProgressDialog(getActivity(), getString(R.string.loading));
+        if(mDialog!=null){
+            mDialog.show();
+        }
         RequestSceneListInfo.getInstance().getSceneListInfo(getActivity(), new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(final SceneListResult deviceInfoResult) {
@@ -163,6 +170,9 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if(mDialog!=null){
+                                mDialog.dismiss();
+                            }
                             if (null != deviceInfoResult && null != deviceInfoResult.rows && deviceInfoResult.rows.size() > 0) {
                                 mSceneList.clear();
                                 mSceneList.addAll(deviceInfoResult.rows);
@@ -179,6 +189,9 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if(mDialog!=null){
+                                mDialog.dismiss();
+                            }
                             ToastUtil.showToast(getActivity(), "" + errMsg);
                         }
                     });

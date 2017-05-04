@@ -5,17 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
-import com.umarbhutta.xlightcompanion.SDK.CloudAccount;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
+import com.umarbhutta.xlightcompanion.location.BaiduMapUtils;
 import com.umarbhutta.xlightcompanion.settings.BaseFragmentActivity;
 
 import java.util.HashMap;
@@ -30,13 +35,13 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 
 //    public static xltDevice m_mainDevice;
 
-    public static Map<String,xltDevice> xltDeviceMaps;
+    public static Map<String, xltDevice> xltDeviceMaps;
 
     public static xltDevice m_mainDevice;
 
     //TODO 测试数据
     public static final String[] deviceNames = {"Living Room", "Bedroom", "Bar"};
-//    public static final int[] deviceNodeIDs = {1, 8, 11};
+    //    public static final int[] deviceNodeIDs = {1, 8, 11};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,12 +55,12 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 
         // Check Bluetooth
         BLEPairedDeviceList.init(this);
-        if( BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled() ) {
+        if (BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, BLEPairedDeviceList.REQUEST_ENABLE_BT);
         }
 
-        xltDeviceMaps = new HashMap<String,xltDevice>();
+        xltDeviceMaps = new HashMap<String, xltDevice>();
         // Initialize SmartDevice SDK
 //        m_mainDevice = new xltDevice();
 //        m_mainDevice.Init(this);
@@ -124,7 +129,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
     }
 
     public void onActivityPressed(Class activity) {
-        Intent intent = new Intent(this,activity);
+        Intent intent = new Intent(this, activity);
         startActivityForResult(intent, 1);
     }
 
@@ -158,4 +163,6 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
         }
         return super.dispatchKeyEvent(event);
     }
+
+
 }

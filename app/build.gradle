@@ -16,6 +16,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            assets.srcDirs = ['assets']
+        }
+        dexOptions {
+            javaMaxHeapSize "2g"
+        }
+    }
+
     aaptOptions
             {
                 cruncherEnabled = false
@@ -42,7 +53,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:+'
     testCompile 'junit:junit:4.12'
     compile project(':slidingmenu_library')
-
     // BY DEFAULT, BUILD APP AGAINST THE LOCAL SDK SOURCE
     // (i.e.: make modifications to the SDK source in the local repo show up in this app
     // just by rebuilding)
@@ -53,7 +63,7 @@ dependencies {
     // comment out the above, and
     // UNCOMMENT THE FOLLOWING TO USE A PUBLISHED VERSION OF THE SDK:
     //compile 'io.particle:cloudsdk:0.3.4'
-
     compile 'io.particle:devicesetup:0.3.6'
     compile 'me.priyesh:chroma:1.0.2'
+    compile files('libs/BaiduLBS_Android.jar')
 }

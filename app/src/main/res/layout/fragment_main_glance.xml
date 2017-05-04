@@ -51,7 +51,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12dp"
-                android:text="滑铁卢区"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:visibility="visible" />
@@ -293,6 +292,7 @@
                 android:src="@drawable/ic_lightbulb_outline_white_24dp" />
 
             <TextView
+                android:id="@+id/save_money"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"

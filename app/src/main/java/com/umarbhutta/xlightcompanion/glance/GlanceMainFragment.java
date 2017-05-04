@@ -18,7 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +28,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -45,6 +48,7 @@ import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesMainListAdapter;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
+import com.umarbhutta.xlightcompanion.location.BaiduMapUtils;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
@@ -89,6 +93,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     public static List<Devicenodes> devicenodes = new ArrayList<Devicenodes>();
     private DevicesMainListAdapter devicesListAdapter;
     private TextView default_text;
+    private TextView save_money;
 
     @Override
     public void onClick(View v) {
@@ -156,7 +161,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_glance, container, false);
-        if(SlidingMenuMainActivity.m_mainDevice==null){
+        if (SlidingMenuMainActivity.m_mainDevice == null) {
             SlidingMenuMainActivity.m_mainDevice = new xltDevice();
             SlidingMenuMainActivity.m_mainDevice.Init(getActivity());
         }
@@ -188,6 +193,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         home_menu.setOnClickListener(this);
         home_setting = (ImageButton) view.findViewById(R.id.home_setting);
         home_setting.setOnClickListener(this);
+        save_money = (TextView) view.findViewById(R.id.save_money);
 
         Resources res = getResources();
         Bitmap weatherIcons = decodeResource(res, R.drawable.weather_icons_1, 420, 600);
@@ -236,10 +242,16 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         devicesRecyclerView.setLayoutManager(layoutManager);
         devicesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
-        final String strLocation = "Suzhou, China";
-        double latitude = 43.4643;
-        double longitude = -80.5204;
-        String forecastUrl = "https://api.forecast.io/forecast/" + CloudAccount.DarkSky_apiKey + "/" + latitude + "," + longitude;
+        getTitleInfo();
+
+        return view;
+    }
+
+    /**
+     * 获取title信息
+     */
+    private void getTitleInfo() {
+        String forecastUrl = "https://api.forecast.io/forecast/" + CloudAccount.DarkSky_apiKey + "/" + mLatitude + "," + mLongitude;
 
         if (NetworkUtils.isNetworkAvaliable(getActivity())) {
             OkHttpClient client = new OkHttpClient();
@@ -279,8 +291,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             //if network isn't available
             Toast.makeText(getActivity(), "Please connect to the network before continuing.", Toast.LENGTH_SHORT).show();
         }
-
-        return view;
     }
 
     private View.OnClickListener btnlistener = new View.OnClickListener() {
@@ -312,7 +322,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private void updateDisplay() {
         imgWeather.setVisibility(View.VISIBLE);
         imgWeather.setImageResource(R.drawable.cloud);
-        txtLocation.setText(mWeatherDetails.getLocation());
+//        txtLocation.setText(mWeatherDetails.getLocation());
 //        imgWeather.setImageBitmap(getWeatherIcon(mWeatherDetails.getIcon()));
         outsideTemp.setText(" " + mWeatherDetails.getTemp("celsius"));
         degreeSymbol.setText("℃");
@@ -405,8 +415,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         if (!UserUtils.isLogin(getActivity())) {
             return;
         }
-        final ProgressDialog progressDialog =  ProgressDialogUtils.showProgressDialog(getContext(),getString(R.string.loading));
-        if(progressDialog!=null) {
+        final ProgressDialog progressDialog = ProgressDialogUtils.showProgressDialog(getContext(), getString(R.string.loading));
+        if (progressDialog != null) {
             progressDialog.show();
         }
         RequestFirstPageInfo.getInstance(getActivity()).getBaseInfo(new RequestFirstPageInfo.OnRequestFirstPageInfoCallback() {
@@ -415,7 +425,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(progressDialog!=null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
                         List<Rows> devices = mDeviceInfoResult.rows;
@@ -440,14 +450,15 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+        initLoacation();
         getBaseInfos();
     }
 
-    public void addDeviceMapsSDK(List<Rows> deviceList){
+    public void addDeviceMapsSDK(List<Rows> deviceList) {
         if (null != deviceList && deviceList.size() > 0) {
             default_text.setVisibility(View.GONE);
             SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
-            if(SlidingMenuMainActivity.xltDeviceMaps!=null){
+            if (SlidingMenuMainActivity.xltDeviceMaps != null) {
                 SlidingMenuMainActivity.xltDeviceMaps.clear();
             }
             for (int i = 0; i < deviceList.size(); i++) {
@@ -463,7 +474,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 boolean isControlConnect = m_XltDevice.Connect(deviceList.get(i).coreid);
                 Logger.e(TAG, "isControlConnect=" + isControlConnect);
 
-                SlidingMenuMainActivity.xltDeviceMaps.put(deviceList.get(i).coreid,m_XltDevice);
+                SlidingMenuMainActivity.xltDeviceMaps.put(deviceList.get(i).coreid, m_XltDevice);
 
                 if (deviceList.get(i).maindevice == 1) {//主设备
                     SlidingMenuMainActivity.m_mainDevice = m_XltDevice;
@@ -587,6 +598,63 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      * TODO  变更住设备，每次变更主设备后需要再次同步一下
      */
     public void changeMainDeviceInfo() {
+    }
+
+
+    /**
+     * 位置信息
+     */
+    public static String city = "";
+    public static String country = "";
+    public static double mLongitude = -80.5204;
+    public static double mLatitude = 43.4643;
+    private LocationClient mLocationClient;
+
+    /**
+     * 初始化百度地图
+     */
+    private void initLoacation() {
+        //声明LocationClient类
+        mLocationClient = new LocationClient(getContext().getApplicationContext());
+        mLocationClient.registerLocationListener(new BDLocationListener() {
+            @Override
+            public void onReceiveLocation(BDLocation location) {
+                if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+                    country = location.getCountry();
+                    city = location.getCity();
+                    mLongitude = location.getLongitude();
+                    mLatitude = location.getLatitude();
+
+                    Logger.i("country = " + country + ", city = " + city);
+                    if (!TextUtils.isEmpty(country) || !TextUtils.isEmpty(city)) {
+                        mLocationClient.stop();
+                    }
+                    updateLocationInfo();
+
+                }
+            }
+
+            @Override
+            public void onConnectHotSpotMessage(String s, int i) {
+
+            }
+        });    //注册监听函数
+        mLocationClient.setLocOption(BaiduMapUtils.getLocationClientOption());
+        mLocationClient.start();
+    }
+
+    private void updateLocationInfo() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!TextUtils.isEmpty(city)) {
+                    txtLocation.setText(city);
+                } else {
+                    txtLocation.setText("" + country);
+                }
+                getTitleInfo();
+            }
+        });
     }
 
 }

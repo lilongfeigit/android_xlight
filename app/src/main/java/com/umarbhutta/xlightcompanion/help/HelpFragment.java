@@ -74,11 +74,7 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
                 if (newProgress == 100) {
                     // 网页加载完成
 
-                } else if(newProgress == 60){
-                    if(mDialog!=null){
-                        mDialog.dismiss();
-                    }
-                } else {
+                }  else {
                     // 加载中
 
                 }
@@ -111,6 +107,9 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
                             JSONObject dataObj = jsonObject.getJSONObject("data");
                             String helpUrl = dataObj.getString("url");
                             webView.loadUrl(helpUrl);
+                            if(mDialog!=null){
+                                mDialog.dismiss();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

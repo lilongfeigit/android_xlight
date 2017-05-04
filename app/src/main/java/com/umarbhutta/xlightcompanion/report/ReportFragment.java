@@ -85,11 +85,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                 if (newProgress == 100) {
                     // 网页加载完成
 
-                } else if(newProgress == 60){
-                    if(mDialog!=null){
-                        mDialog.dismiss();
-                    }
-                }else{
+                } else{
 
                 }
 
@@ -147,6 +143,9 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                             JSONObject dataObj = jsonObject.getJSONObject("data");
                             url = dataObj.getString("url");
                             initViews();
+                            if(mDialog!=null){
+                                mDialog.dismiss();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

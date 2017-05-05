@@ -13,6 +13,7 @@ public class Condition implements Serializable{
     public String operator;
     public String rightValue;
     public int status;
+    public int conditionType;
 
     @Override
     public String toString() {
@@ -23,6 +24,7 @@ public class Condition implements Serializable{
                 ", operator='" + operator + '\'' +
                 ", rightValue='" + rightValue + '\'' +
                 ", status=" + status +
+                ", conditionType=" + conditionType +
                 '}';
     }
 }

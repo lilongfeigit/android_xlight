@@ -53,8 +53,8 @@ public class DialogTemMiuListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
-        holder.tv_setting_name.setText(mRuleconditions[position]);
+        String tem = mRuleconditions[position].substring(1);
+        holder.tv_setting_name.setText(tem.substring(0,tem.length()-1));
 
         return convertView;
     }

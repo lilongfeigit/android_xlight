@@ -111,7 +111,6 @@ public class NewRuleAdapter extends BaseAdapter {
                 holder.no_condidtion.setText(R.string.wei_tianjia_jieguo);
             } else {
 
-
                 holder.titleLayout.setVisibility(View.GONE);
                 holder.itemLayout.setVisibility(View.VISIBLE);
                 holder.no_condidtion.setVisibility(View.GONE);

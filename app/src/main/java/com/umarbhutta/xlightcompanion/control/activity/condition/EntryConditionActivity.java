@@ -14,8 +14,10 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.EntryConditionListAdapter;
+import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
@@ -136,14 +138,37 @@ public class EntryConditionActivity extends AppCompatActivity {
                         onFabPressed(TemControlActivity.class, 4);
                         break;
                     case 5://离家
-                        listStr.clear();
-                        requestCode = 115;
-                        onFabPressed(DialogActivity.class, 5);
+//                        listStr.clear();
+//                        requestCode = 115;
+//                        onFabPressed(DialogActivity.class, 5);
+                        mCondition.attribute = getString(R.string.leave_home);
+                        mCondition.rightValue = ruleconditions.data.get(0).getLeavehome().get(0).value + "";
+                        mCondition.operator = "=";
+                        mCondition.ruleconditionname = ruleconditions.data.get(0).getLeavehome().get(0).name;
+                        mCondition.status = 0;
+                        mCondition.conditionType=5;
+
+                        NewRuleItemInfo mNewRuleItemInfo3 = new NewRuleItemInfo();
+                        mNewRuleItemInfo3.setmCondition(mCondition);
+                        AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo3);
+                        ((App) getApplicationContext()).finishActivity();
                         break;
                     case 6://回家
-                        listStr.clear();
-                        requestCode = 116;
-                        onFabPressed(DialogActivity.class, 6);
+//                        listStr.clear();
+//                        requestCode = 116;
+//                        onFabPressed(DialogActivity.class, 6);
+                        mCondition.attribute = getString(R.string.go_home);
+                        mCondition.rightValue = ruleconditions.data.get(0).getGohome().get(0).value + "";
+                        mCondition.operator = "=";
+                        mCondition.ruleconditionname = ruleconditions.data.get(0).getGohome().get(0).name;
+                        mCondition.status = 0;
+                        mCondition.conditionType=6;
+
+                        NewRuleItemInfo mNewRuleItemInfo4 = new NewRuleItemInfo();
+                        mNewRuleItemInfo4.setmCondition(mCondition);
+                        AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo4);
+
+                        ((App) getApplicationContext()).finishActivity();
                         break;
                     case 7://气体
                         listStr.clear();

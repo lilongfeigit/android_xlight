@@ -52,7 +52,11 @@ public class NewRuleItemInfo {
 
     public void setmCondition(Condition mCondition) {
         this.mCondition = mCondition;
-        setShowText(mCondition.ruleconditionname + "   " + mCondition.operator + "   " + mCondition.rightValue);
+        if(mCondition.conditionType==5 ||  mCondition.conditionType==6){
+            setShowText(mCondition.ruleconditionname);
+        }else {
+            setShowText(mCondition.ruleconditionname + "   " + mCondition.operator + "   " + mCondition.rightValue);
+        }
     }
 
     public Actioncmd getmActioncmd() {

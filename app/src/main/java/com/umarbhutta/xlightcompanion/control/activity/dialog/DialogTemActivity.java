@@ -87,8 +87,9 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
         dialogAddlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                mCondition.rightValue = addTem[position];
+                String tem = addTem[position].substring(1);
+                String tem1 = tem.substring(0,tem.length()-1);
+                mCondition.rightValue = tem1;
                 Intent intent = new Intent();
                 intent.putExtra("MCONDITION", mCondition);
                 setResult(32, intent);
@@ -98,8 +99,9 @@ public class DialogTemActivity extends Activity implements View.OnClickListener 
         dialogMiuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                mCondition.rightValue = miuTem[position];
+                String tem = miuTem[position].substring(1);
+                String tem1 = tem.substring(0,tem.length()-1);
+                mCondition.rightValue = tem1;
                 Intent intent = new Intent();
                 intent.putExtra("MCONDITION", mCondition);
                 setResult(32, intent);

@@ -5,24 +5,23 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     android:paddingBottom="2dp"
-    android:paddingLeft="22dp"
-    android:paddingRight="22dp"
+    android:paddingRight="@dimen/pickerview_topbar_paddingright"
+    android:paddingLeft="@dimen/pickerview_topbar_paddingright"
     android:paddingTop="2dp">
 
     <ImageView
         android:id="@+id/iv_lift_img"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
-        android:scaleType="centerInside"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/tv_setting_name"
         style="@style/SettingsItem"
-        android:layout_height="50dp"
         android:layout_width="0dp"
-        android:paddingLeft="5dp"
+        android:paddingLeft="10dp"
         android:layout_weight="1"
         android:fontFamily="sans-serif-light"
         android:gravity="center|left"
@@ -30,6 +29,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageView
+        android:id="@+id/iv_right_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

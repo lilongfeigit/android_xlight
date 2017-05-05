@@ -46,16 +46,21 @@ public class EntryConditionListAdapter extends RecyclerView.Adapter {
     private class SettingListViewHolder extends RecyclerView.ViewHolder{
         private TextView tv_setting_name;
         private ImageView iv_lift_img;
+        private ImageView iv_right_arrow;
 
         public SettingListViewHolder(View itemView) {
             super(itemView);
             tv_setting_name = (TextView) itemView.findViewById(R.id.tv_setting_name);
             iv_lift_img = (ImageView) itemView.findViewById(R.id.iv_lift_img);
+            iv_right_arrow = (ImageView) itemView.findViewById(R.id.iv_right_arrow);
         }
 
         public void bindView(final View itemView,final int position) {
             tv_setting_name.setText(mSettingStr.get(position));
             iv_lift_img.setImageResource(mIntList.get(position));
+            if(position ==5 || position ==6){
+                iv_right_arrow.setVisibility(View.GONE);
+            }
 
             //如果设置了回调，就设置点击事件
             if (mOnItemClickListener != null){

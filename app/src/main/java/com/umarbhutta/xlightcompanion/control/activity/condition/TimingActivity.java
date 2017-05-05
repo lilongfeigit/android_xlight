@@ -149,8 +149,8 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
                 String strWeekList = "";
                 String weekDays = "";
                 for(int i=0;i<array.size();i++){
-                    strWeekList =strWeekList+array.get(i).name+",";
-                    weekDays=weekDays+array.get(i).weekdays+",";
+                    strWeekList =strWeekList+array.get(i).name+"、";
+                    weekDays=weekDays+array.get(i).weekdays+"、";
                 }
                 mSchedule.weekdays="["+weekDays.substring(0,weekDays.length()-1)+"]";
                 mSchedule.isrepeat =1;

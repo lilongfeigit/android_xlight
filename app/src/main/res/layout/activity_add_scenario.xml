@@ -136,7 +136,7 @@
                     android:layout_marginRight="8dp"
                     android:drawableRight="@drawable/switch_selector"
                     android:textAlignment="textEnd"
-                    android:thumb="@null"
+                    android:thumb="@color/transparent"
                     android:track="@null" />
 
             </RelativeLayout>

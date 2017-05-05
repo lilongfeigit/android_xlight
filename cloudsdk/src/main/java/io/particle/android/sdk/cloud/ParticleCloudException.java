@@ -32,7 +32,7 @@ public class ParticleCloudException extends Exception {
     /** Identifies the event kind which triggered a {@link ParticleCloudException}. */
     public enum Kind {
 
-        /** An {@link IOException} occurred while communicating to the server. */
+        /** An {@link java.io.IOException} occurred while communicating to the server. */
         NETWORK,
 
         /** An exception was thrown while (de)serializing a body. */

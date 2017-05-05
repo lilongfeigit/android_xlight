@@ -37,7 +37,7 @@ public class IoBufferUtil {
                 // decide to over write only few bytes but still keep the remaining
                 // part of the buffer unchanged.
                 int newCapacity = existingBuffer.capacity() + additionalRequired ;
-                ByteBuffer newBuffer = ByteBuffer.allocate(newCapacity);
+                java.nio.ByteBuffer newBuffer = java.nio.ByteBuffer.allocate(newCapacity);
                 existingBuffer.flip();
                 newBuffer.put(existingBuffer);
                 return newBuffer;

@@ -21,7 +21,7 @@ import io.particle.android.sdk.cloud.Responses.Models.SimpleDevice;
 import static io.particle.android.sdk.utils.Py.list;
 
 /**
- * Does parallel fetching of {@link CompleteDevice}
+ * Does parallel fetching of {@link Models.CompleteDevice}
  *
  * FIXME: review this solution
  */

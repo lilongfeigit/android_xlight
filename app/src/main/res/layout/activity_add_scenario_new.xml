@@ -172,8 +172,8 @@
             android:fontFamily="sans-serif-light"
             android:gravity="left|start"
             android:text="@string/cold_color"
-            android:textSize="14sp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="14sp" />
 
 
         <RelativeLayout
@@ -186,8 +186,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:scaleType="matrix"
-                android:background="@drawable/white_seek" />
+                android:background="@drawable/white_seek"
+                android:scaleType="matrix" />
 
             <SeekBar
                 android:id="@+id/colorTemperatureSeekBar"
@@ -238,12 +238,17 @@
 
         <SeekBar
             android:id="@+id/brightnessSeekBar"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:backgroundTint="@color/blue"
             android:max="100"
+            android:maxHeight="5dp"
+            android:minHeight="5dp"
             android:progress="80"
+            android:progressDrawable="@drawable/video_seekbar"
+            android:secondaryProgress="0"
             android:thumb="@drawable/thumb" />
 
     </LinearLayout>

@@ -310,9 +310,9 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         }
 
         mProgressDialog = ProgressDialogUtils.showProgressDialog(this, getString(R.string.commiting));
-       if(mProgressDialog!=null){
-           mProgressDialog.show();
-       }
+        if (mProgressDialog != null) {
+            mProgressDialog.show();
+        }
         RequestEditScene.getInstance().editScene(this, mSceneInfo.id, getParams(1), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
@@ -421,9 +421,9 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         params.color = "rgb(" + red + "," + green + "," + blue + ")";
 
         List<EditScenarionodes> list = new ArrayList<EditScenarionodes>();
-        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
-        list.add(new EditScenarionodes(45, 235, 7, 103, 3644, "rgb(235,7,103)"));
+        list.add(new EditScenarionodes(params.brightness, red, green, blue, params.cct, "rgb(" + red + "," + green + "," + blue + ")"));
+        list.add(new EditScenarionodes(params.brightness, red, green, blue, params.cct, "rgb(" + red + "," + green + "," + blue + ")"));
+        list.add(new EditScenarionodes(params.brightness, red, green, blue, params.cct, "rgb(" + red + "," + green + "," + blue + ")"));
 
         params.scenarionodes = list;
         return params;

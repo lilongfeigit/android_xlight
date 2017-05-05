@@ -17,7 +17,6 @@ import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.ControlFragment;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
@@ -102,12 +101,12 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
                 mContolRuleDevice.roomName = lampName.getText().toString();
                 mContolRuleDevice.brightness = brightnessSeekBar.getProgress();
                 mContolRuleDevice.cct = cctSeekBar.getProgress();
-                mContolRuleDevice.statues = (state==false?"关":"开");
+                mContolRuleDevice.statues = (state == false ? "关" : "开");
 
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
                 mNewRuleItemInfo.setmControlRuleDevice(mContolRuleDevice);
                 AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
-                ((App)getApplicationContext()).finishActivity();
+                ((App) getApplicationContext()).finishActivity();
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
@@ -118,6 +117,13 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
         cctSeekBar.setProgress(10);
 
         spinner = (ImageView) findViewById(R.id.spinner);
+        findViewById(R.id.scenarioNameLL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DeviceControlSelectActivity.this, DialogRowNameActivity.class);
+                startActivityForResult(intent, 29);
+            }
+        });
 
         spinner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +148,12 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.colorLL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onFabPressed();
+            }
+        });
         colorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -347,18 +359,21 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
         brightnessSeekBar.setProgress(20);
         cctSeekBar.setProgress(10);
 
-        if (null == curMainRows && null != curMainRows.devicenodes && curMainRows.devicenodes.size() > 0) {
+        if (null != curMainRows) {
             lampName.setText(curMainRows.devicename);
             tvTitle.setText(curMainRows.devicename);
-            if (1 == curMainRows.devicenodes.get(0).devicenodetype) {
-                rl_scenario.setVisibility(View.GONE);
-                colorLL.setVisibility(View.GONE);
-            } else {
-                rl_scenario.setVisibility(View.VISIBLE);
-                colorLL.setVisibility(View.VISIBLE);
-                cctSeekBar.setProgress(curMainRows.devicenodes.get(0).cct - 2700);
+
+            if (null != curMainRows.devicenodes && curMainRows.devicenodes.size() > 0){
+                if (1 == curMainRows.devicenodes.get(0).devicenodetype) {
+                    rl_scenario.setVisibility(View.GONE);
+                    colorLL.setVisibility(View.GONE);
+                } else {
+                    rl_scenario.setVisibility(View.VISIBLE);
+                    colorLL.setVisibility(View.VISIBLE);
+                    cctSeekBar.setProgress(curMainRows.devicenodes.get(0).cct - 2700);
+                }
+                brightnessSeekBar.setProgress(curMainRows.devicenodes.get(0).brightness);
             }
-            brightnessSeekBar.setProgress(curMainRows.devicenodes.get(0).brightness);
         }
 
     }

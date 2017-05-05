@@ -113,10 +113,10 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="4dp"
                     android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
                     android:fontFamily="sans-serif-light"
                     android:gravity="left|start"
                     android:text="名称"
@@ -205,9 +205,9 @@
                         android:id="@+id/powerLabel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="0dp"
                         android:layout_weight="1"
-                        android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="电源"
@@ -251,8 +251,8 @@
                         android:id="@+id/tv_scenario"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="0dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="0dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="@string/scene"
@@ -260,6 +260,7 @@
                         android:textColor="@color/textColorPrimary" />
 
                     <HorizontalScrollView
+                        android:id="@+id/hor_scroll_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_scenario"
@@ -300,9 +301,9 @@
                         android:id="@+id/brightnessLabel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="0dp"
                         android:layout_weight="0.6"
-                        android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="@string/lightness"
@@ -313,10 +314,10 @@
                         android:id="@+id/brightnessSeekBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:thumb="@drawable/thumb"
+                        android:layout_weight="1"
                         android:max="100"
                         android:progress="0"
-                        android:layout_weight="1" />
+                        android:thumb="@drawable/thumb" />
 
                 </LinearLayout>
 
@@ -344,9 +345,9 @@
                         android:id="@+id/cctLabel"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:layout_gravity="center_vertical"
                         android:text="@string/color_temp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
@@ -355,13 +356,13 @@
                         android:id="@+id/cctLabelColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="2dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:layout_gravity="center_vertical"
                         android:text="@string/cold_color"
-                        android:textSize="14sp"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -373,9 +374,9 @@
                             android:id="@+id/bg"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:scaleType="matrix"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/white_seek"/>
+                            android:background="@drawable/white_seek"
+                            android:scaleType="matrix" />
 
                         <SeekBar
                             android:id="@+id/cctSeekBar"
@@ -416,10 +417,10 @@
                         android:id="@+id/colorLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="0dp"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:layout_gravity="center_vertical"
                         android:text="@string/color"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
@@ -434,13 +435,14 @@
                             android:id="@+id/colorTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toLeftOf="@+id/arraw"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="13dp"
+                            android:layout_toLeftOf="@+id/arraw"
                             android:text="@string/select"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
+
                         <ImageView
                             android:id="@+id/arraw"
                             android:layout_width="wrap_content"
@@ -448,8 +450,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="13dp"
-                            android:src="@drawable/arraw"
-                            />
+                            android:src="@drawable/arraw" />
 
                         <RelativeLayout
                             android:id="@+id/dotLayout"

@@ -338,6 +338,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         HttpUtils.getInstance().putRequestInfo(NetConfig.URL_MODIFY_USER_INFO + userInfo.getId() + "?access_token=" + userInfo.getAccess_token(), object.toString(), null, new HttpUtils.OnHttpRequestCallBack() {
             @Override
             public void onHttpRequestSuccess(Object result) {
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -372,11 +373,11 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                 break;
             case 2:
                 if ("0".equals(sexResResult)) {
-                    mLoginResult.sex = getString(R.string.women);
+                    mLoginResult.sex = "0";
                 } else if ("1".equals(sexResResult)) {
-                    mLoginResult.sex = getString(R.string.man);
+                    mLoginResult.sex = "1";
                 } else {
-                    mLoginResult.sex = getString(R.string.bu_queding);
+                    mLoginResult.sex = "2";
                 }
                 break;
         }

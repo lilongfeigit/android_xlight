@@ -121,8 +121,7 @@
                 android:id="@+id/sex"
                 style="@style/setting_item_left_texty_style"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="guangibngwang@126.com" />
+                android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 

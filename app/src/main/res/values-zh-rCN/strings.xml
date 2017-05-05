@@ -195,7 +195,7 @@
     <string name="name">名称</string>
     <string name="power">电源</string>
     <string name="lightness">亮度</string>
-    <string name="cold_color">冷色</string>
+    <string name="cold_color">暖白</string>
     <string name="zidingyi">自定义</string>
     <string name="you_want_notify_content">您要的通知的内容</string>
     <string name="please_close_device">请将路由器尽可能靠近设备,保证路由器信号覆盖到设备</string>

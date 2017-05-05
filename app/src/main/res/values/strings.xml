@@ -194,7 +194,7 @@
     <string name="name">Name</string>
     <string name="power">Power</string>
     <string name="lightness">Brightness</string>
-    <string name="cold_color">Cool color</string>
+    <string name="cold_color">Warm color</string>
     <string name="zidingyi">Custom</string>
     <string name="you_want_notify_content">Content you want to notify</string>
     <string name="please_close_device">Please connect the router as close to the device as possible to ensure that the router signal covers the device</string>

@@ -650,6 +650,9 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 if (!TextUtils.isEmpty(city)) {
                     txtLocation.setText(city);
                 } else {
+                    if(country==null){
+                        country="";
+                    }
                     txtLocation.setText("" + country);
                 }
                 getTitleInfo();

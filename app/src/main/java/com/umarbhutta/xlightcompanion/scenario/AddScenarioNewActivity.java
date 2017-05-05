@@ -227,7 +227,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(from) && "list".equals(from)) {
             tvTitle.setText(R.string.edit_scene);
         } else {
-            tvTitle.setText(R.string.edit_scene);
+            tvTitle.setText(R.string.add_scene);
         }
 
 
@@ -310,14 +310,18 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         }
 
         mProgressDialog = ProgressDialogUtils.showProgressDialog(this, getString(R.string.commiting));
-
+       if(mProgressDialog!=null){
+           mProgressDialog.show();
+       }
         RequestEditScene.getInstance().editScene(this, mSceneInfo.id, getParams(1), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mProgressDialog.cancel();
+                        if (mProgressDialog != null) {
+                            mProgressDialog.dismiss();
+                        }
                         ToastUtil.showToast(AddScenarioNewActivity.this, getString(R.string.edit_scene_success));
                         AddScenarioNewActivity.this.finish();
                     }
@@ -329,7 +333,9 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mProgressDialog.cancel();
+                        if (mProgressDialog != null) {
+                            mProgressDialog.dismiss();
+                        }
                         ToastUtil.showToast(AddScenarioNewActivity.this, "" + errMsg);
                     }
                 });
@@ -361,14 +367,18 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         }
 
         mProgressDialog = ProgressDialogUtils.showProgressDialog(this, getString(R.string.commiting));
-
+        if (mProgressDialog != null) {
+            mProgressDialog.show();
+        }
         RequestAddScene.getInstance().addScene(this, getParams(2), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mProgressDialog.cancel();
+                        if (mProgressDialog != null) {
+                            mProgressDialog.dismiss();
+                        }
                         ToastUtil.showToast(AddScenarioNewActivity.this, getString(R.string.add_scene_success));
                         AddScenarioNewActivity.this.finish();
                     }
@@ -380,7 +390,9 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mProgressDialog.cancel();
+                        if (mProgressDialog != null) {
+                            mProgressDialog.dismiss();
+                        }
                         ToastUtil.showToast(AddScenarioNewActivity.this, "" + errMsg);
                     }
                 });

@@ -62,7 +62,8 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
         textTitle.setText(R.string.rule);
         btn_add = (Button) view.findViewById(R.id.btn_add);
         btn_add.setVisibility(View.VISIBLE);
-        btn_add.setBackground(getContext().getDrawable(R.drawable.control_add));
+//        btn_add.setBackground(getContext().getDrawable(R.drawable.control_add));
+        btn_add.setBackgroundResource(R.drawable.control_add);
         btn_add.setOnClickListener(this);
 
         return view;

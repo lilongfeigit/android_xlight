@@ -14,7 +14,7 @@
     <!-- 顶部按钮paddingLeft -->
     <dimen name="pickerview_topbar_paddingleft">10dp</dimen>
     <!-- 顶部按钮paddingRight -->
-    <dimen name="pickerview_topbar_paddingright">30dp</dimen>
+    <dimen name="pickerview_topbar_paddingright">20dp</dimen>
     <!-- 顶部按钮文字大小 -->
     <dimen name="pickerview_topbar_btn_textsize">20sp</dimen>
     <dimen name="pickerview_topbar_title_textsize">21sp</dimen>
@@ -25,4 +25,6 @@
     <dimen name="slidingmenu_offset">120dp</dimen>
     <dimen name="list_padding">10dp</dimen>
     <dimen name="shadow_width">10dp</dimen>
+
+    <dimen name="top_center_title_size">18sp</dimen>
 </resources>

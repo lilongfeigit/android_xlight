@@ -49,7 +49,7 @@ import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesMainListAdapter;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.location.BaiduMapUtils;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
+import com.umarbhutta.xlightcompanion.main.SimpleDividerMainItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
@@ -240,7 +240,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         devicesRecyclerView.setLayoutManager(layoutManager);
-        devicesRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+        devicesRecyclerView.addItemDecoration(new SimpleDividerMainItemDecoration(getActivity()));
 
         getTitleInfo();
 

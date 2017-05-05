@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="20dp">
+        >
 
         <TextView
             android:layout_width="match_parent"
@@ -20,14 +20,22 @@
             android:gravity="left|start"
             android:paddingTop="10dp"
             android:text="@string/all_rules"
+            android:paddingLeft="20dp"
+            android:layout_marginBottom="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="16sp" />
+
+        <View style="@style/subscribe_seperate_line"
+            android:layout_marginLeft="0dp"/>
 
         <ListView
             android:id="@+id/rulesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:divider="@color/dividerColor"
+            android:dividerHeight="1dp"
             android:scrollbars="none" />
     </LinearLayout>
 

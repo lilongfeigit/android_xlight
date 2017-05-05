@@ -10,6 +10,7 @@
         style="@style/SettingsItem"
         android:layout_width="0dp"
         android:layout_weight="1"
+        android:paddingLeft="@dimen/pickerview_topbar_paddingright"
         android:fontFamily="sans-serif-light"
         android:gravity="center|left"
         android:text="@string/persion_center"

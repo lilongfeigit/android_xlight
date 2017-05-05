@@ -12,20 +12,15 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_below="@+id/ll_main_top"
-        android:paddingLeft="32dp"
+        android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:text="@string/all_scene"
-        android:textSize="16sp" />
+        android:textSize="@dimen/text_size" />
 
-    <View
+    <View style="@style/subscribe_seperate_line"
         android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/tv"
-        android:layout_marginLeft="22dp"
-        android:layout_marginRight="22dp"
-        android:background="@drawable/line"
-        android:visibility="gone" />
+        android:layout_below="@id/tv"
+        android:layout_marginLeft="0dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/scenarioRecyclerView"
@@ -33,6 +28,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/tv" />
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/view" />
 
 </RelativeLayout>

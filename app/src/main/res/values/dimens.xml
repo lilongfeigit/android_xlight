@@ -27,7 +27,7 @@
     <dimen name="shadow_width">10dp</dimen>
 
     <dimen name="top_center_title_size">18sp</dimen>
-    <dimen name="text_size">18sp</dimen>
+    <dimen name="text_size">16sp</dimen>
     <dimen name="item_margin_left">30dp</dimen>
     <dimen name="item_margin_right">30dp</dimen>
 </resources>

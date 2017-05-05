@@ -67,7 +67,7 @@
             android:drawableLeft="@drawable/home"
             android:drawablePadding="20dp"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="@string/first_page"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium" />
@@ -75,7 +75,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/pickerview_topbar_paddingleft"
             android:background="@color/line_color" />
 
         <TextView
@@ -85,7 +85,7 @@
             android:drawableLeft="@drawable/home_nav_control"
             android:drawablePadding="20dp"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="@string/rule"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium" />
@@ -93,7 +93,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/pickerview_topbar_paddingright"
             android:background="@color/line_color" />
 
         <TextView
@@ -103,7 +103,7 @@
             android:drawableLeft="@drawable/home_scenario"
             android:drawablePadding="20dp"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="场景"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium" />
@@ -111,7 +111,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/pickerview_topbar_paddingright"
             android:background="@color/line_color" />
 
         <TextView
@@ -120,7 +120,7 @@
             android:layout_height="@dimen/item_height"
             android:drawableLeft="@drawable/home_schedule"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="@string/report"
             android:drawablePadding="20dp"
             android:textSize="@dimen/text_size_medium"
@@ -129,7 +129,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/pickerview_topbar_paddingright"
             android:background="@color/line_color" />
 
         <TextView
@@ -138,7 +138,7 @@
             android:layout_height="@dimen/item_height"
             android:drawableLeft="@drawable/home_setting"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="@string/setting"
             android:drawablePadding="20dp"
             android:textSize="@dimen/text_size_medium"
@@ -147,7 +147,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/pickerview_topbar_paddingright"
             android:background="@color/line_color" />
 
         <TextView
@@ -156,7 +156,7 @@
             android:layout_height="@dimen/item_height"
             android:drawableLeft="@drawable/home_help"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="@string/help"
             android:drawablePadding="20dp"
             android:textSize="@dimen/text_size_medium"
@@ -165,7 +165,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/pickerview_topbar_paddingright"
             android:background="@color/line_color" />
     </LinearLayout>
 </LinearLayout>

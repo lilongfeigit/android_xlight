@@ -8,7 +8,9 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/settingRecyclerView"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
+        android:scrollbars="none"
         android:layout_height="match_parent" />
 
 </LinearLayout>

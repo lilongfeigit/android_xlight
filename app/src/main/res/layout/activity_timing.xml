@@ -10,10 +10,11 @@
         android:id="@+id/llStartTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp">
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv1"
@@ -24,7 +25,6 @@
             android:layout_centerVertical="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
-            android:paddingLeft="5dp"
             android:text="@string/start_time"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -33,9 +33,9 @@
             style="@style/SettingsItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv1"
             android:fontFamily="sans-serif-light"
-            android:layout_centerVertical="true"
             android:paddingLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -43,24 +43,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_margin="6dp"
-            android:layout_centerVertical="true"
             android:src="@drawable/icon_left_arrow" />
     </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="20dp"
-        android:background="@color/line_color" />
+
+    <View style="@style/subscribe_seperate_line" />
+
     <RelativeLayout
         android:id="@+id/llWeek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="10dp">
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv2"
@@ -68,10 +67,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
-            android:layout_centerVertical="true"
-            android:paddingLeft="5dp"
             android:text="@string/__repeat"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -80,13 +78,13 @@
             style="@style/SettingsItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iv_arrow"
             android:layout_toRightOf="@+id/tv2"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
-            android:layout_toLeftOf="@+id/iv_arrow"
+            android:paddingLeft="20dp"
             android:paddingRight="5dp"
-            android:paddingLeft="10dp"
-            android:layout_centerVertical="true"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
@@ -98,9 +96,6 @@
             android:layout_margin="6dp"
             android:src="@drawable/icon_left_arrow" />
     </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="20dp"
-        android:background="@color/line_color" />
+
+    <View style="@style/subscribe_seperate_line" />
 </LinearLayout>

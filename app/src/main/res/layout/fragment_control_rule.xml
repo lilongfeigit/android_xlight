@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingLeft="20dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -28,9 +27,7 @@
             android:id="@+id/rulesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="40dp"
+            android:layout_marginTop="5dp"
             android:scrollbars="none" />
     </LinearLayout>
 

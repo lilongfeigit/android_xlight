@@ -184,12 +184,8 @@
 
             <View
                 android:id="@+id/line9"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
                 android:layout_below="@+id/scenarioNameLL"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:background="@color/dividerColor" />
+                style="@style/LineStyle" />
 
             <LinearLayout
                 android:id="@+id/scenarioNoneLL"
@@ -237,12 +233,8 @@
 
                 <View
                     android:id="@+id/line2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
                     android:layout_below="@+id/nameLL"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:background="@color/dividerColor" />
+                    style="@style/LineStyle" />
 
                 <RelativeLayout
                     android:id="@+id/rl_scenario"
@@ -285,12 +277,8 @@
 
                 <View
                     android:id="@+id/line1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
                     android:layout_below="@+id/rl_scenario"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:background="@color/dividerColor" />
+                    style="@style/LineStyle" />
 
 
                 <LinearLayout
@@ -332,12 +320,8 @@
 
                 <View
                     android:id="@+id/line8"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
                     android:layout_below="@+id/brightnessLL"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:background="@color/dividerColor" />
+                    style="@style/LineStyle" />
 
                 <LinearLayout
                     android:id="@+id/colorTemperature"
@@ -402,12 +386,8 @@
 
                 <View
                     android:id="@+id/line3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
                     android:layout_below="@+id/colorTemperature"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:background="@color/dividerColor" />
+                    style="@style/LineStyle"/>
 
 
                 <LinearLayout

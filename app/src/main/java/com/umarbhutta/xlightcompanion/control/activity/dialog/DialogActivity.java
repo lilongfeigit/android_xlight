@@ -124,7 +124,6 @@ public class DialogActivity extends Activity {
                         mNewRuleItemInfo4.setmCondition(mCondition);
                         AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo4);
 
-
                         ((App) getApplicationContext()).finishActivity();
                         break;
                     case 7:

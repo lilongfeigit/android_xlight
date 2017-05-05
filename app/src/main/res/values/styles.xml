@@ -60,15 +60,13 @@
     <!--设置界面item属性-->
     <style name="SettingsItem">
         <item name="android:layout_height">50dp</item>
-        <item name="android:layout_marginLeft">6dp</item>
-        <item name="android:layout_marginRight">6dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_size</item>
         <item name="android:textColor">@color/btn_login_color</item>
     </style>
     <!--修改密码界面属性-->
     <style name="ModifyPassword">
-        <item name="android:layout_marginLeft">30dp</item>
-        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:layout_marginLeft">@dimen/item_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/item_margin_right</item>
         <item name="android:background">@drawable/edt_bg</item>
     </style>
 
@@ -86,9 +84,11 @@
     </style>
 
     <style name="subscribe_seperate_line">
-        <item name="android:background">#88cdcdcd</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">0.5dip</item>
+        <item name="android:background">@color/dividerColor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">@dimen/pickerview_topbar_paddingright</item>
+
     </style>
 
     <style name="dialog_style" parent="@android:style/Theme.Dialog">
@@ -113,9 +113,20 @@
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
 
+    <!--全局页面item属性左边距-->
+    <style name="ItemStyle">
+        <item name="android:layout_marginLeft">@dimen/item_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/item_margin_right</item>
+    </style>
+    <!--全局页面line-->
+    <style name="LineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">@dimen/right_arrow_size</item>
+        <item name="android:background">@color/dividerColor</item>
+    </style>
     <style name="MEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/bar_color</item>
         <item name="colorControlActivated">@color/bar_color</item>
     </style>
-
 </resources>

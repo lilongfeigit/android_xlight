@@ -1,7 +1,6 @@
 package com.umarbhutta.xlightcompanion.main;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,13 +29,11 @@ import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
-import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.control.ControlFragment;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
@@ -47,6 +44,7 @@ import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
 import com.umarbhutta.xlightcompanion.views.CircleDotView;
+import com.umarbhutta.xlightcompanion.views.DialogUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,6 +105,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     private LinearLayout colorLL;
 
     private xltDevice mCurrentDevice;
+    private HorizontalScrollView mHorizontalScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +127,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         cctSeekBar.setMax(6500 - 2700);
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         scenarioNoneLL = (LinearLayout) findViewById(R.id.scenarioNoneLL);
+        mHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.hor_scroll_view);
         scenarioNoneLL.setAlpha(1);
         ring1Button = (ToggleButton) findViewById(R.id.ring1Button);
         ring2Button = (ToggleButton) findViewById(R.id.ring2Button);
@@ -166,27 +166,27 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         rl_scenario = (RelativeLayout) findViewById(R.id.rl_scenario);
         colorLL = (LinearLayout) findViewById(R.id.colorLL);
 
-        if(deviceInfo.devicenodetype==1){
+        if (deviceInfo.devicenodetype == 1) {
             rl_scenario.setVisibility(View.GONE);
             colorLL.setVisibility(View.GONE);
-        }else {
+        } else {
             rl_scenario.setVisibility(View.VISIBLE);
             colorLL.setVisibility(View.VISIBLE);
         }
 
-        mCurrentDevice =  SlidingMenuMainActivity.xltDeviceMaps.get(deviceInfo.coreid);
+        mCurrentDevice = SlidingMenuMainActivity.xltDeviceMaps.get(deviceInfo.coreid);
 
         mCurrentDevice.setDeviceID(deviceInfo.nodeno);
 
         Log.e("EditDeviceActivity", "nodeno=" + deviceInfo.nodeno + ";;;coreid=" + deviceInfo.coreid
-                +";devicenodetype="+deviceInfo.devicenodetype);
+                + ";devicenodetype=" + deviceInfo.devicenodetype);
 
-        Log.e(TAG, "CCT=" + mCurrentDevice.getCCT(deviceInfo.nodeno)+ ";State=" + mCurrentDevice.getState(deviceInfo.nodeno) + ";blue=" +
+        Log.e(TAG, "CCT=" + mCurrentDevice.getCCT(deviceInfo.nodeno) + ";State=" + mCurrentDevice.getState(deviceInfo.nodeno) + ";blue=" +
                 mCurrentDevice.getBlue(deviceInfo.nodeno) + ";red=" + mCurrentDevice.getRed(deviceInfo.nodeno) + ";green=" + mCurrentDevice.getGreen(deviceInfo.nodeno) + ";Brightness" +
                 mCurrentDevice.getBrightness(deviceInfo.nodeno));
 
         mscenarioName.setText(deviceInfo.devicenodename);
-        powerSwitch.setChecked((mCurrentDevice.getState() == 0)?false : true);
+        powerSwitch.setChecked((mCurrentDevice.getState() == 0) ? false : true);
         brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
         cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
 
@@ -265,6 +265,11 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                 int brightnessInt = mCurrentDevice.ChangeBrightness(seekBar.getProgress());
                 Log.e(TAG, "brightnessInt value is= " + brightnessInt);
                 deviceInfo.brightness = seekBar.getProgress();
+
+                if(null != viewList && viewList.size()>0){
+                    viewList.get(0).callOnClick();
+                    mHorizontalScrollView.scrollTo(0,0);
+                }
             }
         });
 
@@ -294,8 +299,13 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 int seekBarProgress = seekBar.getProgress() + 2700;
-               int cctInt =  mCurrentDevice.ChangeCCT(seekBarProgress);
+                int cctInt = mCurrentDevice.ChangeCCT(seekBarProgress);
                 Log.e(TAG, "cctInt value is= " + cctInt);
+
+                if(null != viewList && viewList.size()>0){
+                    viewList.get(0).callOnClick();
+                    mHorizontalScrollView.scrollTo(0,0);
+                }
             }
         });
 
@@ -365,27 +375,26 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    private EditText et;
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scenarioName:
                 String title = getString(R.string.edit_device_name);
-                final EditText et = new EditText(this);
-                new AlertDialog.Builder(this).setTitle(title)
-                        .setView(et)
-                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String input = et.getText().toString();
+                et = (EditText) mInflater.inflate(R.layout.layout_edittext, null);
 
-                                if (TextUtils.isEmpty(input)) {
-                                    ToastUtil.showToast(EditDeviceActivity.this, getString(R.string.content_is_null));
-                                    return;
-                                }
-                                editDeViceInfo();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.cancel), null)
-                        .show();
+                new DialogUtils().getEditTextDialog(EditDeviceActivity.this, title, new DialogUtils.OnClickOkBtnListener() {
+                    @Override
+                    public void onClickOk(String editTextStr) {
+                        if (TextUtils.isEmpty(editTextStr)) {
+                            ToastUtil.showToast(EditDeviceActivity.this, getString(R.string.content_is_null));
+                            return;
+                        }
+                        editDeViceInfo(editTextStr);
+                    }
+                });
+
                 break;
         }
     }
@@ -572,13 +581,13 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
     /**
      * 提交编辑设备
      */
-    private void editDeViceInfo() {
+    private void editDeViceInfo(String newDeviceName) {
         if (!NetworkUtils.isNetworkAvaliable(this)) {
             ToastUtil.showToast(this, R.string.net_error);
             return;
         }
 
-        String deviceName = mscenarioName.getText().toString();
+        final String deviceName = TextUtils.isEmpty(newDeviceName) ? mscenarioName.getText().toString() : newDeviceName;
         if (TextUtils.isEmpty(deviceName)) {
             ToastUtil.showToast(this, getString(R.string.please_set_lamp_name));
             return;
@@ -639,6 +648,12 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                                 ToastUtil.showToast(EditDeviceActivity.this, getString(R.string.modify_success));
 //                                setResult(0);
 //                                EditDeviceActivity.this.finish();
+
+                                if (!TextUtils.isEmpty(deviceName)) {
+                                    deviceInfo.devicenodename = deviceName;
+                                    mscenarioName.setText(deviceName);
+                                }
+
                             }
                         });
                     }

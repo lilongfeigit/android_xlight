@@ -317,7 +317,9 @@ public class xltDevice {
 
     public boolean ConnectLAN() {
         // ToDo: get IP & Port from Cloud or BLE (SmartController told it)
-        return(lanBridge.connectController("192.168.0.114", 5555));
+//        return(lanBridge.connectController("192.168.0.114", 5555));
+        //TODO 临时固定fasle
+        return false;
     }
 
     public boolean isSunny() {

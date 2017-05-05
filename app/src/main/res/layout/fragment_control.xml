@@ -317,6 +317,11 @@
                         android:layout_weight="1"
                         android:max="100"
                         android:progress="0"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:maxHeight="5dp"
+                        android:minHeight="5dp"
+                        android:progressDrawable="@drawable/video_seekbar"
+                        android:secondaryProgress="0"
                         android:thumb="@drawable/thumb" />
 
                 </LinearLayout>

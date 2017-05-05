@@ -184,8 +184,8 @@
 
             <View
                 android:id="@+id/line9"
-                android:layout_below="@+id/scenarioNameLL"
-                style="@style/LineStyle" />
+                style="@style/LineStyle"
+                android:layout_below="@+id/scenarioNameLL" />
 
             <LinearLayout
                 android:id="@+id/scenarioNoneLL"
@@ -233,8 +233,8 @@
 
                 <View
                     android:id="@+id/line2"
-                    android:layout_below="@+id/nameLL"
-                    style="@style/LineStyle" />
+                    style="@style/LineStyle"
+                    android:layout_below="@+id/nameLL" />
 
                 <RelativeLayout
                     android:id="@+id/rl_scenario"
@@ -277,8 +277,8 @@
 
                 <View
                     android:id="@+id/line1"
-                    android:layout_below="@+id/rl_scenario"
-                    style="@style/LineStyle" />
+                    style="@style/LineStyle"
+                    android:layout_below="@+id/rl_scenario" />
 
 
                 <LinearLayout
@@ -307,21 +307,26 @@
 
                     <SeekBar
                         android:id="@+id/brightnessSeekBar"
+                        style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:backgroundTint="@color/blue"
                         android:max="100"
+                        android:maxHeight="5dp"
+                        android:minHeight="5dp"
                         android:paddingRight="0dp"
                         android:progress="80"
+                        android:progressDrawable="@drawable/video_seekbar"
+                        android:secondaryProgress="0"
                         android:thumb="@drawable/thumb" />
 
                 </LinearLayout>
 
                 <View
                     android:id="@+id/line8"
-                    android:layout_below="@+id/brightnessLL"
-                    style="@style/LineStyle" />
+                    style="@style/LineStyle"
+                    android:layout_below="@+id/brightnessLL" />
 
                 <LinearLayout
                     android:id="@+id/colorTemperature"
@@ -354,8 +359,8 @@
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="@string/cold_color"
-                        android:textSize="14sp"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -386,8 +391,8 @@
 
                 <View
                     android:id="@+id/line3"
-                    android:layout_below="@+id/colorTemperature"
-                    style="@style/LineStyle"/>
+                    style="@style/LineStyle"
+                    android:layout_below="@+id/colorTemperature" />
 
 
                 <LinearLayout

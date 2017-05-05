@@ -62,7 +62,7 @@
             android:background="@drawable/switch_selector"
             android:gravity="center"
             android:paddingRight="22dp"
-            android:thumb="@null"
+            android:thumb="@color/transparent"
             android:track="@null" />
 
     </RelativeLayout>

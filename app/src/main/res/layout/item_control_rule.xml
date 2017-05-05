@@ -133,7 +133,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:drawableRight="@drawable/switch_selector"
-                        android:thumb="@null"
+                        android:thumb="@color/transparent"
                         android:track="@null" />
 
 

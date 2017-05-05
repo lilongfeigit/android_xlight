@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableRight="@drawable/switch_selector"
-            android:thumb="@null"
+            android:thumb="@color/transparent"
             android:track="@null" />
 
     </LinearLayout>

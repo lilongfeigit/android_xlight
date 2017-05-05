@@ -456,6 +456,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
     public void addDeviceMapsSDK(List<Rows> deviceList) {
         if (null != deviceList && deviceList.size() > 0) {
+            Logger.e(TAG, "deviceList=" + deviceList.toString());
+
             default_text.setVisibility(View.GONE);
             SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
             if (SlidingMenuMainActivity.xltDeviceMaps != null) {
@@ -465,24 +467,28 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 // Initialize SmartDevice SDK
                 xltDevice m_XltDevice = new xltDevice();
                 m_XltDevice.Init(getActivity());
-
-                for (int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++) {
-                    m_XltDevice.addNodeToDeviceList(deviceList.get(i).devicenodes.get(lv_idx).nodeno, xltDevice.DEFAULT_DEVICE_TYPE, deviceList.get(i).devicenodes.get(lv_idx).devicenodename);
-                    deviceList.get(i).devicenodes.get(lv_idx).coreid = deviceList.get(i).coreid;
+                if(deviceList.get(i).devicenodes!=null){
+                    for (int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++) {
+                        m_XltDevice.addNodeToDeviceList(deviceList.get(i).devicenodes.get(lv_idx).nodeno, xltDevice.DEFAULT_DEVICE_TYPE, deviceList.get(i).devicenodes.get(lv_idx).devicenodename);
+                        deviceList.get(i).devicenodes.get(lv_idx).coreid = deviceList.get(i).coreid;
+                    }
                 }
-                // Connect to Controller
-                boolean isControlConnect = m_XltDevice.Connect(deviceList.get(i).coreid);
-                Logger.e(TAG, "isControlConnect=" + isControlConnect);
+                if(deviceList.get(i).coreid!=null) {
+                    // Connect to Controller
+                    boolean isControlConnect = m_XltDevice.Connect(deviceList.get(i).coreid);
+                    Logger.e(TAG, "isControlConnect=" + isControlConnect);
 
-                SlidingMenuMainActivity.xltDeviceMaps.put(deviceList.get(i).coreid, m_XltDevice);
-
+                    SlidingMenuMainActivity.xltDeviceMaps.put(deviceList.get(i).coreid, m_XltDevice);
+                }
                 if (deviceList.get(i).maindevice == 1) {//主设备
                     SlidingMenuMainActivity.m_mainDevice = m_XltDevice;
                 }
             }
             devicenodes.clear();
             for (int i = 0; i < deviceList.size(); i++) {
-                devicenodes.addAll(deviceList.get(i).devicenodes);
+                if(deviceList.get(i).devicenodes!=null) {
+                    devicenodes.addAll(deviceList.get(i).devicenodes);
+                }
             }
             devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
             devicesRecyclerView.setAdapter(devicesListAdapter);

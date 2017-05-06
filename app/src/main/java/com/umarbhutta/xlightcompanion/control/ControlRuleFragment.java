@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,6 +48,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
     }
 
     private ListView rulesRecyclerView;
+    private LinearLayout no_relativeLayout, relativeLayout;
     private ImageView iv_menu;
     private TextView textTitle;
     private Button btn_add;
@@ -66,6 +68,8 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
 //        btn_add.setBackground(getContext().getDrawable(R.drawable.control_add));
         btn_add.setBackgroundResource(R.drawable.control_add);
         btn_add.setOnClickListener(this);
+        no_relativeLayout = (LinearLayout) view.findViewById(R.id.no_relativeLayout);
+        relativeLayout = (LinearLayout) view.findViewById(R.id.relativeLayout);
 
         return view;
     }
@@ -84,7 +88,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
         }
 
         mDialog = ProgressDialogUtils.showProgressDialog(getActivity(), getString(R.string.loading));
-        if(mDialog!=null){
+        if (mDialog != null) {
             mDialog.show();
         }
         RequestDeviceRulesInfo.getInstance().getRules(getActivity(), new RequestDeviceRulesInfo.OnRequestFirstPageInfoCallback() {
@@ -95,12 +99,12 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(mDialog!=null){
+                            if (mDialog != null) {
                                 mDialog.dismiss();
                             }
                             mRuleInfoList.clear();
                             if (null != deviceInfoResult && null != deviceInfoResult.rows) {
-                                Logger.e(TAG,"deviceInfoResult="+deviceInfoResult.toString());
+                                Logger.e(TAG, "deviceInfoResult=" + deviceInfoResult.toString());
                                 mRuleInfoList.addAll(deviceInfoResult.rows);
                                 initList();
                             } else {
@@ -114,7 +118,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(mDialog!=null){
+                            if (mDialog != null) {
                                 mDialog.dismiss();
                             }
                         }
@@ -128,7 +132,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(mDialog!=null){
+                            if (mDialog != null) {
                                 mDialog.dismiss();
                             }
                             ToastUtil.showToast(getActivity(), errMsg);
@@ -142,13 +146,21 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
     private DeviceRulesListAdapter devicesListAdapter;
 
     private void initList() {
-        if (null == devicesListAdapter) {
-            devicesListAdapter = new DeviceRulesListAdapter(getContext(), mRuleInfoList);
-            devicesListAdapter.addOnItemActionListener(this);
-            rulesRecyclerView.setAdapter(devicesListAdapter);
+        if (mRuleInfoList.size() > 0) {
+            no_relativeLayout.setVisibility(View.GONE);
+            relativeLayout.setVisibility(View.VISIBLE);
+            if (null == devicesListAdapter) {
+                devicesListAdapter = new DeviceRulesListAdapter(getContext(), mRuleInfoList);
+                devicesListAdapter.addOnItemActionListener(this);
+                rulesRecyclerView.setAdapter(devicesListAdapter);
+            } else {
+                devicesListAdapter.notifyDataSetChanged();
+            }
         } else {
-            devicesListAdapter.notifyDataSetChanged();
+            no_relativeLayout.setVisibility(View.VISIBLE);
+            relativeLayout.setVisibility(View.GONE);
         }
+
     }
 
     @Override

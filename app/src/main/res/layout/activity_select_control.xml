@@ -194,7 +194,7 @@
                 android:layout_below="@+id/line9"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/nameLL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -207,11 +207,11 @@
 
                     <TextView
                         android:id="@+id/powerLabel"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
+                        android:layout_centerVertical="true"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="@string/power"
@@ -220,16 +220,16 @@
 
                     <Switch
                         android:id="@+id/powerSwitch"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:drawableRight="@drawable/switch_selector"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/switch_selector"
                         android:thumb="@color/transparent"
                         android:track="@null" />
 
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <View
                     android:id="@+id/line2"
@@ -281,7 +281,7 @@
                     android:layout_below="@+id/rl_scenario" />
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/brightnessLL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -294,11 +294,10 @@
 
                     <TextView
                         android:id="@+id/brightnessLabel"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="@string/brightness"
@@ -308,20 +307,21 @@
                     <SeekBar
                         android:id="@+id/brightnessSeekBar"
                         style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="30dp"
+                        android:layout_toRightOf="@+id/brightnessLabel"
                         android:backgroundTint="@color/blue"
                         android:max="100"
                         android:maxHeight="5dp"
                         android:minHeight="5dp"
-                        android:paddingRight="0dp"
                         android:progress="80"
                         android:progressDrawable="@drawable/video_seekbar"
                         android:secondaryProgress="0"
                         android:thumb="@drawable/thumb" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <View
                     android:id="@+id/line8"

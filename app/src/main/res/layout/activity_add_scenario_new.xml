@@ -195,8 +195,6 @@
                 android:progressDrawable="@drawable/seekbar_thumb_color"
                 android:thumb="@drawable/thumb" />
         </RelativeLayout>
-
-
     </LinearLayout>
 
     <View
@@ -205,7 +203,7 @@
         style="@style/LineStyle" />
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/llColorTemperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -219,12 +217,13 @@
         android:layout_alignParentStart="true">
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/tv_brg"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="0dp"
-            android:layout_weight="1"
             android:fontFamily="sans-serif-light"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:gravity="left|start"
             android:text="@string/brightness"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -233,10 +232,13 @@
         <SeekBar
             android:id="@+id/brightnessSeekBar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@+id/tv_brg"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:backgroundTint="@color/blue"
+            android:layout_marginLeft="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:max="100"
             android:maxHeight="5dp"
             android:minHeight="5dp"
@@ -245,7 +247,7 @@
             android:secondaryProgress="0"
             android:thumb="@drawable/thumb" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:id="@+id/line3"

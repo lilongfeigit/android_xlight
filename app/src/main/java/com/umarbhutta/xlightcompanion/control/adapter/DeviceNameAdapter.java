@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 
 import java.util.List;
@@ -18,24 +19,24 @@ import java.util.List;
 
 public class DeviceNameAdapter extends BaseAdapter {
 
-    private List<Rows> mRowses;
+    private List<Devicenodes> mDevicenodes;
     private Context mActivity;
     private LayoutInflater layoutInflater;
 
-    public DeviceNameAdapter(Context mActivity, List<Rows> rowses) {
-        this.mRowses = rowses;
+    public DeviceNameAdapter(Context mActivity, List<Devicenodes> devicenodes) {
+        this.mDevicenodes = devicenodes;
         this.mActivity = mActivity;
         layoutInflater = LayoutInflater.from(mActivity);
     }
 
     @Override
     public int getCount() {
-        return mRowses.size();
+        return mDevicenodes.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mRowses.get(position);
+        return mDevicenodes.get(position);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class DeviceNameAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_device_name.setText(mRowses.get(position).devicename);
+        holder.tv_device_name.setText(mDevicenodes.get(position).devicenodename);
         return convertView;
     }
 

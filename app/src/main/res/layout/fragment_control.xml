@@ -176,8 +176,8 @@
 
             <View
                 android:id="@+id/line9"
-                android:layout_below="@+id/scenarioNameLL"
-                style="@style/LineStyle" />
+                style="@style/LineStyle"
+                android:layout_below="@+id/scenarioNameLL" />
 
             <LinearLayout
                 android:id="@+id/scenarioNoneLL"
@@ -186,7 +186,7 @@
                 android:layout_below="@+id/line9"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/nameLL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -199,11 +199,10 @@
 
                     <TextView
                         android:id="@+id/powerLabel"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="电源"
@@ -212,21 +211,20 @@
 
                     <Switch
                         android:id="@+id/powerSwitch"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:drawableRight="@drawable/switch_selector"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/switch_selector"
                         android:thumb="@color/transparent"
                         android:track="@null" />
 
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <View
                     android:id="@+id/line2"
-                    android:layout_below="@+id/nameLL"
-                    style="@style/LineStyle" />
+                    style="@style/LineStyle"
+                    android:layout_below="@+id/nameLL" />
 
                 <RelativeLayout
                     android:id="@+id/rl_scenario"
@@ -270,11 +268,11 @@
 
                 <View
                     android:id="@+id/line1"
-                    android:layout_below="@+id/rl_scenario"
-                    style="@style/LineStyle" />
+                    style="@style/LineStyle"
+                    android:layout_below="@+id/rl_scenario" />
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/brightnessLL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -282,16 +280,16 @@
                     android:orientation="horizontal"
                     android:paddingBottom="16dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="20dp"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="16dp">
 
                     <TextView
                         android:id="@+id/brightnessLabel"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="0.6"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="@string/lightness"
@@ -300,24 +298,27 @@
 
                     <SeekBar
                         android:id="@+id/brightnessSeekBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:progress="0"
                         style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="30dp"
+                        android:layout_toRightOf="@+id/brightnessLabel"
+                        android:max="100"
                         android:maxHeight="5dp"
                         android:minHeight="5dp"
+                        android:progress="20"
                         android:progressDrawable="@drawable/video_seekbar"
                         android:secondaryProgress="0"
                         android:thumb="@drawable/thumb" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <View
                     android:id="@+id/line8"
-                    android:layout_below="@+id/brightnessLL"
-                    style="@style/LineStyle" />
+                    style="@style/LineStyle"
+                    android:layout_below="@+id/brightnessLL" />
 
                 <LinearLayout
                     android:id="@+id/colorTemperature"
@@ -383,8 +384,8 @@
 
                 <View
                     android:id="@+id/line3"
-                    android:layout_below="@+id/colorTemperature"
-                    style="@style/LineStyle" />
+                    style="@style/LineStyle"
+                    android:layout_below="@+id/colorTemperature" />
 
 
                 <LinearLayout

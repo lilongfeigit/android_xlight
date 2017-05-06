@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -48,6 +49,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
     private ImageView iv_menu;
     private TextView textTitle;
     private Button btn_add;
+    private RelativeLayout rl_no, rl_hava;
 
     @Nullable
     @Override
@@ -60,7 +62,8 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
         textTitle.setText(R.string.scene);
         btn_add = (Button) view.findViewById(R.id.btn_add);
         btn_add.setVisibility(View.VISIBLE);
-        btn_add.setBackground(getActivity().getDrawable(R.drawable.control_add));
+//        btn_add.setBackground(getActivity().getDrawable(R.drawable.control_add));
+        btn_add.setBackgroundResource(R.drawable.control_add);
         btn_add.setOnClickListener(this);
 
         //setup recycler view
@@ -72,6 +75,9 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
         scenarioRecyclerView.setLayoutManager(layoutManager);
         //divider lines
         scenarioRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+
+        rl_no = (RelativeLayout) view.findViewById(R.id.rl_no);
+        rl_hava = (RelativeLayout) view.findViewById(R.id.rl_have);
 
         return view;
     }
@@ -160,7 +166,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
 
     private void getSceneList() {
         mDialog = ProgressDialogUtils.showProgressDialog(getActivity(), getString(R.string.loading));
-        if(mDialog!=null){
+        if (mDialog != null) {
             mDialog.show();
         }
         RequestSceneListInfo.getInstance().getSceneListInfo(getActivity(), new RequestSceneListInfo.OnRequestFirstPageInfoCallback() {
@@ -170,7 +176,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(mDialog!=null){
+                            if (mDialog != null) {
                                 mDialog.dismiss();
                             }
                             if (null != deviceInfoResult && null != deviceInfoResult.rows && deviceInfoResult.rows.size() > 0) {
@@ -189,7 +195,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(mDialog!=null){
+                            if (mDialog != null) {
                                 mDialog.dismiss();
                             }
                             ToastUtil.showToast(getActivity(), "" + errMsg);
@@ -201,14 +207,21 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
     }
 
     private void initList() {
-        scenarioListAdapter = new ScenarioListAdapter(getContext(), mSceneList);
-        scenarioListAdapter.setOnLongClickCallBack(new ScenarioListAdapter.OnLongClickCallBack() {
-            @Override
-            public void onLongClickCallBack(int position) {
-                showDeleteSceneDialog(position);
-            }
-        });
-        scenarioRecyclerView.setAdapter(scenarioListAdapter);
+        if(mSceneList.size()>0){
+            rl_hava.setVisibility(View.VISIBLE);
+            rl_no.setVisibility(View.GONE);
+            scenarioListAdapter = new ScenarioListAdapter(getContext(), mSceneList);
+            scenarioListAdapter.setOnLongClickCallBack(new ScenarioListAdapter.OnLongClickCallBack() {
+                @Override
+                public void onLongClickCallBack(int position) {
+                    showDeleteSceneDialog(position);
+                }
+            });
+            scenarioRecyclerView.setAdapter(scenarioListAdapter);
+        }else{
+            rl_hava.setVisibility(View.GONE);
+            rl_no.setVisibility(View.VISIBLE);
+        }
     }
 
 

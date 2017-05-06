@@ -79,6 +79,7 @@
             android:layout_toLeftOf="@+id/ib_minus"
             android:layout_marginRight="5dp"
             android:textColor="@color/black"
+            android:lines="1"
             android:textSize="16sp" />
 
         <ImageButton

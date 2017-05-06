@@ -247,4 +247,5 @@
     <string name="no_conditions">Please set the conditions</string>
     <string name="no_results">Please set the results</string>
     <string name="lodding">Lodding</string>
+    <string name="select_device">Please select device</string>
 </resources>

@@ -3,6 +3,7 @@ package com.umarbhutta.xlightcompanion.control.activity.result;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_control);
         mInflater = LayoutInflater.from(this);
-
+        ((App)getApplicationContext()).setActivity(this);
         //hide nav bar
         getSupportActionBar().hide();
 
@@ -96,7 +97,11 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //确定提交按钮
+                //确定提交按钮 先判断是否控制了。
+                if(TextUtils.isEmpty(lampName.getText().toString())){
+                    ToastUtil.showToast(DeviceControlSelectActivity.this,getString(R.string.select_device));
+                    return;
+                }
                 ControlRuleDevice mContolRuleDevice = new ControlRuleDevice();
                 mContolRuleDevice.roomName = lampName.getText().toString();
                 mContolRuleDevice.brightness = brightnessSeekBar.getProgress();

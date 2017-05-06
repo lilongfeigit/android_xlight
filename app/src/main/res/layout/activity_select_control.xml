@@ -134,7 +134,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="5dp"
                     android:gravity="right"
-                    android:text="@string/please_select" />
+                    android:hint="@string/please_select" />
 
                 <ImageView
                     android:id="@+id/spinner"

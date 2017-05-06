@@ -89,7 +89,7 @@ public class EntryConditionActivity extends AppCompatActivity {
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.luanch_condition);
-        btnSure.setVisibility(View.GONE);
+        btnSure.setVisibility(View.INVISIBLE);
 
         settingStr.add(getString(R.string.timer));
         imgInter.add(R.drawable.rule_time);

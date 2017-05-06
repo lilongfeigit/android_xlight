@@ -68,7 +68,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.select_scene);
-        btnSure.setVisibility(View.GONE);
+        btnSure.setVisibility(View.INVISIBLE);
 
         mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
 

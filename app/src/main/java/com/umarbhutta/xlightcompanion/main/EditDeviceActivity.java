@@ -112,7 +112,6 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_control);
         mInflater = LayoutInflater.from(this);
-        //hide nav bar
         getSupportActionBar().hide();
 
         deviceInfo = (Devicenodes) getIntent().getSerializableExtra("info");

@@ -9,9 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:listSelector="@color/white"
+        android:listSelector="@color/dividerColorWhite"
         android:layout_alignParentBottom="true"
-        android:divider="@null"
+        android:divider="#e5e5e5"
+        android:dividerHeight="1px"
         android:scrollbars="none" />
 
 </RelativeLayout>

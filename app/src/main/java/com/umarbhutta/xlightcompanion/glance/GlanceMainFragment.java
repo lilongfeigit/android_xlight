@@ -467,13 +467,13 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 // Initialize SmartDevice SDK
                 xltDevice m_XltDevice = new xltDevice();
                 m_XltDevice.Init(getActivity());
-                if(deviceList.get(i).devicenodes!=null){
+                if (deviceList.get(i).devicenodes != null) {
                     for (int lv_idx = 0; lv_idx < deviceList.get(i).devicenodes.size(); lv_idx++) {
                         m_XltDevice.addNodeToDeviceList(deviceList.get(i).devicenodes.get(lv_idx).nodeno, xltDevice.DEFAULT_DEVICE_TYPE, deviceList.get(i).devicenodes.get(lv_idx).devicenodename);
                         deviceList.get(i).devicenodes.get(lv_idx).coreid = deviceList.get(i).coreid;
                     }
                 }
-                if(deviceList.get(i).coreid!=null) {
+                if (deviceList.get(i).coreid != null) {
                     // Connect to Controller
                     boolean isControlConnect = m_XltDevice.Connect(deviceList.get(i).coreid);
                     Logger.e(TAG, "isControlConnect=" + isControlConnect);
@@ -486,12 +486,23 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             }
             devicenodes.clear();
             for (int i = 0; i < deviceList.size(); i++) {
-                if(deviceList.get(i).devicenodes!=null) {
+                if (deviceList.get(i).devicenodes != null) {
                     devicenodes.addAll(deviceList.get(i).devicenodes);
                 }
             }
             devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
             devicesRecyclerView.setAdapter(devicesListAdapter);
+            devicesListAdapter.setOnSwitchStateChangeListener(new DevicesMainListAdapter.OnSwitchStateChangeListener() {
+                @Override
+                public void onLongClick(int position) {
+//                    showDeleteSceneDialog(position);
+                }
+
+                @Override
+                public void onSwitchChange(int position, boolean checked) {
+
+                }
+            });
             devicesListAdapter.notifyDataSetChanged();
             if (null != deviceList && deviceList.size() > 0) {
                 default_text.setVisibility(View.GONE);
@@ -656,8 +667,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 if (!TextUtils.isEmpty(city)) {
                     txtLocation.setText(city);
                 } else {
-                    if(country==null){
-                        country="";
+                    if (country == null) {
+                        country = "";
                     }
                     txtLocation.setText("" + country);
                 }

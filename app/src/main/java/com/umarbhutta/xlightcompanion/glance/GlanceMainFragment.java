@@ -23,6 +23,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -495,7 +496,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             devicesListAdapter.setOnSwitchStateChangeListener(new DevicesMainListAdapter.OnSwitchStateChangeListener() {
                 @Override
                 public void onLongClick(int position) {
-//                    showDeleteSceneDialog(position);
+                    showDeleteSceneDialog(position);
                 }
 
                 @Override
@@ -543,23 +544,26 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      * 弹出解绑设备确认框
      */
     private void showDeleteSceneDialog(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.unbind_device_tap));
-        builder.setMessage(getString(R.string.sure_unbind_device));
-        builder.setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                unBindDevice(position);
-            }
-        });
-        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        AlertDialog mAlertDialog = new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.unbind_device_tap))
+                .setMessage(getString(R.string.sure_unbind_device))
+                .setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        unBindDevice(position);
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
+                    }
+                }).show();
 
-        builder.show();
+        Button btn1 = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        btn1.setTextColor(getResources().getColor(R.color.colorPrimary));
+        Button btn2 = mAlertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        btn2.setTextColor(getResources().getColor(R.color.colorPrimary));
+
     }
 
     /**

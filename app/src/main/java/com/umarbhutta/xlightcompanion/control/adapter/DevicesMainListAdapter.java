@@ -25,8 +25,9 @@ import java.util.List;
 public class DevicesMainListAdapter extends RecyclerView.Adapter {
 
     private Context mActivity;
-//    private List<Rows> deviceList;
+    //    private List<Rows> deviceList;
     private List<Devicenodes> mDevicenodes;
+
     public DevicesMainListAdapter(Context activity, List<Devicenodes> devicenodes) {
         this.mDevicenodes = devicenodes;
         this.mActivity = activity;
@@ -64,7 +65,7 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
     }
 
     private class DevicesListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        private TextView mDeviceName, main_device;
+        private TextView mDeviceName, main_device, devicePlan;
         private Switch mDeviceSwitch;
         private int mPositon;
 
@@ -72,6 +73,7 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
             super(itemView);
             mDeviceName = (TextView) itemView.findViewById(R.id.deviceName);
             main_device = (TextView) itemView.findViewById(R.id.main_device);
+            devicePlan = (TextView) itemView.findViewById(R.id.devicePlan);
             mDeviceSwitch = (Switch) itemView.findViewById(R.id.deviceSwitch);
 
             itemView.setOnClickListener(this);
@@ -99,7 +101,8 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
             mPositon = position;
             Devicenodes devicenodes = mDevicenodes.get(position);
             mDeviceName.setText(TextUtils.isEmpty(devicenodes.devicenodename) ? mActivity.getString(R.string.lamp) : devicenodes.devicenodename);
-            mDeviceSwitch.setChecked(devicenodes.ison==0?false:true);
+            mDeviceSwitch.setChecked(devicenodes.ison == 0 ? false : true);
+            devicePlan.setText(devicenodes.ison == 0 ? R.string.no_start_plan : R.string.has_start_plan);
         }
 
         @Override

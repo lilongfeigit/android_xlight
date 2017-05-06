@@ -227,6 +227,7 @@
     <string name="sleep">睡觉</string>
     <string name="persion_center">个人中心</string>
     <string name="has_start_plan">已启用计划</string>
+    <string name="no_start_plan">没有启用计划</string>
     <string name="dingshi">定时</string>
     <string name="all_rules">全部规则</string>
     <string name="ti_gan_temp">体感温度</string>

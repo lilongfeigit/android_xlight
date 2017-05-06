@@ -292,7 +292,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         }
 
 
-        RequestAddDevice.getInstance().addDevice(this, "测试设备", 0, 1, 0, new RequestAddDevice.OnAddDeviceCallBack() {
+        RequestAddDevice.getInstance().addDevice(this, "deviceTest", 0, 1, 0, new RequestAddDevice.OnAddDeviceCallBack() {
             @Override
             public void mOnAddDeviceCallBackFail(int code, final String errMsg) {
                 runOnUiThread(new Runnable() {

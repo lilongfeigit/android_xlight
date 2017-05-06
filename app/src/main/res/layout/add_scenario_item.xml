@@ -9,6 +9,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_gravity="center"
         android:src="@drawable/add_scenario_icon" />
 
@@ -16,6 +17,7 @@
         android:id="@+id/sceneName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:text="@string/sleep" />

@@ -40,7 +40,7 @@ public class DialogRowNameActivity extends Activity {
      */
     private void initViews() {
         dialoglist = (ListView) findViewById(R.id.dialoglist);
-        dialogConditionListAdapter = new DeviceNameAdapter(DialogRowNameActivity.this.getApplicationContext(), GlanceMainFragment.deviceList);
+        dialogConditionListAdapter = new DeviceNameAdapter(DialogRowNameActivity.this.getApplicationContext(), GlanceMainFragment.devicenodes);
         dialoglist.setAdapter(dialogConditionListAdapter);
 
         dialoglist.setOnItemClickListener(new AdapterView.OnItemClickListener() {

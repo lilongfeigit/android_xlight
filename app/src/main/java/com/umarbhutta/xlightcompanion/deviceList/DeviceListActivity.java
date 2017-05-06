@@ -33,6 +33,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
 
     private TextView tv_select_main_device;
     private TextView tv_no_device;
+    private View view_top_line,view_bottom_line;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         listView = (ListView) findViewById(R.id.lv_devices);
         tv_select_main_device = (TextView) findViewById(R.id.tv_select_main_device);
         tv_no_device = (TextView) findViewById(R.id.tv_no_device);
+        view_top_line = findViewById(R.id.view_top_line);
+        view_bottom_line = findViewById(R.id.view_bottom_line);
         if(UserUtils.isLogin(getApplicationContext()) && GlanceMainFragment.deviceList!=null && GlanceMainFragment.deviceList.size()>0){
             tv_no_device.setVisibility(View.GONE);
             tv_select_main_device.setVisibility(View.VISIBLE);
@@ -60,10 +63,14 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
             adapter = new DeviceListAdapter(this, GlanceMainFragment.deviceList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
+            view_top_line.setVisibility(View.VISIBLE);
+            view_bottom_line.setVisibility(View.VISIBLE);
         }else{
             tv_no_device.setVisibility(View.VISIBLE);
             tv_select_main_device.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
+            view_top_line.setVisibility(View.GONE);
+            view_bottom_line.setVisibility(View.GONE);
         }
     }
 

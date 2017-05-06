@@ -39,6 +39,7 @@ public class ControlRuseltActivity extends AppCompatActivity {
 
     private Actionnotify mActionnotify;
     private Actioncmd mActioncmd;
+    private TextView tvEditSure;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,8 @@ public class ControlRuseltActivity extends AppCompatActivity {
         btnSure.setVisibility(View.VISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.execute_result);
+        tvEditSure = (TextView) findViewById(R.id.tvEditSure);
+        tvEditSure.setVisibility(View.INVISIBLE);
 
         settingStr.add(getString(R.string.lamp_control));
         imgInter.add(R.drawable.result_control);

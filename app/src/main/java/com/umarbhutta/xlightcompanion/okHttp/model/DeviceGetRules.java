@@ -20,7 +20,7 @@ public class DeviceGetRules implements Serializable {
 
     @Override
     public String toString() {
-        return "DeviceInfoResult{" +
+        return "DeviceGetRules{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
                 ", data=" + data +

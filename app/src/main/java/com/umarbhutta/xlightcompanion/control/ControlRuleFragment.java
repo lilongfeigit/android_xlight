@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
@@ -99,6 +100,7 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                             }
                             mRuleInfoList.clear();
                             if (null != deviceInfoResult && null != deviceInfoResult.rows) {
+                                Logger.e(TAG,"deviceInfoResult="+deviceInfoResult.toString());
                                 mRuleInfoList.addAll(deviceInfoResult.rows);
                                 initList();
                             } else {

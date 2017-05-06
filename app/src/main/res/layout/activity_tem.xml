@@ -82,7 +82,7 @@
             android:layout_toRightOf="@+id/tv2"
             android:fontFamily="sans-serif-light"
             android:gravity="center|left"
-            android:paddingLeft="55dp" />
+            android:paddingLeft="40dp" />
 
         <ImageView
             android:layout_width="wrap_content"

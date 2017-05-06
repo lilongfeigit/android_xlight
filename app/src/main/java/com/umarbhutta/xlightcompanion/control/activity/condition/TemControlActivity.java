@@ -126,12 +126,15 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
                 mCondition = (Condition) data.getSerializableExtra("MCONDITION");
                 if (mCondition.operator.equals(">")) {
                     tv_more.setText(R.string.higer);
+                    mCondition.temAbove = getString(R.string.higer);
                 }
                 if (mCondition.operator.equals("=")) {
                     tv_more.setText(R.string.equal);
+                    mCondition.temAbove = getString(R.string.equal);
                 }
                 if (mCondition.operator.equals("<")) {
                     tv_more.setText(R.string.lower);
+                    mCondition.temAbove = getString(R.string.lower);
                 }
                 Logger.e(TAG, "mCondition=" + mCondition.toString());
                 break;

@@ -10,12 +10,14 @@ import java.util.List;
 public class Actioncmd implements Serializable{
     public int devicenodeId;
     public List<Actioncmdfield> actioncmdfield;
+    public int actioncmdType;
 
     @Override
     public String toString() {
         return "Actioncmd{" +
                 "devicenodeId=" + devicenodeId +
                 ", actioncmdfield=" + actioncmdfield +
+                ", actioncmdType=" + actioncmdType +
                 '}';
     }
 }

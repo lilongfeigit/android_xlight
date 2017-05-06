@@ -91,6 +91,7 @@ public class ScenarioSelectListAdapter extends RecyclerView.Adapter {
 
     private void onFabPressed(View view, Rows infos) {
         mActioncmd.devicenodeId = infos.id;
+        mActioncmd.actioncmdType=1;
         Actioncmdfield actioncmdfield = new Actioncmdfield();
         actioncmdfield.cmd = infos.scenarioname;
         actioncmdfield.paralist = "{" + mContext.getString(R.string.scene) + ":" + infos.scenarioname + "}";

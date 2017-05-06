@@ -70,7 +70,8 @@ public class AppNotifyActivity extends AppCompatActivity {
                 mActionnotify.msisdn = UserUtils.getUserInfo(AppNotifyActivity.this.getApplicationContext()).getUsergroupId();
                 mActionnotify.content = appContext;
                 mActionnotify.subject = getString(R.string.app_notify);
-
+               mActionnotify.actionnotifyType =2;
+                mActionnotify.name = getString(R.string.app_notify);
 
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
                 mNewRuleItemInfo.setmActionnotify(mActionnotify);

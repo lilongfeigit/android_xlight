@@ -29,6 +29,8 @@
     <string name="pic_upload_fail_try_again">Upload image failed, please try again</string>
     <string name="photo_set_fail">Setup failed, please try again!</string>
 
+    <string name="no_start_plan">Schedule unabled</string>
+
     <string name="pickerview_cancel">Cancel</string>
     <string name="pickerview_submit">Confirm</string>
     <string name="pickerview_year">Year</string>
@@ -226,9 +228,9 @@
     <string name="sleep">Sleep</string>
     <string name="persion_center">Personal Center</string>
     <string name="has_start_plan">Schedule enabled</string>
-    <string name="no_start_plan">Schedule unabled</string>
     <string name="dingshi">Timing</string>
     <string name="all_rules">All Rules</string>
+    <string name="no_add_rules">You have not added rules</string>
     <string name="ti_gan_temp">Somatosensory temperature</string>
     <string name="shidu">Humidity</string>
     <string name="this_month_has_save_money">This month has been saved electricity for you ¥ --</string>
@@ -236,6 +238,7 @@
     <string name="you_have_no_device_and_add">No device, click + to add device</string>
     <string name="report">Report</string>
     <string name="all_scene">All scenarios</string>
+    <string name="no_add_scene">You have not added scenarios</string>
     <string name="open_life">Open the wisdom of life</string>
     <string name="scan_device_add_first">Scan device to add（Suitable for binding equipment for the first time）</string>
     <string name="excute_ad">Execution Action：</string>

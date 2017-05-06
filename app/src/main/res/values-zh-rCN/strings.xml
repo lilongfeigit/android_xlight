@@ -29,6 +29,7 @@
     <string name="internal_storage">内部存储</string>
     <string name="pic_upload_fail_try_again">图片上传失败，请重试！</string>
     <string name="photo_set_fail">设置失败，请重试</string>
+    <string name="no_start_plan">没有启用计划</string>
 
     <string name="pickerview_cancel">取消</string>
     <string name="pickerview_submit">确定</string>
@@ -227,9 +228,9 @@
     <string name="sleep">睡觉</string>
     <string name="persion_center">个人中心</string>
     <string name="has_start_plan">已启用计划</string>
-    <string name="no_start_plan">没有启用计划</string>
     <string name="dingshi">定时</string>
     <string name="all_rules">全部规则</string>
+    <string name="no_add_rules">您还没有添加规则</string>
     <string name="ti_gan_temp">体感温度</string>
     <string name="shidu">湿度</string>
     <string name="this_month_has_save_money">本月已为您节省电费约¥ --</string>
@@ -237,6 +238,7 @@
     <string name="you_have_no_device_and_add">您还没有设备，点击右上角+添加设备</string>
     <string name="report">报表</string>
     <string name="all_scene">全部场景</string>
+    <string name="no_add_scene">您还没有添加场景</string>
     <string name="open_life">开启智慧生活</string>
     <string name="scan_device_add_first">扫描设备添加（适用于初次绑定设备）</string>
     <string name="excute_ad">执行动作：</string>

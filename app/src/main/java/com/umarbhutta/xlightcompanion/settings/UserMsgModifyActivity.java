@@ -186,7 +186,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
             }
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
-        btnSure.setVisibility(View.GONE);
+        btnSure.setVisibility(View.INVISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.user_info);
         sexList.add(getString(R.string.women));

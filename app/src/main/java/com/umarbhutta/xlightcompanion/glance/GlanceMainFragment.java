@@ -611,7 +611,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      * @param position
      */
     private void updateUnbindList(int position) {
-        deviceList.remove(position);
+        devicenodes.remove(position);
         devicesListAdapter.notifyDataSetChanged();
     }
 

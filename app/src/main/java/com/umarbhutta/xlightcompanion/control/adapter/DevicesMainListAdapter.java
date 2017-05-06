@@ -81,6 +81,7 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
 
             mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    devicePlan.setText(!isChecked ? R.string.no_start_plan : R.string.has_start_plan);
                     // 右侧开关控制
 //                    if (null != mOnSwitchStateChangeListener) {
 //                        mOnSwitchStateChangeListener.onSwitchChange(mPositon, isChecked);

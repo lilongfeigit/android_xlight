@@ -226,6 +226,7 @@
     <string name="sleep">Sleep</string>
     <string name="persion_center">Personal Center</string>
     <string name="has_start_plan">Schedule enabled</string>
+    <string name="no_start_plan">Schedule unabled</string>
     <string name="dingshi">Timing</string>
     <string name="all_rules">All Rules</string>
     <string name="ti_gan_temp">Somatosensory temperature</string>

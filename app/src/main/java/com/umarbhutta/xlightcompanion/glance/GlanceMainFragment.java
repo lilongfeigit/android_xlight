@@ -579,7 +579,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
         ((SlidingMenuMainActivity) getActivity()).showProgressDialog(getString(R.string.setting));
 
-        RequestUnBindDevice.getInstance().unBindDevice(getActivity(), "" + GlanceMainFragment.deviceList.get(position).id, new CommentRequstCallback() {
+        RequestUnBindDevice.getInstance().unBindDevice(getActivity(), "" + devicenodes.get(position).id, new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
                 getActivity().runOnUiThread(new Runnable() {

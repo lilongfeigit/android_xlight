@@ -37,9 +37,11 @@ import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeviceDetailInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
 import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
@@ -265,9 +267,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                 Log.e(TAG, "brightnessInt value is= " + brightnessInt);
                 deviceInfo.brightness = seekBar.getProgress();
 
-                if(null != viewList && viewList.size()>0){
+                if (null != viewList && viewList.size() > 0) {
                     viewList.get(0).callOnClick();
-                    mHorizontalScrollView.scrollTo(0,0);
+                    mHorizontalScrollView.scrollTo(0, 0);
                 }
             }
         });
@@ -301,9 +303,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                 int cctInt = mCurrentDevice.ChangeCCT(seekBarProgress);
                 Log.e(TAG, "cctInt value is= " + cctInt);
 
-                if(null != viewList && viewList.size()>0){
+                if (null != viewList && viewList.size() > 0) {
                     viewList.get(0).callOnClick();
-                    mHorizontalScrollView.scrollTo(0,0);
+                    mHorizontalScrollView.scrollTo(0, 0);
                 }
             }
         });
@@ -488,7 +490,7 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void run() {
                         EditDeviceActivity.this.mDeviceInfoResult = mDeviceInfoResult;
-                        initList();
+                        initSceneList();
                     }
                 });
             }
@@ -503,12 +505,28 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
                 });
             }
         });
+
+
+        //TODO 场景列表跳到对应的位置
+        RequestDeviceDetailInfo.getInstance().getDeviceInfo(this, deviceInfo.id, new RequestDeviceDetailInfo.OnRequestFirstPageInfoCallback() {
+            @Override
+            public void onRequestFirstPageInfoSuccess(DeviceInfoResult mDeviceInfoResult) {
+                Logger.i("详细信息 = "+mDeviceInfoResult.toString());
+            }
+
+            @Override
+            public void onRequestFirstPageInfoFail(int code, String errMsg) {
+
+            }
+        });
+
+
     }
 
     private List<View> viewList = new ArrayList<View>();
     private List<TextView> textViews = new ArrayList<TextView>();
 
-    private void initList() {
+    private void initSceneList() {
         for (int i = 0; i < mDeviceInfoResult.rows.size() + 1; i++) {
             View view;
             TextView textView;
@@ -534,6 +552,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    /**
+     * 当前场景
+     */
     private Rows curSene = null;
 
     View.OnClickListener mSceneClick = new View.OnClickListener() {
@@ -560,6 +581,8 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             mView.setBackgroundResource(R.drawable.add_scenario_blue_bg);
             TextView mText = textViews.get(index);
             mText.setTextColor(getResources().getColor(R.color.white));
+            editDeViceInfo(null);
+
         }
     };
 
@@ -608,9 +631,9 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
             devicenodesJSONObject.put("devicenodename", deviceName);
             devicenodesJSONObject.put("ison", powerSwitch.isChecked() ? 1 : 0);
             if (null == curSene) {
-                devicenodesJSONObject.put("scenarioId", 0);  //TODO 场景id
+                devicenodesJSONObject.put("scenarioId", 0);  // 场景id,自定义场景
             } else {
-                devicenodesJSONObject.put("scenarioId", curSene.id);  //TODO 场景id
+                devicenodesJSONObject.put("scenarioId", curSene.id);  // 场景id
             }
             JSONArray deviceringsArr = new JSONArray();
             devicenodesJSONObject.put("devicerings", deviceringsArr);

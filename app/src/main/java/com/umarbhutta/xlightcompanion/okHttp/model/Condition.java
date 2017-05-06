@@ -14,6 +14,7 @@ public class Condition implements Serializable{
     public String rightValue;
     public int status;
     public int conditionType;
+    public String temAbove;
 
     @Override
     public String toString() {

@@ -88,9 +88,8 @@ public class EmailActivity extends AppCompatActivity {
                 mActionnotify.emailaddress = email;
                 mActionnotify.content = emailContext;
                 mActionnotify.subject = emailTitle;
-
-
-
+                mActionnotify.actionnotifyType = 1;
+                mActionnotify.name = getString(R.string.email_notify);
 
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
                 mNewRuleItemInfo.setmActionnotify(mActionnotify);

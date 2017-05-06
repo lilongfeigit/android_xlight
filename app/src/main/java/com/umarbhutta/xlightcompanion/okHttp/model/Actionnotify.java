@@ -13,6 +13,8 @@ public class Actionnotify implements Serializable{
     public String content;
     public String subject;
     public List<Alarm> alarm;
+    public int actionnotifyType;
+    public String name;
 
     @Override
     public String toString() {

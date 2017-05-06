@@ -78,6 +78,7 @@ public class DialogActivity extends Activity {
                         mCondition.operator = "=";
                         mCondition.ruleconditionname = ruleconditions.data.get(0).getActivities().get(position).name;
                         mCondition.status = 0;
+                        mCondition.conditionType=2;
 
 
                         NewRuleItemInfo mNewRuleItemInfo1 = new NewRuleItemInfo();
@@ -91,6 +92,7 @@ public class DialogActivity extends Activity {
                         mCondition.operator = "=";
                         mCondition.ruleconditionname = ruleconditions.data.get(0).getVoice().get(position).name;
                         mCondition.status = 0;
+                        mCondition.conditionType=3;
 
 
                         NewRuleItemInfo mNewRuleItemInfo2 = new NewRuleItemInfo();
@@ -132,6 +134,7 @@ public class DialogActivity extends Activity {
                         mCondition.operator = "=";
                         mCondition.ruleconditionname = ruleconditions.data.get(0).getGas().get(position).name;
                         mCondition.status = 0;
+                        mCondition.conditionType=7;
 
 
                         NewRuleItemInfo mNewRuleItemInfo5 = new NewRuleItemInfo();
@@ -143,6 +146,14 @@ public class DialogActivity extends Activity {
                         break;
                     case 8:
                         mCondition.attribute = "temperature";
+//                        if (position == 0) {
+//                            mCondition.operator = getString(R.string.higer);
+//                        } else if (position == 1) {
+//                            mCondition.operator = getString(R.string.equal);
+//                        } else if (position == 2) {
+//                            mCondition.operator = getString(R.string.lower);
+//                        }
+                        mCondition.conditionType = 8;
                         if (position == 0) {
                             mCondition.operator = ">";
                         } else if (position == 1) {

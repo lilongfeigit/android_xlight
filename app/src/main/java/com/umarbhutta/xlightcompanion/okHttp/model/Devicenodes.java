@@ -7,7 +7,7 @@ import java.util.List;
  * Created by guangbinw on 2017/3/13.
  */
 
-public class Devicenodes implements Serializable{
+public class Devicenodes implements Serializable {
     public int id;
     public int deviceId;
     public String devicenodename;
@@ -23,6 +23,11 @@ public class Devicenodes implements Serializable{
     public List<Devicerings> devicerings;
     public List<Ruleconditions> ruleconditions;
     public String coreid;
+
+    /**
+     * 是否为主设备，0否，1是
+     */
+    public int maindevice;
 
     @Override
     public String toString() {

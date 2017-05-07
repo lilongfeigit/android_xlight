@@ -1,12 +1,10 @@
 package com.umarbhutta.xlightcompanion.settings;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,6 +24,7 @@ import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 import com.umarbhutta.xlightcompanion.views.CircleImageView;
+import com.umarbhutta.xlightcompanion.views.DialogUtils;
 import com.umarbhutta.xlightcompanion.views.pickerview.lib.TimePickerUtils;
 
 import org.json.JSONException;
@@ -265,23 +264,24 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
             type = 1;
         }
 
+
+
+
         final EditText et = new EditText(this);
-        new AlertDialog.Builder(this).setTitle(title)
-                .setView(et)
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        String input = et.getText().toString();
+        new DialogUtils().getEditTextDialog(this, title, new DialogUtils.OnClickOkBtnListener() {
+            @Override
+            public void onClickOk(String editTextStr) {
+                String input = et.getText().toString();
 
-                        if (TextUtils.isEmpty(input)) {
-                            ToastUtil.showToast(UserMsgModifyActivity.this, getString(R.string.content_is_null));
-                            return;
-                        }
+                if (TextUtils.isEmpty(input)) {
+                    ToastUtil.showToast(UserMsgModifyActivity.this, getString(R.string.content_is_null));
+                    return;
+                }
 
-                        modifyUserInfo(type, input);
-                    }
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
+                modifyUserInfo(type, input);
+            }
+        });
+
     }
 
     private int sexPosition;

@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.settings;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -23,7 +22,7 @@ import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
  * Created by Administrator on 2017/3/5.
  */
 
-public class ModifyPasswordActivity extends AppCompatActivity implements HttpUtils.OnHttpRequestCallBack {
+public class ModifyPasswordActivity extends BaseActivity implements HttpUtils.OnHttpRequestCallBack {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -37,7 +36,6 @@ public class ModifyPasswordActivity extends AppCompatActivity implements HttpUti
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_password);
-        //hide nav bar
         getSupportActionBar().hide();
         initViews();
     }

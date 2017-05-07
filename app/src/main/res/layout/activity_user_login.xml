@@ -45,10 +45,10 @@
                 android:layout_toLeftOf="@+id/ib_clear2"
                 android:background="@null"
                 android:drawableLeft="@drawable/icon_password"
-                android:drawablePadding="10dp"
+                android:drawablePadding="14dp"
                 android:hint="@string/login_text_password"
                 android:inputType="textPassword"
-                android:paddingLeft="16dp"
+                android:paddingLeft="6dp"
                 android:singleLine="true"
                 android:textColorHint="@color/edit_login_color" />
 

@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.userManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -15,13 +14,14 @@ import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSendVerifyCode;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 import com.umarbhutta.xlightcompanion.settings.ResetPasswordActivity;
 
 /**
  * Created by Administrator on 2017/3/4.
  */
 
-public class FindPasswordActivity extends AppCompatActivity implements View.OnClickListener {
+public class FindPasswordActivity extends BaseActivity implements View.OnClickListener {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -50,7 +50,7 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 finish();
             }
         });
-        findViewById(R.id.tvEditSure).setVisibility(View.GONE);
+        findViewById(R.id.tvEditSure).setVisibility(View.INVISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.find_pwd);
 

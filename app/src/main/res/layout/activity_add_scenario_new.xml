@@ -83,6 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
+            android:singleLine="true"
             android:backgroundTint="@color/bar_color"
             android:hint="@string/zidingyi"
             android:textAlignment="textEnd" />

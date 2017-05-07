@@ -43,6 +43,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/rightIcon"
                 android:focusable="false"
+                android:singleLine="true"
                 android:clickable="false"
                 android:background="#00ffffff"
                 android:paddingLeft="6dp"
@@ -74,6 +75,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/pwdrightIcon"
+                android:singleLine="true"
                 android:background="#00ffffff"
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp" />

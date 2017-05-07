@@ -20,6 +20,7 @@ public class DialogUtils {
     public AlertDialog getEditTextDialog(Context context, String title, final OnClickOkBtnListener mOnClickOkBtnListener) {
         this.mContext = context;
         et = (EditText) LayoutInflater.from(context).inflate(R.layout.layout_edittext, null);
+        et.setSingleLine(true);
         AlertDialog mAlertDialog = new AlertDialog.Builder(mContext).setTitle(title)
                 .setView(et)
                 .setPositiveButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {

@@ -1,7 +1,6 @@
 package com.umarbhutta.xlightcompanion.userManager;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -12,12 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 /**
  * Created by Administrator on 2017/3/4.
  */
 
-public class UserResProtocalActivity extends AppCompatActivity {
+public class UserResProtocalActivity extends BaseActivity {
 
     private LinearLayout llBack;
     private TextView tvTitle;

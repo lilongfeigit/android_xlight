@@ -56,11 +56,11 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         tv_no_device = (TextView) findViewById(R.id.tv_no_device);
         view_top_line = findViewById(R.id.view_top_line);
         view_bottom_line = findViewById(R.id.view_bottom_line);
-        if(UserUtils.isLogin(getApplicationContext()) && GlanceMainFragment.deviceList!=null && GlanceMainFragment.deviceList.size()>0){
+        if(UserUtils.isLogin(getApplicationContext()) && GlanceMainFragment.devicenodes!=null && GlanceMainFragment.devicenodes.size()>0){
             tv_no_device.setVisibility(View.GONE);
             tv_select_main_device.setVisibility(View.VISIBLE);
             listView.setVisibility(View.VISIBLE);
-            adapter = new DeviceListAdapter(this, GlanceMainFragment.deviceList);
+            adapter = new DeviceListAdapter(this, GlanceMainFragment.devicenodes);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
             view_top_line.setVisibility(View.VISIBLE);
@@ -89,7 +89,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         }
         showProgressDialog(getString(R.string.setting));
 
-        int deviceId = GlanceMainFragment.deviceList.get(position).id;
+        int deviceId = GlanceMainFragment.devicenodes.get(position).id;
         RequestSettingMainDevice.getInstance().settingDevice(this, 1, deviceId, UserUtils.getUserInfo(this).getId(), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
@@ -118,9 +118,9 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
 
     private void updateDeviceListInfo() {
         for (int i = 0; i < GlanceMainFragment.deviceList.size(); i++) {
-            GlanceMainFragment.deviceList.get(i).maindevice = 0;
+            GlanceMainFragment.devicenodes.get(i).maindevice = 0;
         }
-        GlanceMainFragment.deviceList.get(selectPosition).maindevice = 1;
+        GlanceMainFragment.devicenodes.get(selectPosition).maindevice = 1;
         adapter.notifyDataSetChanged();
     }
 }

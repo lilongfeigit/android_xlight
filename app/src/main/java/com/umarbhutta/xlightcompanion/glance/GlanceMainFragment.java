@@ -431,6 +431,13 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                         }
                         List<Rows> devices = mDeviceInfoResult.rows;
                         Logger.i("mDeviceInfoResult = " + devices.toString());
+
+                        if (null != mDeviceInfoResult && null != mDeviceInfoResult.Energysaving) {
+
+                            save_money.setText(getString(R.string.this_month_has_save_money) + mDeviceInfoResult.Energysaving.value);
+                        }
+
+
                         deviceList.clear();
                         deviceList.addAll(devices);
                         if (devicesListAdapter != null) {

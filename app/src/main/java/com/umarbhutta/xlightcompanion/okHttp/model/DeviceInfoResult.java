@@ -2,14 +2,13 @@ package com.umarbhutta.xlightcompanion.okHttp.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by guangbinw on 2017/3/13.
  * 设备信息
  */
 
-public class DeviceInfoResult implements Serializable{
+public class DeviceInfoResult implements Serializable {
 
     public int code;
     public String msg;
@@ -19,6 +18,8 @@ public class DeviceInfoResult implements Serializable{
     public int count;
 
     public List<Rows> rows;
+
+    public Energysaving Energysaving;
 
     @Override
     public String toString() {

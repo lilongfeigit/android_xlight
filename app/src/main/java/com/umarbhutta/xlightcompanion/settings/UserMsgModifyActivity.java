@@ -264,14 +264,11 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
             type = 1;
         }
 
-
-
-
         final EditText et = new EditText(this);
         new DialogUtils().getEditTextDialog(this, title, new DialogUtils.OnClickOkBtnListener() {
             @Override
             public void onClickOk(String editTextStr) {
-                String input = et.getText().toString();
+                String input = editTextStr;
 
                 if (TextUtils.isEmpty(input)) {
                     ToastUtil.showToast(UserMsgModifyActivity.this, getString(R.string.content_is_null));

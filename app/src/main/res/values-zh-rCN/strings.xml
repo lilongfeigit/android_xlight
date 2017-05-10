@@ -233,7 +233,7 @@
     <string name="no_add_rules">您还没有添加规则</string>
     <string name="ti_gan_temp">体感温度</string>
     <string name="shidu">湿度</string>
-    <string name="this_month_has_save_money">本月已为您节省电费约¥ --</string>
+    <string name="this_month_has_save_money">本月已为您节省电费约¥ </string>
     <string name="my_device">我的设备</string>
     <string name="you_have_no_device_and_add">您还没有设备，点击右上角+添加设备</string>
     <string name="report">报表</string>

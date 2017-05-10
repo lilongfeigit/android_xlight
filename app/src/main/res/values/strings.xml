@@ -233,7 +233,7 @@
     <string name="no_add_rules">You have not added rules</string>
     <string name="ti_gan_temp">Somatosensory temperature</string>
     <string name="shidu">Humidity</string>
-    <string name="this_month_has_save_money">This month has been saved electricity for you ¥ --</string>
+    <string name="this_month_has_save_money">This month has been saved electricity for you ¥ </string>
     <string name="my_device">My Devices</string>
     <string name="you_have_no_device_and_add">No device, click + to add device</string>
     <string name="report">Report</string>

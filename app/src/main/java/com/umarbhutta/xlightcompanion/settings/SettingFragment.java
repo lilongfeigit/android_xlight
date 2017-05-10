@@ -74,12 +74,24 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(View view, int position) {
                 switch (position) {
                     case 0://个人信息
+                        if (!UserUtils.isLogin(getActivity())) {
+                            onFabPressed(LoginActivity.class);
+                            return;
+                        }
                         onFabPressed(UserMsgModifyActivity.class);
                         break;
                     case 1://修改密码
+                        if (!UserUtils.isLogin(getActivity())) {
+                            onFabPressed(LoginActivity.class);
+                            return;
+                        }
                         onFabPressed(ModifyPasswordActivity.class);
                         break;
                     case 2://摇一摇
+                        if (!UserUtils.isLogin(getActivity())) {
+                            onFabPressed(LoginActivity.class);
+                            return;
+                        }
                         onFabPressed(ShakeActivity.class);
                         break;
 //                    case 3://用户邀请
@@ -89,6 +101,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 //                        onFabPressed(FastBindingActivity.class);
 //                        break;
                     case 3://退出登录
+                        if (!UserUtils.isLogin(getActivity())) {
+                            onFabPressed(LoginActivity.class);
+                            return;
+                        }
                         logout();
                         break;
                 }

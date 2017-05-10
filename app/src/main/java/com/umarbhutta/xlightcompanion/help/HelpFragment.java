@@ -107,6 +107,7 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
                             JSONObject dataObj = jsonObject.getJSONObject("data");
                             String helpUrl = dataObj.getString("url");
                             webView.loadUrl(helpUrl);
+//                            webView.loadUrl("http://www.baidu.com");
                             if(mDialog!=null){
                                 mDialog.dismiss();
                             }

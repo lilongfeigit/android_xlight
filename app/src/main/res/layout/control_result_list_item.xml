@@ -24,6 +24,7 @@
         android:paddingLeft="5dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:paddingRight="5dp"
         android:fontFamily="sans-serif-light"
         android:gravity="center|left"
         android:text="@string/persion_center"

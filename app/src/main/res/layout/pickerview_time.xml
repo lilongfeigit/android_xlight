@@ -26,25 +26,25 @@
             android:id="@+id/month"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.1" />
+            android:layout_weight="1.2" />
 
         <com.umarbhutta.xlightcompanion.views.pickerview.lib.WheelView
             android:id="@+id/day"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.1" />
+            android:layout_weight="1" />
 
         <com.umarbhutta.xlightcompanion.views.pickerview.lib.WheelView
             android:id="@+id/hour"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.1" />
+            android:layout_weight="1.2" />
 
         <com.umarbhutta.xlightcompanion.views.pickerview.lib.WheelView
             android:id="@+id/min"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.1" />
+            android:layout_weight="1" />
     </LinearLayout>
 
 

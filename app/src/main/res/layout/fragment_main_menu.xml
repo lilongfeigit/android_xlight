@@ -104,7 +104,7 @@
             android:drawablePadding="20dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/pickerview_topbar_paddingright"
-            android:text="场景"
+            android:text="@string/scene"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium" />
 

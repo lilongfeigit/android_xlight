@@ -281,7 +281,12 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                                 }
                             });
                         } else {
-                            Toast.makeText(getActivity(), "There was an error retrieving weather data.", Toast.LENGTH_SHORT).show();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                     ToastUtil.showToast(getActivity(), "There was an error retrieving weather data.");
+                                }
+                            });
                         }
                     } catch (IOException | JSONException | NullPointerException e) {
                         Logger.i("Exception caught: " + e);

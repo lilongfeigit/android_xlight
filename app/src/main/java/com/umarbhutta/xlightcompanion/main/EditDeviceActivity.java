@@ -128,6 +128,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         scenarioNoneLL = (LinearLayout) findViewById(R.id.scenarioNoneLL);
         mHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.hor_scroll_view);
+        mHorizontalScrollView.setSmoothScrollingEnabled(true);
         scenarioNoneLL.setAlpha(1);
         ring1Button = (ToggleButton) findViewById(R.id.ring1Button);
         ring2Button = (ToggleButton) findViewById(R.id.ring2Button);
@@ -268,7 +269,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
                 if (null != viewList && viewList.size() > 0) {
                     viewList.get(0).callOnClick();
-                    mHorizontalScrollView.scrollTo(0, 0);
+                    mHorizontalScrollView.smoothScrollTo(0, 0);
                 }
             }
         });
@@ -304,7 +305,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
                 if (null != viewList && viewList.size() > 0) {
                     viewList.get(0).callOnClick();
-                    mHorizontalScrollView.scrollTo(0, 0);
+                    mHorizontalScrollView.smoothScrollTo(0, 0);
                 }
             }
         });
@@ -510,7 +511,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         RequestDeviceDetailInfo.getInstance().getDeviceInfo(this, deviceInfo.id, new RequestDeviceDetailInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(DeviceInfoResult mDeviceInfoResult) {
-                Logger.i("详细信息 = "+mDeviceInfoResult.toString());
+                Logger.i("详细信息 = " + mDeviceInfoResult.toString());
             }
 
             @Override
@@ -518,8 +519,6 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
             }
         });
-
-
     }
 
     private List<View> viewList = new ArrayList<View>();
@@ -549,7 +548,41 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
             view.setOnClickListener(mSceneClick);
             linear.addView(view);
         }
+
+        linear.invalidate();
+
+        if (deviceInfo.devicenodetype != 1 && !TextUtils.isEmpty(deviceInfo.scenarioId)) {
+//        if (deviceInfo.devicenodetype != 1) {//测试专用
+            for (int i = 0; i < viewList.size(); i++) {
+                if (deviceInfo.scenarioId.equals(String.valueOf(mDeviceInfoResult.rows.get(i).id))) {
+//                if (i != 0 && "53".equals(String.valueOf(mDeviceInfoResult.rows.get(i - 1).id))) {
+                    View cView = viewList.get(i);
+                    cView.callOnClick();
+
+                    Message msg = Message.obtain();
+                    msg.arg1 = i;
+
+                    handler.sendMessageDelayed(msg, 100);
+                    break;
+
+                }
+            }
+        }
     }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int index = msg.arg1;
+
+            View cView = viewList.get(index);
+            int[] location = new int[2];
+            cView.getLocationOnScreen(location);
+//            Logger.i("left1 = " + location[0] + ", " + location[1]);
+            mHorizontalScrollView.scrollTo(location[0] - 100, 0);
+        }
+    };
 
     /**
      * 当前场景

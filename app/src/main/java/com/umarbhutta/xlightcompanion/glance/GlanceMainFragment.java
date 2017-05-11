@@ -97,7 +97,14 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.home_setting:
                 // 跳转到选择的主设备列表页面
-                onFabPressed(DeviceListActivity.class);
+
+                if (null == deviceList || deviceList.size() <= 0) { //如果目前还没有controller就跳到绑定设备页面
+                    Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    onFabPressed(DeviceListActivity.class);
+                }
+
                 break;
             case R.id.home_menu:
                 switchFragment();

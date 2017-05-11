@@ -41,6 +41,10 @@ public class Rows implements Serializable {
     public DeviceUser user;
     public List<Devicenodes> devicenodes;
     public List<Scenarionodes> scenarionodes;
+    /**
+     * 主页上展示的温度、设备列表等信息
+     */
+    public Sensorsdata sensorsdata;
 
     @Override
     public String toString() {
@@ -51,7 +55,7 @@ public class Rows implements Serializable {
                 ", brightness=" + brightness +
                 ", cct=" + cct +
                 ", type=" + type +
-                ", coreid=" + coreid +
+                ", coreid='" + coreid + '\'' +
                 ", areaId=" + areaId +
                 ", userId=" + userId +
                 ", iphoneidentify='" + iphoneidentify + '\'' +
@@ -66,6 +70,7 @@ public class Rows implements Serializable {
                 ", user=" + user +
                 ", devicenodes=" + devicenodes +
                 ", scenarionodes=" + scenarionodes +
+                ", sensorsdata=" + sensorsdata +
                 '}';
     }
 }

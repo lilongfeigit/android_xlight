@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -172,8 +171,6 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         return true;
     }
 
-    private UserMsgModifyAdapter mUserMsgModifyAdapter;
-    private RecyclerView mRecyclerView;
     private List<String> userMsgs = new ArrayList<String>();
 
     private void initViews() {

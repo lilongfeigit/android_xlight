@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.glance;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,9 +14,7 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -155,9 +154,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_glance, container, false);
         if (SlidingMenuMainActivity.m_mainDevice == null) {
             SlidingMenuMainActivity.m_mainDevice = new xltDevice();

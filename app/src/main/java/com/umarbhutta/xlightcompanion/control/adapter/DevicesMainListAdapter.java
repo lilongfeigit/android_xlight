@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,7 +67,7 @@ public class DevicesMainListAdapter extends BaseAdapter {
             holder.mDeviceName = (TextView) convertView.findViewById(R.id.deviceName);
             holder.main_device = (TextView) convertView.findViewById(R.id.main_device);
             holder.devicePlan = (TextView) convertView.findViewById(devicePlan);
-            holder.mDeviceSwitch = (Switch) convertView.findViewById(R.id.deviceSwitch);
+            holder.mDeviceSwitch = (CheckBox) convertView.findViewById(R.id.deviceSwitch);
             holder.ll_item = (LinearLayout) convertView.findViewById(R.id.ll_item);
             convertView.setTag(holder);
         } else {
@@ -113,7 +114,7 @@ public class DevicesMainListAdapter extends BaseAdapter {
 
     static class ViewHolder {
         private TextView mDeviceName, main_device, devicePlan;
-        private Switch mDeviceSwitch;
+        private CheckBox mDeviceSwitch;
         private LinearLayout ll_item;
     }
 

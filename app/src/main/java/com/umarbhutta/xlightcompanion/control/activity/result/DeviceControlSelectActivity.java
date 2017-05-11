@@ -6,12 +6,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -22,7 +22,6 @@ import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
 import com.umarbhutta.xlightcompanion.control.bean.ControlRuleDevice;
 import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
-import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
@@ -63,7 +62,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
 
         mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
 
-        powerSwitch = (Switch) findViewById(R.id.powerSwitch);
+        powerSwitch = (CheckBox) findViewById(R.id.powerSwitch);
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
         cctSeekBar = (SeekBar) findViewById(R.id.cctSeekBar);
         cctSeekBar.setMax(6500 - 2700);
@@ -239,7 +238,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
     private static final String RING2_TEXT = "RING 2";
     private static final String RING3_TEXT = "RING 3";
 
-    private Switch powerSwitch;
+    private CheckBox powerSwitch;
     private SeekBar brightnessSeekBar;
     private SeekBar cctSeekBar;
     private TextView colorTextView;

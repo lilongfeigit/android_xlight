@@ -56,7 +56,7 @@
             android:textColor="@color/textDarkGrey"
             android:visibility="gone" />
 
-        <Switch
+        <CheckBox
             android:id="@+id/deviceSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,9 +64,8 @@
             android:layout_centerVertical="true"
             android:background="@drawable/switch_selector"
             android:gravity="center"
-            android:paddingRight="22dp"
-            android:thumb="@color/transparent"
-            android:track="@null" />
+            android:button="@null"
+            android:paddingRight="22dp"/>
 
     </RelativeLayout>
 

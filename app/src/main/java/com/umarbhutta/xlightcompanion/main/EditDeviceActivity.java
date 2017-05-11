@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -22,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -78,7 +78,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
     private static final String RING2_TEXT = "RING 2";
     private static final String RING3_TEXT = "RING 3";
 
-    private Switch powerSwitch;
+    private CheckBox powerSwitch;
     private SeekBar brightnessSeekBar;
     private SeekBar cctSeekBar;
     private TextView colorTextView;
@@ -121,7 +121,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         scenarioDropdown = new ArrayList<>(ScenarioMainFragment.name);
         scenarioDropdown.add(0, "None");
 
-        powerSwitch = (Switch) findViewById(R.id.powerSwitch);
+        powerSwitch = (CheckBox) findViewById(R.id.powerSwitch);
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
         cctSeekBar = (SeekBar) findViewById(R.id.cctSeekBar);
         cctSeekBar.setMax(6500 - 2700);

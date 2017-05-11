@@ -218,15 +218,14 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
-                    <Switch
+                    <CheckBox
                         android:id="@+id/powerSwitch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/switch_selector"
-                        android:thumb="@color/transparent"
-                        android:track="@null" />
+                        android:button="@null" />
 
 
                 </RelativeLayout>

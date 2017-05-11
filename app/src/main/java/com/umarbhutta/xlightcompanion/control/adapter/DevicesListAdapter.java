@@ -20,7 +20,6 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import java.util.List;
 
 /**
- * Created by Umar Bhutta.
  */
 public class DevicesListAdapter extends RecyclerView.Adapter {
 

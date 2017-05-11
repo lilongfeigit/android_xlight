@@ -146,7 +146,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_msg_modify);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         initViews();
         hasPermision = checkPublishPermission();
     }

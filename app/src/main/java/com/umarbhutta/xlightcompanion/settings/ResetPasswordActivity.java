@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.settings;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -24,7 +23,7 @@ import org.json.JSONObject;
  * 重置密码
  */
 
-public class ResetPasswordActivity extends AppCompatActivity implements HttpUtils.OnHttpRequestCallBack {
+public class ResetPasswordActivity extends BaseActivity implements HttpUtils.OnHttpRequestCallBack {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -40,7 +39,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements HttpUtil
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         email = getIntent().getStringExtra("email");
         initViews();
     }

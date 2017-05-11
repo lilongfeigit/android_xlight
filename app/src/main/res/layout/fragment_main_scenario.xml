@@ -44,11 +44,13 @@
             android:layout_below="@id/tv"
             android:layout_marginLeft="0dp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/scenarioRecyclerView"
+        <ListView
+            android:id="@+id/scenarioListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
+            android:divider="@drawable/line_divider"
+            android:layout_marginLeft="20dp"
             android:layout_below="@id/view"
             android:layout_marginTop="5dp" />
     </RelativeLayout>

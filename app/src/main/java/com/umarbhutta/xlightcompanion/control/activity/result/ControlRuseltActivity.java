@@ -2,20 +2,18 @@ package com.umarbhutta.xlightcompanion.control.activity.result;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.adapter.ControlResultListAdapter;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,7 @@ import java.util.List;
  * 设置执行结果
  */
 
-public class ControlRuseltActivity extends AppCompatActivity {
+public class ControlRuseltActivity extends BaseActivity {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -35,7 +33,7 @@ public class ControlRuseltActivity extends AppCompatActivity {
     private List<Integer> imgInter = new ArrayList<Integer>();
 
     ControlResultListAdapter controlResultListAdapter;
-    RecyclerView settingRecyclerView;
+    ListView entryConditionListView;
 
     private Actionnotify mActionnotify;
     private Actioncmd mActioncmd;
@@ -46,21 +44,14 @@ public class ControlRuseltActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         ((App) getApplicationContext()).setActivity(this);
         mActionnotify = new Actionnotify();
         mActioncmd = new Actioncmd();
 
-        settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
+        entryConditionListView = (ListView) findViewById(R.id.entryConditionListView);
         controlResultListAdapter = new ControlResultListAdapter(this, settingStr, imgInter);
-        settingRecyclerView.setAdapter(controlResultListAdapter);
-
-        //set LayoutManager for recycler view
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        //attach LayoutManager to recycler view
-        settingRecyclerView.setLayoutManager(layoutManager);
-        //divider lines
-        settingRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+        entryConditionListView.setAdapter(controlResultListAdapter);
 
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {

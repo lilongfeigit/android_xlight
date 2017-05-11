@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.control.activity.result;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.ToggleButton;
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
-import com.umarbhutta.xlightcompanion.control.ControlFragment;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
 import com.umarbhutta.xlightcompanion.control.bean.ControlRuleDevice;
@@ -32,6 +30,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 import com.umarbhutta.xlightcompanion.views.CircleDotView;
 
 import java.util.ArrayList;
@@ -42,7 +41,9 @@ import java.util.List;
  * 设置灯
  */
 
-public class DeviceControlSelectActivity extends AppCompatActivity {
+public class DeviceControlSelectActivity extends BaseActivity {
+
+    private String TAG = DeviceControlSelectActivity.class.getSimpleName();
     private TextView tvTitle;
     private Actioncmd mActioncmd;
 
@@ -59,7 +60,7 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
         mInflater = LayoutInflater.from(this);
         ((App)getApplicationContext()).setActivity(this);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
 
@@ -243,8 +244,6 @@ public class DeviceControlSelectActivity extends AppCompatActivity {
             }
         }
     }
-
-    private static final String TAG = ControlFragment.class.getSimpleName();
 
     private static final String RINGALL_TEXT = "ALL RINGS";
     private static final String RING1_TEXT = "RING 1";

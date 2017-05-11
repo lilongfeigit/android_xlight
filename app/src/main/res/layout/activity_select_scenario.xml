@@ -7,11 +7,12 @@
 
     <include layout="@layout/top_layout" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/scenarioRecyclerView"
+    <ListView
+        android:id="@+id/scenarioListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/ll_top_edit"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp" />
 
     <com.github.clans.fab.FloatingActionButton

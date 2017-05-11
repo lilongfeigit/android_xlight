@@ -1,15 +1,12 @@
 package com.umarbhutta.xlightcompanion.settings;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +15,7 @@ import java.util.List;
  * Created by Administrator on 2017/3/5.
  */
 
-public class FastBindingActivity extends AppCompatActivity {
+public class FastBindingActivity extends BaseActivity {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -29,23 +26,19 @@ public class FastBindingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fast_bingding);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         initViews();
     }
 
     private FastBindingAdapter mFastBindingAdapter;
-    private RecyclerView mRecyclerView;
+    private ListView mListView;
     private List<String> faseBings = new ArrayList<String>();
 
     private void initViews() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.settingFastBindingView);
+        mListView = (ListView) findViewById(R.id.bindingListView);
         mFastBindingAdapter = new FastBindingAdapter(FastBindingActivity.this, faseBings);
-        mRecyclerView.setAdapter(mFastBindingAdapter);
+        mListView.setAdapter(mFastBindingAdapter);
 
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         faseBings.add(getString(R.string.scan_qr));
         faseBings.add(getString(R.string.input_order));
         mFastBindingAdapter.notifyDataSetChanged();

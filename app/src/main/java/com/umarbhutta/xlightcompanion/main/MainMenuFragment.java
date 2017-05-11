@@ -44,7 +44,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             LoginResult userInfo = UserUtils.getUserInfo(getActivity());
             btnLogin.setVisibility(View.GONE);
             llPerName.setVisibility(View.VISIBLE);
-            tv_userName.setText("Welcome,"+UserUtils.getUserInfo(getActivity()).getUsername());
+            tv_userName.setText("Welcome  "+UserUtils.getUserInfo(getActivity()).getNickname());
             textView.setText(UserUtils.getUserInfo(getActivity()).getEmail());
             ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
         } else {
@@ -105,6 +105,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_login:
                 showContentView();
                 onFabPressed(LoginActivity.class);
+                getActivity().overridePendingTransition(R.anim.activity_open,0);
                 break;
             case R.id.userIcon:
                 showContentView();

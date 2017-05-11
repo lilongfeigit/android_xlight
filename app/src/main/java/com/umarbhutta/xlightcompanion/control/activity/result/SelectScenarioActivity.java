@@ -3,22 +3,20 @@ package com.umarbhutta.xlightcompanion.control.activity.result;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.adapter.ScenarioSelectListAdapter;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
-import com.umarbhutta.xlightcompanion.scenario.AddScenarioActivity;
+import com.umarbhutta.xlightcompanion.scenario.AddScenarioNewActivity;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +26,7 @@ import java.util.Arrays;
  * 选择场景
  */
 
-public class SelectScenarioActivity extends AppCompatActivity {
+public class SelectScenarioActivity extends BaseActivity {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -43,7 +41,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
     public static ArrayList<String> info = new ArrayList<>(Arrays.asList("A bright, party room preset", "A relaxed atmosphere with yellow tones", "Turn the chandelier rings off"));
 
     ScenarioSelectListAdapter scenarioListAdapter;
-    RecyclerView scenarioRecyclerView;
+    ListView scenarioListView;
 
     public SceneListResult mDeviceInfoResult;
 
@@ -53,9 +51,9 @@ public class SelectScenarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_scenario);
-        name = new ArrayList<String>(Arrays.asList(getString(R.string.beforehand) + " 1", getString(R.string.beforehand) + " 2",getString(R.string.close)));
+        name = new ArrayList<String>(Arrays.asList(getString(R.string.beforehand) + " 1", getString(R.string.beforehand) + " 2", getString(R.string.close)));
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         ((App) getApplicationContext()).setActivity(this);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
@@ -75,13 +73,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
         fab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab);
 
         //setup recycler view
-        scenarioRecyclerView = (RecyclerView) findViewById(R.id.scenarioRecyclerView);
-        //set LayoutManager for recycler view
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        //attach LayoutManager to recycler view
-        scenarioRecyclerView.setLayoutManager(layoutManager);
-        //divider lines
-        scenarioRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
+        scenarioListView = (ListView) findViewById(R.id.scenarioListView);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +107,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
 
 
     private void onFabPressed(View view) {
-        Intent intent = new Intent(this, AddScenarioActivity.class);
+        Intent intent = new Intent(this, AddScenarioNewActivity.class);
         startActivityForResult(intent, 1);
     }
 
@@ -146,6 +138,6 @@ public class SelectScenarioActivity extends AppCompatActivity {
 
     private void initList() {
         scenarioListAdapter = new ScenarioSelectListAdapter(SelectScenarioActivity.this, mDeviceInfoResult, mActioncmd);
-        scenarioRecyclerView.setAdapter(scenarioListAdapter);
+        scenarioListView.setAdapter(scenarioListAdapter);
     }
 }

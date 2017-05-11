@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.userManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -20,13 +19,14 @@ import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginParam;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 /**
  * Created by Administrator on 2017/3/4.
  * login
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, HttpUtils.OnHttpRequestCallBack {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, HttpUtils.OnHttpRequestCallBack {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         ((App) getApplicationContext()).setActivity(this);
         initViews();
     }

@@ -338,20 +338,19 @@
         android:text="@string/you_have_no_device_and_add" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/devicesRecyclerView"
+    <ListView
+        android:id="@+id/devicesListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:divider="@drawable/line_divider"
         android:layout_below="@id/toolbar"
-        android:paddingTop="12dp">
-
-    </android.support.v7.widget.RecyclerView>
+        android:paddingTop="12dp"/>
 
     <ImageButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/devicesRecyclerView"
+        android:layout_above="@+id/devicesListView"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="-10dp"
         android:background="@drawable/home_btn_add_device"
@@ -360,7 +359,7 @@
     <com.github.clans.fab.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/devicesRecyclerView"
+        android:layout_above="@+id/devicesListView"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="-16dp"
         android:layout_marginEnd="2dp"

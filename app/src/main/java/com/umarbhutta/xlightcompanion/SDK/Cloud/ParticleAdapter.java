@@ -12,7 +12,6 @@ import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.cloud.ParticleDevice;
 
 /**
- * Created by Umar Bhutta.
  */
 @SuppressWarnings({"UnusedDeclaration"})
 public class ParticleAdapter {

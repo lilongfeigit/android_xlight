@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.userManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +19,7 @@ import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.RegisteResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.RigsteParam;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Created by Administrator on 2017/3/4.
  */
 
-public class RegisteredActivity extends AppCompatActivity implements View.OnClickListener, HttpUtils.OnHttpRequestCallBack {
+public class RegisteredActivity extends BaseActivity implements View.OnClickListener, HttpUtils.OnHttpRequestCallBack {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -42,7 +42,7 @@ public class RegisteredActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registerd);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         initViews();
         getHelpUrl();
     }

@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +29,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestAddScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestEditScene;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 import com.umarbhutta.xlightcompanion.views.CircleDotView;
 import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/3/5.新建场景
  */
-public class AddScenarioNewActivity extends AppCompatActivity {
+public class AddScenarioNewActivity extends BaseActivity {
 
     private static final String TAG = AddScenarioNewActivity.class.getSimpleName();
     private SeekBar brightnessSeekBar;
@@ -70,7 +70,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_scenario_new);
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
@@ -103,7 +103,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 确定提交按钮
-                //send info back to ScenarioFragment
+                //send info back to ScenarioMainFragment
 
 
                 scenarioName = nameEditText.getText().toString();
@@ -117,12 +117,12 @@ public class AddScenarioNewActivity extends AppCompatActivity {
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
 
                 //SEND TO PARTICLE CLOUD FOR ALL RINGS
-                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioMainFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
 
                 //send data to update the list
                 Intent returnIntent = getIntent();
-                returnIntent.putExtra(ScenarioFragment.SCENARIO_NAME, scenarioName);
-                returnIntent.putExtra(ScenarioFragment.SCENARIO_INFO, scenarioInfo);
+                returnIntent.putExtra(ScenarioMainFragment.SCENARIO_NAME, scenarioName);
+                returnIntent.putExtra(ScenarioMainFragment.SCENARIO_INFO, scenarioInfo);
                 setResult(Activity.RESULT_OK, returnIntent);
 //                finish();
 
@@ -189,18 +189,18 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //send info back to ScenarioFragment
+                //send info back to ScenarioMainFragment
                 scenarioName = nameEditText.getText().toString();
 
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
 
                 //SEND TO PARTICLE CLOUD FOR ALL RINGS
-                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioMainFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
 
                 //send data to update the list
                 Intent returnIntent = getIntent();
-                returnIntent.putExtra(ScenarioFragment.SCENARIO_NAME, scenarioName);
-                returnIntent.putExtra(ScenarioFragment.SCENARIO_INFO, scenarioInfo);
+                returnIntent.putExtra(ScenarioMainFragment.SCENARIO_NAME, scenarioName);
+                returnIntent.putExtra(ScenarioMainFragment.SCENARIO_INFO, scenarioInfo);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
@@ -209,7 +209,7 @@ public class AddScenarioNewActivity extends AppCompatActivity {
         backImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //go back to ScenarioFragment, do nothing
+                //go back to ScenarioMainFragment, do nothing
                 finish();
             }
         });

@@ -4,18 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 
@@ -33,7 +31,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     //    public static String[] settingStr = {"个人信息","修改密码","摇一摇","用户邀请","快速绑定","退出登录"};
     SettingListAdapter settingListAdapter;
-    RecyclerView settingRecyclerView;
+    ListView settingListView;
 
     private ImageView iv_menu;
     private TextView textTitle;
@@ -51,16 +49,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         btn_add = (Button) view.findViewById(R.id.btn_add);
         btn_add.setVisibility(View.INVISIBLE);
 
-        settingRecyclerView = (RecyclerView) view.findViewById(R.id.settingRecyclerView);
+        settingListView = (ListView) view.findViewById(R.id.settingListView);
         settingListAdapter = new SettingListAdapter(getActivity(), settingStr);
-        settingRecyclerView.setAdapter(settingListAdapter);
-
-        //set LayoutManager for recycler view
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        //attach LayoutManager to recycler view
-        settingRecyclerView.setLayoutManager(layoutManager);
-        //divider lines
-        settingRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+        settingListView.setAdapter(settingListAdapter);
 
         settingStr.add(getString(R.string.persion_inco));
         settingStr.add(getString(R.string.modify_pwd));
@@ -76,6 +67,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 0://个人信息
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
+                            getActivity().overridePendingTransition(R.anim.activity_open,0);
                             return;
                         }
                         onFabPressed(UserMsgModifyActivity.class);
@@ -83,6 +75,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 1://修改密码
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
+                            getActivity().overridePendingTransition(R.anim.activity_open,0);
                             return;
                         }
                         onFabPressed(ModifyPasswordActivity.class);
@@ -90,6 +83,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 2://摇一摇
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
+                            getActivity().overridePendingTransition(R.anim.activity_open,0);
                             return;
                         }
                         onFabPressed(ShakeActivity.class);
@@ -128,12 +122,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_menu:
                 switchFragment();
                 break;
         }
     }
+
     // the meat of switching the above fragment
     private void switchFragment() {
         if (getActivity() == null)

@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.umarbhutta.xlightcompanion"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 3
-        versionName "3.0"
+        versionName "1.3"
     }
     buildTypes {
         release {

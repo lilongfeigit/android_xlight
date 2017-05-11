@@ -2,117 +2,105 @@ package com.umarbhutta.xlightcompanion.scenario;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Umar Bhutta.
  */
-public class ScenarioListAdapter extends RecyclerView.Adapter {
+public class ScenarioListAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<Rows> sceneList;
-
-
-    public ScenarioListAdapter(Context context) {
-        this.sceneList = new ArrayList<Rows>();
-        this.mContext = context;
-    }
+    private LayoutInflater inflater;//这个一定要懂它的用法及作用
 
     public ScenarioListAdapter(Context context, List<Rows> sceneList) {
         this.sceneList = sceneList;
         this.mContext = context;
+        this.inflater = LayoutInflater.from(mContext);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scenario_list_item, parent, false);
-        return new ScenarioListViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ScenarioListViewHolder) holder).bindView(position);
-    }
-
-    @Override
-    public int getItemCount() {
+    public int getCount() {
         return sceneList.size();
     }
 
-    private class ScenarioListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    @Override
+    public Object getItem(int position) {
+        return sceneList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final Rows infos = sceneList.get(position);
+        ViewHolder holder = null;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.scenario_list_item, parent, false);
+            //通过上面layout得到的view来获取里面的具体控件
+            holder.scenarioIndex = (TextView) convertView.findViewById(R.id.scenarioIndex);
+            holder.scenarioTitle = (TextView) convertView.findViewById(R.id.scenarioTitle);
+            holder.scenarioDescription = (TextView) convertView.findViewById(R.id.scenarioDescription);
+            holder.scenarioDelete = (ImageView) convertView.findViewById(R.id.scenarioDelete);
+            holder.ll_item = (LinearLayout) convertView.findViewById(R.id.ll_item);
+
+            holder.ll_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onFabPressed(v, infos);
+                }
+            });
+            holder.ll_item.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (null != mOnLongClickCallBack) {
+                        mOnLongClickCallBack.onLongClickCallBack(position);
+                    }
+                    return true;
+                }
+            });
+            holder.scenarioDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onFabPressed(v, infos);
+                }
+            });
+
+            holder.scenarioIcon = (ImageView) convertView.findViewById(R.id.icon_scenario);
+            holder.scenarioText = (TextView) convertView.findViewById(R.id.text_scenario);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        holder.scenarioText.setText(infos.scenarioname);
+
+        return convertView;
+    }
+
+    class ViewHolder {
         private TextView scenarioIndex, scenarioTitle, scenarioDescription;
         private ImageView scenarioDelete;
 
         private ImageView scenarioIcon;
         private TextView scenarioText;
-        private int mPosition;
-        private Rows infos;
 
-        public ScenarioListViewHolder(View itemView) {
-            super(itemView);
-            scenarioIndex = (TextView) itemView.findViewById(R.id.scenarioIndex);
-            scenarioTitle = (TextView) itemView.findViewById(R.id.scenarioTitle);
-            scenarioDescription = (TextView) itemView.findViewById(R.id.scenarioDescription);
-            scenarioDelete = (ImageView) itemView.findViewById(R.id.scenarioDelete);
+        private LinearLayout ll_item;
 
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-            scenarioDelete.setOnClickListener(this);
-
-            scenarioIcon = (ImageView) itemView.findViewById(R.id.icon_scenario);
-            scenarioText = (TextView) itemView.findViewById(R.id.text_scenario);
-        }
-
-        public void bindView(int position) {
-
-            mPosition = position;
-            infos = sceneList.get(position);
-
-//            int displayNum = position + 1;
-//            scenarioIndex.setText(displayNum + "");
-//            scenarioTitle.setText(ScenarioFragment.name.get(position));
-//            scenarioDescription.setText(ScenarioFragment.info.get(position));
-            scenarioText.setText(infos.scenarioname);
-//            switch (position) {
-//                case 0:
-//                    scenarioIcon.setImageResource(R.drawable.icon_book);
-//                    break;
-//                case 1:
-//                    scenarioIcon.setImageResource(R.drawable.icon_tv);
-//                    scenarioText.setText("看电视");
-//                    break;
-//                case 2:
-//                    scenarioText.setText("睡觉");
-//                    break;
-//                default:
-//                    break;
-//            }
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            onFabPressed(v, infos);
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            if (null != mOnLongClickCallBack) {
-                mOnLongClickCallBack.onLongClickCallBack(mPosition);
-            }
-            return true;
-        }
     }
 
     private void onFabPressed(View view, Rows infos) {
@@ -131,5 +119,4 @@ public class ScenarioListAdapter extends RecyclerView.Adapter {
     public interface OnLongClickCallBack {
         void onLongClickCallBack(int position);
     }
-
 }

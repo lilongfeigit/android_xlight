@@ -1,11 +1,12 @@
 package com.umarbhutta.xlightcompanion.control.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -16,72 +17,86 @@ import java.util.List;
  * Created by Administrator on 2017/3/5.
  */
 
-public class EntryConditionListAdapter extends RecyclerView.Adapter {
+public class EntryConditionListAdapter extends BaseAdapter {
 
     private Context mActivity;
     private List<Integer> mIntList;
+    private LayoutInflater inflater;//这个一定要懂它的用法及作用
     private List<String> mSettingStr;
-    public EntryConditionListAdapter(Context activity, List<String> settingStr,List<Integer> intList){
+
+    public EntryConditionListAdapter(Context activity, List<String> settingStr, List<Integer> intList) {
         this.mActivity = activity;
         this.mIntList = intList;
         this.mSettingStr = settingStr;
+        this.inflater = LayoutInflater.from(mActivity);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_condition_list_item, parent, false);
-        return new EntryConditionListAdapter.SettingListViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((EntryConditionListAdapter.SettingListViewHolder) holder).bindView(holder.itemView,position);
-    }
-
-    @Override
-    public int getItemCount() {
+    public int getCount() {
         return mSettingStr.size();
     }
 
-    private class SettingListViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public Object getItem(int position) {
+        return mSettingStr.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.entry_condition_list_item, parent, false);
+            //通过上面layout得到的view来获取里面的具体控件
+            holder.tv_setting_name = (TextView) convertView.findViewById(R.id.tv_setting_name);
+            holder.iv_lift_img = (ImageView) convertView.findViewById(R.id.iv_lift_img);
+            holder.iv_right_arrow = (ImageView) convertView.findViewById(R.id.iv_right_arrow);
+            holder.ll_item = (LinearLayout) convertView.findViewById(R.id.ll_item);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.tv_setting_name.setText(mSettingStr.get(position));
+        holder.iv_lift_img.setImageResource(mIntList.get(position));
+        if (position == 5 || position == 6) {
+            holder.iv_right_arrow.setVisibility(View.GONE);
+        }
+
+        //如果设置了回调，就设置点击事件
+        if (mOnItemClickListener != null) {
+            holder.ll_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(v, position);
+                }
+            });
+        }
+        return convertView;
+    }
+
+    class ViewHolder {
         private TextView tv_setting_name;
         private ImageView iv_lift_img;
         private ImageView iv_right_arrow;
-
-        public SettingListViewHolder(View itemView) {
-            super(itemView);
-            tv_setting_name = (TextView) itemView.findViewById(R.id.tv_setting_name);
-            iv_lift_img = (ImageView) itemView.findViewById(R.id.iv_lift_img);
-            iv_right_arrow = (ImageView) itemView.findViewById(R.id.iv_right_arrow);
-        }
-
-        public void bindView(final View itemView,final int position) {
-            tv_setting_name.setText(mSettingStr.get(position));
-            iv_lift_img.setImageResource(mIntList.get(position));
-            if(position ==5 || position ==6){
-                iv_right_arrow.setVisibility(View.GONE);
-            }
-
-            //如果设置了回调，就设置点击事件
-            if (mOnItemClickListener != null){
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mOnItemClickListener.onItemClick(itemView,position);
-                    }
-                });
-            }
-        }
-
+        private LinearLayout ll_item;
     }
-    /** * ItemClick的回调接口 */
-    public interface OnItemClickListener{
+
+    /**
+     * ItemClick的回调接口
+     */
+    public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
     private OnItemClickListener mOnItemClickListener;
 
-    public void setmOnItemClickListener(OnItemClickListener mOnItemClickListener){
+    public void setmOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
+
 }

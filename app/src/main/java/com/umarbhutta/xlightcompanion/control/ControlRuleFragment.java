@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Umar Bhutta.
  * 新的规则页面
  */
 public class ControlRuleFragment extends Fragment implements View.OnClickListener, DeviceRulesListAdapter.OnItemActionListener {

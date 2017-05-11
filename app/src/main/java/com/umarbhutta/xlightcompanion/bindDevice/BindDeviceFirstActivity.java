@@ -57,7 +57,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind_device_first);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override

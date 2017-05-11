@@ -6,8 +6,10 @@
 
     <include layout="@layout/top_layout" />
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/shakeRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:divider="@drawable/line_divider" />
 </LinearLayout>

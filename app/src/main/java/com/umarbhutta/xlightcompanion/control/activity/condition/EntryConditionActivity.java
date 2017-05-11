@@ -2,11 +2,9 @@ package com.umarbhutta.xlightcompanion.control.activity.condition;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
@@ -19,11 +17,11 @@ import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.EntryConditionListAdapter;
 import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 import com.umarbhutta.xlightcompanion.okHttp.model.Schedule;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,7 @@ import java.util.List;
  * 启动条件
  */
 
-public class EntryConditionActivity extends AppCompatActivity {
+public class EntryConditionActivity extends BaseActivity {
 
     private String TAG = EntryConditionActivity.class.getSimpleName();
 
@@ -49,7 +47,7 @@ public class EntryConditionActivity extends AppCompatActivity {
     public ArrayList<String> listStr = new ArrayList<String>();
 
     EntryConditionListAdapter entryConditionListAdapter;
-    RecyclerView settingRecyclerView;
+    ListView entryConditionListView;
 
     private Schedule mSchedule;
 
@@ -62,22 +60,15 @@ public class EntryConditionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         ((App) getApplicationContext()).setActivity(this);
         mSchedule = new Schedule();
         mCondition = new Condition();
 
-        settingRecyclerView = (RecyclerView) findViewById(R.id.settingRecyclerView);
+        entryConditionListView = (ListView) findViewById(R.id.entryConditionListView);
         entryConditionListAdapter = new EntryConditionListAdapter(this, settingStr, imgInter);
-        settingRecyclerView.setAdapter(entryConditionListAdapter);
-
-        //set LayoutManager for recycler view
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        //attach LayoutManager to recycler view
-        settingRecyclerView.setLayoutManager(layoutManager);
-        //divider lines
-        settingRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+        entryConditionListView.setAdapter(entryConditionListAdapter);
 
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +137,7 @@ public class EntryConditionActivity extends AppCompatActivity {
                         mCondition.operator = "=";
                         mCondition.ruleconditionname = ruleconditions.data.get(0).getLeavehome().get(0).name;
                         mCondition.status = 0;
-                        mCondition.conditionType=5;
+                        mCondition.conditionType = 5;
 
                         NewRuleItemInfo mNewRuleItemInfo3 = new NewRuleItemInfo();
                         mNewRuleItemInfo3.setmCondition(mCondition);
@@ -162,7 +153,7 @@ public class EntryConditionActivity extends AppCompatActivity {
                         mCondition.operator = "=";
                         mCondition.ruleconditionname = ruleconditions.data.get(0).getGohome().get(0).name;
                         mCondition.status = 0;
-                        mCondition.conditionType=6;
+                        mCondition.conditionType = 6;
 
                         NewRuleItemInfo mNewRuleItemInfo4 = new NewRuleItemInfo();
                         mNewRuleItemInfo4.setmCondition(mCondition);

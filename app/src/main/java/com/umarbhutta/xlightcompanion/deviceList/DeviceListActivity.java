@@ -39,7 +39,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override

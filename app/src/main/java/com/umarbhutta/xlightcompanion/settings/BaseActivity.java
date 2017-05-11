@@ -4,21 +4,22 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 /**
  * create by：guangbinw on 16/3/30 17:01
  * email：guangbingwang@126.com
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends FragmentActivity {
     protected ProgressDialog mProgressDialog;
     private LayoutInflater mInflater;
     private View netErrorView;
@@ -27,7 +28,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mInflater = getLayoutInflater();
@@ -43,7 +44,6 @@ public class BaseActivity extends AppCompatActivity {
 
     /**
      * 获得rootview
-     *
      * @param context
      * @return
      */

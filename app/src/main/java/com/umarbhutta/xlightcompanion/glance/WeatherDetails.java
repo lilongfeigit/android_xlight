@@ -1,7 +1,6 @@
 package com.umarbhutta.xlightcompanion.glance;
 
 /**
- * Created by Umar Bhutta.
  */
 public class WeatherDetails {
 

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="20dp"
+    android:id="@+id/ll_item"
     android:paddingRight="20dp"
     android:orientation="vertical">
 

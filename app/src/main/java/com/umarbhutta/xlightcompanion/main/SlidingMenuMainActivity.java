@@ -65,7 +65,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 //        m_mainDevice = new xltDevice();
 //        m_mainDevice.Init(this);
 
-        //TODO 测试数据
+        // 测试数据
         // Setup Device/Node List
 //        for( int lv_idx = 0; lv_idx < 3; lv_idx++ ) {
 //            m_mainDevice.addNodeToDeviceList(deviceNodeIDs[lv_idx], xltDevice.DEFAULT_DEVICE_TYPE, deviceNames[lv_idx]);

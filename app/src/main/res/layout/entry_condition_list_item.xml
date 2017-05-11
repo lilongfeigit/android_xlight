@@ -5,8 +5,8 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     android:paddingBottom="2dp"
+    android:id="@+id/ll_item"
     android:paddingRight="@dimen/pickerview_topbar_paddingright"
-    android:paddingLeft="@dimen/pickerview_topbar_paddingright"
     android:paddingTop="2dp">
 
     <ImageView

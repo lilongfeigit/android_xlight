@@ -16,8 +16,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -26,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +49,6 @@ import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesMainListAdapter;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.location.BaiduMapUtils;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerMainItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
@@ -68,7 +66,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Umar Bhutta.
  */
 public class GlanceMainFragment extends Fragment implements View.OnClickListener {
     private ImageButton fab;
@@ -77,7 +74,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private ImageButton home_menu, home_setting;
 
     private static final String TAG = GlanceMainFragment.class.getSimpleName();
-    private RecyclerView devicesRecyclerView;
+    private ListView devicesListView;
     WeatherDetails mWeatherDetails;
 
     private Handler m_handlerGlance;
@@ -143,7 +140,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onDestroyView() {
-        devicesRecyclerView.setAdapter(null);
+        devicesListView.setAdapter(null);
         SlidingMenuMainActivity.m_mainDevice.removeDataEventHandler(m_handlerGlance);
         if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
             getContext().unregisterReceiver(m_DataReceiver);
@@ -237,11 +234,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         }
 
         //setup recycler view
-        devicesRecyclerView = (RecyclerView) view.findViewById(R.id.devicesRecyclerView);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        devicesRecyclerView.setLayoutManager(layoutManager);
-        devicesRecyclerView.addItemDecoration(new SimpleDividerMainItemDecoration(getActivity()));
+        devicesListView = (ListView) view.findViewById(R.id.devicesListView);
 
         getTitleInfo();
 
@@ -284,7 +277,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                     ToastUtil.showToast(getActivity(), "There was an error retrieving weather data.");
+                                    ToastUtil.showToast(getActivity(), "There was an error retrieving weather data.");
                                 }
                             });
                         }
@@ -504,7 +497,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 }
             }
             devicesListAdapter = new DevicesMainListAdapter(getContext(), devicenodes);
-            devicesRecyclerView.setAdapter(devicesListAdapter);
+            devicesListView.setAdapter(devicesListAdapter);
             devicesListAdapter.setOnSwitchStateChangeListener(new DevicesMainListAdapter.OnSwitchStateChangeListener() {
                 @Override
                 public void onLongClick(int position) {

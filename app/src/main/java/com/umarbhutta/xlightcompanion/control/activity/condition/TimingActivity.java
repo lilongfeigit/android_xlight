@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.control.activity.condition;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,6 +17,7 @@ import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.control.bean.SelectTime;
 import com.umarbhutta.xlightcompanion.control.bean.SelectWeek;
 import com.umarbhutta.xlightcompanion.okHttp.model.Schedule;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 import com.umarbhutta.xlightcompanion.views.pickerview.TimePickerView;
 import com.umarbhutta.xlightcompanion.views.pickerview.lib.TimePickerUtils;
 
@@ -29,7 +29,7 @@ import java.util.Date;
  * 定时设置
  */
 
-public class TimingActivity extends AppCompatActivity implements View.OnClickListener {
+public class TimingActivity extends BaseActivity implements View.OnClickListener {
 
     private LinearLayout llBack;
     private RelativeLayout llStartTime, llWeek;
@@ -45,7 +45,7 @@ public class TimingActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timing);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         ((App)getApplicationContext()).setActivity(this);
         mSchedule = (Schedule) getIntent().getBundleExtra("BUNDLE").getSerializable("SCHEDULE");
         initViews();

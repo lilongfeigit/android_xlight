@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.control.activity.condition;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,13 +18,14 @@ import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogTemActivity;
 import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.control.bean.Ruleconditions;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 /**
  * Created by Administrator on 2017/3/13.
  * 温度控制设置
  */
 
-public class TemControlActivity extends AppCompatActivity implements View.OnClickListener {
+public class TemControlActivity extends BaseActivity implements View.OnClickListener {
 
     private String TAG = TemControlActivity.class.getSimpleName();
 
@@ -48,7 +48,7 @@ public class TemControlActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tem);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
         type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
         ruleconditions = (Ruleconditions) getIntent().getBundleExtra("BUNDLE").getSerializable("RULECONDITIONS");

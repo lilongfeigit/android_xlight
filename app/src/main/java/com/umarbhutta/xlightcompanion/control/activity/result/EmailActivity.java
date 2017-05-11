@@ -1,7 +1,6 @@
 package com.umarbhutta.xlightcompanion.control.activity.result;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -15,13 +14,14 @@ import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 /**
  * Created by Administrator on 2017/3/15.
  * email 通知页面
  */
 
-public class EmailActivity extends AppCompatActivity {
+public class EmailActivity extends BaseActivity {
 
 
     private LinearLayout llBack;
@@ -37,7 +37,7 @@ public class EmailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         ((App)getApplicationContext()).setActivity(this);
         mActionnotify = (Actionnotify) getIntent().getSerializableExtra("MACTIONNOTIFY");
         initViews();

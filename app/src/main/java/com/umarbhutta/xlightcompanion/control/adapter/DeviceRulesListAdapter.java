@@ -19,7 +19,6 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Ruleconditions;
 import java.util.List;
 
 /**
- * Created by Umar Bhutta.
  * 规则适配器
  */
 public class DeviceRulesListAdapter extends BaseAdapter {

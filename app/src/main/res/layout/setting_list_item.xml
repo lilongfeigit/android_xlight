@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -10,7 +11,6 @@
         style="@style/SettingsItem"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:paddingLeft="@dimen/pickerview_topbar_paddingright"
         android:fontFamily="sans-serif-light"
         android:gravity="center|left"
         android:text="@string/persion_center"

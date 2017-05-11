@@ -36,7 +36,7 @@ public class ModifyPasswordActivity extends BaseActivity implements HttpUtils.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_password);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         initViews();
     }
 

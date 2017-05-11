@@ -6,10 +6,12 @@
 
     <include layout="@layout/top_main_layout" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/settingRecyclerView"
+    <ListView
+        android:id="@+id/settingListView"
         android:layout_width="match_parent"
         android:scrollbars="none"
+        android:divider="@drawable/line_divider"
+        android:layout_marginLeft="20dp"
         android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +43,8 @@ import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeviceDetailInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
 import com.umarbhutta.xlightcompanion.scenario.ColorSelectActivity;
-import com.umarbhutta.xlightcompanion.scenario.ScenarioFragment;
+import com.umarbhutta.xlightcompanion.scenario.ScenarioMainFragment;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 import com.umarbhutta.xlightcompanion.views.CircleDotView;
 import com.umarbhutta.xlightcompanion.views.DialogUtils;
 
@@ -60,7 +60,7 @@ import java.util.List;
  * 设置灯
  */
 
-public class EditDeviceActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditDeviceActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvTitle;
     public SceneListResult mDeviceInfoResult;
     private Devicenodes deviceInfo;
@@ -114,12 +114,12 @@ public class EditDeviceActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_control);
         mInflater = LayoutInflater.from(this);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         deviceInfo = (Devicenodes) getIntent().getSerializableExtra("info");
         mPositon = getIntent().getIntExtra("position", 0);
 
-        scenarioDropdown = new ArrayList<>(ScenarioFragment.name);
+        scenarioDropdown = new ArrayList<>(ScenarioMainFragment.name);
         scenarioDropdown.add(0, "None");
 
         powerSwitch = (Switch) findViewById(R.id.powerSwitch);

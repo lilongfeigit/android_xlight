@@ -7,7 +7,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -16,113 +19,102 @@ import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
+import com.umarbhutta.xlightcompanion.settings.SettingListAdapter;
 
 import java.util.List;
 
+import static com.umarbhutta.xlightcompanion.R.id.devicePlan;
+
 /**
- * Created by Umar Bhutta.
  */
-public class DevicesMainListAdapter extends RecyclerView.Adapter {
+public class DevicesMainListAdapter extends BaseAdapter {
 
     private Context mActivity;
     //    private List<Rows> deviceList;
     private List<Devicenodes> mDevicenodes;
+    private LayoutInflater inflater;//这个一定要懂它的用法及作用
 
     public DevicesMainListAdapter(Context activity, List<Devicenodes> devicenodes) {
         this.mDevicenodes = devicenodes;
         this.mActivity = activity;
+        this.inflater = LayoutInflater.from(mActivity);
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.devices_list_item, parent, false);
-        return new DevicesListViewHolder(view);
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((DevicesListViewHolder) holder).bindView(position);
-    }
-
-    @Override
-    public int getItemCount() {
+    public int getCount() {
         return mDevicenodes.size();
     }
 
-    private class DevicesListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    @Override
+    public Object getItem(int position) {
+        return mDevicenodes.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final Devicenodes devicenodes = mDevicenodes.get(position);
+        ViewHolder holder = null;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.devices_list_item, parent, false);
+            //通过上面layout得到的view来获取里面的具体控件
+            holder.mDeviceName = (TextView) convertView.findViewById(R.id.deviceName);
+            holder.main_device = (TextView) convertView.findViewById(R.id.main_device);
+            holder.devicePlan = (TextView) convertView.findViewById(devicePlan);
+            holder.mDeviceSwitch = (Switch) convertView.findViewById(R.id.deviceSwitch);
+            holder.ll_item = (LinearLayout) convertView.findViewById(R.id.ll_item);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.ll_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 点击事件 跳转到编辑设备页面
+                Intent intent = new Intent(mActivity, EditDeviceActivity.class);
+                intent.putExtra("info", mDevicenodes.get(position));
+                intent.putExtra("position", position);
+                mActivity.startActivity(intent);
+            }
+        });
+        holder.ll_item.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // 长按事件  长按删除设备
+                if (null != mOnSwitchStateChangeListener) {
+                    mOnSwitchStateChangeListener.onLongClick(position);
+                }
+                return true;
+            }
+        });
+
+        holder.mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                devicePlan.setText(!isChecked ? R.string.no_start_plan : R.string.has_start_plan);
+                if (mDevicenodes.size() <= 0 || null == mDevicenodes.get(position)) {
+                    return;
+                }
+                SlidingMenuMainActivity.m_mainDevice.setDeviceID(mDevicenodes.get(position).nodeno);
+                SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
+                mDevicenodes.get(position).ison = isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
+            }
+        });
+
+        holder.mDeviceName.setText(TextUtils.isEmpty(devicenodes.devicenodename) ? mActivity.getString(R.string.lamp) : devicenodes.devicenodename);
+        holder.mDeviceSwitch.setChecked(devicenodes.ison == 0 ? false : true);
+        holder.devicePlan.setText(devicenodes.ison == 0 ? R.string.no_start_plan : R.string.has_start_plan);
+        return convertView;
+    }
+
+    static class ViewHolder {
         private TextView mDeviceName, main_device, devicePlan;
         private Switch mDeviceSwitch;
-        private int mPositon;
-
-        public DevicesListViewHolder(View itemView) {
-            super(itemView);
-            mDeviceName = (TextView) itemView.findViewById(R.id.deviceName);
-            main_device = (TextView) itemView.findViewById(R.id.main_device);
-            devicePlan = (TextView) itemView.findViewById(R.id.devicePlan);
-            mDeviceSwitch = (Switch) itemView.findViewById(R.id.deviceSwitch);
-
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-
-            mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    devicePlan.setText(!isChecked ? R.string.no_start_plan : R.string.has_start_plan);
-                    // 右侧开关控制
-//                    if (null != mOnSwitchStateChangeListener) {
-//                        mOnSwitchStateChangeListener.onSwitchChange(mPositon, isChecked);
-//                    }
-                    if (mDevicenodes.size() <= 0 || null == mDevicenodes.get(mPositon)) {
-                        return;
-                    }
-                    //mDevicenodes
-                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(mDevicenodes.get(mPositon).nodeno);
-//                    SlidingMenuMainActivity.m_mainDevice.Connect(mDevicenodes.get(mPositon).coreid);
-                    SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
-                    mDevicenodes.get(mPositon).ison = isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
-                }
-            });
-        }
-
-        public void bindView(int position) {
-            mPositon = position;
-            Devicenodes devicenodes = mDevicenodes.get(position);
-            mDeviceName.setText(TextUtils.isEmpty(devicenodes.devicenodename) ? mActivity.getString(R.string.lamp) : devicenodes.devicenodename);
-            mDeviceSwitch.setChecked(devicenodes.ison == 0 ? false : true);
-            devicePlan.setText(devicenodes.ison == 0 ? R.string.no_start_plan : R.string.has_start_plan);
-        }
-
-        @Override
-        public void onClick(View v) {
-            // 点击事件 跳转到编辑设备页面
-            Intent intent = new Intent(mActivity, EditDeviceActivity.class);
-            intent.putExtra("info", mDevicenodes.get(mPositon));
-            intent.putExtra("position", mPositon);
-            mActivity.startActivity(intent);
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            // 长按事件  长按删除设备
-            if (null != mOnSwitchStateChangeListener) {
-                mOnSwitchStateChangeListener.onLongClick(mPositon);
-            }
-            return true;
-        }
+        private LinearLayout ll_item;
     }
 
     private OnSwitchStateChangeListener mOnSwitchStateChangeListener;
@@ -138,9 +130,6 @@ public class DevicesMainListAdapter extends RecyclerView.Adapter {
 
     public interface OnSwitchStateChangeListener {
         void onLongClick(int position);
-
         void onSwitchChange(int position, boolean checked);
     }
-
-
 }

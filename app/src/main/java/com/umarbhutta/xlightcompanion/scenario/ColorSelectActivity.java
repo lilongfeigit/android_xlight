@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.scenario;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.larswerkman.holocolorpicker.ColorPicker;
@@ -11,19 +10,20 @@ import com.larswerkman.holocolorpicker.SVBar;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 /**
  * Created by Administrator on 2017/3/4.
  */
 
-public class ColorSelectActivity extends AppCompatActivity {
+public class ColorSelectActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_select);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         initViews();
     }

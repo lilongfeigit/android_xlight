@@ -1,7 +1,6 @@
 package com.umarbhutta.xlightcompanion.settings;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,7 +12,7 @@ import com.umarbhutta.xlightcompanion.R;
  * 用户邀请
  */
 
-public class UserInvitationActivity extends AppCompatActivity {
+public class UserInvitationActivity extends BaseActivity {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -23,7 +22,7 @@ public class UserInvitationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_invitation);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         initViews();
     }
 

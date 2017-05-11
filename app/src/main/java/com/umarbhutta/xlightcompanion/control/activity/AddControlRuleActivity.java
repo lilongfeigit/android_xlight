@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.control.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,15 +26,15 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Ruleresult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rules;
 import com.umarbhutta.xlightcompanion.okHttp.model.Schedule;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestAddRules;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Umar Bhutta.
  * 新的规则页面
  */
-public class AddControlRuleActivity extends AppCompatActivity {
+public class AddControlRuleActivity extends BaseActivity {
 
     private String TAG = AddControlRuleActivity.class.getSimpleName();
     private LinearLayout llBack;
@@ -70,7 +69,7 @@ public class AddControlRuleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_control_rule);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         rules = new Rules();
         initViews();

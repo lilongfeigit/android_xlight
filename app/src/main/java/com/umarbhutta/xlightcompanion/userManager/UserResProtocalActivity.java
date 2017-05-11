@@ -27,7 +27,7 @@ public class UserResProtocalActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registerd_protocal);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         url = getIntent().getStringExtra("url");
         initViews();
     }
@@ -56,7 +56,6 @@ public class UserResProtocalActivity extends BaseActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;
@@ -65,7 +64,6 @@ public class UserResProtocalActivity extends BaseActivity {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                // TODO Auto-generated method stub
                 if (newProgress == 100) {
                     // 网页加载完成
 

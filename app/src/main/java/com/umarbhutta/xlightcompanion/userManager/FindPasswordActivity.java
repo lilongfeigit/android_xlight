@@ -33,7 +33,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_findpassword);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         initViews();
     }

@@ -8,19 +8,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
@@ -34,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Umar Bhutta.
+ *
  */
 public class ScenarioMainFragment extends Fragment implements View.OnClickListener {
 
@@ -45,7 +43,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
     public static ArrayList<String> info = new ArrayList<>(Arrays.asList("A bright, party room preset", "A relaxed atmosphere with yellow tones", "Turn the chandelier rings off"));
 
     ScenarioListAdapter scenarioListAdapter;
-    RecyclerView scenarioRecyclerView;
+    ListView scenarioListView;
     private ImageView iv_menu;
     private TextView textTitle;
     private Button btn_add;
@@ -67,15 +65,8 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
         btn_add.setOnClickListener(this);
 
         //setup recycler view
-        scenarioRecyclerView = (RecyclerView) view.findViewById(R.id.scenarioRecyclerView);
+        scenarioListView = (ListView) view.findViewById(R.id.scenarioListView);
         //create list adapter
-        //set LayoutManager for recycler view
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        //attach LayoutManager to recycler view
-        scenarioRecyclerView.setLayoutManager(layoutManager);
-        //divider lines
-        scenarioRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
-
         rl_no = (RelativeLayout) view.findViewById(R.id.rl_no);
         rl_hava = (RelativeLayout) view.findViewById(R.id.rl_have);
 
@@ -157,7 +148,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
     }
 
     private void onFabPressed(View view) {
-        Intent intent = new Intent(getContext(), AddScenarioActivity.class);
+        Intent intent = new Intent(getContext(), AddScenarioNewActivity.class);
         startActivityForResult(intent, 1);
     }
 
@@ -207,7 +198,7 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
     }
 
     private void initList() {
-        if(mSceneList.size()>0){
+        if (mSceneList.size() > 0) {
             rl_hava.setVisibility(View.VISIBLE);
             rl_no.setVisibility(View.GONE);
             scenarioListAdapter = new ScenarioListAdapter(getContext(), mSceneList);
@@ -217,8 +208,8 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
                     showDeleteSceneDialog(position);
                 }
             });
-            scenarioRecyclerView.setAdapter(scenarioListAdapter);
-        }else{
+            scenarioListView.setAdapter(scenarioListAdapter);
+        } else {
             rl_hava.setVisibility(View.GONE);
             rl_no.setVisibility(View.VISIBLE);
         }

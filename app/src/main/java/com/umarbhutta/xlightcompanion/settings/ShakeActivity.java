@@ -1,15 +1,12 @@
 package com.umarbhutta.xlightcompanion.settings;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.main.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +15,7 @@ import java.util.List;
  * Created by Administrator on 2017/3/5.
  */
 
-public class ShakeActivity extends AppCompatActivity {
+public class ShakeActivity extends BaseActivity {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -29,23 +26,20 @@ public class ShakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shake);
         //hide nav bar
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         initViews();
     }
 
     private ShakeAdapter mShakeAdapter;
-    private RecyclerView mRecyclerView;
+    private ListView mListView;
     private List<String> shakes = new ArrayList<String>();
 
     private void initViews() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.shakeRecyclerView);
+        mListView = (ListView) findViewById(R.id.shakeRecyclerView);
         mShakeAdapter = new ShakeAdapter(ShakeActivity.this, shakes);
-        mRecyclerView.setAdapter(mShakeAdapter);
+        mListView.setAdapter(mShakeAdapter);
 
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         shakes.add("peter");
         mShakeAdapter.notifyDataSetChanged();
         llBack = (LinearLayout) findViewById(R.id.ll_back);

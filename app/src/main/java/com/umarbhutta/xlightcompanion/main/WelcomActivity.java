@@ -17,7 +17,10 @@ public class WelcomActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         setContentView(R.layout.activity_welcom);
-//        getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+        int currentapiVersion=android.os.Build.VERSION.SDK_INT;
+        if(currentapiVersion>=19){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+        }
         handler.sendEmptyMessageDelayed(100, 2000);
 
     }

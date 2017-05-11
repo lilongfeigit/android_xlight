@@ -50,7 +50,10 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 //        setTitle("ResponsiveUI");
         // 设置主视图界面
         setContentView(R.layout.responsive_content_frame);
-//        getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+        int currentapiVersion=android.os.Build.VERSION.SDK_INT;
+        if(currentapiVersion>=19){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+        }
         initSlidingMenu(savedInstanceState);
 
         // Check Bluetooth

@@ -33,7 +33,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
 
     private TextView tv_select_main_device;
     private TextView tv_no_device;
-    private View view_top_line,view_bottom_line;
+    private View view_top_line, view_bottom_line;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +56,16 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         tv_no_device = (TextView) findViewById(R.id.tv_no_device);
         view_top_line = findViewById(R.id.view_top_line);
         view_bottom_line = findViewById(R.id.view_bottom_line);
-        if(UserUtils.isLogin(getApplicationContext()) && GlanceMainFragment.devicenodes!=null && GlanceMainFragment.devicenodes.size()>0){
+        if (UserUtils.isLogin(getApplicationContext()) && GlanceMainFragment.devicenodes != null && GlanceMainFragment.devicenodes.size() > 0) {
             tv_no_device.setVisibility(View.GONE);
             tv_select_main_device.setVisibility(View.VISIBLE);
             listView.setVisibility(View.VISIBLE);
-            adapter = new DeviceListAdapter(this, GlanceMainFragment.devicenodes);
+            adapter = new DeviceListAdapter(this, GlanceMainFragment.deviceList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
             view_top_line.setVisibility(View.VISIBLE);
             view_bottom_line.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tv_no_device.setVisibility(View.VISIBLE);
             tv_select_main_device.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
@@ -89,7 +89,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         }
         showProgressDialog(getString(R.string.setting));
 
-        int deviceId = GlanceMainFragment.devicenodes.get(position).id;
+        int deviceId = GlanceMainFragment.deviceList.get(position).id;
         RequestSettingMainDevice.getInstance().settingDevice(this, 1, deviceId, UserUtils.getUserInfo(this).getId(), new CommentRequstCallback() {
             @Override
             public void onCommentRequstCallbackSuccess() {
@@ -109,7 +109,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
                     @Override
                     public void run() {
                         cancelProgressDialog();
-                        ToastUtil.showToast(DeviceListActivity.this, getString(R.string.setting_fail) + errMsg);
+                        ToastUtil.showToast(DeviceListActivity.this, errMsg);
                     }
                 });
             }
@@ -118,9 +118,9 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
 
     private void updateDeviceListInfo() {
         for (int i = 0; i < GlanceMainFragment.deviceList.size(); i++) {
-            GlanceMainFragment.devicenodes.get(i).maindevice = 0;
+            GlanceMainFragment.deviceList.get(i).maindevice = 0;
         }
-        GlanceMainFragment.devicenodes.get(selectPosition).maindevice = 1;
+        GlanceMainFragment.deviceList.get(selectPosition).maindevice = 1;
         adapter.notifyDataSetChanged();
     }
 }

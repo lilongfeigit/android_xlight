@@ -44,8 +44,7 @@ public class DialogRowNameActivity extends Activity {
         dialogConditionListAdapter = new DeviceNameAdapter(DialogRowNameActivity.this, GlanceMainFragment.devicenodes);
         dialoglist.setAdapter(dialogConditionListAdapter);
 
-        dialoglist.setOnItemClickListener(
-        new AdapterView.OnItemClickListener() {
+        dialoglist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Logger.e("DialogRowNameActivity","position="+position+";;id="+id);

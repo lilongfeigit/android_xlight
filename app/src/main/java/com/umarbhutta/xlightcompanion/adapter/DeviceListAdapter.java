@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
 
 public class DeviceListAdapter extends BaseAdapter {
 
-    List<Devicenodes> deviceList = new ArrayList<Devicenodes>();
+    List<Rows> deviceList = new ArrayList<Rows>();
     private Context context;
     private final LayoutInflater inflater;
 
-    public DeviceListAdapter(Context context, List<Devicenodes> deviceList) {
+    public DeviceListAdapter(Context context, List<Rows> deviceList) {
         this.deviceList = deviceList;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -62,8 +62,8 @@ public class DeviceListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Devicenodes deviceInfo = deviceList.get(position);
-        holder.deviceName.setText(TextUtils.isEmpty(deviceInfo.devicenodename) ? context.getString(R.string.lamp) : deviceInfo.devicenodename);
+        Rows deviceInfo = deviceList.get(position);
+        holder.deviceName.setText(TextUtils.isEmpty(deviceInfo.devicename) ? context.getString(R.string.lamp) : deviceInfo.devicename);
         holder.main_device.setVisibility(0 == deviceInfo.maindevice ? View.GONE : View.VISIBLE);
 
         return convertView;

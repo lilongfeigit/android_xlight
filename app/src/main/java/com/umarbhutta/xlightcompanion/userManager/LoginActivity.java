@@ -2,9 +2,12 @@ package com.umarbhutta.xlightcompanion.userManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,6 +36,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private TextView tvTitle;
     private EditText et_user_account;
     private EditText et_user_password;
+    private ImageButton clearBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +75,38 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         });
 
 
-        findViewById(R.id.ib_clear2).setOnClickListener(new View.OnClickListener() {
+        clearBtn = (ImageButton) findViewById(R.id.ib_clear2);
+        clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 et_user_password.setText("");
             }
         });
+        clearBtn.setVisibility(View.INVISIBLE);
+
+
+        et_user_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() <= 0) {
+                    clearBtn.setVisibility(View.INVISIBLE);
+                } else {
+                    clearBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -99,6 +129,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private void onFabPressed(Class activity) {
         Intent intent = new Intent(LoginActivity.this, activity);
         startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        et_user_account.setText("");
+        et_user_password.setText("");
     }
 
     private void login() {

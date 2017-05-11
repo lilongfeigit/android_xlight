@@ -25,7 +25,7 @@
         android:visibility="gone"
         android:background="@drawable/line" />
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/scenarioRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

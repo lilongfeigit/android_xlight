@@ -25,7 +25,7 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+//        getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
 
         //功能归类分区方法，必须调用<<<<<<<<<<
         initView();

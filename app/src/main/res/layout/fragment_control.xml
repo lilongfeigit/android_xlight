@@ -59,7 +59,7 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.Toolbar
+    <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="33dp"
@@ -85,7 +85,7 @@
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
-    </android.support.v7.widget.Toolbar>
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"

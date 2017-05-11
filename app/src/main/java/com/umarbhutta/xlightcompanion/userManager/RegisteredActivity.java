@@ -41,8 +41,6 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registerd);
-        //hide nav bar
-//        getSupportActionBar().hide();
         initViews();
         getHelpUrl();
     }
@@ -51,7 +49,6 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
         et_user_account = (EditText) findViewById(R.id.et_user_account);
         et_user_password = (EditText) findViewById(R.id.et_user_password);
         et_user_password.setHint(R.string.input_pwd);
-        et_user_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         et_verification_code = (EditText) findViewById(R.id.et_verification_code);
         et_verification_code.setVisibility(View.GONE);
         findViewById(R.id.btn_finash_registered).setOnClickListener(this);

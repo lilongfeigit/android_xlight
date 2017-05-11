@@ -137,7 +137,7 @@
     <string name="input_order_add">Enter command to add</string>
     <string name="unbind_device_tap">Unbundling device prompt</string>
     <string name="sure_unbind_device">Confirm unbind this device?</string>
-    <string name="edit_device">Edit Device</string>
+    <string name="edit_device">Control Device</string>
     <string name="nuan_bai">Warm White</string>
     <string name="zhengbai">Pure White</string>
     <string name="lengbai">Cold White</string>
@@ -176,7 +176,7 @@
     <string name="user_info">User Info</string>
     <string name="women">Woman</string>
     <string name="man">Man</string>
-    <string name="bu_queding">Not Sure</string>
+    <string name="bu_queding">Confidentiality</string>
     <string name="modify_account">Modify Account</string>
     <string name="modify_nick">Modify Nickname</string>
     <string name="account">Account</string>

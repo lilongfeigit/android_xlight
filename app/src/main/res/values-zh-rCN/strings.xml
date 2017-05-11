@@ -137,7 +137,7 @@
     <string name="input_order_add">输入口令添加</string>
     <string name="unbind_device_tap">解绑设备提示</string>
     <string name="sure_unbind_device">确定解绑此设备吗？</string>
-    <string name="edit_device">编辑设备</string>
+    <string name="edit_device">控制设备</string>
     <string name="nuan_bai">暖白</string>
     <string name="zhengbai">正白</string>
     <string name="lengbai">冷白</string>
@@ -176,7 +176,7 @@
     <string name="user_info">用户信息</string>
     <string name="women">女</string>
     <string name="man">男</string>
-    <string name="bu_queding">不确定</string>
+    <string name="bu_queding">保密</string>
     <string name="modify_account">修改账号</string>
     <string name="modify_nick">修改呢称</string>
     <string name="account">账号</string>

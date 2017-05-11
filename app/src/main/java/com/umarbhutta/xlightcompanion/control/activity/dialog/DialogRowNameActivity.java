@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.control.adapter.DeviceNameAdapter;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 
@@ -40,14 +41,16 @@ public class DialogRowNameActivity extends Activity {
      */
     private void initViews() {
         dialoglist = (ListView) findViewById(R.id.dialoglist);
-        dialogConditionListAdapter = new DeviceNameAdapter(DialogRowNameActivity.this.getApplicationContext(), GlanceMainFragment.devicenodes);
+        dialogConditionListAdapter = new DeviceNameAdapter(DialogRowNameActivity.this, GlanceMainFragment.devicenodes);
         dialoglist.setAdapter(dialogConditionListAdapter);
 
-        dialoglist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dialoglist.setOnItemClickListener(
+        new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Logger.e("DialogRowNameActivity","position="+position+";;id="+id);
                 Intent intent = new Intent();
-                intent.putExtra("deviceInfo", GlanceMainFragment.deviceList.get(position));
+                intent.putExtra("deviceInfo", GlanceMainFragment.devicenodes.get(new Long(id).intValue()));
                 setResult(35, intent);
                 finish();
             }

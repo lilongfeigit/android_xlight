@@ -26,6 +26,7 @@ import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
+import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
@@ -47,7 +48,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
     private TextView tvTitle;
     private Actioncmd mActioncmd;
 
-    private Rows curMainRows;
+    private Devicenodes curMainNodes;
     private TextView cctLabelColor;
     private TextView lampName;
     private View rl_scenario;
@@ -58,9 +59,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_control);
         mInflater = LayoutInflater.from(this);
-        ((App)getApplicationContext()).setActivity(this);
-        //hide nav bar
-//        getSupportActionBar().hide();
+        ((App) getApplicationContext()).setActivity(this);
 
         mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
 
@@ -99,8 +98,8 @@ public class DeviceControlSelectActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //确定提交按钮 先判断是否控制了。
-                if(TextUtils.isEmpty(lampName.getText().toString())){
-                    ToastUtil.showToast(DeviceControlSelectActivity.this,getString(R.string.select_device));
+                if (TextUtils.isEmpty(lampName.getText().toString())) {
+                    ToastUtil.showToast(DeviceControlSelectActivity.this, getString(R.string.select_device));
                     return;
                 }
                 ControlRuleDevice mContolRuleDevice = new ControlRuleDevice();
@@ -116,7 +115,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText(R.string.living_room_lamp);
+        tvTitle.setText(R.string.select_device);
 
         powerSwitch.setChecked(true);
         brightnessSeekBar.setProgress(20);
@@ -207,8 +206,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 int seekBarProgress = seekBar.getProgress() + 2700;
-                int cctInt = SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
-                Log.e(TAG, "cctInt value is= " + cctInt);
+//                int cctInt = SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
             }
         });
 
@@ -234,15 +232,6 @@ public class DeviceControlSelectActivity extends BaseActivity {
             }
         });
         initScenario();//初始化场景
-        getMainDevice();//获取主设备
-    }
-
-    private void getMainDevice() {//获取主设备
-        for (int i = 0; i < GlanceMainFragment.deviceList.size(); i++) {
-            if (GlanceMainFragment.deviceList.get(i).maindevice == 1) {//是主设备
-                curMainRows = GlanceMainFragment.deviceList.get(i);
-            }
-        }
     }
 
     private static final String RINGALL_TEXT = "ALL RINGS";
@@ -268,7 +257,6 @@ public class DeviceControlSelectActivity extends BaseActivity {
 
     private boolean state = false;
     boolean ring1 = false, ring2 = false, ring3 = false;
-
 
     @Override
     public void onDestroy() {
@@ -325,12 +313,12 @@ public class DeviceControlSelectActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             case 35: //TODO
-                curMainRows = (Rows) data.getSerializableExtra("deviceInfo");
-                mActioncmd.devicenodeId = curMainRows.id;
+                curMainNodes = (Devicenodes) data.getSerializableExtra("deviceInfo");
+                mActioncmd.devicenodeId = curMainNodes.id;
                 Actioncmdfield actioncmdfield = new Actioncmdfield();
-                actioncmdfield.cmd = curMainRows.devicename;
-                actioncmdfield.paralist = "{" + getString(R.string.brightness) + ":" + curMainRows.brightness + "," + getString(R.string.color_temp) + ":"
-                        + curMainRows.devicenodes + "," + getString(R.string.color) + ":" + curMainRows.cct + "," + getString(R.string.scene) + ":" + curMainRows.scenarioname + "} ";
+                actioncmdfield.cmd = curMainNodes.devicenodename;
+                actioncmdfield.paralist = "{" + getString(R.string.brightness) + ":" + curMainNodes.brightness + "," + getString(R.string.color_temp) + ":"
+                        + curMainNodes.cct + "," + getString(R.string.color) + ":" + curMainNodes.cct + "," + getString(R.string.scene) + ":" + curMainNodes.scenarioId + "} ";
                 if (mActioncmd.actioncmdfield == null) {
                     mActioncmd.actioncmdfield = new ArrayList<Actioncmdfield>();
                 }
@@ -363,21 +351,19 @@ public class DeviceControlSelectActivity extends BaseActivity {
         brightnessSeekBar.setProgress(20);
         cctSeekBar.setProgress(10);
 
-        if (null != curMainRows) {
-            lampName.setText(curMainRows.devicename);
-            tvTitle.setText(curMainRows.devicename);
+        if (null != curMainNodes) {
+            lampName.setText(curMainNodes.devicenodename);
+            tvTitle.setText(curMainNodes.devicenodename);
 
-            if (null != curMainRows.devicenodes && curMainRows.devicenodes.size() > 0){
-                if (1 == curMainRows.devicenodes.get(0).devicenodetype) {
-                    rl_scenario.setVisibility(View.GONE);
-                    colorLL.setVisibility(View.GONE);
-                } else {
-                    rl_scenario.setVisibility(View.VISIBLE);
-                    colorLL.setVisibility(View.VISIBLE);
-                    cctSeekBar.setProgress(curMainRows.devicenodes.get(0).cct - 2700);
-                }
-                brightnessSeekBar.setProgress(curMainRows.devicenodes.get(0).brightness);
+            if (1 == curMainNodes.devicenodetype) {
+                rl_scenario.setVisibility(View.GONE);
+                colorLL.setVisibility(View.GONE);
+            } else {
+                rl_scenario.setVisibility(View.VISIBLE);
+                colorLL.setVisibility(View.VISIBLE);
+                cctSeekBar.setProgress(curMainNodes.cct - 2700);
             }
+            brightnessSeekBar.setProgress(curMainNodes.brightness);
         }
 
     }

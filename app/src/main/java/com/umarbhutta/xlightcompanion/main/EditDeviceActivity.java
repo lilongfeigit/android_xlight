@@ -114,7 +114,6 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_control);
         mInflater = LayoutInflater.from(this);
-//        getSupportActionBar().hide();
 
         deviceInfo = (Devicenodes) getIntent().getSerializableExtra("info");
         mPositon = getIntent().getIntExtra("position", 0);

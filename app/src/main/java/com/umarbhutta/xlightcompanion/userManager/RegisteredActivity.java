@@ -2,7 +2,6 @@ package com.umarbhutta.xlightcompanion.userManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -130,6 +129,7 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
                     ToastUtil.showToast(RegisteredActivity.this, info.msg);
                 } else if (1 == info.code) {
                     ToastUtil.showToast(RegisteredActivity.this, getString(R.string.registe_success));
+                    setResult(10086);
                     finish();
                 } else {
                     ToastUtil.showToast(RegisteredActivity.this, getString(R.string.net_error));

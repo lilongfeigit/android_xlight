@@ -33,15 +33,9 @@ import java.util.Map;
 public class SlidingMenuMainActivity extends BaseFragmentActivity {
     private Fragment mContent;
 
-//    public static xltDevice m_mainDevice;
-
     public static Map<String, xltDevice> xltDeviceMaps;
 
     public static xltDevice m_mainDevice;
-
-    //测试数据
-//    public static final String[] deviceNames = {"Living Room", "Bedroom", "Bar"};
-    //    public static final int[] deviceNodeIDs = {1, 8, 11};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

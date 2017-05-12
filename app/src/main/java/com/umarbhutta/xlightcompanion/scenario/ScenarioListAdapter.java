@@ -52,51 +52,44 @@ public class ScenarioListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.scenario_list_item, parent, false);
             //通过上面layout得到的view来获取里面的具体控件
-            holder.scenarioIndex = (TextView) convertView.findViewById(R.id.scenarioIndex);
-            holder.scenarioTitle = (TextView) convertView.findViewById(R.id.scenarioTitle);
-            holder.scenarioDescription = (TextView) convertView.findViewById(R.id.scenarioDescription);
             holder.scenarioDelete = (ImageView) convertView.findViewById(R.id.scenarioDelete);
             holder.ll_item = (LinearLayout) convertView.findViewById(R.id.ll_item);
 
-            holder.ll_item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onFabPressed(v, infos);
-                }
-            });
-            holder.ll_item.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (null != mOnLongClickCallBack) {
-                        mOnLongClickCallBack.onLongClickCallBack(position);
-                    }
-                    return true;
-                }
-            });
-            holder.scenarioDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onFabPressed(v, infos);
-                }
-            });
-
-            holder.scenarioIcon = (ImageView) convertView.findViewById(R.id.icon_scenario);
             holder.scenarioText = (TextView) convertView.findViewById(R.id.text_scenario);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        holder.ll_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onFabPressed(v, infos);
+            }
+        });
+        holder.ll_item.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (null != mOnLongClickCallBack) {
+                    mOnLongClickCallBack.onLongClickCallBack(position);
+                }
+                return true;
+            }
+        });
+        holder.scenarioDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onFabPressed(v, infos);
+            }
+        });
         holder.scenarioText.setText(infos.scenarioname);
 
         return convertView;
     }
 
     class ViewHolder {
-        private TextView scenarioIndex, scenarioTitle, scenarioDescription;
         private ImageView scenarioDelete;
 
-        private ImageView scenarioIcon;
         private TextView scenarioText;
 
         private LinearLayout ll_item;

@@ -147,11 +147,6 @@ public class ScenarioMainFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void onFabPressed(View view) {
-        Intent intent = new Intent(getContext(), AddScenarioNewActivity.class);
-        startActivityForResult(intent, 1);
-    }
-
     public List<Rows> mSceneList = new ArrayList<Rows>();
     private ProgressDialog mDialog;
 

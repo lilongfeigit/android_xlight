@@ -176,7 +176,7 @@
     <string name="user_info">User Info</string>
     <string name="women">Woman</string>
     <string name="man">Man</string>
-    <string name="bu_queding">Confidentiality</string>
+    <string name="bu_queding">Secrecy</string>
     <string name="modify_account">Modify Account</string>
     <string name="modify_nick">Modify Nickname</string>
     <string name="account">Account</string>
@@ -216,7 +216,7 @@
     <string name="__repeat">repeat</string>
     <string name="please_input_your_email">Enter Email</string>
     <string name="register_protocal">Agreement</string>
-    <string name="has_agree">I have read and agreed to</string>
+    <string name="has_agree">By signing up account,you agree to the aggreement</string>
     <string name="quick_bind">Fast binding allows family members to quickly bind devices, using the following three ways:</string>
     <string name="one_input_family_email">1,Enter the e-mail address of the family member directly</string>
     <string name="__complete">Complete</string>

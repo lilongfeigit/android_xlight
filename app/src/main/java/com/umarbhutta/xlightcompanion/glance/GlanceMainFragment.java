@@ -147,7 +147,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public void onDestroyView() {
         devicesListView.setAdapter(null);
-        SlidingMenuMainActivity.m_mainDevice.removeDataEventHandler(m_handlerGlance);
         if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
             getContext().unregisterReceiver(m_DataReceiver);
         }
@@ -216,26 +215,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
             intentFilter.setPriority(3);
             getContext().registerReceiver(m_DataReceiver, intentFilter);
-        }
-
-        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventSendMessage()) {
-            m_handlerGlance = new Handler() {
-                public void handleMessage(Message msg) {
-                    int intValue = msg.getData().getInt("DHTt", -255);
-                    if (intValue != -255) {
-                        roomTemp.setText(intValue + "℃");
-                    }
-                    intValue = msg.getData().getInt("DHTh", -255);
-                    if (intValue != -255) {
-                        roomHumidity.setText(intValue + "\u0025");
-                    }
-                    intValue = msg.getData().getInt("ALS", -255);
-                    if (intValue != -255) {
-//                        roomBrightness.setText(intValue + "\u0025");
-                    }
-                }
-            };
-            SlidingMenuMainActivity.m_mainDevice.addDataEventHandler(m_handlerGlance);
         }
 
         //setup recycler view
@@ -400,6 +379,9 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    /**
+     * 获取设备信息
+     */
     public void getBaseInfos() {
         if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
             ToastUtil.showToast(getActivity(), R.string.net_error);
@@ -433,14 +415,11 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                             progressDialog.dismiss();
                         }
                         List<Rows> devices = mDeviceInfoResult.rows;
-                        Logger.i("mDeviceInfoResult = " + devices.toString());
 
                         if (null != mDeviceInfoResult && null != mDeviceInfoResult.Energysaving) {
 
                             save_money.setText(getString(R.string.this_month_has_save_money) + mDeviceInfoResult.Energysaving.value);
                         }
-
-
                         deviceList.clear();
                         deviceList.addAll(devices);
                         if (devicesListAdapter != null) {
@@ -467,8 +446,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
     public void addDeviceMapsSDK(List<Rows> deviceList) {
         if (null != deviceList && deviceList.size() > 0) {
-            Logger.e(TAG, "deviceList=" + deviceList.toString());
-
             default_text.setVisibility(View.GONE);
             SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, deviceList);
             if (SlidingMenuMainActivity.xltDeviceMaps != null) {
@@ -522,33 +499,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             }
         }
     }
-
-    /**
-     * 设备开关,调用SDK
-     *
-     * @param deviceInfo
-     */
-    private void switchLight(boolean checked, Rows deviceInfo) {
-
-        //TODO 测试sdk 这里的id 需要确定一下。 deviceList.get(mPositon).id 这里的id代表什么意思。
-        SlidingMenuMainActivity.m_mainDevice.setDeviceID(deviceInfo.id);
-        SlidingMenuMainActivity.m_mainDevice.PowerSwitch(checked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
-
-//        String param = "{\"ison\":" + (checked ? 1 : 0) + "}";
-//
-//        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_LAMP_SWITCH + deviceInfo.id + "/onoff?access_token=" + UserUtils.getUserInfo(getActivity()).getAccess_token(), param, null, new HttpUtils.OnHttpRequestCallBack() {
-//            @Override
-//            public void onHttpRequestSuccess(Object result) {
-//                Logger.i("开关结果 = " + result.toString());
-//            }
-//
-//            @Override
-//            public void onHttpRequestFail(int code, String errMsg) {
-//                Logger.i("开关结果失败 = " + errMsg);
-//            }
-//        });
-    }
-
 
     /**
      * 弹出解绑设备确认框
@@ -624,13 +574,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         devicenodes.remove(position);
         devicesListAdapter.notifyDataSetChanged();
     }
-
-    /**
-     * TODO  变更住设备，每次变更主设备后需要再次同步一下
-     */
-    public void changeMainDeviceInfo() {
-    }
-
 
     /**
      * 位置信息

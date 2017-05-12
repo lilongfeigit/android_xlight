@@ -7,12 +7,12 @@
     <include layout="@layout/top_layout" />
 
     <RelativeLayout
+        android:id="@+id/rl_line"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
 
         <EditText
@@ -71,37 +71,36 @@
             android:text="@string/regist"
             android:textColor="@color/white" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_finash_registered"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:backgroundTint="@color/red"
-                android:background="@drawable/icon_checked"
-                android:visibility="gone"
-                android:button="@null"
-                android:checked="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:text="@string/has_agree"
-                android:textColor="@color/textDarkGrey" />
-
-            <TextView
-                android:id="@+id/tv_protocol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:text="@string/regist_protocal"
-                android:textColor="@color/bar_color" />
-        </LinearLayout>
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_line"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:backgroundTint="@color/red"
+            android:background="@drawable/icon_checked"
+            android:visibility="gone"
+            android:button="@null"
+            android:checked="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/has_agree"
+            android:textColor="@color/textDarkGrey" />
+
+        <TextView
+            android:id="@+id/tv_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/regist_protocal"
+            android:textColor="@color/bar_color" />
+    </LinearLayout>
 </RelativeLayout>

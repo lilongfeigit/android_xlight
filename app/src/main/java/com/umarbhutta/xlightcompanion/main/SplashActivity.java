@@ -69,13 +69,13 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
         view4 = mLi.inflate(R.layout.guide_page4, null);
         ImageView iv_three = (ImageView) view4.findViewById(R.id.iv_three);
         if (language.endsWith("zh")) {
-            iv_one.setImageResource(R.drawable.xlight_en_one);
-            iv_two.setImageResource(R.drawable.xlight_en_one);
-            iv_three.setImageResource(R.drawable.xlight_en_one);
-        } else {
             iv_one.setImageResource(R.drawable.xlight_zh_one);
-            iv_two.setImageResource(R.drawable.xlight_zh_one);
-            iv_three.setImageResource(R.drawable.xlight_zh_one);
+            iv_two.setImageResource(R.drawable.xlight_zh_two);
+            iv_three.setImageResource(R.drawable.xlight_zh_three);
+        } else {
+            iv_one.setImageResource(R.drawable.xlight_en_one);
+            iv_two.setImageResource(R.drawable.xlight_en_two);
+            iv_three.setImageResource(R.drawable.xlight_en_three);
         }
         Logger.e("language", language);
 //    其中languag为语言码：

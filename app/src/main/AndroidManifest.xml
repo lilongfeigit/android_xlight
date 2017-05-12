@@ -99,6 +99,7 @@
             android:theme="@style/TranslucentFullScreenTheme" />
         <activity
             android:name=".userManager.LoginActivity"
+            android:windowIsTranslucent="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".userManager.RegisteredActivity"

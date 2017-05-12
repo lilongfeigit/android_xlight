@@ -32,6 +32,7 @@
                 android:layout_toRightOf="@+id/condidtion_tv"
                 android:gravity="center_vertical"
                 android:scaleType="centerInside"
+                android:visibility="gone"
                 android:src="@drawable/arraw" />
 
             <ImageButton

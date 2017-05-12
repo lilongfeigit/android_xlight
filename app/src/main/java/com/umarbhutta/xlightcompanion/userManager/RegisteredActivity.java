@@ -64,6 +64,7 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         btnSure.setText(R.string.close);
+        btnSure.setVisibility(View.INVISIBLE);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.regist);
         btnSure.setOnClickListener(new View.OnClickListener() {

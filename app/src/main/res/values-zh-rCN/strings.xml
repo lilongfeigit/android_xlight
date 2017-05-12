@@ -216,7 +216,7 @@
     <string name="__repeat">重 复</string>
     <string name="please_input_your_email">请输入你的邮箱</string>
     <string name="register_protocal">注册协议</string>
-    <string name="has_agree">本人已阅读并同意</string>
+    <string name="has_agree">点击“注册”，即表示您同意Xlight的注册协议</string>
     <string name="quick_bind">快速绑定允许家庭成员快速绑定设备，可以采用如下3种方式：</string>
     <string name="one_input_family_email">1,直接输入家庭成员的邮件地址</string>
     <string name="__complete">完 成</string>

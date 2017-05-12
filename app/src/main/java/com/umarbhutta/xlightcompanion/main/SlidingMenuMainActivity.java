@@ -33,15 +33,9 @@ import java.util.Map;
 public class SlidingMenuMainActivity extends BaseFragmentActivity {
     private Fragment mContent;
 
-//    public static xltDevice m_mainDevice;
-
     public static Map<String, xltDevice> xltDeviceMaps;
 
     public static xltDevice m_mainDevice;
-
-    //TODO 测试数据
-    public static final String[] deviceNames = {"Living Room", "Bedroom", "Bar"};
-    //    public static final int[] deviceNodeIDs = {1, 8, 11};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +44,10 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 //        setTitle("ResponsiveUI");
         // 设置主视图界面
         setContentView(R.layout.responsive_content_frame);
-//        getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+        int currentapiVersion=android.os.Build.VERSION.SDK_INT;
+        if(currentapiVersion>=19){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+        }
         initSlidingMenu(savedInstanceState);
 
         // Check Bluetooth

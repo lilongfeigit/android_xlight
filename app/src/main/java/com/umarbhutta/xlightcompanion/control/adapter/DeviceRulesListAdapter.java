@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -53,10 +53,9 @@ public class DeviceRulesListAdapter extends BaseAdapter {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
-
             convertView = inflater.inflate(R.layout.rules_list_item, null);
             //通过上面layout得到的view来获取里面的具体控件
-            holder.mDeviceSwitch = (Switch) convertView.findViewById(R.id.deviceSwitch);
+            holder.mDeviceSwitch = (CheckBox) convertView.findViewById(R.id.deviceSwitch);
             holder.listViewTerm = (LinearLayout) convertView.findViewById(R.id.lv_term);
             holder.listViewResult = (LinearLayout) convertView.findViewById(R.id.lv_result);
             convertView.setTag(holder);
@@ -194,7 +193,7 @@ public class DeviceRulesListAdapter extends BaseAdapter {
 
 
     class ViewHolder {
-        private Switch mDeviceSwitch;
+        private CheckBox mDeviceSwitch;
         private LinearLayout listViewTerm, listViewResult;
     }
 

@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
@@ -22,7 +21,6 @@ import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
 import com.umarbhutta.xlightcompanion.control.bean.ControlRuleDevice;
 import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
-import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
@@ -69,10 +67,10 @@ public class DeviceControlSelectActivity extends BaseActivity {
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         scenarioNoneLL = (LinearLayout) findViewById(R.id.scenarioNoneLL);
         scenarioNoneLL.setAlpha(1);
-        ring1Button = (ToggleButton) findViewById(R.id.ring1Button);
-        ring2Button = (ToggleButton) findViewById(R.id.ring2Button);
-        ring3Button = (ToggleButton) findViewById(R.id.ring3Button);
-        deviceRingLabel = (TextView) findViewById(R.id.deviceRingLabel);
+//        ring1Button = (ToggleButton) findViewById(R.id.ring1Button);
+//        ring2Button = (ToggleButton) findViewById(R.id.ring2Button);
+//        ring3Button = (ToggleButton) findViewById(R.id.ring3Button);
+//        deviceRingLabel = (TextView) findViewById(R.id.deviceRingLabel);
         brightnessLabel = (TextView) findViewById(R.id.brightnessLabel);
         cctLabel = (TextView) findViewById(R.id.cctLabel);
         powerLabel = (TextView) findViewById(R.id.powerLabel);
@@ -144,7 +142,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
                 state = isChecked;
                 //ParticleAdapter.JSONCommandPower(ParticleAdapter.DEFAULT_DEVICE_ID, state);
                 //ParticleAdapter.FastCallPowerSwitch(ParticleAdapter.DEFAULT_DEVICE_ID, state);
-                //TODO 测试sdk 这里的id 需要确定一下。 deviceList.get(mPositon).id 这里的id代表什么意思。
+                // 测试sdk 这里的id 需要确定一下。 deviceList.get(mPositon).id 这里的id代表什么意思。
 //                if (null != SlidingMenuMainActivity.m_mainDevice && null != curMainRows) {
 //                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(curMainRows.id);
 //                    SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
@@ -209,34 +207,34 @@ public class DeviceControlSelectActivity extends BaseActivity {
             }
         });
 
-        ring1Button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ring1 = isChecked;
-                updateDeviceRingLabel();
-            }
-        });
-        ring2Button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ring2 = isChecked;
-                updateDeviceRingLabel();
-            }
-        });
-        ring3Button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ring3 = isChecked;
-                updateDeviceRingLabel();
-            }
-        });
+//        ring1Button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                ring1 = isChecked;
+//                updateDeviceRingLabel();
+//            }
+//        });
+//        ring2Button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                ring2 = isChecked;
+//                updateDeviceRingLabel();
+//            }
+//        });
+//        ring3Button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                ring3 = isChecked;
+//                updateDeviceRingLabel();
+//            }
+//        });
         initScenario();//初始化场景
     }
 
-    private static final String RINGALL_TEXT = "ALL RINGS";
-    private static final String RING1_TEXT = "RING 1";
-    private static final String RING2_TEXT = "RING 2";
-    private static final String RING3_TEXT = "RING 3";
+//    private static final String RINGALL_TEXT = "ALL RINGS";
+//    private static final String RING1_TEXT = "RING 1";
+//    private static final String RING2_TEXT = "RING 2";
+//    private static final String RING3_TEXT = "RING 3";
 
     private CheckBox powerSwitch;
     private SeekBar brightnessSeekBar;
@@ -244,8 +242,9 @@ public class DeviceControlSelectActivity extends BaseActivity {
     private TextView colorTextView;
     private ImageView spinner;
     private LinearLayout scenarioNoneLL;
-    private ToggleButton ring1Button, ring2Button, ring3Button;
-    private TextView deviceRingLabel, powerLabel, brightnessLabel, cctLabel, colorLabel;
+//    private ToggleButton ring1Button, ring2Button, ring3Button;
+//    private TextView deviceRingLabel;
+    private TextView powerLabel, brightnessLabel, cctLabel, colorLabel;
     private ImageView lightImageView;
 
     private LinearLayout llBack;
@@ -262,40 +261,40 @@ public class DeviceControlSelectActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    private void updateDeviceRingLabel() {
-        String label = SlidingMenuMainActivity.m_mainDevice.getDeviceName();
-
-        if (ring1 && ring2 && ring3) {
-            label += ": " + RINGALL_TEXT;
-            lightImageView.setImageResource(R.drawable.aquabg_ring123);
-        } else if (!ring1 && !ring2 && !ring3) {
-            label += ": " + RINGALL_TEXT;
-            lightImageView.setImageResource(R.drawable.aquabg_noring);
-        } else if (ring1 && ring2) {
-            label += ": " + RING1_TEXT + " & " + RING2_TEXT;
-            lightImageView.setImageResource(R.drawable.aquabg_ring12);
-        } else if (ring2 && ring3) {
-            label += ": " + RING2_TEXT + " & " + RING3_TEXT;
-            lightImageView.setImageResource(R.drawable.aquabg_ring23);
-        } else if (ring1 && ring3) {
-            label += ": " + RING1_TEXT + " & " + RING3_TEXT;
-            lightImageView.setImageResource(R.drawable.aquabg_ring13);
-        } else if (ring1) {
-            label += ": " + RING1_TEXT;
-            lightImageView.setImageResource(R.drawable.aquabg_ring1);
-        } else if (ring2) {
-            label += ": " + RING2_TEXT;
-            lightImageView.setImageResource(R.drawable.aquabg_ring2);
-        } else if (ring3) {
-            label += ": " + RING3_TEXT;
-            lightImageView.setImageResource(R.drawable.aquabg_ring3);
-        } else {
-            label += "";
-            lightImageView.setImageResource(R.drawable.aquabg_noring);
-        }
-
-        deviceRingLabel.setText(label);
-    }
+//    private void updateDeviceRingLabel() {
+//        String label = SlidingMenuMainActivity.m_mainDevice.getDeviceName();
+//
+//        if (ring1 && ring2 && ring3) {
+//            label += ": " + RINGALL_TEXT;
+//            lightImageView.setImageResource(R.drawable.aquabg_ring123);
+//        } else if (!ring1 && !ring2 && !ring3) {
+//            label += ": " + RINGALL_TEXT;
+//            lightImageView.setImageResource(R.drawable.aquabg_noring);
+//        } else if (ring1 && ring2) {
+//            label += ": " + RING1_TEXT + " & " + RING2_TEXT;
+//            lightImageView.setImageResource(R.drawable.aquabg_ring12);
+//        } else if (ring2 && ring3) {
+//            label += ": " + RING2_TEXT + " & " + RING3_TEXT;
+//            lightImageView.setImageResource(R.drawable.aquabg_ring23);
+//        } else if (ring1 && ring3) {
+//            label += ": " + RING1_TEXT + " & " + RING3_TEXT;
+//            lightImageView.setImageResource(R.drawable.aquabg_ring13);
+//        } else if (ring1) {
+//            label += ": " + RING1_TEXT;
+//            lightImageView.setImageResource(R.drawable.aquabg_ring1);
+//        } else if (ring2) {
+//            label += ": " + RING2_TEXT;
+//            lightImageView.setImageResource(R.drawable.aquabg_ring2);
+//        } else if (ring3) {
+//            label += ": " + RING3_TEXT;
+//            lightImageView.setImageResource(R.drawable.aquabg_ring3);
+//        } else {
+//            label += "";
+//            lightImageView.setImageResource(R.drawable.aquabg_noring);
+//        }
+//
+//        deviceRingLabel.setText(label);
+//    }
 
     private void onFabPressed() {
         Intent intent = new Intent(DeviceControlSelectActivity.this, ColorSelectActivity.class);

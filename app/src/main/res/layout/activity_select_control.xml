@@ -64,7 +64,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="33dp"
-        android:layout_below="@+id/mainLightsLL"
+        android:layout_below="@+id/ll_top_edit"
         android:background="@color/textDarkGrey"
         android:minHeight="?attr/actionBarSize"
         android:paddingLeft="20dp"
@@ -452,17 +452,6 @@
 
 
                     </RelativeLayout>
-                    <!--<TextView-->
-                    <!--android:id="@+id/colorTextView"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginRight="13dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:text="SELECT"-->
-                    <!--android:textAlignment="viewEnd"-->
-                    <!--android:textColor="@color/colorAccent"-->
-                    <!--android:textStyle="bold" />-->
-
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

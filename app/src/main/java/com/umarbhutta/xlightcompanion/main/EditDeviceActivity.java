@@ -28,6 +28,7 @@ import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
@@ -359,20 +360,6 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
             }
         });
         initScenario();//初始化场景
-
-        //TODO
-//        if (null != deviceInfo && null != deviceInfo.devicerings && deviceInfo.devicerings.size() > 0) {
-//            Scenarionodes scenarionodes = deviceInfo.devicerings.get(0);
-//            int R = scenarionodes.R;
-//            int G = scenarionodes.G;
-//            int B = scenarionodes.B;
-//
-//
-//            int color = Color.rgb(R, G, B);
-//            circleIcon.setColor(color);
-//            colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
-//        }
-
 
     }
 
@@ -747,22 +734,4 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
             mCurrentDevice.setBlue(xltDevice.RING_ID_ALL, blue);
         }
     }
-
-    public String toHexEncoding(int color) {
-        String R, G, B;
-        StringBuffer sb = new StringBuffer();
-        R = Integer.toHexString(Color.red(color));
-        G = Integer.toHexString(Color.green(color));
-        B = Integer.toHexString(Color.blue(color));
-        //判断获取到的R,G,B值的长度 如果长度等于1 给R,G,B值的前边添0
-        R = R.length() == 1 ? "0" + R : R;
-        G = G.length() == 1 ? "0" + G : G;
-        B = B.length() == 1 ? "0" + B : B;
-        sb.append("#");
-        sb.append(R);
-        sb.append(G);
-        sb.append(B);
-        return sb.toString();
-    }
-
 }

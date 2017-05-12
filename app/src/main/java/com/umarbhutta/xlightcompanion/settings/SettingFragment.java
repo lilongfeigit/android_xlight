@@ -29,7 +29,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private List<String> settingStr = new ArrayList<String>();
 
-    //    public static String[] settingStr = {"个人信息","修改密码","摇一摇","用户邀请","快速绑定","退出登录"};
     SettingListAdapter settingListAdapter;
     ListView settingListView;
 
@@ -67,7 +66,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 0://个人信息
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
-                            getActivity().overridePendingTransition(R.anim.activity_open,0);
                             return;
                         }
                         onFabPressed(UserMsgModifyActivity.class);
@@ -75,7 +73,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 1://修改密码
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
-                            getActivity().overridePendingTransition(R.anim.activity_open,0);
                             return;
                         }
                         onFabPressed(ModifyPasswordActivity.class);
@@ -83,7 +80,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 2://摇一摇
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
-                            getActivity().overridePendingTransition(R.anim.activity_open,0);
                             return;
                         }
                         onFabPressed(ShakeActivity.class);

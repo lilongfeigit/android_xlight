@@ -17,11 +17,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
-import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
-import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.EditScenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.EditSceneParams;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
@@ -117,7 +115,7 @@ public class AddScenarioNewActivity extends BaseActivity {
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
 
                 //SEND TO PARTICLE CLOUD FOR ALL RINGS
-                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioMainFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+//                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioMainFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
 
                 //send data to update the list
                 Intent returnIntent = getIntent();
@@ -182,8 +180,8 @@ public class AddScenarioNewActivity extends BaseActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "The CCT value is " + seekBar.getProgress() + 2700);
                 int seekBarProgress = seekBar.getProgress() + 2700;
-                int cctInt = SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
-                Log.e(TAG, "cctInt value is= " + cctInt);
+//                int cctInt = SlidingMenuMainActivity.m_mainDevice.ChangeCCT(seekBarProgress);
+//                Log.e(TAG, "cctInt value is= " + cctInt);
             }
         });
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +193,7 @@ public class AddScenarioNewActivity extends BaseActivity {
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
 
                 //SEND TO PARTICLE CLOUD FOR ALL RINGS
-                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioMainFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
+//                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioMainFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
 
                 //send data to update the list
                 Intent returnIntent = getIntent();

@@ -28,7 +28,11 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+        /*获取当前系统的android版本号*/
+        int currentapiVersion=android.os.Build.VERSION.SDK_INT;
+        if(currentapiVersion>=19){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
+        }
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mInflater = getLayoutInflater();

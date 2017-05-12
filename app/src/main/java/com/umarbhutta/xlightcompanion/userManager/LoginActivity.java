@@ -18,6 +18,7 @@ import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.LoginParam;
@@ -42,8 +43,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
-        //hide nav bar
-//        getSupportActionBar().hide();
         ((App) getApplicationContext()).setActivity(this);
         initViews();
     }
@@ -61,8 +60,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 finish();
             }
         });
-        llBack.setVisibility(View.INVISIBLE);
+        llBack.setVisibility(View.VISIBLE);
         btnSure = (TextView) findViewById(R.id.tvEditSure);
+        btnSure.setVisibility(View.INVISIBLE);
         btnSure.setText(R.string.close);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.login);
@@ -117,18 +117,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 break;
             case R.id.tv_forget_password:
                 //
-                onFabPressed(FindPasswordActivity.class);
+                onFabPressed(FindPasswordActivity.class, 0);
                 break;
             case R.id.tv_new_user_res:
                 //
-                onFabPressed(RegisteredActivity.class);
+                onFabPressed(RegisteredActivity.class, 10086);
                 break;
         }
     }
 
-    private void onFabPressed(Class activity) {
+    private void onFabPressed(Class activity, int requestCode) {
         Intent intent = new Intent(LoginActivity.this, activity);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -179,6 +179,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     info.data.get(0).setImage(NetConfig.SERVER_ADDRESS + info.data.get(0).getImage());
                     UserUtils.saveUserInfo(LoginActivity.this, info.data.get(0));
                     ToastUtil.showToast(LoginActivity.this, getString(R.string.login_success));
+                    Intent intent = new Intent(LoginActivity.this, SlidingMenuMainActivity.class);
+                    startActivity(intent);
                     finish();
                 } else if (info.code == 0) {  //登录失败，提示服务端返回的信息
                     ToastUtil.showToast(LoginActivity.this, info.msg);

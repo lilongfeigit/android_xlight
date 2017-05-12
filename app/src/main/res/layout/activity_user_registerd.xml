@@ -76,8 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_finash_registered"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="18dp"
@@ -99,7 +98,7 @@
                 android:id="@+id/tv_protocol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
+                android:layout_marginLeft="6dp"
                 android:text="@string/regist_protocal"
                 android:textColor="@color/bar_color" />
         </LinearLayout>

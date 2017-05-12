@@ -134,8 +134,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        et_user_account.setText("");
-        et_user_password.setText("");
+        if (10086 == requestCode)
+            finish();
     }
 
     private void login() {
@@ -157,6 +157,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             return;
         }
 
+        showProgressDialog(getString(R.string.login));
+
         LoginParam param = new LoginParam(et_user_accountStr, et_user_passwordStr);
 
         Gson gson = new Gson();
@@ -171,6 +173,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                cancelProgressDialog();
                 LoginResult info = (LoginResult) result;
                 if (info.code == 1) {   //登录成功
                     info.data.get(0).setImage(NetConfig.SERVER_ADDRESS + info.data.get(0).getImage());
@@ -194,6 +197,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                cancelProgressDialog();
                 ToastUtil.showToast(LoginActivity.this, "" + errMsg);
             }
         });

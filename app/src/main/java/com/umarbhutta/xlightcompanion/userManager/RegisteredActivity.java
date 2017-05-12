@@ -14,8 +14,11 @@ import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
+import com.umarbhutta.xlightcompanion.okHttp.model.LoginParam;
+import com.umarbhutta.xlightcompanion.okHttp.model.LoginResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.RegisteResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.RigsteParam;
 import com.umarbhutta.xlightcompanion.settings.BaseActivity;
@@ -66,7 +69,7 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((App)getApplicationContext()).finishActivity();
+                ((App) getApplicationContext()).finishActivity();
                 finish();
             }
         });
@@ -111,6 +114,8 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
             return;
         }
 
+        showProgressDialog(getString(R.string.regist));
+
         RigsteParam param = new RigsteParam(et_user_accountStr, et_user_passwordStr);
 
         Gson gson = new Gson();
@@ -126,17 +131,64 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
             public void run() {
                 RegisteResult info = (RegisteResult) result;
                 if (info.code == 0) {
+                    RegisteredActivity.this.cancelProgressDialog();
                     ToastUtil.showToast(RegisteredActivity.this, info.msg);
                 } else if (1 == info.code) {
-                    ToastUtil.showToast(RegisteredActivity.this, getString(R.string.registe_success));
+//                    ToastUtil.showToast(RegisteredActivity.this, getString(R.string.registe_success));
                     setResult(10086);
-                    finish();
+                    login();
                 } else {
+                    RegisteredActivity.this.cancelProgressDialog();
                     ToastUtil.showToast(RegisteredActivity.this, getString(R.string.net_error));
                 }
             }
         });
+    }
 
+    /**
+     * 注册完成之后调用登录接口
+     */
+    private void login() {
+        String et_user_accountStr = et_user_account.getText().toString();
+        String et_user_passwordStr = et_user_password.getText().toString();
+
+        LoginParam param = new LoginParam(et_user_accountStr, et_user_passwordStr);
+
+        Gson gson = new Gson();
+        String paramStr = gson.toJson(param);
+
+        HttpUtils.getInstance().postRequestInfo(NetConfig.URL_LOGIN, paramStr, LoginResult.class, new HttpUtils.OnHttpRequestCallBack() {
+            @Override
+            public void onHttpRequestSuccess(final Object result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RegisteredActivity.this.cancelProgressDialog();
+                        LoginResult info = (LoginResult) result;
+                        if (info.code == 1) {   //登录成功
+                            info.data.get(0).setImage(NetConfig.SERVER_ADDRESS + info.data.get(0).getImage());
+                            UserUtils.saveUserInfo(RegisteredActivity.this, info.data.get(0));
+                            ToastUtil.showToast(RegisteredActivity.this, getString(R.string.registe_success));
+                            finish();
+                        } else if (info.code == 0) {  //登录失败，提示服务端返回的信息
+                            ToastUtil.showToast(RegisteredActivity.this, info.msg);
+                        } else {
+                            ToastUtil.showToast(RegisteredActivity.this, getString(R.string.net_error));
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onHttpRequestFail(int code, String errMsg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RegisteredActivity.this.cancelProgressDialog();
+                    }
+                });
+            }
+        });
     }
 
     @Override

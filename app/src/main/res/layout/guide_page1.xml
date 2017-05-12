@@ -3,7 +3,13 @@
     android:id="@+id/guide1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_light"
-    android:orientation="vertical" >
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_one"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/xlight_en_one" />
 
 </LinearLayout>

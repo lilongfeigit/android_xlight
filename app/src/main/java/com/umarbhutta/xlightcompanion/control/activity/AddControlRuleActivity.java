@@ -68,9 +68,6 @@ public class AddControlRuleActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_control_rule);
-        //hide nav bar
-//        getSupportActionBar().hide();
-
         rules = new Rules();
         initViews();
     }

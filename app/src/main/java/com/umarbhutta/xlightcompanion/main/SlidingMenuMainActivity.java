@@ -39,8 +39,8 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 
     public static xltDevice m_mainDevice;
 
-    //TODO 测试数据
-    public static final String[] deviceNames = {"Living Room", "Bedroom", "Bar"};
+    //测试数据
+//    public static final String[] deviceNames = {"Living Room", "Bedroom", "Bar"};
     //    public static final int[] deviceNodeIDs = {1, 8, 11};
 
     @Override

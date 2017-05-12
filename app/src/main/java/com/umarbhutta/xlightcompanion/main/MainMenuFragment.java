@@ -105,7 +105,6 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_login:
                 showContentView();
                 onFabPressed(LoginActivity.class);
-                getActivity().overridePendingTransition(R.anim.activity_open,0);
                 break;
             case R.id.userIcon:
                 showContentView();

@@ -3,30 +3,22 @@
     android:id="@+id/guide4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_light"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/layout1"
+    <ImageView
+        android:id="@+id/iv_three"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/xlight_en_three" />
+
+    <Button
+        android:id="@+id/startBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/startBtn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/accent_color"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:text="@string/open_life" />
-
-    </LinearLayout>
+        android:layout_marginBottom="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/go" />
 
 </RelativeLayout>

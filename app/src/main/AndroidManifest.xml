@@ -71,19 +71,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".main.SlidingMenuMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".schedule.AddScheduleActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".scenario.AddScenarioActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".bindDevice.BindDeviceConnectWifiActivity"
             android:screenOrientation="portrait" />

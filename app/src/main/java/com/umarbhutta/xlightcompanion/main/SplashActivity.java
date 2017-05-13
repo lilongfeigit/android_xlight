@@ -11,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2017/3/3.
@@ -25,8 +27,8 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        int currentapiVersion=android.os.Build.VERSION.SDK_INT;
-        if(currentapiVersion>=19){
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= 19) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         }
 
@@ -46,7 +48,7 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
     private ArrayList<View> views;
 
     // 定义各个界面View对象
-    private View view1, view2, view3, view4;
+    private View view1, view2, view4;
 
     //底部小点的图片
     private ImageView[] points;
@@ -57,10 +59,28 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
     public void initView() {
         //实例化各个界面的布局对象
         LayoutInflater mLi = LayoutInflater.from(this);
+        Locale locale = getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
         view1 = mLi.inflate(R.layout.guide_page1, null);
+        ImageView iv_one = (ImageView) view1.findViewById(R.id.iv_one);
         view2 = mLi.inflate(R.layout.guide_page2, null);
-        view3 = mLi.inflate(R.layout.guide_page3, null);
+        ImageView iv_two = (ImageView) view2.findViewById(R.id.iv_two);
+//      view3 = mLi.inflate(R.layout.guide_page3, null);
         view4 = mLi.inflate(R.layout.guide_page4, null);
+        ImageView iv_three = (ImageView) view4.findViewById(R.id.iv_three);
+        if (language.endsWith("zh")) {
+            iv_one.setImageResource(R.drawable.xlight_zh_one);
+            iv_two.setImageResource(R.drawable.xlight_zh_two);
+            iv_three.setImageResource(R.drawable.xlight_zh_three);
+        } else {
+            iv_one.setImageResource(R.drawable.xlight_en_one);
+            iv_two.setImageResource(R.drawable.xlight_en_two);
+            iv_three.setImageResource(R.drawable.xlight_en_three);
+        }
+        Logger.e("language", language);
+//    其中languag为语言码：
+//    zh：汉语
+//    en：英语
         view4.findViewById(R.id.startBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +98,7 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
         //将要分页显示的View装入数组中
         views.add(view1);
         views.add(view2);
-        views.add(view3);
+//        views.add(view3);
         views.add(view4);
         // 实例化ViewPager适配器
         vpAdapter = new ViewPagerAdapter(views);

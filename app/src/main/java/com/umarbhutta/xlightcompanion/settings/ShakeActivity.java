@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -101,7 +100,7 @@ public class ShakeActivity extends BaseActivity {
             float x = values[0]; // x轴方向的重力加速度，向右为正
             float y = values[1]; // y轴方向的重力加速度，向前为正
             float z = values[2]; // z轴方向的重力加速度，向上为正
-            Log.i("xlight", "x轴方向的重力加速度" + x + "；y轴方向的重力加速度" + y + "；z轴方向的重力加速度" + z);
+//            Log.i("xlight", "x轴方向的重力加速度" + x + "；y轴方向的重力加速度" + y + "；z轴方向的重力加速度" + z);
             // 一般在这三个方向的重力加速度达到40就达到了摇晃手机的状态。
             int medumValue = 19;// 三星 i9250怎么晃都不会超过20，没办法，只设置19了
             if (Math.abs(x) > medumValue || Math.abs(y) > medumValue || Math.abs(z) > medumValue) {
@@ -126,7 +125,7 @@ public class ShakeActivity extends BaseActivity {
             switch (msg.what) {
                 case SENSOR_SHAKE:
                     ToastUtil.showToast(ShakeActivity.this, "检测到摇晃，执行操作！");
-                    Log.i("xlight", "检测到摇晃，执行操作！");
+//                    Log.i("xlight", "检测到摇晃，执行操作！");
                     break;
             }
         }

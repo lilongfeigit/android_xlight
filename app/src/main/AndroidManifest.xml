@@ -59,6 +59,15 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="NzsZLu9ai1dkvKan1oGwmvT4oEigZgBF" />
 
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5916f9dc310c935a8a000a10"/>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="da3853872705530561e9bd6901092ccd"/>
+
+
         <activity
             android:name=".main.WelcomActivity"
             android:label="@string/app_name"
@@ -89,8 +98,8 @@
             android:theme="@style/TranslucentFullScreenTheme" />
         <activity
             android:name=".userManager.LoginActivity"
-            android:windowIsTranslucent="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowIsTranslucent="true" />
         <activity
             android:name=".userManager.RegisteredActivity"
             android:screenOrientation="portrait" />

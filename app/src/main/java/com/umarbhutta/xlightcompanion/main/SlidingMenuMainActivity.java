@@ -5,23 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
-import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
-import com.umarbhutta.xlightcompanion.location.BaiduMapUtils;
 import com.umarbhutta.xlightcompanion.settings.BaseFragmentActivity;
+import com.umeng.message.PushAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +44,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         }
         initSlidingMenu(savedInstanceState);
+        PushAgent.getInstance(this).onAppStart();
 
         // Check Bluetooth
         BLEPairedDeviceList.init(this);

@@ -1,9 +1,14 @@
 package com.umarbhutta.xlightcompanion;
 
 import android.app.Activity;
-import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderUtils;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,28 +17,51 @@ import java.util.List;
  * Created by guangbinw on 2017/3/13.
  */
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     private List<Activity> activityList;
+
     @Override
     public void onCreate() {
         super.onCreate();
         //初始化APP
         ImageLoaderUtils.initImageLoader(getApplicationContext());
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+//        mPushAgent.setDebugMode(true);
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
+                Logger.i("ument push register success deviceToken = " + deviceToken);
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                Logger.i("ument push register fail s = " + s + ", s1 = " + s1);
+            }
+        });
     }
 
-    public void setActivity(Activity activity){
-        if(activityList==null){
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+    public void setActivity(Activity activity) {
+        if (activityList == null) {
             activityList = new ArrayList<Activity>();
         }
-        if(!activityList.contains(activity)){
+        if (!activityList.contains(activity)) {
             activityList.add(activity);
         }
     }
 
-    public void finishActivity(){
-        if(activityList!=null){
-            for(Activity activity:activityList){
+    public void finishActivity() {
+        if (activityList != null) {
+            for (Activity activity : activityList) {
                 activity.finish();
             }
         }

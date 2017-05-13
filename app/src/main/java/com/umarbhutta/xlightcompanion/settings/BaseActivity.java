@@ -14,6 +14,7 @@ import android.view.WindowManager;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
+import com.umeng.message.PushAgent;
 
 /**
  * create by：guangbinw on 16/3/30 17:01
@@ -36,6 +37,9 @@ public class BaseActivity extends FragmentActivity {
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mInflater = getLayoutInflater();
+
+        PushAgent.getInstance(this).onAppStart();
+
     }
 
     @Override

@@ -9,8 +9,9 @@ import android.view.Window;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
+import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
-public class WelcomActivity extends Activity {
+public class WelcomActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

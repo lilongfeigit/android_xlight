@@ -252,4 +252,5 @@
     <string name="no_results">Please set the results</string>
     <string name="lodding">Lodding</string>
     <string name="select_device">Please select device</string>
+    <string name="no_device">No device</string>
 </resources>

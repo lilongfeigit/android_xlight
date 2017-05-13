@@ -82,6 +82,8 @@ public class NewRuleAdapter extends BaseAdapter {
             holder.no_condidtion = (TextView) convertView.findViewById(R.id.no_condidtion);
             holder.item_left_tv = (TextView) convertView.findViewById(R.id.item_left_tv);
             holder.ib_minus = (ImageButton) convertView.findViewById(R.id.ib_minus);
+            holder.topLine = convertView.findViewById(R.id.topLine);
+            holder.bottomLine = convertView.findViewById(R.id.bottomLine);
 
             convertView.setTag(holder);
 
@@ -89,6 +91,11 @@ public class NewRuleAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        if (position == getCount()-1) {
+            holder.bottomLine.setVisibility(View.VISIBLE);
+        } else {
+            holder.bottomLine.setVisibility(View.GONE);
+        }
 
         NewRuleItemInfo mNewRuleItemInfo = null;
         if (type == 1) {
@@ -98,10 +105,9 @@ public class NewRuleAdapter extends BaseAdapter {
                 holder.itemLayout.setVisibility(View.VISIBLE);
                 holder.no_condidtion.setVisibility(View.GONE);
                 holder.condidtion_tv.setText(R.string.manzu_tiaojian);
-
                 mNewRuleItemInfo = mNewRuleInfo.mNewRuleConditionInfoList.get(0);
-
                 holder.item_left_tv.setText(mNewRuleItemInfo.getShowText());
+                holder.topLine.setVisibility(View.GONE);
 
             } else if (position == mNewRuleInfo.mNewRuleConditionInfoList.size()) {
                 holder.titleLayout.setVisibility(View.VISIBLE);
@@ -109,6 +115,7 @@ public class NewRuleAdapter extends BaseAdapter {
                 holder.no_condidtion.setVisibility(View.VISIBLE);
                 holder.condidtion_tv.setText(R.string.jiang_zhixing_jieguo);
                 holder.no_condidtion.setText(R.string.wei_tianjia_jieguo);
+                holder.topLine.setVisibility(View.VISIBLE);
             } else {
 
                 holder.titleLayout.setVisibility(View.GONE);
@@ -116,6 +123,7 @@ public class NewRuleAdapter extends BaseAdapter {
                 holder.no_condidtion.setVisibility(View.GONE);
                 holder.condidtion_tv.setText(R.string.jiang_zhixing_jieguo);
                 holder.no_condidtion.setText(R.string.wei_tianjia_jieguo);
+                holder.topLine.setVisibility(View.GONE);
 
                 mNewRuleItemInfo = mNewRuleInfo.mNewRuleConditionInfoList.get(position);
                 holder.item_left_tv.setText(mNewRuleItemInfo.getShowText());
@@ -130,6 +138,7 @@ public class NewRuleAdapter extends BaseAdapter {
                 holder.no_condidtion.setVisibility(View.VISIBLE);
                 holder.condidtion_tv.setText(R.string.manzu_tiaojian);
                 holder.no_condidtion.setText(R.string.wei_tianjia_tiaojian);
+                holder.topLine.setVisibility(View.GONE);
             } else if (position == 1) {
                 holder.titleLayout.setVisibility(View.VISIBLE);
                 holder.itemLayout.setVisibility(View.VISIBLE);
@@ -139,6 +148,7 @@ public class NewRuleAdapter extends BaseAdapter {
                 mNewRuleItemInfo = mNewRuleInfo.mNewRuleResultInfoList.get(0);
 
                 holder.item_left_tv.setText(mNewRuleItemInfo.getShowText());
+                holder.topLine.setVisibility(View.VISIBLE);
             } else {
                 holder.titleLayout.setVisibility(View.GONE);
                 holder.itemLayout.setVisibility(View.VISIBLE);
@@ -147,6 +157,7 @@ public class NewRuleAdapter extends BaseAdapter {
                 mNewRuleItemInfo = mNewRuleInfo.mNewRuleResultInfoList.get(position - 1);
 
                 holder.item_left_tv.setText(mNewRuleItemInfo.getShowText());
+                holder.topLine.setVisibility(View.GONE);
 
             }
 
@@ -158,11 +169,14 @@ public class NewRuleAdapter extends BaseAdapter {
             if (position == 0) {
                 holder.titleLayout.setVisibility(View.VISIBLE);
                 holder.condidtion_tv.setText(R.string.manzu_tiaojian);
+                holder.topLine.setVisibility(View.GONE);
             } else if (position == mNewRuleInfo.mNewRuleConditionInfoList.size()) {
                 holder.titleLayout.setVisibility(View.VISIBLE);
                 holder.condidtion_tv.setText(R.string.jiang_zhixing_jieguo);
+                holder.topLine.setVisibility(View.VISIBLE);
             } else {
                 holder.titleLayout.setVisibility(View.GONE);
+                holder.topLine.setVisibility(View.GONE);
             }
 
             if (position < mNewRuleInfo.mNewRuleConditionInfoList.size()) {
@@ -180,9 +194,11 @@ public class NewRuleAdapter extends BaseAdapter {
             if (position == 0) {
                 holder.condidtion_tv.setText(R.string.manzu_tiaojian);
                 holder.no_condidtion.setText(R.string.wei_tianjia_tiaojian);
+                holder.topLine.setVisibility(View.GONE);
             } else {
                 holder.condidtion_tv.setText(R.string.jiang_zhixing_jieguo);
                 holder.no_condidtion.setText(R.string.wei_tianjia_jieguo);
+                holder.topLine.setVisibility(View.VISIBLE);
             }
         }
 
@@ -216,6 +232,9 @@ public class NewRuleAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+
+        public View topLine;
+        public View bottomLine;
 
         //title
         public LinearLayout titleLayout;

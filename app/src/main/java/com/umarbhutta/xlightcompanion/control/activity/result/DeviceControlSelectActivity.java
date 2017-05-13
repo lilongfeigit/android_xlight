@@ -21,6 +21,7 @@ import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
 import com.umarbhutta.xlightcompanion.control.bean.ControlRuleDevice;
 import com.umarbhutta.xlightcompanion.control.bean.NewRuleItemInfo;
+import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
@@ -122,18 +123,24 @@ public class DeviceControlSelectActivity extends BaseActivity {
         findViewById(R.id.scenarioNameLL).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(null == GlanceMainFragment.devicenodes || GlanceMainFragment.devicenodes.size()<=0){
+                    ToastUtil.showToast(DeviceControlSelectActivity.this,getString(R.string.no_device));
+                    return;
+                }
+
                 Intent intent = new Intent(DeviceControlSelectActivity.this, DialogRowNameActivity.class);
                 startActivityForResult(intent, 29);
             }
         });
 
-        spinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DeviceControlSelectActivity.this, DialogRowNameActivity.class);
-                startActivityForResult(intent, 29);
-            }
-        });
+//        spinner.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(DeviceControlSelectActivity.this, DialogRowNameActivity.class);
+//                startActivityForResult(intent, 29);
+//            }
+//        });
 
         powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

@@ -117,25 +117,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 break;
             case R.id.tv_forget_password:
                 //
-                onFabPressed(FindPasswordActivity.class);
+                onFabPressed(FindPasswordActivity.class, 0);
                 break;
             case R.id.tv_new_user_res:
                 //
-                onFabPressed(RegisteredActivity.class);
+                onFabPressed(RegisteredActivity.class, 10086);
                 break;
         }
     }
 
-    private void onFabPressed(Class activity) {
+    private void onFabPressed(Class activity, int requestCode) {
         Intent intent = new Intent(LoginActivity.this, activity);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, requestCode);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        et_user_account.setText("");
-        et_user_password.setText("");
+        if (10086 == requestCode)
+            finish();
     }
 
     private void login() {
@@ -157,6 +157,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             return;
         }
 
+        showProgressDialog(getString(R.string.login));
+
         LoginParam param = new LoginParam(et_user_accountStr, et_user_passwordStr);
 
         Gson gson = new Gson();
@@ -171,12 +173,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                cancelProgressDialog();
                 LoginResult info = (LoginResult) result;
                 if (info.code == 1) {   //登录成功
                     info.data.get(0).setImage(NetConfig.SERVER_ADDRESS + info.data.get(0).getImage());
                     UserUtils.saveUserInfo(LoginActivity.this, info.data.get(0));
                     ToastUtil.showToast(LoginActivity.this, getString(R.string.login_success));
-                    Intent intent = new Intent(LoginActivity.this,SlidingMenuMainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, SlidingMenuMainActivity.class);
                     startActivity(intent);
                     finish();
                 } else if (info.code == 0) {  //登录失败，提示服务端返回的信息
@@ -196,6 +199,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                cancelProgressDialog();
                 ToastUtil.showToast(LoginActivity.this, "" + errMsg);
             }
         });

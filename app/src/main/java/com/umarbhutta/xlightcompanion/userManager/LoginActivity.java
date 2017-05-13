@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     startActivity(intent);
                     finish();
                 } else if (info.code == 0) {  //登录失败，提示服务端返回的信息
-                    ToastUtil.showToast(LoginActivity.this, info.msg);
+                    ToastUtil.showToast(LoginActivity.this, ""+info.msg);
                 } else {
                     ToastUtil.showToast(LoginActivity.this, getString(R.string.net_error));
                 }

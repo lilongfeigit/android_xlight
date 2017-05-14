@@ -1,9 +1,9 @@
 package com.umarbhutta.xlightcompanion;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderUtils;
@@ -17,7 +17,7 @@ import java.util.List;
  * Created by guangbinw on 2017/3/13.
  */
 
-public class App extends MultiDexApplication {
+public class App extends Application {
 
     private List<Activity> activityList;
 

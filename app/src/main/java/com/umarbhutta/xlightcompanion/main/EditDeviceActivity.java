@@ -110,6 +110,18 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
     private xltDevice mCurrentDevice;
     private HorizontalScrollView mHorizontalScrollView;
 
+    private final MyStatusReceiver m_StatusReceiver = new MyStatusReceiver();
+
+    private class MyStatusReceiver extends StatusReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.e(TAG,"data="+intent.getDataString());
+            powerSwitch.setChecked(mCurrentDevice.getState() > 0);
+            brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
+            cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,6 +221,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         if (mCurrentDevice.getEnableEventSendMessage()) {
             m_handlerControl = new Handler() {
                 public void handleMessage(Message msg) {
+                    Logger.e(TAG,"msg="+msg.getData().toString());
                     int intValue = msg.getData().getInt("State", -255);
                     if (intValue != -255) {
                         powerSwitch.setChecked(intValue > 0);
@@ -387,17 +400,6 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    private class MyStatusReceiver extends StatusReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            powerSwitch.setChecked(mCurrentDevice.getState() > 0);
-            brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
-            cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
-        }
-    }
-
-    private final MyStatusReceiver m_StatusReceiver = new MyStatusReceiver();
-
     @Override
     public void onDestroy() {
         mCurrentDevice.removeDeviceEventHandler(m_handlerControl);
@@ -406,7 +408,6 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         }
         super.onDestroy();
     }
-
 
     private void disableEnableControls(boolean isEnabled) {
         powerSwitch.setEnabled(isEnabled);

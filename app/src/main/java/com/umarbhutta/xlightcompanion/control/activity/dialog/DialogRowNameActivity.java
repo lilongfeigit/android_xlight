@@ -47,7 +47,6 @@ public class DialogRowNameActivity extends Activity {
         dialoglist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Logger.e("DialogRowNameActivity","position="+position+";;id="+id);
                 Intent intent = new Intent();
                 intent.putExtra("deviceInfo", GlanceMainFragment.devicenodes.get(new Long(id).intValue()));
                 setResult(35, intent);

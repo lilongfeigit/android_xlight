@@ -107,7 +107,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         Intent intent = new Intent(getContext(), activity);
         startActivity(intent);
     }
-
     /**
      * 退出登录
      */

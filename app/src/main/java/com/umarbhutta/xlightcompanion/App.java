@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.imgloader.ImageLoaderUtils;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 
 public class App extends Application {
+    private String TAG = App.class.getSimpleName();
 
     private List<Activity> activityList;
 
@@ -35,11 +37,13 @@ public class App extends Application {
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
                 Logger.i("ument push register success deviceToken = " + deviceToken);
+                Log.e(TAG,"deviceToken="+deviceToken);
             }
 
             @Override
             public void onFailure(String s, String s1) {
                 Logger.i("ument push register fail s = " + s + ", s1 = " + s1);
+                Log.e(TAG,"s="+s+"::s1="+s1);
             }
         });
     }

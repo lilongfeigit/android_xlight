@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -91,6 +90,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private DevicesMainListAdapter devicesListAdapter;
     private TextView default_text;
     private TextView save_money;
+    private TextView valRoomBrightness;
 
     @Override
     public void onClick(View v) {
@@ -136,8 +136,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private class MyDataReceiver extends DataReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
-            roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+//            roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
+//            roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
 //            roomBrightness.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomBrightness + "\u0025");
         }
     }
@@ -161,7 +161,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_glance, container, false);
         if (SlidingMenuMainActivity.m_mainDevice == null) {
             SlidingMenuMainActivity.m_mainDevice = new xltDevice();
@@ -187,15 +187,17 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         outsideHumidity = (TextView) view.findViewById(R.id.valLocalHumidity);
         apparentTemp = (TextView) view.findViewById(R.id.valApparentTemp);
         roomTemp = (TextView) view.findViewById(R.id.valRoomTemp);
-        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
+//        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
         roomHumidity = (TextView) view.findViewById(R.id.valRoomHumidity);
-        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+//        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         imgWeather = (ImageView) view.findViewById(R.id.weatherIcon);
         home_menu = (ImageButton) view.findViewById(R.id.home_menu);
         home_menu.setOnClickListener(this);
         home_setting = (ImageButton) view.findViewById(R.id.home_setting);
         home_setting.setOnClickListener(this);
         save_money = (TextView) view.findViewById(R.id.save_money);
+
+        valRoomBrightness = (TextView) view.findViewById(R.id.valRoomBrightness);
 
         Resources res = getResources();
         Bitmap weatherIcons = decodeResource(res, R.drawable.weather_icons_1, 420, 600);
@@ -312,8 +314,8 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         outsideHumidity.setText(mWeatherDetails.getmHumidity() + "\u0025");
         apparentTemp.setText(mWeatherDetails.getApparentTemp("celsius") + "℃");
 
-        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
-        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
+//        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
+//        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
     }
 
     private WeatherDetails getWeatherDetails(String jsonData) throws JSONException {
@@ -420,6 +422,28 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
                             save_money.setText(getString(R.string.this_month_has_save_money) + mDeviceInfoResult.Energysaving.value);
                         }
+
+
+                        if (null != devices && devices.size() > 0) {
+
+                            int index = 0;
+
+                            for (int i = 0; i < devices.size(); i++) {
+                                if (1 == devices.get(i).maindevice) {
+                                    index = i;
+                                }
+                            }
+
+
+                            Rows mRows = devices.get(index);
+                            if (null != mRows.sensorsdata) {
+                                valRoomBrightness.setText("" + mRows.sensorsdata.ALS + "\u0025");
+                                roomHumidity.setText("" + mRows.sensorsdata.DHTh + "\u0025");
+                                roomTemp.setText("" + mRows.sensorsdata.DHTt + "℃");
+                            }
+                        }
+
+
                         deviceList.clear();
                         deviceList.addAll(devices);
                         if (devicesListAdapter != null) {
@@ -618,21 +642,21 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     }
 
     private void updateLocationInfo() {
-        if(getActivity()!=null)
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!TextUtils.isEmpty(city)) {
-                    txtLocation.setText(city);
-                } else {
-                    if (country == null) {
-                        country = "";
+        if (getActivity() != null)
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (!TextUtils.isEmpty(city)) {
+                        txtLocation.setText(city);
+                    } else {
+                        if (country == null) {
+                            country = "";
+                        }
+                        txtLocation.setText("" + country);
                     }
-                    txtLocation.setText("" + country);
+                    getTitleInfo();
                 }
-                getTitleInfo();
-            }
-        });
+            });
     }
 
 }

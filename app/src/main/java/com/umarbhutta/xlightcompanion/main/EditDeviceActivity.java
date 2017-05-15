@@ -28,7 +28,6 @@ import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
-import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
@@ -647,7 +646,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
             JSONObject devicenodesJSONObject = new JSONObject();
             devicenodes.put(devicenodesJSONObject);
 
-            devicenodesJSONObject.put("deviceId", deviceInfo.id);
+            devicenodesJSONObject.put("devicenodeId", deviceInfo.id);
             devicenodesJSONObject.put("devicenodename", deviceName);
             devicenodesJSONObject.put("ison", powerSwitch.isChecked() ? 1 : 0);
             if (null == curSene) {

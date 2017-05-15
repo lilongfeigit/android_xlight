@@ -16,9 +16,12 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -52,6 +55,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     private ScanResult curWifi = null;
     private final int WIFI_PERMISSION_REQ_CODE = 100;
     private WifiReceiver mWifiReceiver;
+    private ImageView clearBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,37 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         deleteIcon = (ImageView) findViewById(R.id.pwdrightIcon);
         deleteIcon.setOnClickListener(this);
         findViewById(R.id.btn_connect_wifi).setOnClickListener(this);
+
+        clearBtn = (ImageView) findViewById(R.id.pwdrightIcon);
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wifiPwdEdit.setText("");
+            }
+        });
+        clearBtn.setVisibility(View.INVISIBLE);
+
+        wifiPwdEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() <= 0) {
+                    clearBtn.setVisibility(View.INVISIBLE);
+                } else {
+                    clearBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
         listView = (ListView) findViewById(R.id.wifi_list);
         listView.setOnItemClickListener(this);

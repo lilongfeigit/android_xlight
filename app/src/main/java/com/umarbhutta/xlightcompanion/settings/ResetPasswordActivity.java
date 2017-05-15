@@ -2,9 +2,12 @@ package com.umarbhutta.xlightcompanion.settings;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,13 +36,12 @@ public class ResetPasswordActivity extends BaseActivity implements HttpUtils.OnH
     private EditText et_new_password_againTv;
     private ProgressDialog dialog;
     private String email;
+    private ImageButton ib_clear1,ib_clear2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
-        //hide nav bar
-//        getSupportActionBar().hide();
         email = getIntent().getStringExtra("email");
         initViews();
     }
@@ -68,21 +70,64 @@ public class ResetPasswordActivity extends BaseActivity implements HttpUtils.OnH
         et_new_passwordTv = (EditText) findViewById(R.id.et_new_password);
         et_new_password_againTv = (EditText) findViewById(R.id.et_new_password_again);
 
-
-        findViewById(R.id.ib_clear1).setOnClickListener(new View.OnClickListener() {
+        ib_clear1 = (ImageButton) findViewById(R.id.ib_clear1);
+        ib_clear2 = (ImageButton) findViewById(R.id.ib_clear2);
+        ib_clear1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 et_old_passwordTv.setText("");
             }
         });
+        ib_clear1.setVisibility(View.INVISIBLE);
 
-        findViewById(R.id.ib_clear2).setOnClickListener(new View.OnClickListener() {
+        ib_clear2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 et_new_passwordTv.setText("");
             }
         });
+        ib_clear2.setVisibility(View.INVISIBLE);
 
+        et_old_passwordTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() <= 0) {
+                    ib_clear1.setVisibility(View.INVISIBLE);
+                } else {
+                    ib_clear1.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        et_new_passwordTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() <= 0) {
+                    ib_clear2.setVisibility(View.INVISIBLE);
+                } else {
+                    ib_clear2.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         findViewById(R.id.first_layout).setVisibility(View.GONE);
 

@@ -618,6 +618,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     }
 
     private void updateLocationInfo() {
+        if(getActivity()!=null)
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

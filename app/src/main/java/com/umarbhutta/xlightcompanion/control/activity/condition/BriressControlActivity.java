@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.control.activity.condition;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,18 +22,17 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 /**
- * Created by Administrator on 2017/3/13.
- * 温度控制设置
+ * Created by Administrator on 2017/5/15.
  */
 
-public class TemControlActivity extends BaseActivity implements View.OnClickListener {
+public class BriressControlActivity extends BaseActivity implements View.OnClickListener {
 
     private String TAG = TemControlActivity.class.getSimpleName();
 
     private LinearLayout llBack;
     private TextView btnSure;
     private TextView tvTitle;
-    private RelativeLayout llTem, llMore;
+    private RelativeLayout llTem;
     private int requestCode = 310;
 
     private Condition mCondition;
@@ -72,8 +72,6 @@ public class TemControlActivity extends BaseActivity implements View.OnClickList
         tvTitle.setText(R.string.temp_setting);
         llTem = (RelativeLayout) findViewById(R.id.llTem);
         llTem.setOnClickListener(this);
-        llMore = (RelativeLayout) findViewById(R.id.llMore);
-        llMore.setOnClickListener(this);
         btnSure.setOnClickListener(this);
     }
 
@@ -105,13 +103,9 @@ public class TemControlActivity extends BaseActivity implements View.OnClickList
                 AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo);
                 ((App) getApplicationContext()).finishActivity();
                 break;
-            case R.id.llMore:
-                requestCode = 313;
-                onFabPressed(DialogActivity.class, 8);
-                break;
             case R.id.llTem:
-                requestCode = 314;
-                onFabPressed(DialogTemActivity.class, 9);
+                requestCode = 111;
+                onFabPressed(DialogActivity.class, 9);
                 break;
         }
     }

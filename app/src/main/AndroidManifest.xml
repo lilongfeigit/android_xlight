@@ -149,6 +149,9 @@
             android:name=".control.activity.condition.TemControlActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".control.activity.condition.BriressControlActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".control.activity.dialog.DialogActivity"
             android:screenOrientation="portrait"
             android:theme="@style/dialog_style" />

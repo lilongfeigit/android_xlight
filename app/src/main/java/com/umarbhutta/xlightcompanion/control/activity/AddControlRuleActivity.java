@@ -21,6 +21,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
 import com.umarbhutta.xlightcompanion.okHttp.model.CreateRuleResult;
+import com.umarbhutta.xlightcompanion.okHttp.model.RuleInfo;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rulecondition;
 import com.umarbhutta.xlightcompanion.okHttp.model.Ruleresult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rules;
@@ -56,6 +57,8 @@ public class AddControlRuleActivity extends BaseActivity {
 
     private ListView listview;
     private NewRuleAdapter mNewRuleAdapter;
+    private RuleInfo mRuleInfo;
+    private boolean isEditPage = false;
 
     @Override
     protected void onDestroy() {
@@ -69,7 +72,22 @@ public class AddControlRuleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_control_rule);
         rules = new Rules();
+
+        Intent intent = getIntent();
+        if (null != intent) {
+            mRuleInfo = (RuleInfo) intent.getSerializableExtra("RuleInfo");
+            if (null != mRuleInfo) {
+                isEditPage = true;
+                dealEditInfo();
+            }
+        }
+
+
         initViews();
+    }
+
+    private void dealEditInfo() {
+//   TODO     mRuleInfo.
     }
 
     @Override
@@ -125,12 +143,12 @@ public class AddControlRuleActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if(mNewRuleConditionInfoList.size()==0){
-                    ToastUtil.showToast(AddControlRuleActivity.this,getString(R.string.no_conditions));
+                if (mNewRuleConditionInfoList.size() == 0) {
+                    ToastUtil.showToast(AddControlRuleActivity.this, getString(R.string.no_conditions));
                     return;
                 }
-                if(mNewRuleResultInfoList.size()==0 ){
-                    ToastUtil.showToast(AddControlRuleActivity.this,getString(R.string.no_results));
+                if (mNewRuleResultInfoList.size() == 0) {
+                    ToastUtil.showToast(AddControlRuleActivity.this, getString(R.string.no_results));
                     return;
                 }
                 Ruleresult mRuleresult = new Ruleresult();
@@ -173,7 +191,11 @@ public class AddControlRuleActivity extends BaseActivity {
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText(R.string.create_rule);
+        if (isEditPage) {
+            tvTitle.setText(R.string.eidt_rule);
+        } else {
+            tvTitle.setText(R.string.create_rule);
+        }
     }
 
     /**
@@ -236,7 +258,6 @@ public class AddControlRuleActivity extends BaseActivity {
         lists.add(mActionnotifyList);
 
         return lists;
-
     }
 
 

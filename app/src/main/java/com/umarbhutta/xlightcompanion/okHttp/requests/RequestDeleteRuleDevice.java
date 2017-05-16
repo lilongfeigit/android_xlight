@@ -42,6 +42,9 @@ public class RequestDeleteRuleDevice implements HttpUtils.OnHttpRequestCallBack 
     @Override
     public void onHttpRequestFail(int code, String errMsg) {
         if (null != mCommentRequstCallback) {
+            if (code == 0) {
+                mCommentRequstCallback.onCommentRequstCallbackSuccess();
+            }
             mCommentRequstCallback.onCommentRequstCallbackFail(code, errMsg);
         }
     }

@@ -120,6 +120,7 @@
     <string name="beforehand">Default</string>
     <string name="close">Close</string>
     <string name="create_rule">New Rule</string>
+    <string name="eidt_rule">Edit Rule</string>
     <string name="rule_create_success">Rule created successfully</string>
     <string name="main_device">Main Device</string>
     <string name="rule">Rule</string>

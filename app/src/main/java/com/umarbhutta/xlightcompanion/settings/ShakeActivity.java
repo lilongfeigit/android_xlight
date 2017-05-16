@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.settings;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,15 +10,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
+import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
+import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -32,6 +34,10 @@ public class ShakeActivity extends BaseActivity {
     private SensorManager sensorManager;
     private Vibrator vibrator;
     private static final int SENSOR_SHAKE = 10;
+    private Devicenodes curMainNodes;
+    private TextView deviceName;
+    private CheckBox powerSwitch;
+    private CheckBox scene_switch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +46,10 @@ public class ShakeActivity extends BaseActivity {
         initViews();
     }
 
-    private ShakeAdapter mShakeAdapter;
-    private ListView mListView;
-    private List<String> shakes = new ArrayList<String>();
 
     private void initViews() {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        mListView = (ListView) findViewById(R.id.shakeRecyclerView);
-        mShakeAdapter = new ShakeAdapter(ShakeActivity.this, shakes);
-        mListView.setAdapter(mShakeAdapter);
-        shakes.add("peter");
-        mShakeAdapter.notifyDataSetChanged();
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +66,57 @@ public class ShakeActivity extends BaseActivity {
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(R.string.shake);
+        deviceName = (TextView) findViewById(R.id.scenarioName);
+        powerSwitch = (CheckBox) findViewById(R.id.powerSwitch);
+        scene_switch = (CheckBox) findViewById(R.id.scene_switch);
+
+        powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (scene_switch.isChecked()) {
+                        scene_switch.setChecked(false);
+                    }
+                }
+            }
+        });
+
+        scene_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (powerSwitch.isChecked()) {
+                        powerSwitch.setChecked(false);
+                    }
+                }
+            }
+        });
+
+        findViewById(R.id.scenarioNameLL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null == GlanceMainFragment.devicenodes || GlanceMainFragment.devicenodes.size() <= 0) {
+                    ToastUtil.showToast(ShakeActivity.this, getString(R.string.no_device));
+                    return;
+                }
+
+                Intent intent = new Intent(ShakeActivity.this, DialogRowNameActivity.class);
+                startActivityForResult(intent, 29);
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case 35:
+                curMainNodes = (Devicenodes) data.getSerializableExtra("deviceInfo");
+                deviceName.setText("" + curMainNodes.devicenodename);
+                break;
+        }
     }
 
     @Override
@@ -125,7 +174,11 @@ public class ShakeActivity extends BaseActivity {
             switch (msg.what) {
                 case SENSOR_SHAKE:
                     ToastUtil.showToast(ShakeActivity.this, "检测到摇晃，执行操作！");
-//                    Log.i("xlight", "检测到摇晃，执行操作！");
+                    if (null == curMainNodes) {
+                        ToastUtil.showToast(ShakeActivity.this, R.string.select_device);
+                        return;
+                    }
+
                     break;
             }
         }

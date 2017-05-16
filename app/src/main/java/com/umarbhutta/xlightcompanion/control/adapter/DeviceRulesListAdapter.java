@@ -106,8 +106,12 @@ public class DeviceRulesListAdapter extends BaseAdapter {
                 TextView textView = new TextView(mActivity);
                 textView.setSingleLine(true);
                 textView.setEllipsize(TextUtils.TruncateAt.END);
-                textView.setText((getText(mRuleconditions.ruleconditionname) + getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
-                        + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays) + getText(mRuleconditions.hour) + getText(mRuleconditions.minute)
+//                textView.setText((getText(mRuleconditions.ruleconditionname) + getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
+//                        + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays) + getText(mRuleconditions.hour) + getText(mRuleconditions.minute)
+//                        + getText(mRuleconditions.isrepeat)).trim());
+                textView.setText((getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
+                        + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays)
+                        + (getText(mRuleconditions.hour).trim() + ":") + (getText(mRuleconditions.minute))
                         + getText(mRuleconditions.isrepeat)).trim());
                 holder.listViewTerm.addView(textView);
             }
@@ -130,7 +134,16 @@ public class DeviceRulesListAdapter extends BaseAdapter {
                 TextView textView = new TextView(mActivity);
                 textView.setEllipsize(TextUtils.TruncateAt.END);
                 textView.setSingleLine(true);
-                textView.setText("" + (getText(mRuleactionnotify.msisdn) + getText(mRuleactionnotify.content) + getText(mRuleactionnotify.emailaddress) + getText(mRuleactionnotify.subject)).trim());
+//                textView.setText("" + (getText(mRuleactionnotify.subject) + getText(mRuleactionnotify.msisdn)
+//                        + getText(mRuleactionnotify.content)
+//                        + getText(mRuleactionnotify.emailaddress)
+//                ).trim());
+
+                textView.setText("" + (getText(mRuleactionnotify.subject)
+                        + getText(mRuleactionnotify.content)
+                        + getText(mRuleactionnotify.emailaddress)
+                ).trim());
+
                 holder.listViewResult.addView(textView);
             }
         }
@@ -154,25 +167,25 @@ public class DeviceRulesListAdapter extends BaseAdapter {
             for (int i = 0; i < weekArrs.length; i++) {
                 switch (weekArrs[i]) {
                     case "1":
-                        builder.append(mActivity.getString(R.string.zhouyi)+",");
+                        builder.append(mActivity.getString(R.string.zhouyi) + ",");
                         break;
                     case "2":
-                        builder.append(mActivity.getString(R.string.zhouer)+",");
+                        builder.append(mActivity.getString(R.string.zhouer) + ",");
                         break;
                     case "3":
-                        builder.append(mActivity.getString(R.string.zhousan)+",");
+                        builder.append(mActivity.getString(R.string.zhousan) + ",");
                         break;
                     case "4":
-                        builder.append(mActivity.getString(R.string.zhousi)+",");
+                        builder.append(mActivity.getString(R.string.zhousi) + ",");
                         break;
                     case "5":
-                        builder.append(mActivity.getString(R.string.zhouwu)+",");
+                        builder.append(mActivity.getString(R.string.zhouwu) + ",");
                         break;
                     case "6":
-                        builder.append(mActivity.getString(R.string.zhouilu)+",");
+                        builder.append(mActivity.getString(R.string.zhouilu) + ",");
                         break;
                     default:
-                        builder.append(mActivity.getString(R.string.zhouri)+",");
+                        builder.append(mActivity.getString(R.string.zhouri) + ",");
                         break;
                 }
             }
@@ -215,6 +228,7 @@ public class DeviceRulesListAdapter extends BaseAdapter {
          * @param isChecked
          */
         void onSwitchAction(int position, boolean isChecked);
+
         void onItemLongClick(int position);
     }
 

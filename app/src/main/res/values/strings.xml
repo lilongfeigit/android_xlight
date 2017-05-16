@@ -112,6 +112,7 @@
     <string name="lamp_control">Light Control</string>
     <string name="email_notify">E-mail notification</string>
     <string name="scene_switch">Scenario switching (switching master Scenario)</string>
+    <string name="scene_switch_no">Scenario switching</string>
     <string name="living_room_lamp">Light in the living room</string>
     <string name="please_input_email">Enter Email</string>
     <string name="please_input_right_email">please enter your vaild email</string>
@@ -120,6 +121,7 @@
     <string name="beforehand">Default</string>
     <string name="close">Close</string>
     <string name="create_rule">New Rule</string>
+    <string name="eidt_rule">Edit Rule</string>
     <string name="rule_create_success">Rule created successfully</string>
     <string name="main_device">Main Device</string>
     <string name="rule">Rule</string>

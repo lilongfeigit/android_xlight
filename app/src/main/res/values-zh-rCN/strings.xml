@@ -112,6 +112,7 @@
     <string name="lamp_control">灯具控制</string>
     <string name="email_notify">Email通知</string>
     <string name="scene_switch">场景切换（切换主设备场景）</string>
+    <string name="scene_switch_no">场景切换</string>
     <string name="living_room_lamp">客厅灯</string>
     <string name="please_input_email">请输入邮箱</string>
     <string name="please_input_right_email">请输入正确的邮箱</string>

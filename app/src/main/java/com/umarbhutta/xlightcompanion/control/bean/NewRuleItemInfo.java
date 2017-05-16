@@ -58,6 +58,8 @@ public class NewRuleItemInfo {
             setShowText(mCondition.ruleconditionname);
         }else if(mCondition.conditionType==8){
             setShowText(mCondition.attribute + "   "+mCondition.ruleconditionname + "   " + mCondition.temAbove + "   " + mCondition.rightValue);
+        }else if(mCondition.conditionType==9){
+            setShowText(mCondition.attribute + "   "+ mCondition.temAbove + "   " + mCondition.rightValue);
         }else{
             setShowText(mCondition.ruleconditionname + "   " + mCondition.operator + "   " + mCondition.rightValue);
         }

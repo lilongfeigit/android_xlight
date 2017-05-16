@@ -76,6 +76,7 @@
     <string name="gas">气体</string>
     <string name="load_base_info_fail">加载基础信息失败</string>
     <string name="temp_setting">温度设置</string>
+    <string name="briress_setting">亮度设置</string>
     <string name="please_select_status">请选择状态</string>
     <string name="please_select_temp">请选择温度</string>
     <string name="higer">高于</string>
@@ -209,6 +210,7 @@
     <string name="verifycode">验证码</string>
     <string name="mingcheng">名称</string>
     <string name="touch_temp">触发温度</string>
+    <string name="touch_bress">触发亮度</string>
     <string name="__status">状 态</string>
     <string name="over_zero">零上</string>
     <string name="below_zero">零下</string>

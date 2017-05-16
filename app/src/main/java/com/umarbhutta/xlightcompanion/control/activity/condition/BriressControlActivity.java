@@ -32,7 +32,7 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
     private LinearLayout llBack;
     private TextView btnSure;
     private TextView tvTitle;
-    private RelativeLayout llTem;
+    private RelativeLayout llTem,llMore;
     private int requestCode = 310;
 
     private Condition mCondition;
@@ -46,7 +46,7 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tem);
+        setContentView(R.layout.activity_briress);
         mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
         type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
         ruleconditions = (Ruleconditions) getIntent().getBundleExtra("BUNDLE").getSerializable("RULECONDITIONS");
@@ -69,8 +69,10 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
         });
         btnSure = (TextView) findViewById(R.id.tvEditSure);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText(R.string.temp_setting);
+        tvTitle.setText(R.string.briress_setting);
         llTem = (RelativeLayout) findViewById(R.id.llTem);
+        llMore = (RelativeLayout) findViewById(R.id.llMore);
+        llMore.setOnClickListener(this);
         llTem.setOnClickListener(this);
         btnSure.setOnClickListener(this);
     }
@@ -97,6 +99,7 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
                     ToastUtil.showToast(this, getString(R.string.please_select_temp));
                     return;
                 }
+
                 //确定按钮
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
                 mNewRuleItemInfo.setmCondition(mCondition);
@@ -105,7 +108,11 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.llTem:
                 requestCode = 111;
-                onFabPressed(DialogActivity.class, 9);
+                onFabPressed(DialogActivity.class, 1);
+                break;
+            case R.id.llMore:
+                requestCode = 413;
+                onFabPressed(DialogActivity.class, 12);
                 break;
         }
     }
@@ -114,7 +121,7 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
-            case 31:
+            case 45:
                 mCondition = (Condition) data.getSerializableExtra("MCONDITION");
                 if (mCondition.operator.equals(">")) {
                     tv_more.setText(R.string.higer);
@@ -130,7 +137,7 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
                 }
                 Logger.e(TAG, "mCondition=" + mCondition.toString());
                 break;
-            case 32:
+            case 35:
                 mCondition = (Condition) data.getSerializableExtra("MCONDITION");
                 tv_tem.setText(mCondition.rightValue);
                 Logger.e(TAG, "mCondition=" + mCondition.toString());

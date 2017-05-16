@@ -112,6 +112,7 @@ public class EntryConditionActivity extends BaseActivity {
                         listStr.clear();
                         requestCode = 111;
                         onFabPressed(BriressControlActivity.class, 1);
+//                        onFabPressed(DialogActivity.class, 1);
                         break;
                     case 2://检测到活动
                         listStr.clear();

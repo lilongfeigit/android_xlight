@@ -76,6 +76,7 @@
     <string name="gas">Gas</string>
     <string name="load_base_info_fail">Failed to load basic information...</string>
     <string name="temp_setting">Temperature Setting</string>
+    <string name="briress_setting">Brightness Setting</string>
     <string name="please_select_status">Please select the status</string>
     <string name="please_select_temp">Please select the temperature</string>
     <string name="higer">Above</string>
@@ -209,6 +210,7 @@
     <string name="verifycode">Verification code</string>
     <string name="mingcheng">Name</string>
     <string name="touch_temp">Trigger Temperature</string>
+    <string name="touch_bress">Trigger Brightness</string>
     <string name="__status">State</string>
     <string name="over_zero">above freezing</string>
     <string name="below_zero">below zero</string>

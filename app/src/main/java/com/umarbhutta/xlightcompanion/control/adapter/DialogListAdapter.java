@@ -53,6 +53,9 @@ public class DialogListAdapter extends BaseAdapter {
             case 8:
                 size = 3;
                 break;
+            case 12:
+                size = 3;
+                break;
         }
         return size;
     }
@@ -80,6 +83,15 @@ public class DialogListAdapter extends BaseAdapter {
                 obj = mRuleconditions.data.get(0).gas.get(position);
                 break;
             case 8:
+                if(position==0){
+                    obj =  ">";
+                }else if(position==1){
+                    obj =  "=";
+                }else if(position==2){
+                    obj =  "<";
+                }
+                break;
+            case 12:
                 if(position==0){
                     obj =  ">";
                 }else if(position==1){
@@ -129,6 +141,15 @@ public class DialogListAdapter extends BaseAdapter {
                 holder.tv_setting_name.setText(mRuleconditions.data.get(0).gas.get(position).name);
                 break;
             case 8:
+                if(position==0){
+                    holder.tv_setting_name.setText(">");
+                }else if(position==1){
+                    holder.tv_setting_name.setText("=");
+                }else if(position==2){
+                    holder.tv_setting_name.setText("<");
+                }
+                break;
+            case 12:
                 if(position==0){
                     holder.tv_setting_name.setText(">");
                 }else if(position==1){

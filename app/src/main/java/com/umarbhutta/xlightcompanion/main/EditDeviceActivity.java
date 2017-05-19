@@ -114,7 +114,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
     private class MyStatusReceiver extends StatusReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Logger.e(TAG,"data="+intent.getDataString());
+            Logger.e(TAG, "data=" + intent.getDataString());
             powerSwitch.setChecked(mCurrentDevice.getState() > 0);
             brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
             cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
@@ -220,7 +220,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         if (mCurrentDevice.getEnableEventSendMessage()) {
             m_handlerControl = new Handler() {
                 public void handleMessage(Message msg) {
-                    Logger.e(TAG,"msg="+msg.getData().toString());
+                    Logger.e(TAG, "msg=" + msg.getData().toString());
                     int intValue = msg.getData().getInt("State", -255);
                     if (intValue != -255) {
                         powerSwitch.setChecked(intValue > 0);
@@ -541,7 +541,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         if (deviceInfo.devicenodetype != 1 && !TextUtils.isEmpty(deviceInfo.scenarioId)) {
 //        if (deviceInfo.devicenodetype != 1) {//测试专用
             for (int i = 0; i < viewList.size(); i++) {
-                if (deviceInfo.scenarioId.equals(String.valueOf(mDeviceInfoResult.rows.get(i).id))) {
+                if (i != 0 && deviceInfo.scenarioId.equals(String.valueOf(mDeviceInfoResult.rows.get(i - 1).id))) {
 //                if (i != 0 && "53".equals(String.valueOf(mDeviceInfoResult.rows.get(i - 1).id))) {
                     View cView = viewList.get(i);
                     cView.callOnClick();
@@ -678,7 +678,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         }
 
 
-        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_EDIT_DEVICE_INFO + deviceInfo.id + "?access_token=" + UserUtils.getUserInfo(this).getAccess_token(),
+        HttpUtils.getInstance().putRequestInfo(NetConfig.URL_EDIT_DEVICE_INFO + deviceInfo.deviceId + "?access_token=" + UserUtils.getUserInfo(this).getAccess_token(),
                 jsonObject.toString(), null, new HttpUtils.OnHttpRequestCallBack() {
                     @Override
                     public void onHttpRequestSuccess(Object result) {

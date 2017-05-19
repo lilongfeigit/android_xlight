@@ -294,7 +294,7 @@ public class ShakeActivity extends BaseActivity {
                     @Override
                     public void run() {
                         ShakeActivity.this.cancelProgressDialog();
-                        Logger.i("shake", "配置成功了");
+                        ToastUtil.showToast(ShakeActivity.this, getString(R.string.config_success));
                     }
                 });
 
@@ -306,7 +306,7 @@ public class ShakeActivity extends BaseActivity {
                     @Override
                     public void run() {
                         ShakeActivity.this.cancelProgressDialog();
-                        Logger.i("shake", "配置失败了");
+                        ToastUtil.showToast(ShakeActivity.this, getString(R.string.config_fail));
                     }
                 });
             }

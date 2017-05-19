@@ -256,4 +256,5 @@
     <string name="select_device">请选择设备</string>
     <string name="no_device">你还没有设备</string>
     <string name="eidt_rule">编辑规则</string>
+    <string name="do_not_supoort_shake">此设备不支持摇一摇</string>
 </resources>

@@ -257,4 +257,5 @@
     <string name="lodding">Lodding</string>
     <string name="select_device">Please select device</string>
     <string name="no_device">No device</string>
+    <string name="do_not_supoort_shake">This device does not support shake</string>
 </resources>

@@ -257,4 +257,6 @@
     <string name="no_device">你还没有设备</string>
     <string name="eidt_rule">编辑规则</string>
     <string name="do_not_supoort_shake">此设备不支持摇一摇</string>
+    <string name="config_success">配置成功</string>
+    <string name="config_fail">配置失败</string>
 </resources>

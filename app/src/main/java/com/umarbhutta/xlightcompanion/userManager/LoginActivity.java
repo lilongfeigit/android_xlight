@@ -177,8 +177,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     info.data.get(0).setImage(NetConfig.SERVER_ADDRESS + info.data.get(0).getImage());
                     UserUtils.saveUserInfo(LoginActivity.this, info.data.get(0));
                     ToastUtil.showToast(LoginActivity.this, getString(R.string.login_success));
-                    Intent intent = new Intent(LoginActivity.this, SlidingMenuMainActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(LoginActivity.this, SlidingMenuMainActivity.class);
+//                    startActivity(intent);
                     finish();
                 } else if (info.code == 0) {  //登录失败，提示服务端返回的信息
                     ToastUtil.showToast(LoginActivity.this, ""+info.msg);

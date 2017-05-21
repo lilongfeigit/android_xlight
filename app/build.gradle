@@ -80,4 +80,5 @@ dependencies {
     compile 'me.priyesh:chroma:1.0.2'
     compile files('libs/BaiduLBS_Android.jar')
     compile 'com.android.support:multidex:1.0.1'
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

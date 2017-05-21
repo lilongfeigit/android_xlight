@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位 -->
@@ -62,11 +62,14 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5916f9dc310c935a8a000a10"/>
+            android:value="5916f9dc310c935a8a000a10" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="da3853872705530561e9bd6901092ccd"/>
+            android:value="da3853872705530561e9bd6901092ccd" />
 
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel_ID" />
 
         <activity
             android:name=".main.WelcomActivity"

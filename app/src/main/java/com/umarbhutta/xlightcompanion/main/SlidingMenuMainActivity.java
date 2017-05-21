@@ -16,6 +16,7 @@ import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.settings.BaseFragmentActivity;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
 import java.util.HashMap;
@@ -39,8 +40,8 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 //        setTitle("ResponsiveUI");
         // 设置主视图界面
         setContentView(R.layout.responsive_content_frame);
-        int currentapiVersion=android.os.Build.VERSION.SDK_INT;
-        if(currentapiVersion>=19){
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= 19) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         }
         initSlidingMenu(savedInstanceState);
@@ -157,5 +158,14 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
         return super.dispatchKeyEvent(event);
     }
 
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
 }

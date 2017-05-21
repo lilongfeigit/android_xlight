@@ -14,6 +14,7 @@ import android.view.WindowManager;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
 /**
@@ -30,8 +31,8 @@ public class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /*获取当前系统的android版本号*/
-        int currentapiVersion=android.os.Build.VERSION.SDK_INT;
-        if(currentapiVersion>=19){
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= 19) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         }
         getWindow().setSoftInputMode(
@@ -48,10 +49,18 @@ public class BaseActivity extends FragmentActivity {
             pageName = getLocalClassName();
         }
         super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     /**
      * 获得rootview
+     *
      * @param context
      * @return
      */

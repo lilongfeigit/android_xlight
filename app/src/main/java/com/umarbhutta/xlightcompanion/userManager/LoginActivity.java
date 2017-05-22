@@ -174,7 +174,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 cancelProgressDialog();
                 LoginResult info = (LoginResult) result;
                 if (info.code == 1) {   //登录成功
-                    info.data.get(0).setImage(NetConfig.SERVER_ADDRESS + info.data.get(0).getImage());
+                    info.data.get(0).setImage(NetConfig.SERVER_ADDRESS_DOMAIN + info.data.get(0).getImage());
                     UserUtils.saveUserInfo(LoginActivity.this, info.data.get(0));
                     ToastUtil.showToast(LoginActivity.this, getString(R.string.login_success));
 //                    Intent intent = new Intent(LoginActivity.this, SlidingMenuMainActivity.class);

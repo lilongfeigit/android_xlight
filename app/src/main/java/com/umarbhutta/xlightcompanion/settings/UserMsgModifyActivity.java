@@ -119,9 +119,9 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
                                 JSONObject object = new JSONObject(jsonResult);
                                 if (object.has("filePath")) {
                                     String filePath = object.getString("filePath");
-                                    ImageLoader.getInstance().displayImage(NetConfig.SERVER_ADDRESS + filePath, user_icon, ImageLoaderOptions.getImageLoaderOptions());
+                                    ImageLoader.getInstance().displayImage(NetConfig.SERVER_ADDRESS_DOMAIN + filePath, user_icon, ImageLoaderOptions.getImageLoaderOptions());
                                     LoginResult infos = UserUtils.getUserInfo(UserMsgModifyActivity.this);
-                                    infos.image = NetConfig.SERVER_ADDRESS + filePath;
+                                    infos.image = NetConfig.SERVER_ADDRESS_DOMAIN + filePath;
                                     UserUtils.saveUserInfo(UserMsgModifyActivity.this, infos);
                                 } else {
                                     ToastUtil.showToast(UserMsgModifyActivity.this, getString(R.string.avar_setting_fail));

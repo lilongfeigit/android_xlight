@@ -167,7 +167,7 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
                         RegisteredActivity.this.cancelProgressDialog();
                         LoginResult info = (LoginResult) result;
                         if (info.code == 1) {   //登录成功
-                            info.data.get(0).setImage(NetConfig.SERVER_ADDRESS + info.data.get(0).getImage());
+                            info.data.get(0).setImage(NetConfig.SERVER_ADDRESS_DOMAIN + info.data.get(0).getImage());
                             UserUtils.saveUserInfo(RegisteredActivity.this, info.data.get(0));
                             ToastUtil.showToast(RegisteredActivity.this, getString(R.string.registe_success));
                             finish();

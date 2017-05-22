@@ -119,21 +119,15 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
 
 
         IntentFilter filter = new IntentFilter();
-//        filter.setPriority(2147483647);
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
 
         mWifiReceiver = new WifiReceiver();
         registerReceiver(mWifiReceiver, filter);
-
-        checkPublishPermission();
-//        if (checkPublishPermission()) {
+//        checkPublishPermission();
         getCurWifiInfo();
-//        }
-
-
         handler.sendEmptyMessageDelayed(1, 1000);
-
     }
+
 
     Handler handler = new Handler() {
         @Override
@@ -175,7 +169,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
                 switch (mWifiState) {
                     case WifiManager.WIFI_STATE_ENABLED:
                         //已打开
-                        checkPublishPermission();
+//                        checkPublishPermission();
                         getWifiList();
                         break;
                     case WifiManager.WIFI_STATE_ENABLING:
@@ -204,6 +198,9 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
                     Manifest.permission.ACCESS_WIFI_STATE,
             }, WIFI_PERMISSION_REQ_CODE);
             return;
+        } else {
+            getCurWifiInfo();
+            handler.sendEmptyMessageDelayed(1, 1000);
         }
 
 
@@ -230,6 +227,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
             case WIFI_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {// 允许
                     getCurWifiInfo();
+                    handler.sendEmptyMessageDelayed(1, 1000);
                 } else { // 不允许
                     ToastUtil.showToast(this, getString(R.string.you_refuse_wifi_list));
                 }

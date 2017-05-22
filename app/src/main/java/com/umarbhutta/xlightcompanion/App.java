@@ -20,7 +20,6 @@ import java.util.List;
  */
 
 public class App extends Application {
-    private String TAG = App.class.getSimpleName();
 
     private List<Activity> activityList;
 
@@ -38,14 +37,14 @@ public class App extends Application {
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
-                Logger.i("ument push register success deviceToken = " + deviceToken);
-                Log.e(TAG, "deviceToken=" + deviceToken);
+//                Logger.i("ument push register success deviceToken = " + deviceToken);
+//                Log.e(TAG, "deviceToken=" + deviceToken);
             }
 
             @Override
             public void onFailure(String s, String s1) {
-                Logger.i("ument push register fail s = " + s + ", s1 = " + s1);
-                Log.e(TAG, "s=" + s + "::s1=" + s1);
+//                Logger.i("ument push register fail s = " + s + ", s1 = " + s1);
+//                Log.e(TAG, "s=" + s + "::s1=" + s1);
             }
         });
     }

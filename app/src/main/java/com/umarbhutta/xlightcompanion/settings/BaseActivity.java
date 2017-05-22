@@ -32,7 +32,7 @@ public class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         /*获取当前系统的android版本号*/
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= 19) {
+        if (currentapiVersion >= 20) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         }
         getWindow().setSoftInputMode(

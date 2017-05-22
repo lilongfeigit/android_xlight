@@ -37,11 +37,10 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
-//        setTitle("ResponsiveUI");
         // 设置主视图界面
         setContentView(R.layout.responsive_content_frame);
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= 19) {
+        if (currentapiVersion >= 20) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         }
         initSlidingMenu(savedInstanceState);

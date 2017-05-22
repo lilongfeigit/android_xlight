@@ -28,7 +28,7 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= 19) {
+        if (currentapiVersion >= 20) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));
         }
 

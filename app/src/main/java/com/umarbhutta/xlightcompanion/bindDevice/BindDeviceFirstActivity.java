@@ -61,7 +61,6 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind_device_first);
-//        getSupportActionBar().hide();
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,7 +228,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
                     getCurWifiInfo();
                     handler.sendEmptyMessageDelayed(1, 1000);
                 } else { // 不允许
-                    ToastUtil.showToast(this, getString(R.string.you_refuse_wifi_list));
+//                    ToastUtil.showToast(this, getString(R.string.you_refuse_wifi_list));
                 }
                 break;
         }

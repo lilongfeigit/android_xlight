@@ -6,8 +6,8 @@ package com.umarbhutta.xlightcompanion.okHttp;
 
 public class NetConfig {
 
-    public static final String SERVER_ADDRESS_DOMAIN = "https://iot.xlight.io";
-//    public static final String SERVER_ADDRESS_DOMAIN = "http://123.207.166.211:8080";
+//    public static final String SERVER_ADDRESS_DOMAIN = "https://iot.xlight.io";
+    public static final String SERVER_ADDRESS_DOMAIN = "http://123.207.166.211:8080";
 
     /**
      * 正式版开关
@@ -148,8 +148,8 @@ public class NetConfig {
      */
     public static final String URL_ACTION_SHAKE = SERVER_ADDRESS_DOMAIN + "/shakes/shakestart?access_token=";
 
-//    /**
-//     * 获取摇一摇配置信息
-//     */
-//    public static final String URL_GET_CONFIG_SHAKE_INFO = SERVER_ADDRESS_DOMAIN + "/shakes?access_token=";
+    /**
+     * 获取摇一摇配置信息
+     */
+    public static final String URL_GET_CONFIG_SHAKE_INFO = SERVER_ADDRESS_DOMAIN + "/shakes?access_token=";
 }

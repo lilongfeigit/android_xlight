@@ -18,11 +18,13 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.HttpUtils;
 import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
@@ -41,10 +43,6 @@ public class ShakeActivity extends BaseActivity {
     private LinearLayout llBack;
     private TextView btnSure;
     private TextView tvTitle;
-
-    private SensorManager sensorManager;
-    private Vibrator vibrator;
-    private static final int SENSOR_SHAKE = 10;
     private Devicenodes curMainNodes;
     private TextView deviceName;
     private CheckBox powerSwitch;
@@ -57,10 +55,8 @@ public class ShakeActivity extends BaseActivity {
         initViews();
     }
 
-
     private void initViews() {
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +68,7 @@ public class ShakeActivity extends BaseActivity {
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 确定提交按钮
+                configDeviceInfo();
             }
         });
         tvTitle = (TextView) findViewById(R.id.tvTitle);
@@ -85,7 +81,7 @@ public class ShakeActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if (null == curMainNodes) {
+                if (null == SlidingMenuMainActivity.mShakeInfo) {
                     powerSwitch.setChecked(!isChecked);
                     ToastUtil.showToast(ShakeActivity.this, R.string.select_device);
                     return;
@@ -96,16 +92,13 @@ public class ShakeActivity extends BaseActivity {
                         scene_switch.setChecked(false);
                     }
                 }
-
-                configDeviceInfo();
-
             }
         });
 
         scene_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (null == curMainNodes) {
+                if (null == SlidingMenuMainActivity.mShakeInfo) {
                     scene_switch.setChecked(!isChecked);
                     ToastUtil.showToast(ShakeActivity.this, R.string.select_device);
                     return;
@@ -115,8 +108,6 @@ public class ShakeActivity extends BaseActivity {
                         powerSwitch.setChecked(false);
                     }
                 }
-
-                configDeviceInfo();
             }
         });
 
@@ -132,6 +123,20 @@ public class ShakeActivity extends BaseActivity {
                 startActivityForResult(intent, 29);
             }
         });
+
+
+        if (null != SlidingMenuMainActivity.mShakeInfo) {
+            deviceName.setText("" + SlidingMenuMainActivity.mShakeInfo.devicenodename);
+            if (1 == SlidingMenuMainActivity.mShakeInfo.shakeaction) {
+                scene_switch.setChecked(false);
+                powerSwitch.setChecked(true);
+            } else {
+                powerSwitch.setChecked(false);
+                scene_switch.setChecked(true);
+            }
+        }
+
+
     }
 
     @Override
@@ -150,7 +155,6 @@ public class ShakeActivity extends BaseActivity {
 
                 curMainNodes = mDevicenodes;
                 deviceName.setText("" + curMainNodes.devicenodename);
-                configDeviceInfo();
                 break;
         }
     }
@@ -158,70 +162,27 @@ public class ShakeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (sensorManager != null) {// 注册监听器
-            sensorManager.registerListener(sensorEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-            // 第一个参数是Listener，第二个参数是所得传感器类型，第三个参数值获取传感器信息的频率
-        }
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (sensorManager != null) {// 取消监听器
-            sensorManager.unregisterListener(sensorEventListener);
-        }
     }
-
-
-    /**
-     * * 重力感应监听
-     */
-    private SensorEventListener sensorEventListener = new SensorEventListener() {
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            // 传感器信息改变时执行该方法
-            float[] values = event.values;
-            float x = values[0]; // x轴方向的重力加速度，向右为正
-            float y = values[1]; // y轴方向的重力加速度，向前为正
-            float z = values[2]; // z轴方向的重力加速度，向上为正
-//            Log.i("xlight", "x轴方向的重力加速度" + x + "；y轴方向的重力加速度" + y + "；z轴方向的重力加速度" + z);
-            // 一般在这三个方向的重力加速度达到40就达到了摇晃手机的状态。
-            int medumValue = 25;// 三星 i9250怎么晃都不会超过20，没办法，只设置19了
-//            Logger.i("shake", "x = " + Math.abs(x) + ",y = " + y + ",z = " + z);
-            if (Math.abs(x) > medumValue || Math.abs(y) > medumValue || Math.abs(z) > medumValue) {
-                vibrator.vibrate(200);
-                Message msg = new Message();
-                msg.what = SENSOR_SHAKE;
-                handler.sendMessage(msg);
-            }
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-        }
-    };
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case SENSOR_SHAKE:
-                    //ToastUtil.showToast(ShakeActivity.this, "检测到摇晃，执行操作！");
-                    shakeAction();
-                    break;
-            }
-        }
-
-    };
 
 
     /**
      * 配置设备信息
      */
     private void configDeviceInfo() {
+
+        if (!NetworkUtils.isNetworkAvaliable(this)) {
+            ToastUtil.showToast(this, R.string.net_error);
+            return;
+        }
+
+        showProgressDialog(getString(R.string.commit_img));
+
         LoginResult userInfo = UserUtils.getUserInfo(this);
 
         JSONObject object = new JSONObject();
@@ -240,12 +201,24 @@ public class ShakeActivity extends BaseActivity {
         HttpUtils.getInstance().postRequestInfo(NetConfig.URL_CONFIG_SHAKE_INFO + userInfo.access_token, object.toString(), null, new HttpUtils.OnHttpRequestCallBack() {
             @Override
             public void onHttpRequestSuccess(Object result) {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShakeActivity.this.cancelProgressDialog();
+                        ToastUtil.showToast(ShakeActivity.this, R.string.config_success);
+                    }
+                });
             }
 
             @Override
             public void onHttpRequestFail(int code, String errMsg) {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShakeActivity.this.cancelProgressDialog();
+                        ToastUtil.showToast(ShakeActivity.this, R.string.config_fail);
+                    }
+                });
             }
         });
     }
@@ -264,55 +237,6 @@ public class ShakeActivity extends BaseActivity {
             }
         }
         return null;
-    }
-
-    /**
-     * 触发摇一摇动作
-     */
-    private void shakeAction() {
-        if (null == curMainNodes) {
-            ToastUtil.showToast(ShakeActivity.this, R.string.select_device);
-            return;
-        }
-
-        showProgressDialog(getString(R.string.commit_img));
-
-        JSONObject object = new JSONObject();
-        try {
-            object.put("userId", UserUtils.getUserInfo(ShakeActivity.this).getId());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        /**
-         * 此接口服务器返回异常，应该是code=1为成功，此接口为code=0成功
-         */
-        HttpUtils.getInstance().postRequestInfo(NetConfig.URL_ACTION_SHAKE + UserUtils.getUserInfo(this).access_token, object.toString(), null, new HttpUtils.OnHttpRequestCallBack() {
-            @Override
-            public void onHttpRequestSuccess(Object result) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ShakeActivity.this.cancelProgressDialog();
-                        ToastUtil.showToast(ShakeActivity.this, getString(R.string.config_success));
-                    }
-                });
-
-            }
-
-            @Override
-            public void onHttpRequestFail(int code, String errMsg) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ShakeActivity.this.cancelProgressDialog();
-                        ToastUtil.showToast(ShakeActivity.this, getString(R.string.config_fail));
-                    }
-                });
-            }
-        });
-
-
     }
 
 }

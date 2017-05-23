@@ -198,6 +198,7 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                RegisteredActivity.this.cancelProgressDialog();
                 ToastUtil.showToast(RegisteredActivity.this, getString(R.string.register_fail) + errMsg);
             }
         });

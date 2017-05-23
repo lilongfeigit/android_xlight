@@ -73,6 +73,15 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress == 100) {
                     // 网页加载完成
+                    if(view.canGoBack()){
+                        ib_back.setFocusable(true);
+                        ib_back.setClickable(true);
+                        ib_back.setBackgroundResource(R.drawable.icon_arrow_right);
+                    }else{
+                        ib_back.setFocusable(false);
+                        ib_back.setClickable(false);
+                        ib_back.setBackgroundResource(R.drawable.icon_arrow_right_gray);
+                    }
 
                 }  else {
                     // 加载中

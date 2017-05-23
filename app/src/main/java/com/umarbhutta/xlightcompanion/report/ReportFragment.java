@@ -40,6 +40,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
     private TextView textTitle;
     private Button btn_add;
     private ProgressDialog mDialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,8 +85,17 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress == 100) {
                     // 网页加载完成
+                    if (view.canGoBack()) {
+                        ib_back.setFocusable(true);
+                        ib_back.setClickable(true);
+                        ib_back.setBackgroundResource(R.drawable.icon_arrow_right);
+                    } else {
+                        ib_back.setFocusable(false);
+                        ib_back.setClickable(false);
+                        ib_back.setBackgroundResource(R.drawable.icon_arrow_right_gray);
+                    }
 
-                } else{
+                } else {
 
                 }
 
@@ -109,6 +119,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
     // the meat of switching the above fragment
     private void switchFragment() {
         if (getActivity() == null)
@@ -126,7 +137,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
     public void getReportForm() {
         // 加载中
         mDialog = ProgressDialogUtils.showProgressDialog(getActivity(), getString(R.string.loading));
-        if(mDialog!=null){
+        if (mDialog != null) {
             mDialog.show();
         }
         HttpUtils.getInstance().getRequestInfo(NetConfig.URL_GET_REPORT_FORM + UserUtils.getUserInfo(getActivity()).getAccess_token(), null, new HttpUtils.OnHttpRequestCallBack() {
@@ -143,7 +154,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                             JSONObject dataObj = jsonObject.getJSONObject("data");
                             url = dataObj.getString("url");
                             initViews();
-                            if(mDialog!=null){
+                            if (mDialog != null) {
                                 mDialog.dismiss();
                             }
                         } catch (JSONException e) {

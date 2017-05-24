@@ -231,6 +231,11 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      * 获取title信息
      */
     private void getTitleInfo() {
+
+        if(!NetworkUtils.isNetworkAvaliable(getActivity())){
+            return;
+        }
+
         String forecastUrl = "https://api.forecast.io/forecast/" + CloudAccount.DarkSky_apiKey + "/" + mLatitude + "," + mLongitude;
 
         if (NetworkUtils.isNetworkAvaliable(getActivity())) {
@@ -263,7 +268,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ToastUtil.showToast(getActivity(), "There was an error retrieving weather data.");
+//                                    ToastUtil.showToast(getActivity(), "There was an error retrieving weather data.");
                                 }
                             });
                         }
@@ -273,8 +278,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 }
             });
         } else {
-            //if network isn't available
-            Toast.makeText(getActivity(), "Please connect to the network before continuing.", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -187,15 +187,8 @@ public class AddScenarioNewActivity extends BaseActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //send info back to ScenarioMainFragment
                 scenarioName = nameEditText.getText().toString();
-
                 scenarioInfo = "A " + colorHex + " color with " + scenarioBrightness + "% brightness";
-
-                //SEND TO PARTICLE CLOUD FOR ALL RINGS
-//                SlidingMenuMainActivity.m_mainDevice.sceAddScenario(ScenarioMainFragment.name.size(), scenarioBrightness, cw, ww, r, g, b, xltDevice.DEFAULT_FILTER_ID);
-
-                //send data to update the list
                 Intent returnIntent = getIntent();
                 returnIntent.putExtra(ScenarioMainFragment.SCENARIO_NAME, scenarioName);
                 returnIntent.putExtra(ScenarioMainFragment.SCENARIO_INFO, scenarioInfo);
@@ -207,7 +200,6 @@ public class AddScenarioNewActivity extends BaseActivity {
         backImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //go back to ScenarioMainFragment, do nothing
                 finish();
             }
         });
@@ -235,6 +227,10 @@ public class AddScenarioNewActivity extends BaseActivity {
             int G = scenarionodes.G;
             int B = scenarionodes.B;
 
+
+            red = R;
+            green = G;
+            blue = B;
 
             int color = Color.rgb(R, G, B);
             circleIcon.setColor(color);

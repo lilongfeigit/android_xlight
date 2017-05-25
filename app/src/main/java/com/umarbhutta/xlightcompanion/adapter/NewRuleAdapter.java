@@ -23,7 +23,7 @@ public class NewRuleAdapter extends BaseAdapter {
     private Context context;
     private final LayoutInflater inflater;
     private NewRuleInfo mNewRuleInfo;
-    /**
+    /**`
      * 0既没有执行条件，也没有执行结果，
      * 1有执行条件，没有执行结果
      * 2没有执行条件，有执行结果

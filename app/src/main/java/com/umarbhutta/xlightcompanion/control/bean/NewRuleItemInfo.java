@@ -1,9 +1,12 @@
 package com.umarbhutta.xlightcompanion.control.bean;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
+import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.Tools.WeekUtils;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actionnotify;
 import com.umarbhutta.xlightcompanion.okHttp.model.Condition;
@@ -23,7 +26,7 @@ public class NewRuleItemInfo {
     private Actioncmd mActioncmd;
     private Actionnotify mActionnotify;
 
-    private ControlRuleDevice mControlRuleDevice;//控制的结果
+//    private ControlRuleDevice mControlRuleDevice;//控制的结果
 
     /**
      * 用于显示添加规则页面的item
@@ -42,9 +45,9 @@ public class NewRuleItemInfo {
         return mSchedule;
     }
 
-    public void setmSchedule(Schedule mSchedule) {
+    public void setmSchedule(Schedule mSchedule, Context context) {
         this.mSchedule = mSchedule;
-        setShowText(mSchedule.hour + ":" + mSchedule.minute + " "+mSchedule.scheduleName);
+        setShowText(WeekUtils.getweekdays(mSchedule.weekdays, context) + " " + mSchedule.hour + ":" + mSchedule.minute);
     }
 
     public Condition getmCondition() {
@@ -53,16 +56,30 @@ public class NewRuleItemInfo {
 
     public void setmCondition(Condition condition) {
         this.mCondition = condition;
-        if(mCondition.conditionType==5 ||  mCondition.conditionType==6 || mCondition.conditionType==7
-                || mCondition.conditionType==2 || mCondition.conditionType==3){
-            setShowText(mCondition.ruleconditionname);
-        }else if(mCondition.conditionType==8){
-            setShowText(mCondition.attribute + "   "+mCondition.ruleconditionname + "   " + mCondition.temAbove + "   " + mCondition.rightValue);
-        }else if(mCondition.conditionType==9){
-            setShowText(mCondition.attribute + "   "+ mCondition.temAbove + "   " + mCondition.rightValue);
-        }else{
-            setShowText(mCondition.ruleconditionname + "   " + mCondition.operator + "   " + mCondition.rightValue);
+
+//       ruleconditiontype  亮度2、活动3、声音4、温度5、离家6、回家7、气体8
+
+
+        if (6 == mCondition.ruleconditiontype || 7 == mCondition.ruleconditiontype) {
+            setShowText(mCondition.attribute);
+        } else if (2 == mCondition.ruleconditiontype || 5 == mCondition.ruleconditiontype
+                || 3 == mCondition.ruleconditiontype || 4 == mCondition.ruleconditiontype
+                || 8 == mCondition.ruleconditiontype) {
+            setShowText(mCondition.attribute + "   " + mCondition.operator + "   " + mCondition.rightValue);
+        } else {
+            setShowText(mCondition.attribute + "   " + mCondition.operator + "   " + mCondition.rightValue);
         }
+//        if (mCondition.conditionType == 5 || mCondition.conditionType == 6 || mCondition.conditionType == 7
+//                || mCondition.conditionType == 2 || mCondition.conditionType == 3) {
+//            setShowText(mCondition.ruleconditionname);
+//        } else if (mCondition.conditionType == 8) {
+////            setShowText(mCondition.attribute + "   " + mCondition.ruleconditionname + "   " + mCondition.temAbove + "   " + mCondition.rightValue);
+//            setShowText(mCondition.attribute + "   " + mCondition.temAbove + "   " + mCondition.rightValue);
+//        } else if (mCondition.conditionType == 9) {
+//            setShowText(mCondition.attribute + "   " + mCondition.temAbove + "   " + mCondition.rightValue);
+//        } else {
+//            setShowText(mCondition.ruleconditionname + "   " + mCondition.operator + "   " + mCondition.rightValue);
+//        }
     }
 
     public Actioncmd getmActioncmd() {
@@ -71,10 +88,11 @@ public class NewRuleItemInfo {
 
     public void setmActioncmd(Actioncmd mActioncmd) {
         this.mActioncmd = mActioncmd;
-        if(mActioncmd.actioncmdType==1){
+        if (mActioncmd.actioncmdType == 1) {
             setShowText(mActioncmd.actioncmdfield.get(0).paralist.replace("{", "").replace("}", ""));
-        }else {
-            setShowText(mActioncmd.actioncmdfield.get(0).cmd + " " + mActioncmd.actioncmdfield.get(0).paralist.replace("{", "").replace("}", ""));
+        } else {
+            if (null != mActioncmd.actioncmdfield && mActioncmd.actioncmdfield.size() > 0)
+                setShowText(mActioncmd.actioncmdfield.get(0).cmd + " " + mActioncmd.actioncmdfield.get(0).paralist.replace("{", "").replace("}", ""));
         }
     }
 
@@ -85,11 +103,11 @@ public class NewRuleItemInfo {
     public void setmActionnotify(Actionnotify mActionnotify) {
         this.mActionnotify = mActionnotify;
 
-        if(mActionnotify.actionnotifyType == 1){//邮箱通知
-            setShowText(mActionnotify.name+" "+mActionnotify.emailaddress + " "+mActionnotify.subject + " " + mActionnotify.content);
-        }else if(mActionnotify.actionnotifyType == 2){
-            setShowText(mActionnotify.name+" "+mActionnotify.content);
-        }else {
+        if (mActionnotify.actiontype == 1) {//邮箱通知
+            setShowText(mActionnotify.subject + " " + mActionnotify.content + " " + mActionnotify.emailaddress);
+        } else if (mActionnotify.actiontype == 2) { //通知
+            setShowText(mActionnotify.subject + " " + mActionnotify.content);
+        } else {
             if (StringUtil.isNotEmpty(mActionnotify.msisdn, true)) {
                 setShowText(mActionnotify.msisdn + " " + mActionnotify.content);
             } else {
@@ -104,14 +122,14 @@ public class NewRuleItemInfo {
         }
     }
 
-    public ControlRuleDevice getmControlRuleDevice() {
-        return mControlRuleDevice;
-    }
+//    public ControlRuleDevice getmControlRuleDevice() {
+//        return mControlRuleDevice;
+//    }
 
-    public void setmControlRuleDevice(ControlRuleDevice mControlRuleDevice) {
-        this.mControlRuleDevice = mControlRuleDevice;
-        setShowText(mControlRuleDevice.roomName + " " + mControlRuleDevice.statues+" 亮度："+mControlRuleDevice.brightness+" 色温："+mControlRuleDevice.cct);
-    }
+//    public void setmControlRuleDevice(ControlRuleDevice mControlRuleDevice) {
+//        this.mControlRuleDevice = mControlRuleDevice;
+//        setShowText(mControlRuleDevice.roomName + " " + mControlRuleDevice.statues + " 亮度：" + mControlRuleDevice.brightness + " 色温：" + mControlRuleDevice.cct);
+//    }
 
     /**
      * 获取类型

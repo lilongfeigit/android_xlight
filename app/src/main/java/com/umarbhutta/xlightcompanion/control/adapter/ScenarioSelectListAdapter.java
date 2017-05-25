@@ -108,6 +108,7 @@ public class ScenarioSelectListAdapter extends BaseAdapter {
         mActioncmd.actioncmdfield.add(actioncmdfield);
 
         NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+        mActioncmd.actiontype = 2;
         mNewRuleItemInfo.setmActioncmd(mActioncmd);
         AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
         ((App) mContext.getApplicationContext()).finishActivity();

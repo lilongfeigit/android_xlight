@@ -50,6 +50,8 @@ import okhttp3.Response;
  */
 public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements View.OnClickListener {
 
+    private String TAG = UserMsgModifyActivity.class.getSimpleName();
+
     private LinearLayout llBack;
     private TextView btnSure;
     private TextView tvTitle;
@@ -300,7 +302,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         usernameResult = userInfo.getUsername();
         nickNameResult = userInfo.getNickname();
         sexResResult = TextUtils.isEmpty(userInfo.getSex()) ? "0" : "1";//sex=0代表女，1代表男，没选的话就不传这个参数
-
+        Logger.e(TAG,userInfo.toString());
         this.type = type;
 
         switch (type) {

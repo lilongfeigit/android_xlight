@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.ControlRuleFragment;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
@@ -25,6 +26,8 @@ import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 import com.umarbhutta.xlightcompanion.views.CircleImageView;
 
 public class MainMenuFragment extends Fragment implements View.OnClickListener {
+
+    private String TAG = MainMenuFragment.class.getSimpleName();
 
     private TextView tv_userName, textView;
     private Button btnLogin;
@@ -44,7 +47,9 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             LoginResult userInfo = UserUtils.getUserInfo(getActivity());
             btnLogin.setVisibility(View.GONE);
             llPerName.setVisibility(View.VISIBLE);
-            tv_userName.setText("Welcome  "+UserUtils.getUserInfo(getActivity()).getNickname());
+            Logger.e(TAG,UserUtils.getUserInfo(getActivity()).getNickname());
+            String nickName = UserUtils.getUserInfo(getActivity()).getNickname();
+            tv_userName.setText("Welcome  "+nickName);
             textView.setText(UserUtils.getUserInfo(getActivity()).getEmail());
             ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
         } else {

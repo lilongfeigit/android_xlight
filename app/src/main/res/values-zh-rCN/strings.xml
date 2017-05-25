@@ -247,6 +247,7 @@
     <string name="excute_ad">执行动作：</string>
     <string name="adt">条件：</string>
     <string name="select_pic">选择图片</string>
+    <string name="camera">拍照</string>
     <string name="calary_select">相册选择</string>
     <string name="back">返回</string>
     <string name="title">标题</string>

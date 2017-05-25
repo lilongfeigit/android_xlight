@@ -248,6 +248,7 @@
     <string name="excute_ad">Execution Action：</string>
     <string name="adt">Conditions：</string>
     <string name="select_pic">Select Image</string>
+    <string name="camera">Camera</string>
     <string name="calary_select">Choose from Album</string>
     <string name="back">Back</string>
     <string name="title">Title</string>

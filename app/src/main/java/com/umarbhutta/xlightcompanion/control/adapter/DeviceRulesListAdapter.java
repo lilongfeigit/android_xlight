@@ -12,8 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmdfield;
+import com.umarbhutta.xlightcompanion.okHttp.model.RuleActioncmd;
 import com.umarbhutta.xlightcompanion.okHttp.model.RuleInfo;
 import com.umarbhutta.xlightcompanion.okHttp.model.Ruleactionnotify;
+import com.umarbhutta.xlightcompanion.okHttp.model.Rulecondition;
 import com.umarbhutta.xlightcompanion.okHttp.model.Ruleconditions;
 
 import java.util.List;
@@ -82,6 +85,15 @@ public class DeviceRulesListAdapter extends BaseAdapter {
             }
         });
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mOnItemActionListener) {
+                    mOnItemActionListener.OnItemClick(position);
+                }
+            }
+        });
+
         conditionInfo(position, convertView, parent, holder);
         resultInfo(position, convertView, parent, holder);
 
@@ -109,10 +121,45 @@ public class DeviceRulesListAdapter extends BaseAdapter {
 //                textView.setText((getText(mRuleconditions.ruleconditionname) + getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
 //                        + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays) + getText(mRuleconditions.hour) + getText(mRuleconditions.minute)
 //                        + getText(mRuleconditions.isrepeat)).trim());
-                textView.setText((getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
-                        + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays)
-                        + (getText(mRuleconditions.hour).trim() + ":") + (getText(mRuleconditions.minute))
-                        + getText(mRuleconditions.isrepeat)).trim());
+
+                if (mRuleconditions.ruleconditiontype == 1) {//定时
+                    textView.setText((getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
+                            + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays)
+                            + (getText(mRuleconditions.hour).trim() + ":") + (getText(mRuleconditions.minute))
+                    ).trim());
+                } else if (mRuleconditions.ruleconditiontype == 2) {//亮度
+                    textView.setText((getText(mRuleconditions.attribute)
+                            + getText(mRuleconditions.operator)
+                            + getText(mRuleconditions.rightValue)).trim());
+                } else if (mRuleconditions.ruleconditiontype == 3) { //活动
+                    textView.setText((getText(mRuleconditions.attribute)
+                            + getText(mRuleconditions.operator)
+                            + getText(mRuleconditions.rightValue)).trim());
+                } else if (mRuleconditions.ruleconditiontype == 4) {//声音
+                    textView.setText((getText(mRuleconditions.attribute)
+                            + getText(mRuleconditions.operator)
+                            + getText(mRuleconditions.rightValue)).trim());
+
+                } else if (mRuleconditions.ruleconditiontype == 5) {//温度
+                    textView.setText((getText(mRuleconditions.attribute)
+                            + getText(mRuleconditions.operator)
+                            + getText(mRuleconditions.rightValue)).trim());
+
+                } else if (mRuleconditions.ruleconditiontype == 6) {//离家
+                    textView.setText((getText(mRuleconditions.attribute)));
+
+                } else if (mRuleconditions.ruleconditiontype == 7) {//回家
+                    textView.setText((getText(mRuleconditions.attribute)));
+
+                } else if (mRuleconditions.ruleconditiontype == 8) {//气体
+                    textView.setText((getText(mRuleconditions.attribute) + getText(mRuleconditions.operator)
+                            + getText(mRuleconditions.rightValue)));
+                }
+
+//                textView.setText((getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
+//                        + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays)
+//                        + (getText(mRuleconditions.hour).trim() + ":") + (getText(mRuleconditions.minute))
+//                        + getText(mRuleconditions.isrepeat)).trim());
                 holder.listViewTerm.addView(textView);
             }
         }
@@ -129,16 +176,11 @@ public class DeviceRulesListAdapter extends BaseAdapter {
         holder.listViewResult.removeAllViews();
         RuleInfo mRuleInfo = mRuleInfoList.get(position);
 
-        if (null != mRuleInfo && null != mRuleInfo.ruleactionnotifies && mRuleInfo.ruleactionnotifies.size() > 0) {
+        if (null != mRuleInfo && null != mRuleInfo.ruleactionnotifies && mRuleInfo.ruleactionnotifies.size() > 0) {//通知
             for (Ruleactionnotify mRuleactionnotify : mRuleInfo.ruleactionnotifies) {
                 TextView textView = new TextView(mActivity);
                 textView.setEllipsize(TextUtils.TruncateAt.END);
                 textView.setSingleLine(true);
-//                textView.setText("" + (getText(mRuleactionnotify.subject) + getText(mRuleactionnotify.msisdn)
-//                        + getText(mRuleactionnotify.content)
-//                        + getText(mRuleactionnotify.emailaddress)
-//                ).trim());
-
                 textView.setText("" + (getText(mRuleactionnotify.subject)
                         + getText(mRuleactionnotify.content)
                         + getText(mRuleactionnotify.emailaddress)
@@ -147,6 +189,24 @@ public class DeviceRulesListAdapter extends BaseAdapter {
                 holder.listViewResult.addView(textView);
             }
         }
+
+        if (null != mRuleInfo && null != mRuleInfo.ruleactioncmds && mRuleInfo.ruleactioncmds.size() > 0) {//灯或者场景
+            for (RuleActioncmd action : mRuleInfo.ruleactioncmds) {
+                TextView textView = new TextView(mActivity);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setSingleLine(true);
+
+                if (null != action.actioncmdfields && action.actioncmdfields.size() > 0) {
+                    Actioncmdfield actioncmdfield = action.actioncmdfields.get(0);
+                    textView.setText(actioncmdfield.cmd + "  " + (actioncmdfield.paralist.substring(1, actioncmdfield.paralist.trim().length() - 1)));
+                }
+
+                holder.listViewResult.addView(textView);
+
+            }
+        }
+
+
     }
 
     /**
@@ -230,6 +290,8 @@ public class DeviceRulesListAdapter extends BaseAdapter {
         void onSwitchAction(int position, boolean isChecked);
 
         void onItemLongClick(int position);
+
+        void OnItemClick(int position);
     }
 
 }

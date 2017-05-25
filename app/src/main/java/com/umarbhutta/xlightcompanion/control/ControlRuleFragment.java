@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 新的规则页面
+ * 规则列表页面
  */
 public class ControlRuleFragment extends Fragment implements View.OnClickListener, DeviceRulesListAdapter.OnItemActionListener {
     private static final String TAG = ControlRuleFragment.class.getSimpleName();
@@ -154,15 +154,6 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
                 devicesListAdapter = new DeviceRulesListAdapter(getContext(), mRuleInfoList);
                 devicesListAdapter.addOnItemActionListener(this);
                 rulesRecyclerView.setAdapter(devicesListAdapter);
-                rulesRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        RuleInfo mRuleInfo = mRuleInfoList.get(position);
-                        Intent intent = new Intent(ControlRuleFragment.this.getActivity(), AddControlRuleActivity.class);
-                        intent.putExtra("RuleInfo", mRuleInfo);
-                        startActivity(intent);
-                    }
-                });
             } else {
                 devicesListAdapter.notifyDataSetChanged();
             }
@@ -250,6 +241,15 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
         showDeleteDialog(position);
     }
 
+    @Override
+    public void OnItemClick(int position) {
+        RuleInfo mRuleInfo = mRuleInfoList.get(position);
+        Intent intent = new Intent(ControlRuleFragment.this.getActivity(), AddControlRuleActivity.class);
+        intent.putExtra("RuleInfo", mRuleInfo);
+        startActivity(intent);
+    }
+
+
     private void showDeleteDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.delete_rule_tap));
@@ -302,5 +302,4 @@ public class ControlRuleFragment extends Fragment implements View.OnClickListene
         });
         builder.show();
     }
-
 }

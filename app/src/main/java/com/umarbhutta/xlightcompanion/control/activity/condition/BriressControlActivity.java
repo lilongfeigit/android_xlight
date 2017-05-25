@@ -102,6 +102,7 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
 
                 //确定按钮
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+                mCondition.ruleconditiontype = 2;
                 mNewRuleItemInfo.setmCondition(mCondition);
                 AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo);
                 ((App) getApplicationContext()).finishActivity();

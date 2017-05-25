@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Administrator on 2017/3/25.
+ * 服务器返回的规则执行结果（email通知、APP通知）
  */
 
 public class Ruleactionnotify implements Serializable {
@@ -15,6 +16,10 @@ public class Ruleactionnotify implements Serializable {
     public String subject;
     public String createdAt;
     public String updatedAt;
+    /**
+     * 1：email通知;2:APP通知
+     */
+    public int actiontype;
 
     @Override
     public String toString() {

@@ -34,7 +34,7 @@ public class TimingActivity extends BaseActivity implements View.OnClickListener
     private LinearLayout llBack;
     private RelativeLayout llStartTime, llWeek;
     private TextView btnSure;
-    private TextView tvTitle,tv_week;
+    private TextView tvTitle, tv_week;
     private int requestCode = 210;
     private TextView tv_time;
 
@@ -46,7 +46,7 @@ public class TimingActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_timing);
         //hide nav bar
 //        getSupportActionBar().hide();
-        ((App)getApplicationContext()).setActivity(this);
+        ((App) getApplicationContext()).setActivity(this);
         mSchedule = (Schedule) getIntent().getBundleExtra("BUNDLE").getSerializable("SCHEDULE");
         initViews();
     }
@@ -91,36 +91,37 @@ public class TimingActivity extends BaseActivity implements View.OnClickListener
                     public void onTimeSelect(Date date, String dateStr) {
                         tv_time.setText(dateStr);
                         mSchedule.hour = Integer.parseInt(dateStr.split(":")[0]);
-                        mSchedule.minute  = Integer.parseInt(dateStr.split(":")[1]);
+                        mSchedule.minute = Integer.parseInt(dateStr.split(":")[1]);
                     }
                 });
                 break;
             case R.id.tvEditSure:
-                if(TextUtils.isEmpty(tv_week.getText().toString())){
-                    ToastUtil.showToast(TimingActivity.this,getString(R.string.select_repeate_time));
+                if (TextUtils.isEmpty(tv_week.getText().toString())) {
+                    ToastUtil.showToast(TimingActivity.this, getString(R.string.select_repeate_time));
                     return;
                 }
-                if(TextUtils.isEmpty(tv_time.getText().toString())){
-                    ToastUtil.showToast(TimingActivity.this,getString(R.string.please_select_time));
+                if (TextUtils.isEmpty(tv_time.getText().toString())) {
+                    ToastUtil.showToast(TimingActivity.this, getString(R.string.please_select_time));
                     return;
                 }
 
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
-                mNewRuleItemInfo.setmSchedule(mSchedule);
+                mSchedule.ruleconditiontype = 1;
+                mNewRuleItemInfo.setmSchedule(mSchedule, TimingActivity.this);
                 AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo);
 
-                if(resultCodeA==1){
+                if (resultCodeA == 1) {
                     AddControlRuleActivity.mScheduleListStr.add(selectTime.name);
-                }else if(resultCodeA==2){
+                } else if (resultCodeA == 2) {
                     String strWeekList = "";
-                    for(int i=0;i<array.size();i++){
-                        strWeekList =strWeekList+array.get(i).name+",";
+                    for (int i = 0; i < array.size(); i++) {
+                        strWeekList = strWeekList + array.get(i).name + ",";
                     }
                     AddControlRuleActivity.mScheduleListStr.add(strWeekList);
                 }
 
                 //编辑提交
-                ((App)getApplicationContext()).finishActivity();
+                ((App) getApplicationContext()).finishActivity();
                 break;
             case R.id.llWeek:
                 requestCode = 213;
@@ -131,31 +132,32 @@ public class TimingActivity extends BaseActivity implements View.OnClickListener
 
     private SelectTime selectTime;
     private ArrayList<SelectWeek> array;
-    private  int resultCodeA = 0;
+    private int resultCodeA = 0;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case 10:
-                resultCodeA=1;
+                resultCodeA = 1;
                 selectTime = (SelectTime) data.getSerializableExtra("SELECTTIME");
                 tv_week.setText(selectTime.name);
-                mSchedule.weekdays=selectTime.weekdays;
+                mSchedule.weekdays = selectTime.weekdays;
                 mSchedule.isrepeat = selectTime.isrepeat;
                 mSchedule.scheduleName = selectTime.name;
                 break;
             case 20:
-                resultCodeA=2;
+                resultCodeA = 2;
                 array = data.getParcelableArrayListExtra("SELECTWEEK");
                 String strWeekList = "";
                 String weekDays = "";
-                for(int i=0;i<array.size();i++){
-                    strWeekList =strWeekList+array.get(i).name+"、";
-                    weekDays=weekDays+array.get(i).weekdays+"、";
+                for (int i = 0; i < array.size(); i++) {
+                    strWeekList = strWeekList + array.get(i).name + "、";
+                    weekDays = weekDays + array.get(i).weekdays + "、";
                 }
-                mSchedule.weekdays="["+weekDays.substring(0,weekDays.length()-1)+"]";
-                mSchedule.isrepeat =1;
-                mSchedule.scheduleName = strWeekList.substring(0,strWeekList.length()-1);
-                tv_week.setText(strWeekList.substring(0,strWeekList.length()-1));
+                mSchedule.weekdays = "[" + weekDays.substring(0, weekDays.length() - 1) + "]";
+                mSchedule.isrepeat = 1;
+                mSchedule.scheduleName = strWeekList.substring(0, strWeekList.length() - 1);
+                tv_week.setText(strWeekList.substring(0, strWeekList.length() - 1));
                 break;
             default:
                 break;

@@ -60,7 +60,7 @@ public class DialogActivity extends Activity {
         dialoglist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (type) {// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是大于，小于，等于 ，9是温度
+                switch (type) {// 0是定时 1是亮度 2是活动，3是声音，4是温度 5是离家，6是回家，7是气体 8是温度大于，小于，等于 ，9是亮度
                     case 1:
                         mCondition.attribute = getString(R.string.lightness);
                         mCondition.rightValue = (position + 1) + "";
@@ -83,6 +83,7 @@ public class DialogActivity extends Activity {
 
 
                         NewRuleItemInfo mNewRuleItemInfo1 = new NewRuleItemInfo();
+                        mCondition.ruleconditiontype = 3;
                         mNewRuleItemInfo1.setmCondition(mCondition);
                         AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo1);
                         ((App) getApplicationContext()).finishActivity();
@@ -97,6 +98,7 @@ public class DialogActivity extends Activity {
 
 
                         NewRuleItemInfo mNewRuleItemInfo2 = new NewRuleItemInfo();
+                        mCondition.ruleconditiontype = 4;
                         mNewRuleItemInfo2.setmCondition(mCondition);
                         AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo2);
 
@@ -139,6 +141,7 @@ public class DialogActivity extends Activity {
 
 
                         NewRuleItemInfo mNewRuleItemInfo5 = new NewRuleItemInfo();
+                        mCondition.ruleconditiontype = 8;
                         mNewRuleItemInfo5.setmCondition(mCondition);
                         AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo5);
 

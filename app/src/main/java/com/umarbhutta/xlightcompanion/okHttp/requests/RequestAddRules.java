@@ -17,6 +17,7 @@ public class RequestAddRules implements HttpUtils.OnHttpRequestCallBack {
 
     private Context context;
     private OnCreateRuleCallback mOnCreateRuleCallback;
+    boolean isEdit = false;
 
     public static RequestAddRules getInstance() {
         return new RequestAddRules();
@@ -29,6 +30,7 @@ public class RequestAddRules implements HttpUtils.OnHttpRequestCallBack {
      * @param mOnCreateRuleCallback
      */
     public void createRule(Context context, Rules mRules, OnCreateRuleCallback mOnCreateRuleCallback) {
+        this.isEdit = false;
         this.context = context;
         this.mOnCreateRuleCallback = mOnCreateRuleCallback;
         if (UserUtils.isLogin(context)) {
@@ -41,11 +43,39 @@ public class RequestAddRules implements HttpUtils.OnHttpRequestCallBack {
         }
     }
 
+    /**
+     * 编辑规则
+     *
+     * @param context
+     * @param rules
+     * @param mOnCreateRuleCallback
+     */
+    public void editRule(Context context, Rules rules, int id, OnCreateRuleCallback mOnCreateRuleCallback) {
+        this.isEdit = true;
+        this.context = context;
+        this.mOnCreateRuleCallback = mOnCreateRuleCallback;
+        if (UserUtils.isLogin(context)) {
+            Gson gson = new Gson();
+            String params = gson.toJson(rules);
+            HttpUtils.getInstance().putRequestInfo(NetConfig.URL_EDIT_RULE + id + "?access_token=" +
+                            UserUtils.getUserInfo(context).getAccess_token(),
+                    params, null, this);
+
+
+        }
+    }
+
     @Override
     public void onHttpRequestSuccess(Object result) {
-        CreateRuleResult infos = (CreateRuleResult) result;
-        if (null != mOnCreateRuleCallback) {
-            mOnCreateRuleCallback.mOnCreateRuleCallbackSuccess(infos.data);
+        if (isEdit) {
+            if (null != mOnCreateRuleCallback) {
+                mOnCreateRuleCallback.mOnCreateRuleCallbackSuccess(null);
+            }
+        } else {
+            CreateRuleResult infos = (CreateRuleResult) result;
+            if (null != mOnCreateRuleCallback) {
+                mOnCreateRuleCallback.mOnCreateRuleCallbackSuccess(infos.data);
+            }
         }
     }
 

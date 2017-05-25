@@ -47,7 +47,6 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             LoginResult userInfo = UserUtils.getUserInfo(getActivity());
             btnLogin.setVisibility(View.GONE);
             llPerName.setVisibility(View.VISIBLE);
-            Logger.e(TAG,UserUtils.getUserInfo(getActivity()).getNickname());
             String nickName = UserUtils.getUserInfo(getActivity()).getNickname();
             tv_userName.setText("Welcome  "+nickName);
             textView.setText(UserUtils.getUserInfo(getActivity()).getEmail());

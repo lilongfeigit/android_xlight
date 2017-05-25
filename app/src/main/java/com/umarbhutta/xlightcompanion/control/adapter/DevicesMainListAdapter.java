@@ -76,11 +76,10 @@ public class DevicesMainListAdapter extends BaseAdapter {
         holder.ll_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 点击事件 跳转到编辑设备页面
-                Intent intent = new Intent(mActivity, EditDeviceActivity.class);
-                intent.putExtra("info", mDevicenodes.get(position));
-                intent.putExtra("position", position);
-                mActivity.startActivity(intent);
+                //点击事件
+                if (null != mOnClickListener) {
+                    mOnClickListener.onClickListener(position);
+                }
             }
         });
         holder.ll_item.setOnLongClickListener(new View.OnLongClickListener() {
@@ -96,13 +95,10 @@ public class DevicesMainListAdapter extends BaseAdapter {
 
         holder.mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                devicePlan.setText(!isChecked ? R.string.no_start_plan : R.string.has_start_plan);
-                if (mDevicenodes.size() <= 0 || null == mDevicenodes.get(position)) {
-                    return;
+                //点击事件
+                if (null != mOnSwitchStateChangeListener) {
+                    mOnSwitchStateChangeListener.onSwitchChange(position,isChecked);
                 }
-                SlidingMenuMainActivity.m_mainDevice.setDeviceID(mDevicenodes.get(position).nodeno);
-                SlidingMenuMainActivity.m_mainDevice.PowerSwitch(isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
-                mDevicenodes.get(position).ison = isChecked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
             }
         });
 
@@ -119,6 +115,7 @@ public class DevicesMainListAdapter extends BaseAdapter {
     }
 
     private OnSwitchStateChangeListener mOnSwitchStateChangeListener;
+    private OnClickListener mOnClickListener;
 
     /**
      * 设置item开关通知
@@ -128,9 +125,15 @@ public class DevicesMainListAdapter extends BaseAdapter {
     public void setOnSwitchStateChangeListener(OnSwitchStateChangeListener mOnSwitchStateChangeListener) {
         this.mOnSwitchStateChangeListener = mOnSwitchStateChangeListener;
     }
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.mOnClickListener = onClickListener;
+    }
 
     public interface OnSwitchStateChangeListener {
         void onLongClick(int position);
         void onSwitchChange(int position, boolean checked);
+    }
+    public interface OnClickListener {
+        void onClickListener(int position);
     }
 }

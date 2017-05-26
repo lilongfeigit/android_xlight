@@ -100,14 +100,15 @@ public class DeviceControlSelectActivity extends BaseActivity {
                     ToastUtil.showToast(DeviceControlSelectActivity.this, getString(R.string.select_device));
                     return;
                 }
-                ControlRuleDevice mContolRuleDevice = new ControlRuleDevice();
-                mContolRuleDevice.roomName = lampName.getText().toString();
-                mContolRuleDevice.brightness = brightnessSeekBar.getProgress();
-                mContolRuleDevice.cct = cctSeekBar.getProgress();
-                mContolRuleDevice.statues = (state == false ? "关" : "开");
+//                ControlRuleDevice mContolRuleDevice = new ControlRuleDevice();
+//                mContolRuleDevice.roomName = lampName.getText().toString();
+//                mContolRuleDevice.brightness = brightnessSeekBar.getProgress();
+//                mContolRuleDevice.cct = cctSeekBar.getProgress();
+//                mContolRuleDevice.statues = (state == false ? "关" : "开");
+//                mContolRuleDevice.actiontype = 1;
 
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
-                mNewRuleItemInfo.setmControlRuleDevice(mContolRuleDevice);
+                mNewRuleItemInfo.setmActioncmd(mActioncmd);
                 AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
                 ((App) getApplicationContext()).finishActivity();
             }
@@ -327,6 +328,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
                 if (mActioncmd.actioncmdfield == null) {
                     mActioncmd.actioncmdfield = new ArrayList<Actioncmdfield>();
                 }
+                mActioncmd.actiontype = 1;
                 mActioncmd.actioncmdfield.add(actioncmdfield);
                 updateViews();
                 break;

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ import com.umarbhutta.xlightcompanion.bindDevice.BindDeviceFirstActivity;
 import com.umarbhutta.xlightcompanion.control.adapter.DevicesMainListAdapter;
 import com.umarbhutta.xlightcompanion.deviceList.DeviceListActivity;
 import com.umarbhutta.xlightcompanion.location.BaiduMapUtils;
+import com.umarbhutta.xlightcompanion.main.EditDeviceActivity;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
@@ -136,6 +138,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private class MyDataReceiver extends DataReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e(TAG,"接收到广播了");
 //            roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
 //            roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
 //            roomBrightness.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomBrightness + "\u0025");
@@ -163,10 +166,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_glance, container, false);
-        if (SlidingMenuMainActivity.m_mainDevice == null) {
-            SlidingMenuMainActivity.m_mainDevice = new xltDevice();
-            SlidingMenuMainActivity.m_mainDevice.Init(getActivity());
-        }
 
         //        hide nav bar
         fab = (ImageButton) view.findViewById(R.id.fab);
@@ -213,12 +212,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         icoPartlyCloudyDay = Bitmap.createBitmap(weatherIcons, ICON_WIDTH, ICON_HEIGHT, ICON_WIDTH, ICON_HEIGHT);
         icoPartlyCloudyNight = Bitmap.createBitmap(weatherIcons, ICON_WIDTH * 2, ICON_HEIGHT, ICON_WIDTH, ICON_HEIGHT);
 
-        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
-            IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
-            intentFilter.setPriority(3);
-            getContext().registerReceiver(m_DataReceiver, intentFilter);
-        }
-
         //setup recycler view
         devicesListView = (ListView) view.findViewById(R.id.devicesListView);
 
@@ -232,7 +225,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
      */
     private void getTitleInfo() {
 
-        if(!NetworkUtils.isNetworkAvaliable(getActivity())){
+        if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
             return;
         }
 
@@ -495,9 +488,9 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
                     SlidingMenuMainActivity.xltDeviceMaps.put(deviceList.get(i).coreid, m_XltDevice);
                 }
-                if (deviceList.get(i).maindevice == 1) {//主设备
-                    SlidingMenuMainActivity.m_mainDevice = m_XltDevice;
-                }
+//                if (deviceList.get(i).maindevice == 1) {//主设备
+//                    SlidingMenuMainActivity.m_mainDevice = m_XltDevice;
+//                }
             }
             devicenodes.clear();
             for (int i = 0; i < deviceList.size(); i++) {
@@ -515,9 +508,37 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
                 @Override
                 public void onSwitchChange(int position, boolean checked) {
+                    SlidingMenuMainActivity.m_mainDevice = SlidingMenuMainActivity.xltDeviceMaps.get(devicenodes.get(position).coreid);
 
+                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(devicenodes.get(position).nodeno);
+
+                    SlidingMenuMainActivity.m_mainDevice.PowerSwitch(checked ? xltDevice.STATE_ON : xltDevice.STATE_OFF);
+                    devicenodes.get(position).ison = checked ? xltDevice.STATE_ON : xltDevice.STATE_OFF;
                 }
             });
+            devicesListAdapter.setOnClickListener(new DevicesMainListAdapter.OnClickListener() {
+                @Override
+                public void onClickListener(int position) {
+                    // 点击事件 跳转到编辑设备页面
+                    Intent intent = new Intent(getActivity(), EditDeviceActivity.class);
+                    intent.putExtra("info", devicenodes.get(position));
+                    intent.putExtra("position", position);
+                    getActivity().startActivity(intent);
+                    //TODO TODO  设置监听 广播回调
+                    SlidingMenuMainActivity.m_mainDevice = SlidingMenuMainActivity.xltDeviceMaps.get(devicenodes.get(position).coreid);
+
+                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(devicenodes.get(position).nodeno);
+
+                    if (SlidingMenuMainActivity.m_mainDevice != null) {
+                        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
+                            IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
+                            intentFilter.setPriority(3);
+                            getContext().registerReceiver(m_DataReceiver, intentFilter);
+                        }
+                    }
+                }
+            });
+
             devicesListAdapter.notifyDataSetChanged();
             if (null != deviceList && deviceList.size() > 0) {
                 default_text.setVisibility(View.GONE);

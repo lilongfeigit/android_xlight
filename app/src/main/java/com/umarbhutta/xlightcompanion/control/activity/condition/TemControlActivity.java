@@ -101,6 +101,7 @@ public class TemControlActivity extends BaseActivity implements View.OnClickList
                 }
                 //确定按钮
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+                mCondition.ruleconditiontype = 5;
                 mNewRuleItemInfo.setmCondition(mCondition);
                 AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo);
                 ((App) getApplicationContext()).finishActivity();

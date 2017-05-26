@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -39,6 +40,8 @@ import org.json.JSONObject;
  */
 
 public class ShakeActivity extends BaseActivity {
+
+    private String TAG = ShakeActivity.class.getSimpleName();
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -180,7 +183,10 @@ public class ShakeActivity extends BaseActivity {
             ToastUtil.showToast(this, R.string.net_error);
             return;
         }
-
+        if(curMainNodes==null){
+            ToastUtil.showToast(this, R.string.select_device);
+            return;
+        }
         showProgressDialog(getString(R.string.commit_img));
 
         LoginResult userInfo = UserUtils.getUserInfo(this);

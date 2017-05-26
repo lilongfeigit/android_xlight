@@ -6,7 +6,7 @@ package com.umarbhutta.xlightcompanion.okHttp;
 
 public class NetConfig {
 
-//    public static final String SERVER_ADDRESS_DOMAIN = "https://iot.xlight.io";
+    //    public static final String SERVER_ADDRESS_DOMAIN = "https://iot.xlight.io";
     public static final String SERVER_ADDRESS_DOMAIN = "http://123.207.166.211:8080";
 
     /**
@@ -152,4 +152,8 @@ public class NetConfig {
      * 获取摇一摇配置信息
      */
     public static final String URL_GET_CONFIG_SHAKE_INFO = SERVER_ADDRESS_DOMAIN + "/shakes?access_token=";
+    /**
+     * 编辑规则
+     */
+    public static final String URL_EDIT_RULE = SERVER_ADDRESS_DOMAIN + "/rules/";
 }

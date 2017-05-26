@@ -141,6 +141,7 @@ public class EntryConditionActivity extends BaseActivity {
                         mCondition.conditionType = 5;
 
                         NewRuleItemInfo mNewRuleItemInfo3 = new NewRuleItemInfo();
+                        mCondition.ruleconditiontype = 6;
                         mNewRuleItemInfo3.setmCondition(mCondition);
                         AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo3);
                         ((App) getApplicationContext()).finishActivity();
@@ -157,6 +158,7 @@ public class EntryConditionActivity extends BaseActivity {
                         mCondition.conditionType = 6;
 
                         NewRuleItemInfo mNewRuleItemInfo4 = new NewRuleItemInfo();
+                        mCondition.ruleconditiontype = 7;
                         mNewRuleItemInfo4.setmCondition(mCondition);
                         AddControlRuleActivity.mNewRuleConditionInfoList.add(mNewRuleItemInfo4);
 

@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,7 +72,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private ImageButton fab;
     TextView txtLocation, outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
     ImageView imgWeather;
-    private ImageButton home_menu, home_setting;
+    private RelativeLayout home_menu, home_setting;
 
     private static final String TAG = GlanceMainFragment.class.getSimpleName();
     private ListView devicesListView;
@@ -100,12 +101,12 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             case R.id.home_setting:
                 // 跳转到选择的主设备列表页面
 
-                if (null == deviceList || deviceList.size() <= 0) { //如果目前还没有controller就跳到绑定设备页面
-                    Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
-                    onFabPressed(DeviceListActivity.class);
-                }
+//                if (null == deviceList || deviceList.size() <= 0) { //如果目前还没有controller就跳到绑定设备页面
+//                    Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
+                onFabPressed(DeviceListActivity.class);
+//                }
 
                 break;
             case R.id.home_menu:
@@ -138,7 +139,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private class MyDataReceiver extends DataReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e(TAG,"接收到广播了");
+            Log.e(TAG, "接收到广播了");
 //            roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
 //            roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
 //            roomBrightness.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomBrightness + "\u0025");
@@ -150,7 +151,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     @Override
     public void onDestroyView() {
         devicesListView.setAdapter(null);
-        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
+        if (null != SlidingMenuMainActivity.m_mainDevice && SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
             getContext().unregisterReceiver(m_DataReceiver);
         }
         super.onDestroyView();
@@ -190,9 +191,9 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         roomHumidity = (TextView) view.findViewById(R.id.valRoomHumidity);
 //        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         imgWeather = (ImageView) view.findViewById(R.id.weatherIcon);
-        home_menu = (ImageButton) view.findViewById(R.id.home_menu);
+        home_menu = (RelativeLayout) view.findViewById(R.id.home_menu);
         home_menu.setOnClickListener(this);
-        home_setting = (ImageButton) view.findViewById(R.id.home_setting);
+        home_setting = (RelativeLayout) view.findViewById(R.id.home_setting);
         home_setting.setOnClickListener(this);
         save_money = (TextView) view.findViewById(R.id.save_money);
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
@@ -59,6 +60,7 @@ public class EntryConditionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         //hide nav bar
 //        getSupportActionBar().hide();
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
@@ -47,6 +48,7 @@ public class BriressControlActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_briress);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         mCondition = (Condition) getIntent().getBundleExtra("BUNDLE").getSerializable("CONDITION");
         type = getIntent().getBundleExtra("BUNDLE").getInt("TYPE");
         ruleconditions = (Ruleconditions) getIntent().getBundleExtra("BUNDLE").getSerializable("RULECONDITIONS");

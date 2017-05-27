@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
@@ -39,6 +40,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
 //        getSupportActionBar().hide();
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +73,11 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
             listView.setVisibility(View.GONE);
             view_top_line.setVisibility(View.GONE);
             view_bottom_line.setVisibility(View.GONE);
+        }
+
+
+        if (null == GlanceMainFragment.deviceList || GlanceMainFragment.deviceList.size() <= 0) {
+            ToastUtil.showToast(this, R.string.you_have_no_device_and_add);
         }
     }
 

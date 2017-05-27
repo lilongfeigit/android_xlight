@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
@@ -147,6 +148,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_msg_modify);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
 //        getSupportActionBar().hide();
         initViews();
         hasPermision = checkPublishPermission();

@@ -28,6 +28,7 @@ import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
@@ -125,6 +126,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_control);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         mInflater = LayoutInflater.from(this);
 
         deviceInfo = (Devicenodes) getIntent().getSerializableExtra("info");
@@ -384,7 +386,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
                 String title = getString(R.string.edit_device_name);
                 et = (EditText) mInflater.inflate(R.layout.layout_edittext, null);
 
-                new DialogUtils().getEditTextDialog(EditDeviceActivity.this, title, new DialogUtils.OnClickOkBtnListener() {
+                new DialogUtils().getEditTextDialog(EditDeviceActivity.this, title,mscenarioName.getText().toString(), new DialogUtils.OnClickOkBtnListener() {
                     @Override
                     public void onClickOk(String editTextStr) {
                         if (TextUtils.isEmpty(editTextStr)) {
@@ -494,7 +496,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         });
 
 
-        //TODO 场景列表跳到对应的位置
+        // 场景列表跳到对应的位置
         RequestDeviceDetailInfo.getInstance().getDeviceInfo(this, deviceInfo.id, new RequestDeviceDetailInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(DeviceInfoResult mDeviceInfoResult) {

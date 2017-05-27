@@ -66,6 +66,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 0://个人信息
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
+                            getActivity().finish();
                             return;
                         }
                         onFabPressed(UserMsgModifyActivity.class);
@@ -73,6 +74,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 1://修改密码
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
+                            getActivity().finish();
                             return;
                         }
                         onFabPressed(ModifyPasswordActivity.class);
@@ -80,6 +82,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 2://摇一摇
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
+                            getActivity().finish();
                             return;
                         }
                         onFabPressed(ShakeActivity.class);
@@ -93,6 +96,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                     case 3://退出登录
                         if (!UserUtils.isLogin(getActivity())) {
                             onFabPressed(LoginActivity.class);
+                            getActivity().finish();
                             return;
                         }
                         logout();
@@ -113,6 +117,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private void logout() {
         UserUtils.saveUserInfo(getActivity(), null);
         startActivity(new Intent(getActivity(), LoginActivity.class));
+        getActivity().finish();
     }
 
     @Override

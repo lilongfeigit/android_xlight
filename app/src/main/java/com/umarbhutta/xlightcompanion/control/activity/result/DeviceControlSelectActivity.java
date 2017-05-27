@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogRowNameActivity;
@@ -56,6 +57,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_control);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         mInflater = LayoutInflater.from(this);
         ((App) getApplicationContext()).setActivity(this);
 

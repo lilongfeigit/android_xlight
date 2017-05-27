@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
@@ -35,6 +36,7 @@ public class AppNotifyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_notify);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         //hide nav bar
 //        getSupportActionBar().hide();
         ((App) getApplicationContext()).setActivity(this);

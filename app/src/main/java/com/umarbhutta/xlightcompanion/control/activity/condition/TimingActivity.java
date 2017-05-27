@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.activity.AddControlRuleActivity;
 import com.umarbhutta.xlightcompanion.control.activity.dialog.DialogWeelActivity;
@@ -44,6 +45,7 @@ public class TimingActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timing);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         //hide nav bar
 //        getSupportActionBar().hide();
         ((App) getApplicationContext()).setActivity(this);

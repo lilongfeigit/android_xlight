@@ -109,11 +109,13 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_login:
                 showContentView();
                 onFabPressed(LoginActivity.class);
+                getActivity().finish();
                 break;
             case R.id.userIcon:
                 showContentView();
                 if (!UserUtils.isLogin(getActivity())) {
                     onFabPressed(LoginActivity.class);
+                    getActivity().finish();
                     return;
                 }
                 onFabPressed(UserMsgModifyActivity.class);
@@ -131,6 +133,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 if (!UserUtils.isLogin(getActivity())) {
                     showContentView();
                     onFabPressed(LoginActivity.class);
+                    getActivity().finish();
                     return;
                 }
                 itemControl.setBackgroundColor(getResources().getColor(R.color.bar_color));
@@ -146,6 +149,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 if (!UserUtils.isLogin(getActivity())) {
                     showContentView();
                     onFabPressed(LoginActivity.class);
+                    getActivity().finish();
                     return;
                 }
                 itemScenario.setBackgroundColor(getResources().getColor(R.color.bar_color));
@@ -161,6 +165,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 if (!UserUtils.isLogin(getActivity())) {
                     showContentView();
                     onFabPressed(LoginActivity.class);
+                    getActivity().finish();
                     return;
                 }
                 itemSchedule.setBackgroundColor(getResources().getColor(R.color.bar_color));
@@ -176,6 +181,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 if (!UserUtils.isLogin(getActivity())) {
                     showContentView();
                     onFabPressed(LoginActivity.class);
+                    getActivity().finish();
                     return;
                 }
                 itemSettings.setBackgroundColor(getResources().getColor(R.color.bar_color));

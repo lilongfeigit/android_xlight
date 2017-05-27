@@ -2,6 +2,7 @@ package com.umarbhutta.xlightcompanion.settings;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -110,5 +111,4 @@ public class BaseActivity extends FragmentActivity {
             mProgressDialog.show();
         }
     }
-
 }

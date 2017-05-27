@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.adapter.WifiListAdapter;
@@ -61,6 +63,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind_device_first);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -323,6 +326,10 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
             return;
         }
 
+        if(TextUtils.isEmpty(wifiPwdEdit.getText().toString())){
+            ToastUtil.showToast(this,getString(R.string.please_input_wifi_pwd));
+            return;
+        }
 
         RequestAddDevice.getInstance().addDevice(this, "deviceTest", 0, 1, 0, new RequestAddDevice.OnAddDeviceCallBack() {
             @Override

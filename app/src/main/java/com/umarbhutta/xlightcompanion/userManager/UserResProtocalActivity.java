@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 /**
@@ -27,6 +28,7 @@ public class UserResProtocalActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registerd_protocal);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
 //        getSupportActionBar().hide();
         url = getIntent().getStringExtra("url");
         initViews();

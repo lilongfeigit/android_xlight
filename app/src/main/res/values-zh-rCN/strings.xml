@@ -261,4 +261,5 @@
     <string name="config_success">配置成功</string>
     <string name="config_fail">配置失败</string>
     <string name="title_setting">设置</string>
+    <string name="please_input_wifi_pwd">请输入WiFi密码</string>
 </resources>

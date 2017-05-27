@@ -262,4 +262,5 @@
     <string name="config_success">Configuration is successful</string>
     <string name="config_fail">Configuration failed</string>
     <string name="title_setting">Setting</string>
+    <string name="please_input_wifi_pwd">Please input wifi password</string>
 </resources>

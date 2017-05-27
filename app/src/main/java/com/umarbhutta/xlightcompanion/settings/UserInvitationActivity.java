@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 
 /**
  * Created by Administrator on 2017/3/5.
@@ -21,6 +22,7 @@ public class UserInvitationActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_invitation);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         //hide nav bar
 //        getSupportActionBar().hide();
         initViews();

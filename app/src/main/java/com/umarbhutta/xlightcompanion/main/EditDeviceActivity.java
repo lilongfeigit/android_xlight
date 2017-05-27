@@ -28,6 +28,7 @@ import android.widget.ToggleButton;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
@@ -125,6 +126,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_control);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         mInflater = LayoutInflater.from(this);
 
         deviceInfo = (Devicenodes) getIntent().getSerializableExtra("info");

@@ -21,6 +21,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
@@ -57,6 +58,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         // 设置主视图界面
         setContentView(R.layout.responsive_content_frame);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= 20) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.bar_color));

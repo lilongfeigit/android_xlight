@@ -17,6 +17,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
@@ -67,6 +68,7 @@ public class AddScenarioNewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_scenario_new);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
 
 //        getSupportActionBar().hide();
 

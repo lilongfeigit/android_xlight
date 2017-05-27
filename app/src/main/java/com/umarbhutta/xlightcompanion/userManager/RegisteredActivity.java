@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
@@ -43,6 +44,7 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registerd);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         initViews();
         getHelpUrl();
     }

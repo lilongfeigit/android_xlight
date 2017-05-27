@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.control.adapter.ScenarioSelectListAdapter;
 import com.umarbhutta.xlightcompanion.okHttp.model.Actioncmd;
@@ -51,6 +52,7 @@ public class SelectScenarioActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_scenario);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         name = new ArrayList<String>(Arrays.asList(getString(R.string.beforehand) + " 1", getString(R.string.beforehand) + " 2", getString(R.string.close)));
         //hide nav bar
 //        getSupportActionBar().hide();

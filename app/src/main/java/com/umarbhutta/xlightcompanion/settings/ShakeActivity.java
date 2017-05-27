@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
@@ -55,6 +56,7 @@ public class ShakeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shake);
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         initViews();
     }
 
@@ -183,7 +185,13 @@ public class ShakeActivity extends BaseActivity {
             ToastUtil.showToast(this, R.string.net_error);
             return;
         }
-        if(curMainNodes==null){
+        if (curMainNodes == null) {
+
+            if (null != SlidingMenuMainActivity.mShakeInfo) {
+                ToastUtil.showToast(this, R.string.config_success);
+                return;
+            }
+
             ToastUtil.showToast(this, R.string.select_device);
             return;
         }

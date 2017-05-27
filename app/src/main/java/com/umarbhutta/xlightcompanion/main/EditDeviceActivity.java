@@ -386,7 +386,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
                 String title = getString(R.string.edit_device_name);
                 et = (EditText) mInflater.inflate(R.layout.layout_edittext, null);
 
-                new DialogUtils().getEditTextDialog(EditDeviceActivity.this, title, new DialogUtils.OnClickOkBtnListener() {
+                new DialogUtils().getEditTextDialog(EditDeviceActivity.this, title,mscenarioName.getText().toString(), new DialogUtils.OnClickOkBtnListener() {
                     @Override
                     public void onClickOk(String editTextStr) {
                         if (TextUtils.isEmpty(editTextStr)) {
@@ -496,7 +496,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         });
 
 
-        //TODO 场景列表跳到对应的位置
+        // 场景列表跳到对应的位置
         RequestDeviceDetailInfo.getInstance().getDeviceInfo(this, deviceInfo.id, new RequestDeviceDetailInfo.OnRequestFirstPageInfoCallback() {
             @Override
             public void onRequestFirstPageInfoSuccess(DeviceInfoResult mDeviceInfoResult) {

@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,7 +72,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private ImageButton fab;
     TextView txtLocation, outsideTemp, degreeSymbol, roomTemp, roomHumidity, outsideHumidity, apparentTemp;
     ImageView imgWeather;
-    private ImageButton home_menu, home_setting;
+    private RelativeLayout home_menu, home_setting;
 
     private static final String TAG = GlanceMainFragment.class.getSimpleName();
     private ListView devicesListView;
@@ -190,9 +191,9 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         roomHumidity = (TextView) view.findViewById(R.id.valRoomHumidity);
 //        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         imgWeather = (ImageView) view.findViewById(R.id.weatherIcon);
-        home_menu = (ImageButton) view.findViewById(R.id.home_menu);
+        home_menu = (RelativeLayout) view.findViewById(R.id.home_menu);
         home_menu.setOnClickListener(this);
-        home_setting = (ImageButton) view.findViewById(R.id.home_setting);
+        home_setting = (RelativeLayout) view.findViewById(R.id.home_setting);
         home_setting.setOnClickListener(this);
         save_money = (TextView) view.findViewById(R.id.save_money);
 

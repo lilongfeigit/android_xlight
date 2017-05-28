@@ -29,6 +29,7 @@ import android.widget.ToggleButton;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
+import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
@@ -112,10 +113,11 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
     private final MyStatusReceiver m_StatusReceiver = new MyStatusReceiver();
 
+    //TODO TODO
     private class MyStatusReceiver extends StatusReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Logger.e(TAG, "data=" + intent.getDataString());
+            Logger.e(TAG, "data=" + intent.getIntExtra("nd",0));
             powerSwitch.setChecked(mCurrentDevice.getState() > 0);
             brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
             cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
@@ -193,12 +195,14 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
         mCurrentDevice.setDeviceID(deviceInfo.nodeno);
 
-        Log.e("EditDeviceActivity", "nodeno=" + deviceInfo.nodeno + ";;;coreid=" + deviceInfo.coreid
-                + ";devicenodetype=" + deviceInfo.devicenodetype);
+        mCurrentDevice.QueryStatus();//查询所有的状态，通过handler或者广播发送过来。
 
-        Log.e(TAG, "CCT=" + mCurrentDevice.getCCT(deviceInfo.nodeno) + ";State=" + mCurrentDevice.getState(deviceInfo.nodeno) + ";blue=" +
-                mCurrentDevice.getBlue(deviceInfo.nodeno) + ";red=" + mCurrentDevice.getRed(deviceInfo.nodeno) + ";green=" + mCurrentDevice.getGreen(deviceInfo.nodeno) + ";Brightness" +
-                mCurrentDevice.getBrightness(deviceInfo.nodeno));
+//        Log.e("EditDeviceActivity", "nodeno=" + deviceInfo.nodeno + ";;;coreid=" + deviceInfo.coreid
+//                + ";devicenodetype=" + deviceInfo.devicenodetype);
+//
+//        Log.e(TAG, "CCT=" + mCurrentDevice.getCCT(deviceInfo.nodeno) + ";State=" + mCurrentDevice.getState(deviceInfo.nodeno) + ";blue=" +
+//                mCurrentDevice.getBlue(deviceInfo.nodeno) + ";red=" + mCurrentDevice.getRed(deviceInfo.nodeno) + ";green=" + mCurrentDevice.getGreen(deviceInfo.nodeno) + ";Brightness" +
+//                mCurrentDevice.getBrightness(deviceInfo.nodeno));
 
         mscenarioName.setText(deviceInfo.devicenodename);
         powerSwitch.setChecked((mCurrentDevice.getState() == 0) ? false : true);
@@ -217,12 +221,17 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
             intentFilter.setPriority(3);
             registerReceiver(m_StatusReceiver, intentFilter);
+        }else{
+            mCurrentDevice.setEnableEventBroadcast(true);
+            IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
+            intentFilter.setPriority(3);
+            registerReceiver(m_StatusReceiver, intentFilter);
         }
 
         if (mCurrentDevice.getEnableEventSendMessage()) {
             m_handlerControl = new Handler() {
                 public void handleMessage(Message msg) {
-                    Logger.e(TAG, "msg=" + msg.getData().toString());
+                    Logger.e("XlightControl", "msg=" + msg.getData().toString());
                     int intValue = msg.getData().getInt("State", -255);
                     if (intValue != -255) {
                         powerSwitch.setChecked(intValue > 0);
@@ -386,7 +395,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
                 String title = getString(R.string.edit_device_name);
                 et = (EditText) mInflater.inflate(R.layout.layout_edittext, null);
 
-                new DialogUtils().getEditTextDialog(EditDeviceActivity.this, title,mscenarioName.getText().toString(), new DialogUtils.OnClickOkBtnListener() {
+                new DialogUtils().getEditTextDialog(EditDeviceActivity.this, title, mscenarioName.getText().toString(), new DialogUtils.OnClickOkBtnListener() {
                     @Override
                     public void onClickOk(String editTextStr) {
                         if (TextUtils.isEmpty(editTextStr)) {
@@ -407,6 +416,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         if (mCurrentDevice.getEnableEventBroadcast()) {
             unregisterReceiver(m_StatusReceiver);
         }
+        mCurrentDevice.Disconnect();
         super.onDestroy();
     }
 
@@ -688,7 +698,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtil.showToast(EditDeviceActivity.this, getString(R.string.modify_success));
+//                                ToastUtil.showToast(EditDeviceActivity.this, getString(R.string.modify_success));
 //                                setResult(0);
 //                                EditDeviceActivity.this.finish();
 

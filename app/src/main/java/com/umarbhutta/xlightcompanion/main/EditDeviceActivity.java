@@ -195,7 +195,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
         mCurrentDevice.QueryStatus();//查询所有的状态，通过handler或者广播发送过来。
 
-//        mscenarioName.setText(deviceInfo.devicenodename);
+        mscenarioName.setText(deviceInfo.devicenodename);
 //        powerSwitch.setChecked((mCurrentDevice.getState() == 0) ? false : true);
 //        brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
 //        cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);

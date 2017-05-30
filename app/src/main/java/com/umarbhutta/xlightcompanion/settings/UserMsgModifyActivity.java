@@ -296,7 +296,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
     }
 
     /**
-     * @param type   0修改账号，1修改呢称，2修改性别
+     * @param type   0修改账号，1修改昵称，2修改性别
      * @param result
      */
     private void modifyUserInfo(int type, String result) {

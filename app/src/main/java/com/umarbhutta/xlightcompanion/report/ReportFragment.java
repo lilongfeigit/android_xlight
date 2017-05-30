@@ -56,6 +56,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         webView = (WebView) view.findViewById(R.id.helpWebview);
         ib_back = (ImageButton) view.findViewById(R.id.ib_back);
         ib_back.setOnClickListener(this);
+        ib_back.setVisibility(View.INVISIBLE);
         ib_refresh = (ImageButton) view.findViewById(R.id.ib_refresh);
         ib_refresh.setOnClickListener(this);
         //启用支持javascript
@@ -89,10 +90,12 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                         ib_back.setFocusable(true);
                         ib_back.setClickable(true);
                         ib_back.setBackgroundResource(R.drawable.icon_arrow_right);
+                        ib_back.setVisibility(View.VISIBLE);
                     } else {
                         ib_back.setFocusable(false);
                         ib_back.setClickable(false);
                         ib_back.setBackgroundResource(R.drawable.icon_arrow_right_gray);
+                        ib_back.setVisibility(View.INVISIBLE);
                     }
 
                 } else {

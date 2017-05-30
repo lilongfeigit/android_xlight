@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -139,7 +140,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     private class MyDataReceiver extends DataReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e(TAG, "接收到广播了");
+            Log.e(TAG, "GlanceMainFragment_DataReceiver");
 //            roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
 //            roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
 //            roomBrightness.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomBrightness + "\u0025");
@@ -187,9 +188,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         outsideHumidity = (TextView) view.findViewById(R.id.valLocalHumidity);
         apparentTemp = (TextView) view.findViewById(R.id.valApparentTemp);
         roomTemp = (TextView) view.findViewById(R.id.valRoomTemp);
-//        roomTemp.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomTemp + "℃");
         roomHumidity = (TextView) view.findViewById(R.id.valRoomHumidity);
-//        roomHumidity.setText(SlidingMenuMainActivity.m_mainDevice.m_Data.m_RoomHumidity + "\u0025");
         imgWeather = (ImageView) view.findViewById(R.id.weatherIcon);
         home_menu = (RelativeLayout) view.findViewById(R.id.home_menu);
         home_menu.setOnClickListener(this);
@@ -219,6 +218,36 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         getTitleInfo();
 
         return view;
+    }
+
+    //设置接收消息的监听
+    private void setHandlerMessage(){
+        if(SlidingMenuMainActivity.m_mainDevice.getEnableEventSendMessage()) {
+            updateUIHandler();
+        }else{
+            SlidingMenuMainActivity.m_mainDevice.setEnableEventSendMessage(true);
+            updateUIHandler();
+        }
+    }
+    private void updateUIHandler(){
+        m_handlerGlance = new Handler() {
+            public void handleMessage(Message msg) {
+                Log.e(TAG,"GlanceMainFragment_msg="+msg.getData().toString());
+                int intValue = msg.getData().getInt("DHTt", -255);
+                if (intValue != -255) {
+                    roomTemp.setText(intValue + "\u00B0");
+                }
+                intValue = msg.getData().getInt("DHTh", -255);
+                if (intValue != -255) {
+                    roomHumidity.setText(intValue + "\u0025");
+                }
+                intValue = msg.getData().getInt("ALS", -255);
+                if (intValue != -255) {
+                    valRoomBrightness.setText(intValue + "\u0025");
+                }
+            }
+        };
+        SlidingMenuMainActivity.m_mainDevice.addDataEventHandler(m_handlerGlance);
     }
 
     /**
@@ -485,13 +514,35 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 if (deviceList.get(i).coreid != null) {
                     // Connect to Controller
                     boolean isControlConnect = m_XltDevice.Connect(deviceList.get(i).coreid);
-                    Logger.e(TAG, "isControlConnect=" + isControlConnect);
+                    Logger.d(TAG, "isControlConnect=" + isControlConnect);
 
                     SlidingMenuMainActivity.xltDeviceMaps.put(deviceList.get(i).coreid, m_XltDevice);
                 }
-//                if (deviceList.get(i).maindevice == 1) {//主设备
-//                    SlidingMenuMainActivity.m_mainDevice = m_XltDevice;
-//                }
+                if (deviceList.get(i).maindevice == 1) {//主设备 TODO TODO  设置监听 广播回调
+
+                    if( SlidingMenuMainActivity.m_mainDevice!=null){
+                        SlidingMenuMainActivity.m_mainDevice.Disconnect();
+                        SlidingMenuMainActivity.m_mainDevice = null;
+                    }
+
+                    SlidingMenuMainActivity.m_mainDevice = m_XltDevice;
+
+//                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(devicenodes.get(position).nodeno);
+
+                    if (SlidingMenuMainActivity.m_mainDevice != null) {
+                        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
+                            IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
+                            intentFilter.setPriority(3);
+                            getContext().registerReceiver(m_DataReceiver, intentFilter);
+                        }else{
+                            SlidingMenuMainActivity.m_mainDevice.setEnableEventBroadcast(true);
+                            IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
+                            intentFilter.setPriority(3);
+                            getContext().registerReceiver(m_DataReceiver, intentFilter);
+                        }
+                        setHandlerMessage();//设置handler监听，获取数据室内温湿度
+                    }
+                }
             }
             devicenodes.clear();
             for (int i = 0; i < deviceList.size(); i++) {
@@ -525,18 +576,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                     intent.putExtra("info", devicenodes.get(position));
                     intent.putExtra("position", position);
                     getActivity().startActivity(intent);
-                    //TODO TODO  设置监听 广播回调
-                    SlidingMenuMainActivity.m_mainDevice = SlidingMenuMainActivity.xltDeviceMaps.get(devicenodes.get(position).coreid);
-
-                    SlidingMenuMainActivity.m_mainDevice.setDeviceID(devicenodes.get(position).nodeno);
-
-                    if (SlidingMenuMainActivity.m_mainDevice != null) {
-                        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
-                            IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
-                            intentFilter.setPriority(3);
-                            getContext().registerReceiver(m_DataReceiver, intentFilter);
-                        }
-                    }
                 }
             });
 

@@ -29,7 +29,6 @@ import android.widget.ToggleButton;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
-import com.umarbhutta.xlightcompanion.Tools.DataReceiver;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
 import com.umarbhutta.xlightcompanion.Tools.StatusReceiver;
@@ -113,14 +112,13 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
     private final MyStatusReceiver m_StatusReceiver = new MyStatusReceiver();
 
-    //TODO TODO
     private class MyStatusReceiver extends StatusReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Logger.e(TAG, "data=" + intent.getIntExtra("nd",0));
-            powerSwitch.setChecked(mCurrentDevice.getState() > 0);
-            brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
-            cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
+            Logger.e(TAG, "data=" + intent.getIntExtra("nd", 0));
+//            powerSwitch.setChecked(mCurrentDevice.getState() > 0);
+//            brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
+//            cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
         }
     }
 
@@ -197,31 +195,24 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
         mCurrentDevice.QueryStatus();//查询所有的状态，通过handler或者广播发送过来。
 
-//        Log.e("EditDeviceActivity", "nodeno=" + deviceInfo.nodeno + ";;;coreid=" + deviceInfo.coreid
-//                + ";devicenodetype=" + deviceInfo.devicenodetype);
+//        mscenarioName.setText(deviceInfo.devicenodename);
+//        powerSwitch.setChecked((mCurrentDevice.getState() == 0) ? false : true);
+//        brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
+//        cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
 //
-//        Log.e(TAG, "CCT=" + mCurrentDevice.getCCT(deviceInfo.nodeno) + ";State=" + mCurrentDevice.getState(deviceInfo.nodeno) + ";blue=" +
-//                mCurrentDevice.getBlue(deviceInfo.nodeno) + ";red=" + mCurrentDevice.getRed(deviceInfo.nodeno) + ";green=" + mCurrentDevice.getGreen(deviceInfo.nodeno) + ";Brightness" +
-//                mCurrentDevice.getBrightness(deviceInfo.nodeno));
+//        int R = mCurrentDevice.getRed(deviceInfo.nodeno);
+//        int G = mCurrentDevice.getGreen(deviceInfo.nodeno);
+//        int B = mCurrentDevice.getBlue(deviceInfo.nodeno);
 
-        mscenarioName.setText(deviceInfo.devicenodename);
-        powerSwitch.setChecked((mCurrentDevice.getState() == 0) ? false : true);
-        brightnessSeekBar.setProgress(mCurrentDevice.getBrightness());
-        cctSeekBar.setProgress(mCurrentDevice.getCCT() - 2700);
-
-        int R = mCurrentDevice.getRed(deviceInfo.nodeno);
-        int G = mCurrentDevice.getGreen(deviceInfo.nodeno);
-        int B = mCurrentDevice.getBlue(deviceInfo.nodeno);
-
-        int color = Color.rgb(R, G, B);
-        circleIcon.setColor(color);
-        colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
+//        int color = Color.rgb(R, G, B);
+//        circleIcon.setColor(color);
+//        colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
 
         if (mCurrentDevice.getEnableEventBroadcast()) {
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
             intentFilter.setPriority(3);
             registerReceiver(m_StatusReceiver, intentFilter);
-        }else{
+        } else {
             mCurrentDevice.setEnableEventBroadcast(true);
             IntentFilter intentFilter = new IntentFilter(xltDevice.bciDeviceStatus);
             intentFilter.setPriority(3);
@@ -229,27 +220,11 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         }
 
         if (mCurrentDevice.getEnableEventSendMessage()) {
-            m_handlerControl = new Handler() {
-                public void handleMessage(Message msg) {
-                    Logger.e("XlightControl", "msg=" + msg.getData().toString());
-                    int intValue = msg.getData().getInt("State", -255);
-                    if (intValue != -255) {
-                        powerSwitch.setChecked(intValue > 0);
-                    }
-
-                    intValue = msg.getData().getInt("BR", -255);
-                    if (intValue != -255) {
-                        brightnessSeekBar.setProgress(intValue);
-                    }
-
-                    intValue = msg.getData().getInt("CCT", -255);
-                    if (intValue != -255) {
-                        cctSeekBar.setProgress(intValue - 2700);
-                    }
-                }
-            };
-            mCurrentDevice.addDeviceEventHandler(m_handlerControl);
-            updateDeviceRingLabel();
+            upUIDateAddHandler();
+        } else {
+            //打开
+            mCurrentDevice.setEnableEventSendMessage(true);
+            upUIDateAddHandler();
         }
 
         findViewById(com.umarbhutta.xlightcompanion.R.id.colorLayout).setOnClickListener(new View.OnClickListener() {
@@ -384,6 +359,49 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         });
         initScenario();//初始化场景
 
+    }
+
+    //获取监听
+    private void upUIDateAddHandler() {
+        m_handlerControl = new Handler() {
+            public void handleMessage(Message msg) {
+                Logger.e(TAG, "handler_msg=" + msg.getData().toString());
+                int intValue = msg.getData().getInt("State", -255);
+                if (intValue != -255) {
+                    powerSwitch.setChecked(intValue > 0);
+                }
+
+                intValue = msg.getData().getInt("BR", -255);
+                if (intValue != -255) {
+                    brightnessSeekBar.setProgress(intValue);
+                }
+                intValue = msg.getData().getInt("CCT", -255);
+                if (intValue != -255) {
+                    cctSeekBar.setProgress(intValue - 2700);
+                }
+                //颜色
+                int R = 0;
+                int G = 0;
+                int B = 0;
+                intValue = msg.getData().getInt("R", -255);
+                if (intValue != -255) {
+                    R = intValue;
+                }
+                intValue = msg.getData().getInt("G", -255);
+                if (intValue != -255) {
+                    G = intValue;
+                }
+                intValue = msg.getData().getInt("B", -255);
+                if (intValue != -255) {
+                    B = intValue;
+                }
+                int color = Color.rgb(R, G, B);
+                circleIcon.setColor(color);
+                colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
+            }
+        };
+        mCurrentDevice.addDeviceEventHandler(m_handlerControl);
+//      updateDeviceRingLabel();//这个作用是 切换灯上部图片的
     }
 
     private EditText et;

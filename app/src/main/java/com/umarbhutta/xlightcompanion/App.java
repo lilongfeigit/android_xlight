@@ -22,10 +22,12 @@ import java.util.List;
 public class App extends Application {
 
     private List<Activity> activityList;
+    public static App Inst;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Inst = this;
         //初始化APP
         ImageLoaderUtils.initImageLoader(getApplicationContext());
         PushAgent mPushAgent = PushAgent.getInstance(this);

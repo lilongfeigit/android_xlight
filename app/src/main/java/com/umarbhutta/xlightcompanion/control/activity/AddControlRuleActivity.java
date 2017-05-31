@@ -165,7 +165,7 @@ public class AddControlRuleActivity extends BaseActivity {
 
                     NewRuleItemInfo mNewRuleItemInfo4 = new NewRuleItemInfo();
                     Actioncmd mActioncmd = new Actioncmd();
-                    mActioncmd.actiontype = mRuleActioncmd.actiontype;
+                    mActioncmd.actioncmdType = mRuleActioncmd.actiontype;
                     mActioncmd.devicenodeId = mRuleActioncmd.devicenodeId;
                     mActioncmd.actioncmdfield = mRuleActioncmd.actioncmdfields;
 
@@ -279,7 +279,7 @@ public class AddControlRuleActivity extends BaseActivity {
                 @Override
                 public void mOnCreateRuleCallbackFail(int code, String errMsg) {
                     Logger.e(TAG, "errMsg=" + errMsg);
-                    ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);
+                    ToastUtil.showToast(AddControlRuleActivity.this, "" + errMsg);
                 }
 
                 @Override
@@ -296,7 +296,7 @@ public class AddControlRuleActivity extends BaseActivity {
                 @Override
                 public void mOnCreateRuleCallbackFail(int code, String errMsg) {
                     Logger.e(TAG, "errMsg=" + errMsg);
-                    ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);
+                    ToastUtil.showToast(AddControlRuleActivity.this, "" + errMsg);
                 }
 
                 @Override

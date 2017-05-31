@@ -77,7 +77,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
 
 
         if (null == GlanceMainFragment.deviceList || GlanceMainFragment.deviceList.size() <= 0) {
-            ToastUtil.showToast(this, R.string.you_have_no_device_and_add);
+//            ToastUtil.showToast(this, R.string.you_have_no_device_and_add);
         }
     }
 

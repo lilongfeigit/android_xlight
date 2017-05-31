@@ -91,7 +91,7 @@ public class EmailActivity extends BaseActivity {
                 mActionnotify.content = emailContext;
                 mActionnotify.subject = emailTitle;
                 mActionnotify.actionnotifyType = 1;
-                mActionnotify.name = getString(R.string.email_notify);
+                mActionnotify.name = getString(R.string.email_notify)+"：";
                 mActionnotify.actiontype = 1;
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
                 mNewRuleItemInfo.setmActionnotify(mActionnotify);

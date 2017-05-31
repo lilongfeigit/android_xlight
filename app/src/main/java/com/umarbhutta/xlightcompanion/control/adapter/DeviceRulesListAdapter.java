@@ -29,8 +29,10 @@ public class DeviceRulesListAdapter extends BaseAdapter {
     private LayoutInflater inflater;//这个一定要懂它的用法及作用
     private Context mActivity;
     private List<RuleInfo> mRuleInfoList;
+    private Context context;
 
     public DeviceRulesListAdapter(Context activity, List<RuleInfo> mRuleInfoList) {
+        this.context = activity;
         this.mActivity = activity;
         this.mRuleInfoList = mRuleInfoList;
         this.inflater = LayoutInflater.from(mActivity);
@@ -181,10 +183,18 @@ public class DeviceRulesListAdapter extends BaseAdapter {
                 TextView textView = new TextView(mActivity);
                 textView.setEllipsize(TextUtils.TruncateAt.END);
                 textView.setSingleLine(true);
-                textView.setText("" + (getText(mRuleactionnotify.subject)
-                        + getText(mRuleactionnotify.content)
-                        + getText(mRuleactionnotify.emailaddress)
-                ).trim());
+
+                if (1 == mRuleactionnotify.actiontype) { //emial通知
+                    textView.setText(context.getString(R.string.email_notify) + "：" + (getText(mRuleactionnotify.subject)
+                            + getText(mRuleactionnotify.content)
+                            + getText(mRuleactionnotify.emailaddress)
+                    ).trim());
+                } else {  //APP通知
+                    textView.setText("" + (getText(mRuleactionnotify.subject)
+                            + getText(mRuleactionnotify.content)
+                            + getText(mRuleactionnotify.emailaddress)
+                    ).trim());
+                }
 
                 holder.listViewResult.addView(textView);
             }
@@ -192,13 +202,22 @@ public class DeviceRulesListAdapter extends BaseAdapter {
 
         if (null != mRuleInfo && null != mRuleInfo.ruleactioncmds && mRuleInfo.ruleactioncmds.size() > 0) {//灯或者场景
             for (RuleActioncmd action : mRuleInfo.ruleactioncmds) {
+
                 TextView textView = new TextView(mActivity);
                 textView.setEllipsize(TextUtils.TruncateAt.END);
                 textView.setSingleLine(true);
 
                 if (null != action.actioncmdfields && action.actioncmdfields.size() > 0) {
-                    Actioncmdfield actioncmdfield = action.actioncmdfields.get(0);
-                    textView.setText(actioncmdfield.cmd + "  " + (actioncmdfield.paralist.substring(1, actioncmdfield.paralist.trim().length() - 1)));
+
+                    if (1 == action.actiontype) { //灯
+                        Actioncmdfield actioncmdfield = action.actioncmdfields.get(0);
+                        textView.setText(context.getString(R.string.lamp_tool) + "：" + actioncmdfield.cmd + "  "
+                                + (actioncmdfield.paralist.substring(1, actioncmdfield.paralist.trim().length() - 1)));
+                    } else {//场景
+                        Actioncmdfield actioncmdfield = action.actioncmdfields.get(0);
+                        textView.setText(context.getString(R.string.scene) + "："
+                                + (actioncmdfield.paralist.substring(1, actioncmdfield.paralist.trim().length() - 1)));
+                    }
                 }
 
                 holder.listViewResult.addView(textView);

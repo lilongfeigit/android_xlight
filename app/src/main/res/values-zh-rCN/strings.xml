@@ -110,6 +110,7 @@
     <string name="please_input_notify_content">请输入通知内容</string>
     <string name="execute_result">执行结果</string>
     <string name="lamp_control">灯具控制</string>
+    <string name="lamp_tool">灯具</string>
     <string name="email_notify">Email通知</string>
     <string name="scene_switch">场景切换（切换主设备场景）</string>
     <string name="scene_switch_no">场景切换</string>
@@ -282,4 +283,5 @@
     <string name="code_edit_rule_no">要编辑的规则不存在</string>
     <string name="code_edit_fail">编辑规则失败</string>
     <string name="code_delete_fail">删除规则失败</string>
+    <string name="open_gps">请打开GPS</string>
 </resources>

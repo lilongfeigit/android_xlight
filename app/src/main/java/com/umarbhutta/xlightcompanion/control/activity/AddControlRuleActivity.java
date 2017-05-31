@@ -165,7 +165,7 @@ public class AddControlRuleActivity extends BaseActivity {
 
                     NewRuleItemInfo mNewRuleItemInfo4 = new NewRuleItemInfo();
                     Actioncmd mActioncmd = new Actioncmd();
-                    mActioncmd.actiontype = mRuleActioncmd.actiontype;
+                    mActioncmd.actioncmdType = mRuleActioncmd.actiontype;
                     mActioncmd.devicenodeId = mRuleActioncmd.devicenodeId;
                     mActioncmd.actioncmdfield = mRuleActioncmd.actioncmdfields;
 

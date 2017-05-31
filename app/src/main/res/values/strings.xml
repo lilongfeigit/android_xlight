@@ -283,4 +283,6 @@
     <string name="code_edit_rule_no">The rule does not exist</string>
     <string name="code_edit_fail">Edit rule failed</string>
     <string name="code_delete_fail">Delete rule failed</string>
+    <string name="open_gps">Please open GPS</string>
+    <string name="lamp_tool">Lamp</string>
 </resources>

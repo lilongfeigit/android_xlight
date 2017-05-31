@@ -97,11 +97,11 @@ public class ScenarioSelectListAdapter extends BaseAdapter {
 
     private void onFabPressed(View view, Rows infos) {
         mActioncmd.devicenodeId = infos.id;
-        mActioncmd.actioncmdType = 1;
+        mActioncmd.actioncmdType = 2;
         Actioncmdfield actioncmdfield = new Actioncmdfield();
 
         actioncmdfield.cmd = infos.scenarioname;
-        actioncmdfield.paralist = "{" + mContext.getString(R.string.scene) + ":" + infos.scenarioname + "}";
+        actioncmdfield.paralist = "{" + infos.scenarioname + "}";
         if (mActioncmd.actioncmdfield == null) {
             mActioncmd.actioncmdfield = new ArrayList<Actioncmdfield>();
         }

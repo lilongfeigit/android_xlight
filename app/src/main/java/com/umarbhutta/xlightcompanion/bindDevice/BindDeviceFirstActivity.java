@@ -1,11 +1,13 @@
 package com.umarbhutta.xlightcompanion.bindDevice;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
@@ -13,6 +15,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
@@ -36,6 +40,7 @@ import com.umarbhutta.xlightcompanion.adapter.WifiListAdapter;
 import com.umarbhutta.xlightcompanion.okHttp.model.AddDeviceResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestAddDevice;
 import com.umarbhutta.xlightcompanion.settings.BaseActivity;
+import com.umarbhutta.xlightcompanion.views.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +63,8 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
     private final int WIFI_PERMISSION_REQ_CODE = 100;
     private WifiReceiver mWifiReceiver;
     private ImageView clearBtn;
+    private DialogUtils mDialogUtils;
+    private AlertDialog mGpsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +134,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         registerReceiver(mWifiReceiver, filter);
 //        checkPublishPermission();
         getCurWifiInfo();
-        handler.sendEmptyMessageDelayed(1, 1000);
+        handler.sendEmptyMessageDelayed(1, 5000);
     }
 
 
@@ -136,7 +143,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             handler.postDelayed(runnable, 100);
-            handler.sendEmptyMessageDelayed(1, 1000);
+            handler.sendEmptyMessageDelayed(1, 5000);
         }
     };
 
@@ -202,7 +209,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
             return;
         } else {
             getCurWifiInfo();
-            handler.sendEmptyMessageDelayed(1, 1000);
+            handler.sendEmptyMessageDelayed(1, 5000);
         }
 
 
@@ -229,7 +236,7 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
             case WIFI_PERMISSION_REQ_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {// 允许
                     getCurWifiInfo();
-                    handler.sendEmptyMessageDelayed(1, 1000);
+                    handler.sendEmptyMessageDelayed(1, 5000);
                 } else { // 不允许
 //                    ToastUtil.showToast(this, getString(R.string.you_refuse_wifi_list));
                 }
@@ -285,9 +292,47 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
                 curWifi = listb.get(0);
                 ssidEdit.setText(curWifi.SSID);
             }
+        } else {
+            initGPS();
         }
     }
 
+    boolean isshowOpenGps = false;
+
+    /**
+     * 提示用户开启gps
+     */
+    private void initGPS() {
+        if(isshowOpenGps){
+            return;
+        }
+
+        isshowOpenGps = true;
+
+        LocationManager locationManager = (LocationManager) this
+                .getSystemService(Context.LOCATION_SERVICE);
+        // 判断GPS模块是否开启，如果没有则开启
+        if (!locationManager
+                .isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+            // 转到手机设置界面，用户设置GPS
+            // 设置完成后返回到原来的界面
+            if (null == mGpsDialog) {
+                mDialogUtils = new DialogUtils();
+                mGpsDialog = mDialogUtils.getConfirmCancelDialog(BindDeviceFirstActivity.this, getString(R.string.open_gps), new DialogUtils.OnClickOkBtnListener() {
+                    @Override
+                    public void onClickOk(String editTextStr) {
+                        // 转到手机设置界面，用户设置GPS
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+                    }
+                });
+            } else {
+                if (!mGpsDialog.isShowing())
+                    mGpsDialog.show();
+            }
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -326,8 +371,8 @@ public class BindDeviceFirstActivity extends BaseActivity implements View.OnClic
             return;
         }
 
-        if(TextUtils.isEmpty(wifiPwdEdit.getText().toString())){
-            ToastUtil.showToast(this,getString(R.string.please_input_wifi_pwd));
+        if (TextUtils.isEmpty(wifiPwdEdit.getText().toString())) {
+            ToastUtil.showToast(this, getString(R.string.please_input_wifi_pwd));
             return;
         }
 

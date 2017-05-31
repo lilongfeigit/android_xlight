@@ -279,7 +279,7 @@ public class AddControlRuleActivity extends BaseActivity {
                 @Override
                 public void mOnCreateRuleCallbackFail(int code, String errMsg) {
                     Logger.e(TAG, "errMsg=" + errMsg);
-                    ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);
+                    ToastUtil.showToast(AddControlRuleActivity.this, "" + errMsg);
                 }
 
                 @Override
@@ -296,7 +296,7 @@ public class AddControlRuleActivity extends BaseActivity {
                 @Override
                 public void mOnCreateRuleCallbackFail(int code, String errMsg) {
                     Logger.e(TAG, "errMsg=" + errMsg);
-                    ToastUtil.showToast(AddControlRuleActivity.this, "errMsg=" + errMsg);
+                    ToastUtil.showToast(AddControlRuleActivity.this, "" + errMsg);
                 }
 
                 @Override

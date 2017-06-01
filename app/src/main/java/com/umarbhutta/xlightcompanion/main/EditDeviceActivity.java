@@ -40,6 +40,7 @@ import com.umarbhutta.xlightcompanion.okHttp.NetConfig;
 import com.umarbhutta.xlightcompanion.okHttp.model.DeviceInfoResult;
 import com.umarbhutta.xlightcompanion.okHttp.model.Devicenodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
+import com.umarbhutta.xlightcompanion.okHttp.model.Scenarionodes;
 import com.umarbhutta.xlightcompanion.okHttp.model.SceneListResult;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeviceDetailInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSceneListInfo;
@@ -644,9 +645,41 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         if (null == sceneInfo) {
             return;
         }
-        powerSwitch.setChecked((1 == sceneInfo.ison) ? true : false);
-        brightnessSeekBar.setProgress(sceneInfo.brightness);
-        cctSeekBar.setProgress(sceneInfo.cct - 2700);
+//        powerSwitch.setChecked((1 == sceneInfo.ison) ? true : false);
+        if (mCurrentDevice.isSunny()) {
+            brightnessSeekBar.setProgress(sceneInfo.brightness);
+            mCurrentDevice.ChangeBrightness(sceneInfo.brightness);
+            cctSeekBar.setProgress(sceneInfo.cct - 2700);
+            mCurrentDevice.ChangeCCT(sceneInfo.cct - 2700);
+            mCurrentDevice.ChangeScenario(sceneInfo.scenarionodes.get(0).scenarioId);
+        } else {
+            cctSeekBar.setProgress(sceneInfo.cct - 2700);
+            mCurrentDevice.ChangeCCT(sceneInfo.cct - 2700);
+            Scenarionodes currentNode = sceneInfo.scenarionodes.get(0);//当前灯
+            int R = 0;
+            int G = 0;
+            int B = 0;
+            R = currentNode.R;
+            G = currentNode.G;
+            B = currentNode.B;
+            int color = Color.rgb(R, G, B);
+            circleIcon.setColor(color);
+            colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
+            mCurrentDevice.ChangeColor(xltDevice.RING_ID_ALL, true, sceneInfo.brightness, 26, currentNode.R, currentNode.G, currentNode.B);
+        }
+//        brightnessSeekBar.setProgress(sceneInfo.brightness);
+//        cctSeekBar.setProgress(sceneInfo.cct - 2700);
+        //颜色
+//        int R = 0;
+//        int G = 0;
+//        int B = 0;
+//        Scenarionodes currentNode= sceneInfo.scenarionodes.get(0);//当前灯
+//        R = currentNode.R;
+//        G = currentNode.G;
+//        B = currentNode.B;
+//        int color = Color.rgb(R, G, B);
+//        circleIcon.setColor(color);
+//        colorTextView.setText("RGB(" + R + "," + G + "," + B + ")");
     }
 
     /**

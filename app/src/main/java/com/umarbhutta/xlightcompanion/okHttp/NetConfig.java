@@ -6,8 +6,8 @@ package com.umarbhutta.xlightcompanion.okHttp;
 
 public class NetConfig {
 
-        public static final String SERVER_ADDRESS_DOMAIN = "https://iot.xlight.io";
-//    public static final String SERVER_ADDRESS_DOMAIN = "http://123.207.166.211:8080";
+    //        public static final String SERVER_ADDRESS_DOMAIN = "https://iot.xlight.io";
+    public static final String SERVER_ADDRESS_DOMAIN = "http://123.207.166.211:8080";
 
     /**
      * 正式版开关
@@ -48,7 +48,11 @@ public class NetConfig {
     /**
      * 解绑设备
      */
-    public static final String URL_UNBIND_DEVICE = SERVER_ADDRESS_DOMAIN + "/devices/";
+    public static final String URL_UNBIND_DEVICE = SERVER_ADDRESS_DOMAIN + "/devicenodes/";
+    /**
+     * 解绑controller
+     */
+    public static final String URL_UNBIND_CONTROLLER = SERVER_ADDRESS_DOMAIN + "/devices/";
     /**
      * 设置主设备
      */

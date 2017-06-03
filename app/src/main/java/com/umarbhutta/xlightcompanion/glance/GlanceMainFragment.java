@@ -150,12 +150,14 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     }
 
     private final MyDataReceiver m_DataReceiver = new MyDataReceiver();
+    boolean isRegisteReceiver = false;
 
     @Override
     public void onDestroyView() {
         devicesListView.setAdapter(null);
-        if (null != SlidingMenuMainActivity.m_mainDevice && SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
+        if (null != SlidingMenuMainActivity.m_mainDevice && SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast() && null != m_DataReceiver && isRegisteReceiver) {
             getContext().unregisterReceiver(m_DataReceiver);
+            isRegisteReceiver = false;
         }
         super.onDestroyView();
     }
@@ -544,11 +546,13 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                             IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
                             intentFilter.setPriority(3);
                             getContext().registerReceiver(m_DataReceiver, intentFilter);
+                            isRegisteReceiver = true;
                         } else {
                             SlidingMenuMainActivity.m_mainDevice.setEnableEventBroadcast(true);
                             IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
                             intentFilter.setPriority(3);
                             getContext().registerReceiver(m_DataReceiver, intentFilter);
+                            isRegisteReceiver = true;
                         }
                         setHandlerMessage();//设置handler监听，获取数据室内温湿度
                     }

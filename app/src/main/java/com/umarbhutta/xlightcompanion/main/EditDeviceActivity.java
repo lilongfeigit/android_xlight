@@ -701,8 +701,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         try {
             jsonObject.put("ison", powerSwitch.isChecked() ? 1 : 0);
             jsonObject.put("userId", UserUtils.getUserInfo(this).getId());
-            jsonObject.put("devicename", deviceName);
-
+//            jsonObject.put("devicename", deviceName);。。。。。。。。。
             JSONArray devicenodes = new JSONArray();
             jsonObject.put("devicenodes", devicenodes);
 

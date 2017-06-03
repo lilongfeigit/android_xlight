@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -51,7 +52,7 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
 
     // 定义各个界面View对象
     private View view1, view2, view4;
-
+    private Button startBtn;
     //底部小点的图片
     private ImageView[] points;
 
@@ -69,21 +70,25 @@ public class SplashActivity extends Activity implements OnPageChangeListener {
         ImageView iv_two = (ImageView) view2.findViewById(R.id.iv_two);
 //      view3 = mLi.inflate(R.layout.guide_page3, null);
         view4 = mLi.inflate(R.layout.guide_page4, null);
+        startBtn = (Button) view4.findViewById(R.id.startBtn);
         ImageView iv_three = (ImageView) view4.findViewById(R.id.iv_three);
+
         if (language.endsWith("zh")) {
             iv_one.setImageResource(R.drawable.xlight_zh_one);
             iv_two.setImageResource(R.drawable.xlight_zh_two);
             iv_three.setImageResource(R.drawable.xlight_zh_three);
+            startBtn.setBackgroundResource(R.drawable.zh_go);
         } else {
             iv_one.setImageResource(R.drawable.xlight_en_one);
             iv_two.setImageResource(R.drawable.xlight_en_two);
             iv_three.setImageResource(R.drawable.xlight_en_three);
+            startBtn.setBackgroundResource(R.drawable.go);
         }
-        Logger.e("language", language);
+//        Logger.e("language", language);
 //    其中languag为语言码：
 //    zh：汉语
 //    en：英语
-        view4.findViewById(R.id.startBtn).setOnClickListener(new View.OnClickListener() {
+        startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //跳转到主页面

@@ -18,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
@@ -68,7 +69,8 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 
         // Check Bluetooth
         BLEPairedDeviceList.init(this);
-        if (BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled()) {
+        if (!App.isRequestBlue && BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled()) {
+            App.isRequestBlue = true;
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, BLEPairedDeviceList.REQUEST_ENABLE_BT);
         }

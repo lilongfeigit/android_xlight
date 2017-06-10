@@ -284,4 +284,5 @@
     <string name="code_edit_fail">编辑规则失败</string>
     <string name="code_delete_fail">删除规则失败</string>
     <string name="open_gps">请打开GPS</string>
+    <string name="hint_find_pwd">请输入登录Xlight的邮箱，我们会发送验证码到您的邮箱</string>
 </resources>

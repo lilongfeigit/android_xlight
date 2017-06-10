@@ -285,4 +285,5 @@
     <string name="code_delete_fail">Delete rule failed</string>
     <string name="open_gps">Please open GPS</string>
     <string name="lamp_tool">Lamp</string>
+    <string name="hint_find_pwd">Please enter the eamil address you signed up with to receive a verification code</string>
 </resources>

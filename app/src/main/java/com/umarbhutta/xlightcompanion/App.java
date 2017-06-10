@@ -23,6 +23,7 @@ public class App extends Application {
 
     private List<Activity> activityList;
     public static App Inst;
+    public static boolean isRequestBlue = false;
 
     @Override
     public void onCreate() {

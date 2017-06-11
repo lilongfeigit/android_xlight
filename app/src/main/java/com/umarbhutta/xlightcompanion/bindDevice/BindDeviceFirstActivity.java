@@ -77,8 +77,6 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_bind_device_first);
 
-
-
         RelativeLayout rootLayout = (RelativeLayout) findViewById(R.id.rootLayout);
 
         ViewGroup.LayoutParams params = rootLayout.getLayoutParams();

@@ -263,4 +263,27 @@
     <string name="config_fail">Configuration failed</string>
     <string name="title_setting">Setting</string>
     <string name="please_input_wifi_pwd">Please input wifi password</string>
+    <string name="no_ling_pai">The access token provided is invalid</string>
+    <string name="ling_pai_guoqi">The access token provided has expired</string>
+    <string name="param_not_legal">parameter is not legal</string>
+    <string name="code_less">缺少access_token参数</string>
+    <string name="code_db_fail">database operation failed</string>
+    <string name="code_redis_error">redis operation failed</string>
+    <string name="code_user_pwd_null">username and password required</string>
+    <string name="code_user_exits">Username already exists</string>
+    <string name="code_user_create_fail">Create user failed</string>
+    <string name="code_username_pwd_error">username or password error</string>
+    <string name="code_login_fail">Login failed</string>
+    <string name="code_old_pwd_error">old password error</string>
+    <string name="code_email_fail">E-mail failed to send</string>
+    <string name="code_email_no">The email address is not registered</string>
+    <string name="code_verify_out">The verification code has expired</string>
+    <string name="code_verify_error">Incorrect verification code</string>
+    <string name="code_upload_pic_fail">upload error</string>
+    <string name="code_edit_rule_no">The rule does not exist</string>
+    <string name="code_edit_fail">Edit rule failed</string>
+    <string name="code_delete_fail">Delete rule failed</string>
+    <string name="open_gps">Please open GPS</string>
+    <string name="lamp_tool">Lamp</string>
+    <string name="hint_find_pwd">Please enter the eamil address you signed up with to receive a verification code</string>
 </resources>

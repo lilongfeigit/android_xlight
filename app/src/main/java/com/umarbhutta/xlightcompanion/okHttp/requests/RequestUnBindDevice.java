@@ -31,6 +31,17 @@ public class RequestUnBindDevice implements HttpUtils.OnHttpRequestCallBack {
                     null, null, this);
     }
 
+    /**
+     * 解绑controller
+     */
+    public void unBindController(Context context, String deviceId, CommentRequstCallback mCommentRequstCallback) {
+        this.context = context;
+        this.mCommentRequstCallback = mCommentRequstCallback;
+        if (UserUtils.isLogin(context))
+            HttpUtils.getInstance().putRequestInfo(NetConfig.URL_UNBIND_CONTROLLER + deviceId + "/unbind?access_token=" + UserUtils.getUserInfo(context).getAccess_token(),
+                    null, null, this);
+    }
+
 
     @Override
     public void onHttpRequestSuccess(Object result) {

@@ -3,6 +3,7 @@ package com.umarbhutta.xlightcompanion.control.bean;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.StringUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
@@ -89,10 +90,10 @@ public class NewRuleItemInfo {
     public void setmActioncmd(Actioncmd mActioncmd) {
         this.mActioncmd = mActioncmd;
         if (mActioncmd.actioncmdType == 1) {
-            setShowText(mActioncmd.actioncmdfield.get(0).paralist.replace("{", "").replace("}", ""));
+            setShowText(App.Inst.getString(R.string.lamp_tool) + "：" + mActioncmd.actioncmdfield.get(0).cmd + " " + mActioncmd.actioncmdfield.get(0).paralist.replace("{", "").replace("}", ""));
         } else {
             if (null != mActioncmd.actioncmdfield && mActioncmd.actioncmdfield.size() > 0)
-                setShowText(mActioncmd.actioncmdfield.get(0).cmd + " " + mActioncmd.actioncmdfield.get(0).paralist.replace("{", "").replace("}", ""));
+                setShowText(App.Inst.getString(R.string.scene) + "：" + mActioncmd.actioncmdfield.get(0).paralist.replace("{", "").replace("}", ""));
         }
     }
 
@@ -104,8 +105,8 @@ public class NewRuleItemInfo {
         this.mActionnotify = mActionnotify;
 
         if (mActionnotify.actiontype == 1) {//邮箱通知
-            setShowText(mActionnotify.subject + " " + mActionnotify.content + " " + mActionnotify.emailaddress);
-        } else if (mActionnotify.actiontype == 2) { //通知
+            setShowText(App.Inst.getString(R.string.email_notify) + "：" + mActionnotify.subject + " " + mActionnotify.content + " " + mActionnotify.emailaddress);
+        } else if (mActionnotify.actiontype == 2) { //App通知
             setShowText(mActionnotify.subject + " " + mActionnotify.content);
         } else {
             if (StringUtil.isNotEmpty(mActionnotify.msisdn, true)) {

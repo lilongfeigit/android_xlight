@@ -18,7 +18,7 @@ public class Devicenodes implements Serializable {
     public String scenarioId;
     public String createdAt;
     public String updatedAt;
-    public int devicenodetype;
+    public int devicenodetype;//1,sunny 2,rainbow 4,mirage
     //    public List<String> sensorsdata;
     public List<Devicerings> devicerings;
     public List<Ruleconditions> ruleconditions;

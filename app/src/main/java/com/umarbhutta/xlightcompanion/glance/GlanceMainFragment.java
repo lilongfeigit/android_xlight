@@ -58,6 +58,7 @@ import com.umarbhutta.xlightcompanion.okHttp.model.Rows;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestFirstPageInfo;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestUnBindDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
+import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
 import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import org.json.JSONException;
@@ -102,12 +103,13 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             case R.id.home_setting:
                 // 跳转到选择的主设备列表页面
 
-//                if (null == deviceList || deviceList.size() <= 0) { //如果目前还没有controller就跳到绑定设备页面
-//                    Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
-//                    startActivityForResult(intent, 1);
-//                } else {
-                onFabPressed(DeviceListActivity.class);
-//                }
+                if (UserUtils.isLogin(getContext())) {
+                    onFabPressed(DeviceListActivity.class);
+                } else {
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivityForResult(intent, 1);
+                    getActivity().finish();
+                }
 
                 break;
             case R.id.home_menu:
@@ -148,12 +150,14 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     }
 
     private final MyDataReceiver m_DataReceiver = new MyDataReceiver();
+    boolean isRegisteReceiver = false;
 
     @Override
     public void onDestroyView() {
         devicesListView.setAdapter(null);
-        if (null != SlidingMenuMainActivity.m_mainDevice && SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast()) {
+        if (null != SlidingMenuMainActivity.m_mainDevice && SlidingMenuMainActivity.m_mainDevice.getEnableEventBroadcast() && null != m_DataReceiver && isRegisteReceiver) {
             getContext().unregisterReceiver(m_DataReceiver);
+            isRegisteReceiver = false;
         }
         super.onDestroyView();
     }
@@ -175,8 +179,15 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 //跳转到绑定设备页面
-                Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
-                startActivityForResult(intent, 1);
+                if (UserUtils.isLogin(getContext())) {
+                    Intent intent = new Intent(getContext(), BindDeviceFirstActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivityForResult(intent, 1);
+                    getActivity().finish();
+                }
+
             }
         });
 
@@ -221,18 +232,19 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     }
 
     //设置接收消息的监听
-    private void setHandlerMessage(){
-        if(SlidingMenuMainActivity.m_mainDevice.getEnableEventSendMessage()) {
+    private void setHandlerMessage() {
+        if (SlidingMenuMainActivity.m_mainDevice.getEnableEventSendMessage()) {
             updateUIHandler();
-        }else{
+        } else {
             SlidingMenuMainActivity.m_mainDevice.setEnableEventSendMessage(true);
             updateUIHandler();
         }
     }
-    private void updateUIHandler(){
+
+    private void updateUIHandler() {
         m_handlerGlance = new Handler() {
             public void handleMessage(Message msg) {
-                Log.e(TAG,"GlanceMainFragment_msg="+msg.getData().toString());
+                Log.e(TAG, "GlanceMainFragment_msg=" + msg.getData().toString());
                 int intValue = msg.getData().getInt("DHTt", -255);
                 if (intValue != -255) {
                     roomTemp.setText(intValue + "\u00B0");
@@ -520,7 +532,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                 }
                 if (deviceList.get(i).maindevice == 1) {//主设备 TODO TODO  设置监听 广播回调
 
-                    if( SlidingMenuMainActivity.m_mainDevice!=null){
+                    if (SlidingMenuMainActivity.m_mainDevice != null) {
                         SlidingMenuMainActivity.m_mainDevice.Disconnect();
                         SlidingMenuMainActivity.m_mainDevice = null;
                     }
@@ -534,11 +546,13 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                             IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
                             intentFilter.setPriority(3);
                             getContext().registerReceiver(m_DataReceiver, intentFilter);
-                        }else{
+                            isRegisteReceiver = true;
+                        } else {
                             SlidingMenuMainActivity.m_mainDevice.setEnableEventBroadcast(true);
                             IntentFilter intentFilter = new IntentFilter(xltDevice.bciSensorData);
                             intentFilter.setPriority(3);
                             getContext().registerReceiver(m_DataReceiver, intentFilter);
+                            isRegisteReceiver = true;
                         }
                         setHandlerMessage();//设置handler监听，获取数据室内温湿度
                     }

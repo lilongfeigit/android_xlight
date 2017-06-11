@@ -18,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
@@ -68,7 +69,8 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
 
         // Check Bluetooth
         BLEPairedDeviceList.init(this);
-        if (BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled()) {
+        if (!App.isRequestBlue && BLEPairedDeviceList.IsSupported() && !BLEPairedDeviceList.IsEnabled()) {
+            App.isRequestBlue = true;
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, BLEPairedDeviceList.REQUEST_ENABLE_BT);
         }
@@ -227,8 +229,8 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
             float z = values[2]; // z轴方向的重力加速度，向上为正
 //            Log.i("xlight", "x轴方向的重力加速度" + x + "；y轴方向的重力加速度" + y + "；z轴方向的重力加速度" + z);
             // 一般在这三个方向的重力加速度达到40就达到了摇晃手机的状态。
-            int medumValue = 19;// 三星 i9250怎么晃都不会超过20，没办法，只设置19了
-//            Logger.i("shake", "x = " + Math.abs(x) + ",y = " + y + ",z = " + z);
+            Logger.i("shake", "x = " + Math.abs(x) + ",y = " + y + ",z = " + z);
+            int medumValue = 18;// 三星 i9250怎么晃都不会超过20，没办法，只设置19了
             if (Math.abs(x) > medumValue || Math.abs(y) > medumValue || Math.abs(z) > medumValue) {
 
                 if (!UserUtils.isLogin(SlidingMenuMainActivity.this) || null == mShakeInfo) {

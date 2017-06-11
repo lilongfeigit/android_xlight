@@ -1,8 +1,11 @@
 package com.umarbhutta.xlightcompanion.deviceList;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,16 +17,18 @@ import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.adapter.DeviceListAdapter;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
+import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestSettingMainDevice;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestUnBindDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 import com.umarbhutta.xlightcompanion.settings.BaseActivity;
 
 /**
  * Created by Administrator on 2017/3/4.
- * 设备列表
+ * 选择主设备列表
  */
 
-public class DeviceListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class DeviceListActivity extends BaseActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private LinearLayout llBack;
     private TextView btnSure;
@@ -65,6 +70,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
             adapter = new DeviceListAdapter(this, GlanceMainFragment.deviceList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
+            listView.setOnItemLongClickListener(this);
             view_top_line.setVisibility(View.VISIBLE);
             view_bottom_line.setVisibility(View.VISIBLE);
         } else {
@@ -77,7 +83,7 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
 
 
         if (null == GlanceMainFragment.deviceList || GlanceMainFragment.deviceList.size() <= 0) {
-            ToastUtil.showToast(this, R.string.you_have_no_device_and_add);
+//            ToastUtil.showToast(this, R.string.you_have_no_device_and_add);
         }
     }
 
@@ -129,5 +135,82 @@ public class DeviceListActivity extends BaseActivity implements AdapterView.OnIt
         }
         GlanceMainFragment.deviceList.get(selectPosition).maindevice = 1;
         adapter.notifyDataSetChanged();
+    }
+
+
+    /**
+     * 弹出解绑设备确认框
+     */
+    private void showDeleteSceneDialog(final int position) {
+        AlertDialog mAlertDialog = new AlertDialog.Builder(this).setTitle(getString(R.string.unbind_device_tap))
+                .setMessage(getString(R.string.sure_unbind_device))
+                .setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        unBindDevice(position);
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
+
+        Button btn1 = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        btn1.setTextColor(getResources().getColor(R.color.colorPrimary));
+        Button btn2 = mAlertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        btn2.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+    }
+
+    /**
+     * 解绑设备
+     *
+     * @param position
+     */
+    private void unBindDevice(final int position) {
+        if (!NetworkUtils.isNetworkAvaliable(this)) {
+            ToastUtil.showToast(this, R.string.net_error);
+            return;
+        }
+
+        showProgressDialog(getString(R.string.setting));
+
+        RequestUnBindDevice.getInstance().unBindController(this, "" + GlanceMainFragment.deviceList.get(position).id,
+                new CommentRequstCallback() {
+            @Override
+            public void onCommentRequstCallbackSuccess() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        cancelProgressDialog();
+                        ToastUtil.showToast(DeviceListActivity.this, getString(R.string.unbind_sucess));
+
+                        GlanceMainFragment.deviceList.remove(position);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCommentRequstCallbackFail(int code, final String errMsg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        cancelProgressDialog();
+                        ToastUtil.showToast(DeviceListActivity.this, getString(R.string.unbind_fail) + errMsg);
+                    }
+                });
+            }
+        });
+    }
+
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        showDeleteSceneDialog(position);
+        return true;
     }
 }

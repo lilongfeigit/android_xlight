@@ -110,6 +110,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
 //                mContolRuleDevice.actiontype = 1;
 
                 NewRuleItemInfo mNewRuleItemInfo = new NewRuleItemInfo();
+                mActioncmd.actioncmdType  =1;
                 mNewRuleItemInfo.setmActioncmd(mActioncmd);
                 AddControlRuleActivity.mNewRuleResultInfoList.add(mNewRuleItemInfo);
                 ((App) getApplicationContext()).finishActivity();

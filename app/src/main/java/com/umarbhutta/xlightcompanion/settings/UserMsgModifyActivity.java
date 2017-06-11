@@ -238,10 +238,10 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.account_layout://账号
-                showDialog(v);
+//                showDialog(v);
                 break;
             case R.id.nick_name_layout://呢称
-                showDialog(v);
+                showDialog(v, nick_name.getText().toString());
                 break;
             case R.id.avatar_layout:
                 showPictureSelector();
@@ -254,7 +254,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
 
     public int type = 0;
 
-    private void showDialog(View view) {
+    private void showDialog(View view, String defaultStr) {
 
         String title;
         if (R.id.account_layout == view.getId()) {
@@ -266,7 +266,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         }
 
         final EditText et = new EditText(this);
-        new DialogUtils().getEditTextDialog(this, title, new DialogUtils.OnClickOkBtnListener() {
+        new DialogUtils().getEditTextDialog(this, title, defaultStr, new DialogUtils.OnClickOkBtnListener() {
             @Override
             public void onClickOk(String editTextStr) {
                 String input = editTextStr;
@@ -304,7 +304,7 @@ public class UserMsgModifyActivity extends ShowPicSelectBaseActivity implements 
         usernameResult = userInfo.getUsername();
         nickNameResult = userInfo.getNickname();
         sexResResult = TextUtils.isEmpty(userInfo.getSex()) ? "0" : "1";//sex=0代表女，1代表男，没选的话就不传这个参数
-        Logger.e(TAG,userInfo.toString());
+        Logger.e(TAG, userInfo.toString());
         this.type = type;
 
         switch (type) {

@@ -86,9 +86,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".bindDevice.BindDeviceConnectWifiActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".bindDevice.BindDeviceFirstActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".deviceList.DeviceListActivity"
@@ -121,6 +123,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".settings.FastBindingActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".settings.UserInvitationActivity"

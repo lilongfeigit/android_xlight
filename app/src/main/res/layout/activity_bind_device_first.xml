@@ -52,6 +52,7 @@
                     android:focusable="false"
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
+                    android:hint="@string/ssid"
                     android:singleLine="true" />
 
             </RelativeLayout>
@@ -83,6 +84,7 @@
                     android:background="#00ffffff"
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
+                    android:hint="@string/wifi_password"
                     android:singleLine="true" />
 
             </RelativeLayout>

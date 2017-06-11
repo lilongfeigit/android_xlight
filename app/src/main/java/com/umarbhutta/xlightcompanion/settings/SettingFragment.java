@@ -1,5 +1,8 @@
 package com.umarbhutta.xlightcompanion.settings;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,9 +16,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
+import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
+import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
+import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteRuleDevice;
+import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
 import com.umarbhutta.xlightcompanion.userManager.LoginActivity;
+import com.umarbhutta.xlightcompanion.views.ProgressDialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +33,6 @@ import java.util.List;
  */
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
-
 
     private List<String> settingStr = new ArrayList<String>();
 
@@ -40,7 +47,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
-
         iv_menu = (ImageView) view.findViewById(R.id.iv_menu);
         iv_menu.setOnClickListener(this);
         textTitle = (TextView) view.findViewById(R.id.tvTitle);
@@ -94,12 +100,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 //                        onFabPressed(FastBindingActivity.class);
 //                        break;
                     case 3://退出登录
-                        if (!UserUtils.isLogin(getActivity())) {
-                            onFabPressed(LoginActivity.class);
-                            getActivity().finish();
-                            return;
-                        }
-                        logout();
+                        showDeleteDialog();
                         break;
                 }
             }
@@ -138,5 +139,28 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             SlidingMenuMainActivity ra = (SlidingMenuMainActivity) getActivity();
             ra.toggle();
         }
+    }
+    private void showDeleteDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setTitle(getString(R.string.set_logout));
+        builder.setMessage(getString(R.string.set_logout));
+        builder.setPositiveButton(getString(R.string.queding), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!UserUtils.isLogin(getActivity())) {
+                    onFabPressed(LoginActivity.class);
+                    getActivity().finish();
+                    return;
+                }
+                logout();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 }

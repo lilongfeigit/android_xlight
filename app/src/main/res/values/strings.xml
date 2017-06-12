@@ -206,7 +206,8 @@
     <string name="you_want_notify_content">Content you want to notify</string>
     <string name="please_close_device">Please connect the router as close to the device as possible to ensure that the router signal covers the device</string>
     <string name="please_select_main_device">Please select the main device</string>
-    <string name="you_have_no_device">You have not added a device yet</string>
+    <!--<string name="you_have_no_device">You have not added a device yet</string>-->
+    <string name="you_have_no_device">No main device,please back to the home page,click the "+" to add device</string>
     <string name="email">The mailbox you want to notify</string>
     <string name="email_title">Email Subject</string>
     <string name="email_content">Email Content</string>

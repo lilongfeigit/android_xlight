@@ -73,7 +73,6 @@ public class DialogUtils {
 
 
     /**
-     *
      * @param context
      * @param title
      * @param mOnClickOkBtnListener
@@ -84,9 +83,13 @@ public class DialogUtils {
         AlertDialog mAlertDialog = new AlertDialog.Builder(mContext).setTitle(title)
                 .setPositiveButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        String input = et.getText().toString();
                         if (null != mOnClickOkBtnListener) {
-                            mOnClickOkBtnListener.onClickOk(input);
+                            if (null == et) {
+                                mOnClickOkBtnListener.onClickOk(null);
+                            } else {
+                                String input = et.getText().toString();
+                                mOnClickOkBtnListener.onClickOk(input);
+                            }
                         }
 
                     }

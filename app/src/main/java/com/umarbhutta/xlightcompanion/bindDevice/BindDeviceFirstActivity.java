@@ -84,8 +84,6 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
         rootLayout.setLayoutParams(params);
 
 
-
-
         AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +160,15 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
             handler.sendEmptyMessageDelayed(1, 5000);
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isWifiContect()) {
+            ToastUtil.showToast(this, getString(R.string.please_open_wifi));
+            return;
+        }
+    }
 
     /**
      * 定时更新wifi列表
@@ -261,10 +268,6 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
     }
 
     private void getCurWifiInfo() {
-        if (!isWifiContect()) {
-            ToastUtil.showToast(this, getString(R.string.please_open_wifi));
-            return;
-        }
         getWifiList();
     }
 
@@ -319,7 +322,7 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
      * 提示用户开启gps
      */
     private void initGPS() {
-        if(isshowOpenGps){
+        if (isshowOpenGps) {
             return;
         }
 

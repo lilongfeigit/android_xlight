@@ -48,7 +48,10 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             btnLogin.setVisibility(View.GONE);
             llPerName.setVisibility(View.VISIBLE);
             String nickName = UserUtils.getUserInfo(getActivity()).getNickname();
-            tv_userName.setText("Welcome  "+nickName);
+            if(null==nickName){
+                nickName = "";
+            }
+            tv_userName.setText("Welcome, "+nickName);
             textView.setText(UserUtils.getUserInfo(getActivity()).getEmail());
             ImageLoader.getInstance().displayImage(userInfo.getImage(), userIcon, ImageLoaderOptions.getImageLoaderOptions());
         } else {

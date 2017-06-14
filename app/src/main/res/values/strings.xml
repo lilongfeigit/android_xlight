@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="ssid">SSID</string>
     <!--login-->
     <string name="login_text_user">Enter Email</string>
     <string name="login_text_password">Enter Password</string>
@@ -130,6 +131,7 @@
     <string name="delete_success">Delete successfully</string>
     <string name="delete_fail">Delete failed</string>
     <string name="delete_rule_tap">Delete rule tips</string>
+    <string name="set_logout">Are you sure logging out?</string>
     <string name="queding">Confirm</string>
     <string name="delete_this_rule">Confirm to delete this rule?</string>
     <string name="select_main_device">Select main device</string>
@@ -204,7 +206,8 @@
     <string name="you_want_notify_content">Content you want to notify</string>
     <string name="please_close_device">Please connect the router as close to the device as possible to ensure that the router signal covers the device</string>
     <string name="please_select_main_device">Please select the main device</string>
-    <string name="you_have_no_device">You have not added a device yet</string>
+    <!--<string name="you_have_no_device">You have not added a device yet</string>-->
+    <string name="you_have_no_device">No main device,please back to the home page,click the "+" to add device</string>
     <string name="email">The mailbox you want to notify</string>
     <string name="email_title">Email Subject</string>
     <string name="email_content">Email Content</string>
@@ -235,7 +238,8 @@
     <string name="dingshi">Timing</string>
     <string name="all_rules">All Rules</string>
     <string name="no_add_rules">You have not added rules</string>
-    <string name="ti_gan_temp">Somatosensory temperature</string>
+    <!--<string name="ti_gan_temp">Somatosensory temperature</string>-->
+    <string name="ti_gan_temp">Feels like</string>
     <string name="shidu">Humidity</string>
     <string name="this_month_has_save_money">This month has been saved electricity for you ¥ </string>
     <string name="my_device">My Devices</string>
@@ -252,6 +256,7 @@
     <string name="calary_select">Choose from Album</string>
     <string name="back">Back</string>
     <string name="title">Title</string>
+    <string name="wifi_password">password</string>
 
     <string name="no_conditions">Please set the conditions</string>
     <string name="no_results">Please set the results</string>

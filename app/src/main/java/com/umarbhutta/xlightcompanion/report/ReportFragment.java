@@ -1,6 +1,7 @@
 package com.umarbhutta.xlightcompanion.report;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -40,6 +42,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
     private TextView textTitle;
     private Button btn_add;
     private ProgressDialog mDialog;
+    private ProgressBar pbWebView;
 
     @Nullable
     @Override
@@ -54,6 +57,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         btn_add.setVisibility(View.INVISIBLE);
 
         webView = (WebView) view.findViewById(R.id.helpWebview);
+        pbWebView = (ProgressBar) view.findViewById(R.id.pbWebView);
         ib_back = (ImageButton) view.findViewById(R.id.ib_back);
         ib_back.setOnClickListener(this);
         ib_back.setVisibility(View.INVISIBLE);
@@ -80,10 +84,22 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                 view.loadUrl(url);
                 return true;
             }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                pbWebView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                pbWebView.setVisibility(View.GONE);
+            }
         });
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
+                pbWebView.setProgress(newProgress);
                 if (newProgress == 100) {
                     // 网页加载完成
                     if (view.canGoBack()) {

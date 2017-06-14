@@ -21,7 +21,7 @@
             android:paddingRight="20dp">
 
             <RelativeLayout
-                android:layout_width="300dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/edt_bg">
@@ -52,13 +52,14 @@
                     android:focusable="false"
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
+                    android:hint="@string/ssid"
                     android:singleLine="true" />
 
             </RelativeLayout>
 
 
             <RelativeLayout
-                android:layout_width="300dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
@@ -83,6 +84,7 @@
                     android:background="#00ffffff"
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
+                    android:hint="@string/wifi_password"
                     android:singleLine="true" />
 
             </RelativeLayout>

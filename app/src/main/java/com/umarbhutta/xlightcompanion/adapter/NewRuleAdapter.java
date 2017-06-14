@@ -222,7 +222,7 @@ public class NewRuleAdapter extends BaseAdapter {
                     if (position < mNewRuleInfo.mNewRuleConditionInfoList.size()) {
                         mOnClickAddIconListener.clickDeleteIcon(true, position);
                     } else {
-                        mOnClickAddIconListener.clickDeleteIcon(false, position - mNewRuleInfo.mNewRuleConditionInfoList.size() - 1);
+                        mOnClickAddIconListener.clickDeleteIcon(false, position - mNewRuleInfo.mNewRuleConditionInfoList.size());
                     }
                 }
             }

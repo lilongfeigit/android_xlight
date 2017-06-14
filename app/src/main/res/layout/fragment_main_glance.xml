@@ -138,11 +138,11 @@
                             android:textColor="@color/white" />
 
                         <TextView
-                            android:id="@+id/valLocalHumidity"
+                            android:id="@+id/valApparentTemp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="-2dp"
-                            android:text="--\u0025"
+                            android:text="--℃"
                             android:textColor="@color/white"
                             android:textSize="22sp" />
 
@@ -163,13 +163,12 @@
                             android:text="@string/shidu"
                             android:textAlignment="center"
                             android:textColor="@color/white" />
-
                         <TextView
-                            android:id="@+id/valApparentTemp"
+                            android:id="@+id/valLocalHumidity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="-2dp"
-                            android:text="--℃"
+                            android:text="--\u0025"
                             android:textColor="@color/white"
                             android:textSize="22sp" />
 

@@ -1,5 +1,6 @@
 package com.umarbhutta.xlightcompanion.userManager;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
@@ -23,6 +25,7 @@ public class UserResProtocalActivity extends BaseActivity {
     private LinearLayout llBack;
     private TextView tvTitle;
     private String url;
+    private ProgressBar pbWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class UserResProtocalActivity extends BaseActivity {
 
     private void initViews() {
         webView = (WebView) findViewById(R.id.web_user_protocal);
+        pbWebView = (ProgressBar) findViewById(R.id.pbWebView);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,10 +66,22 @@ public class UserResProtocalActivity extends BaseActivity {
                 view.loadUrl(url);
                 return true;
             }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                pbWebView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                pbWebView.setVisibility(View.GONE);
+            }
         });
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
+                pbWebView.setProgress(newProgress);
                 if (newProgress == 100) {
                     // 网页加载完成
 

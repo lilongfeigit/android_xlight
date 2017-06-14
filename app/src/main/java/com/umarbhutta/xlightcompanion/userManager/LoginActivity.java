@@ -212,5 +212,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         super.onBackPressed();
         Intent intent = new Intent(LoginActivity.this, SlidingMenuMainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

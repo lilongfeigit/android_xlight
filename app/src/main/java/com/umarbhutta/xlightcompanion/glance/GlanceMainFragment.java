@@ -102,7 +102,6 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.home_setting:
                 // 跳转到选择的主设备列表页面
-
                 if (UserUtils.isLogin(getContext())) {
                     onFabPressed(DeviceListActivity.class);
                 } else {
@@ -245,17 +244,19 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
         m_handlerGlance = new Handler() {
             public void handleMessage(Message msg) {
                 Log.e(TAG, "GlanceMainFragment_msg=" + msg.getData().toString());
-                int intValue = msg.getData().getInt("DHTt", -255);
-                if (intValue != -255) {
-                    roomTemp.setText(intValue + "\u00B0");
-                }
-                intValue = msg.getData().getInt("DHTh", -255);
-                if (intValue != -255) {
-                    roomHumidity.setText(intValue + "\u0025");
-                }
-                intValue = msg.getData().getInt("ALS", -255);
-                if (intValue != -255) {
-                    valRoomBrightness.setText(intValue + "\u0025");
+                if (deviceList != null && deviceList.size() > 0) {
+                    int intValue = msg.getData().getInt("DHTt", -255);
+                    if (intValue != -255) {
+                        roomTemp.setText(intValue + "\u00B0");
+                    }
+                    intValue = msg.getData().getInt("DHTh", -255);
+                    if (intValue != -255) {
+                        roomHumidity.setText(intValue + "\u0025");
+                    }
+                    intValue = msg.getData().getInt("ALS", -255);
+                    if (intValue != -255) {
+                        valRoomBrightness.setText(intValue + "\u0025");
+                    }
                 }
             }
         };
@@ -456,14 +457,11 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                         }
                         List<Rows> devices = mDeviceInfoResult.rows;
 
-                        if (null != mDeviceInfoResult && null != mDeviceInfoResult.Energysaving) {
-
-                            save_money.setText(getString(R.string.this_month_has_save_money) + mDeviceInfoResult.Energysaving.value);
-                        }
-
-
                         if (null != devices && devices.size() > 0) {
+                            if (null != mDeviceInfoResult && null != mDeviceInfoResult.Energysaving) {
 
+                                save_money.setText(getString(R.string.this_month_has_save_money) + mDeviceInfoResult.Energysaving.value);
+                            }
                             int index = 0;
 
                             for (int i = 0; i < devices.size(); i++) {

@@ -21,9 +21,9 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@drawable/icon_arrow_right_gray"
             android:clickable="false"
-            android:focusable="false"
-            android:background="@drawable/icon_arrow_right_gray" />
+            android:focusable="false" />
 
 
         <ImageButton
@@ -36,11 +36,25 @@
             android:background="@drawable/icon_update" />
     </RelativeLayout>
 
-    <WebView
-        android:id="@+id/helpWebview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/llBottom"
-        android:layout_below="@+id/ll_main_top" />
+        android:layout_below="@+id/ll_main_top">
+
+        <WebView
+            android:id="@+id/helpWebview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/pbWebView"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true"
+            android:progressDrawable="@drawable/progress_color_horizontal" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

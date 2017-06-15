@@ -17,8 +17,10 @@ import android.widget.TextView;
 
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
+import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
+import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
 import com.umarbhutta.xlightcompanion.main.SlidingMenuMainActivity;
 import com.umarbhutta.xlightcompanion.okHttp.requests.RequestDeleteRuleDevice;
 import com.umarbhutta.xlightcompanion.okHttp.requests.imp.CommentRequstCallback;
@@ -116,6 +118,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
      * 退出登录
      */
     private void logout() {
+        if(GlanceMainFragment.devicenodes != null || GlanceMainFragment.devicenodes.size() > 0){
+            GlanceMainFragment.devicenodes.clear();
+        }
+        SlidingMenuMainActivity.mShakeInfo = null;
+        SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, "");
         UserUtils.saveUserInfo(getActivity(), null);
         startActivity(new Intent(getActivity(), LoginActivity.class));
         getActivity().finish();

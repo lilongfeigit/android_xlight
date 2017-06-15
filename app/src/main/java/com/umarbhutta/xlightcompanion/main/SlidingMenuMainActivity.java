@@ -24,6 +24,7 @@ import com.umarbhutta.xlightcompanion.SDK.BLE.BLEPairedDeviceList;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.Logger;
+import com.umarbhutta.xlightcompanion.Tools.SharedPreferencesUtils;
 import com.umarbhutta.xlightcompanion.Tools.ToastUtil;
 import com.umarbhutta.xlightcompanion.Tools.UserUtils;
 import com.umarbhutta.xlightcompanion.glance.GlanceMainFragment;
@@ -214,6 +215,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
         if (sensorManager != null) {// 取消监听器
             sensorManager.unregisterListener(sensorEventListener);
         }
+        SharedPreferencesUtils.putObject(this, SharedPreferencesUtils.KEY_DEVICE_LIST, "");
     }
 
     /**

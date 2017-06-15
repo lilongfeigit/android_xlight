@@ -460,7 +460,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                         if (null != devices && devices.size() > 0) {
                             if (null != mDeviceInfoResult && null != mDeviceInfoResult.Energysaving) {
 
-                                save_money.setText(getString(R.string.this_month_has_save_money) + mDeviceInfoResult.Energysaving.value);
+                                save_money.setText(getString(R.string.this_month_has_save_money_more) + mDeviceInfoResult.Energysaving.value+getString(R.string.this_month_has_save_money_more_two));
                             }
                             int index = 0;
 

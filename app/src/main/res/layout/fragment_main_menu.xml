@@ -33,16 +33,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
-                android:textColor="@color/white"
+                android:singleLine="true"
                 android:text="Welcome, Umar"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="umar.bh@datatellit.com" />
+                android:singleLine="true"
+                android:text="umar.bh@datatellit.com"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <Button
@@ -119,12 +121,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height"
             android:drawableLeft="@drawable/home_schedule"
+            android:drawablePadding="20dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="@string/report"
-            android:drawablePadding="20dp"
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_medium" />
 
         <View
             android:layout_width="match_parent"
@@ -137,12 +139,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height"
             android:drawableLeft="@drawable/home_setting"
+            android:drawablePadding="20dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="@string/setting"
-            android:drawablePadding="20dp"
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_medium" />
 
         <View
             android:layout_width="match_parent"
@@ -155,12 +157,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height"
             android:drawableLeft="@drawable/home_help"
+            android:drawablePadding="20dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/pickerview_topbar_paddingright"
             android:text="@string/help"
-            android:drawablePadding="20dp"
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_medium" />
 
         <View
             android:layout_width="match_parent"

@@ -210,6 +210,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mShakeInfo = null;
         if (sensorManager != null) {// 取消监听器
             sensorManager.unregisterListener(sensorEventListener);
         }

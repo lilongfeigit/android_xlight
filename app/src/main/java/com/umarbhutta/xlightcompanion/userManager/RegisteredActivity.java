@@ -176,6 +176,7 @@ public class RegisteredActivity extends BaseActivity implements View.OnClickList
                             UserUtils.saveUserInfo(RegisteredActivity.this, info.data.get(0));
                             ToastUtil.showToast(RegisteredActivity.this, getString(R.string.registe_success));
                             finish();
+                            startActivity(new Intent(RegisteredActivity.this, SlidingMenuMainActivity.class));
                         } else if (info.code == 0) {  //登录失败，提示服务端返回的信息
                             ToastUtil.showToast(RegisteredActivity.this, info.msg);
                         } else {

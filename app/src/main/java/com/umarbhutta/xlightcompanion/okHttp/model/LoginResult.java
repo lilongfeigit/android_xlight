@@ -7,7 +7,7 @@ import java.util.List;
  * Created by guangbinw on 2017/3/12.
  */
 
-public class LoginResult implements Serializable{
+public class LoginResult implements Serializable {
     public List<LoginResult> data;
 
     public int code;
@@ -19,6 +19,9 @@ public class LoginResult implements Serializable{
     public String salt;
     public String firstname;
     public String lastname;
+    /**
+     * 0代表女  1代表男   2代表保密
+     */
     public String sex;
     public String nickname;
     public String email;

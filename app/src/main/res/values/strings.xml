@@ -242,7 +242,7 @@
     <string name="ti_gan_temp">Feels like</string>
     <string name="shidu">Humidity</string>
     <string name="this_month_has_save_money">Save electricity fee ￥-- this month.</string>
-    <string name="this_month_has_save_money_more">Save electricity fee ￥ </string>
+    <string name="this_month_has_save_money_more">Save electricity fee ￥</string>
     <string name="this_month_has_save_money_more_two">Yuan this month.</string>
     <string name="my_device">My Devices</string>
     <string name="you_have_no_device_and_add">No device, click + to add device</string>

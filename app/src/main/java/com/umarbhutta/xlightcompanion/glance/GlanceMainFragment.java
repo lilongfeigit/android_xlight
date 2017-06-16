@@ -463,9 +463,9 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
                                 Locale locale = getResources().getConfiguration().locale;
                                 String language = locale.getLanguage();
                                 if (language.endsWith("zh")) {
-                                    save_money.setText(getString(R.string.this_month_has_save_money_more) + mDeviceInfoResult.Energysaving.value+getString(R.string.this_month_has_save_money_more_two));
+                                    save_money.setText(getString(R.string.this_month_has_save_money_more) + mDeviceInfoResult.Energysaving.value+" "+getString(R.string.this_month_has_save_money_more_two));
                                 } else {
-                                    save_money.setText(getString(R.string.this_month_has_save_money_more) + mDeviceInfoResult.Energysaving.value + getString(R.string.this_month_has_save_money_more_two));
+                                    save_money.setText(getString(R.string.this_month_has_save_money_more) + mDeviceInfoResult.Energysaving.value + " "+getString(R.string.this_month_has_save_money_more_two));
                                 }
                             }
                             int index = 0;

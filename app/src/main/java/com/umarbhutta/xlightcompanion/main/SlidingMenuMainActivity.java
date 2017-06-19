@@ -215,7 +215,7 @@ public class SlidingMenuMainActivity extends BaseFragmentActivity {
         if (sensorManager != null) {// 取消监听器
             sensorManager.unregisterListener(sensorEventListener);
         }
-        SharedPreferencesUtils.putObject(this, SharedPreferencesUtils.KEY_DEVICE_LIST, "");
+//        SharedPreferencesUtils.putObject(this, SharedPreferencesUtils.KEY_DEVICE_LIST, null);
     }
 
     /**

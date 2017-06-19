@@ -164,10 +164,6 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isWifiContect()) {
-            ToastUtil.showToast(this, getString(R.string.please_open_wifi));
-            return;
-        }
     }
 
     /**
@@ -312,9 +308,18 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
                 ssidEdit.setText(curWifi.SSID);
             }
         } else {
-            initGPS();
+
+            if (!isWifiContect() && !isShowOpenWifi) {
+                isShowOpenWifi = true;
+                ToastUtil.showToast(this, getString(R.string.please_open_wifi));
+            } else {
+                initGPS();
+            }
+
         }
     }
+
+    boolean isShowOpenWifi = false;
 
     boolean isshowOpenGps = false;
 

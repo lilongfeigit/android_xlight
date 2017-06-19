@@ -122,7 +122,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             GlanceMainFragment.devicenodes.clear();
         }
         SlidingMenuMainActivity.mShakeInfo = null;
-        SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, "");
+        SharedPreferencesUtils.putObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, null);
         UserUtils.saveUserInfo(getActivity(), null);
         startActivity(new Intent(getActivity(), LoginActivity.class));
         getActivity().finish();

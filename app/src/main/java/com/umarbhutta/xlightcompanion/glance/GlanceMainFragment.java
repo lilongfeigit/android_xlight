@@ -67,6 +67,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  */
@@ -426,7 +427,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     public void getBaseInfos() {
         if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
             ToastUtil.showToast(getActivity(), R.string.net_error);
-
+            //TODO
             List<Rows> devices = (List<Rows>) SharedPreferencesUtils.getObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, null);
             if (null != devices && devices.size() > 0) {
                 deviceList.clear();
@@ -459,8 +460,13 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
 
                         if (null != devices && devices.size() > 0) {
                             if (null != mDeviceInfoResult && null != mDeviceInfoResult.Energysaving) {
-
-                                save_money.setText(getString(R.string.this_month_has_save_money_more) + mDeviceInfoResult.Energysaving.value+getString(R.string.this_month_has_save_money_more_two));
+                                Locale locale = getResources().getConfiguration().locale;
+                                String language = locale.getLanguage();
+                                if (language.endsWith("zh")) {
+                                    save_money.setText(getString(R.string.this_month_has_save_money_more) + mDeviceInfoResult.Energysaving.value+" "+getString(R.string.this_month_has_save_money_more_two));
+                                } else {
+                                    save_money.setText(getString(R.string.this_month_has_save_money_more) + mDeviceInfoResult.Energysaving.value + " "+getString(R.string.this_month_has_save_money_more_two));
+                                }
                             }
                             int index = 0;
 

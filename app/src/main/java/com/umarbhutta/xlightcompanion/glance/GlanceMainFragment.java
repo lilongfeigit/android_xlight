@@ -427,7 +427,7 @@ public class GlanceMainFragment extends Fragment implements View.OnClickListener
     public void getBaseInfos() {
         if (!NetworkUtils.isNetworkAvaliable(getActivity())) {
             ToastUtil.showToast(getActivity(), R.string.net_error);
-
+            //TODO
             List<Rows> devices = (List<Rows>) SharedPreferencesUtils.getObject(getActivity(), SharedPreferencesUtils.KEY_DEVICE_LIST, null);
             if (null != devices && devices.size() > 0) {
                 deviceList.clear();

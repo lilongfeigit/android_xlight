@@ -99,7 +99,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/scenarioNameLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,36 +107,33 @@
                 android:orientation="horizontal"
                 android:paddingBottom="16dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="16dp">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_weight="1"
                     android:fontFamily="sans-serif-light"
-                    android:gravity="left|start"
+                    android:layout_centerVertical="true"
                     android:text="@string/mingcheng"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColorPrimary" />
 
                 <TextView
                     android:id="@+id/scenarioName"
-                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/tv_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:background="#00ffffff"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
                     android:gravity="right"
                     android:hint="@string/living_room_lamp"
                     android:paddingRight="20dp" />
 
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/scenarioLL"
@@ -202,9 +199,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
+                        android:layout_centerVertical="true"
                         android:text="@string/power"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />

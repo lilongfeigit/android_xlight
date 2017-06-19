@@ -118,8 +118,8 @@ public class DeviceRulesListAdapter extends BaseAdapter {
         if (null != mRuleInfo && null != mRuleInfo.ruleconditions && mRuleInfo.ruleconditions.size() > 0) {
             for (Ruleconditions mRuleconditions : mRuleInfo.ruleconditions) {
                 TextView textView = new TextView(mActivity);
-                textView.setSingleLine(true);
-                textView.setEllipsize(TextUtils.TruncateAt.END);
+//                textView.setSingleLine(true);
+//                textView.setEllipsize(TextUtils.TruncateAt.END);
 //                textView.setText((getText(mRuleconditions.ruleconditionname) + getText(mRuleconditions.attribute) + getText(mRuleconditions.operator) + getText(mRuleconditions.rightValue)
 //                        + getText(mRuleconditions.starttime) + getText(mRuleconditions.endtime) + getweekdays(mRuleconditions.weekdays) + getText(mRuleconditions.hour) + getText(mRuleconditions.minute)
 //                        + getText(mRuleconditions.isrepeat)).trim());
@@ -181,8 +181,8 @@ public class DeviceRulesListAdapter extends BaseAdapter {
         if (null != mRuleInfo && null != mRuleInfo.ruleactionnotifies && mRuleInfo.ruleactionnotifies.size() > 0) {//通知
             for (Ruleactionnotify mRuleactionnotify : mRuleInfo.ruleactionnotifies) {
                 TextView textView = new TextView(mActivity);
-                textView.setEllipsize(TextUtils.TruncateAt.END);
-                textView.setSingleLine(true);
+//                textView.setEllipsize(TextUtils.TruncateAt.END);
+//                textView.setSingleLine(true);
 
                 if (1 == mRuleactionnotify.actiontype) { //emial通知
                     textView.setText(context.getString(R.string.email_notify) + "：" + (getText(mRuleactionnotify.subject)
@@ -204,8 +204,8 @@ public class DeviceRulesListAdapter extends BaseAdapter {
             for (RuleActioncmd action : mRuleInfo.ruleactioncmds) {
 
                 TextView textView = new TextView(mActivity);
-                textView.setEllipsize(TextUtils.TruncateAt.END);
-                textView.setSingleLine(true);
+//                textView.setEllipsize(TextUtils.TruncateAt.END);
+//                textView.setSingleLine(true);
 
                 if (null != action.actioncmdfields && action.actioncmdfields.size() > 0) {
 

@@ -9,6 +9,7 @@ public class NetConfig {
     //        public static final String SERVER_ADDRESS_DOMAIN = "https://iot.xlight.io";
     public static final String SERVER_ADDRESS_DOMAIN = "http://123.207.166.211:8080";
 
+
     /**
      * 正式版开关
      */

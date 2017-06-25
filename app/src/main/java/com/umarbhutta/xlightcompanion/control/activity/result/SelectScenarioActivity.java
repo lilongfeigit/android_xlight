@@ -33,7 +33,7 @@ public class SelectScenarioActivity extends BaseActivity {
     private TextView btnSure;
     private TextView tvTitle;
 
-    private com.github.clans.fab.FloatingActionButton fab;
+//    private com.github.clans.fab.FloatingActionButton fab;
 
     public static String SCENARIO_NAME = "SCENARIO_NAME";
     public static String SCENARIO_INFO = "SCENARIO_INFO";
@@ -72,17 +72,17 @@ public class SelectScenarioActivity extends BaseActivity {
 
         mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
 
-        fab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab);
+//        fab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab);
 
         //setup recycler view
         scenarioListView = (ListView) findViewById(R.id.scenarioListView);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onFabPressed(view);
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onFabPressed(view);
+//            }
+//        });
 
         getSceneList();
     }

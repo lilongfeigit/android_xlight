@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.jaygoo.widget.RangeSeekBar;
 import com.umarbhutta.xlightcompanion.App;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
@@ -64,7 +65,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
         mActioncmd = (Actioncmd) getIntent().getSerializableExtra("MACTIONCMD");
 
         powerSwitch = (CheckBox) findViewById(R.id.powerSwitch);
-        brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
+        brightnessSeekBar = (RangeSeekBar) findViewById(R.id.brightnessSeekBar);
         cctSeekBar = (SeekBar) findViewById(R.id.cctSeekBar);
         cctSeekBar.setMax(6500 - 2700);
         colorTextView = (TextView) findViewById(R.id.colorTextView);
@@ -120,7 +121,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
         tvTitle.setText(R.string.select_device);
 
         powerSwitch.setChecked(true);
-        brightnessSeekBar.setProgress(20);
+        brightnessSeekBar.setValue(20);
         cctSeekBar.setProgress(10);
 
         spinner = (ImageView) findViewById(R.id.spinner);
@@ -175,21 +176,32 @@ public class DeviceControlSelectActivity extends BaseActivity {
         });
         cctLabelColor = (TextView) findViewById(R.id.cctLabelColor);
         lampName = (TextView) findViewById(R.id.scenarioName);
-        brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            }
+        /**
+         * 亮度
+         */
+        brightnessSeekBar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener(){
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Log.e(TAG, "The brightness value is " + seekBar.getProgress());
-                //ParticleAdapter.JSONCommandBrightness(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress());
+            public void onRangeChanged(RangeSeekBar view, float min, float max, boolean isFromUser) {
+                //
+                Log.e(TAG, "The brightness value is " + (int)min+"view.getCurrentRange()="+view.getCurrentRange()[0]);
             }
         });
+//        brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                Log.e(TAG, "The brightness value is " + seekBar.getProgress());
+//                //ParticleAdapter.JSONCommandBrightness(ParticleAdapter.DEFAULT_DEVICE_ID, seekBar.getProgress());
+//            }
+//        });
 
         cctSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -248,7 +260,9 @@ public class DeviceControlSelectActivity extends BaseActivity {
 //    private static final String RING3_TEXT = "RING 3";
 
     private CheckBox powerSwitch;
-    private SeekBar brightnessSeekBar;
+//    private SeekBar brightnessSeekBar;
+    private RangeSeekBar brightnessSeekBar;
+
     private SeekBar cctSeekBar;
     private TextView colorTextView;
     private ImageView spinner;
@@ -358,7 +372,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
         tvTitle.setText(R.string.living_room_lamp);
 
         powerSwitch.setChecked(true);
-        brightnessSeekBar.setProgress(20);
+        brightnessSeekBar.setValue(20);
         cctSeekBar.setProgress(10);
 
         if (null != curMainNodes) {
@@ -373,7 +387,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
                 colorLL.setVisibility(View.VISIBLE);
                 cctSeekBar.setProgress(curMainNodes.cct - 2700);
             }
-            brightnessSeekBar.setProgress(curMainNodes.brightness);
+            brightnessSeekBar.setValue(curMainNodes.brightness);
         }
 
     }
@@ -479,7 +493,7 @@ public class DeviceControlSelectActivity extends BaseActivity {
             return;
         }
         powerSwitch.setChecked((1 == sceneInfo.ison) ? true : false);
-        brightnessSeekBar.setProgress(sceneInfo.brightness);
+        brightnessSeekBar.setValue(sceneInfo.brightness);
         cctSeekBar.setProgress(sceneInfo.cct - 2700);
     }
 

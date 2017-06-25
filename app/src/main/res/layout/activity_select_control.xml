@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -210,8 +211,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_gravity="center_vertical"
                         android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
                         android:text="@string/power"
@@ -222,8 +223,8 @@
                         android:id="@+id/powerSwitch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/switch_selector"
                         android:button="@null" />
 
@@ -286,16 +287,15 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/line1"
                     android:orientation="horizontal"
-                    android:paddingBottom="16dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="16dp">
+                    android:paddingRight="@dimen/activity_horizontal_margin">
 
                     <TextView
                         android:id="@+id/brightnessLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
@@ -303,8 +303,21 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
-                    <SeekBar
+                    <com.jaygoo.widget.RangeSeekBar
                         android:id="@+id/brightnessSeekBar"
+                        app:cellMode="number"
+                        app:lineColorEdge="@color/colorSeekBarDefault"
+                        app:lineColorSelected="@color/bar_color"
+                        app:markTextArray="@array/markArray"
+                        app:seekBarMode="single"
+                        app:seekBarResId="@drawable/seekbar_thumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/brightnessLabel" />
+
+                    <SeekBar
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -318,7 +331,8 @@
                         android:progress="80"
                         android:progressDrawable="@drawable/video_seekbar"
                         android:secondaryProgress="0"
-                        android:thumb="@drawable/thumb" />
+                        android:thumb="@drawable/thumb"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 

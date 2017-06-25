@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.jaygoo.widget.RangeSeekBar;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.SDK.xltDevice;
 import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
@@ -81,7 +82,9 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
     private static final String RING3_TEXT = "RING 3";
 
     private CheckBox powerSwitch;
-    private SeekBar brightnessSeekBar;
+//    private SeekBar brightnessSeekBar;
+    private RangeSeekBar brightnessSeekBar;
+
     private SeekBar cctSeekBar;
     private TextView colorTextView;
     private Spinner scenarioSpinner;
@@ -107,6 +110,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
     private TextView cctLabelColor;
     private RelativeLayout rl_scenario;
     private LinearLayout colorLL;
+    private View line2;
 
     private xltDevice mCurrentDevice;
     private HorizontalScrollView mHorizontalScrollView;
@@ -137,7 +141,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         scenarioDropdown.add(0, "None");
 
         powerSwitch = (CheckBox) findViewById(R.id.powerSwitch);
-        brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
+        brightnessSeekBar = (RangeSeekBar) findViewById(R.id.brightnessSeekBar);
         cctSeekBar = (SeekBar) findViewById(R.id.cctSeekBar);
         cctSeekBar.setMax(6500 - 2700);
         colorTextView = (TextView) findViewById(R.id.colorTextView);
@@ -180,14 +184,17 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         RelativeLayout dotLayout = (RelativeLayout) findViewById(R.id.dotLayout);
         dotLayout.addView(circleIcon);
         rl_scenario = (RelativeLayout) findViewById(R.id.rl_scenario);
+        line2 = findViewById(R.id.line2);
         colorLL = (LinearLayout) findViewById(R.id.colorLL);
 
         if (deviceInfo.devicenodetype == 1) {
             rl_scenario.setVisibility(View.GONE);
             colorLL.setVisibility(View.GONE);
+            line2.setVisibility(View.GONE);
         } else {
             rl_scenario.setVisibility(View.VISIBLE);
             colorLL.setVisibility(View.VISIBLE);
+            line2.setVisibility(View.VISIBLE);
         }
 
         mCurrentDevice = SlidingMenuMainActivity.xltDeviceMaps.get(deviceInfo.coreid);
@@ -251,21 +258,15 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         /**
          * 亮度
          */
-        brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            }
+        brightnessSeekBar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener(){
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Log.e(TAG, "The brightness value is " + seekBar.getProgress());
-                int brightnessInt = mCurrentDevice.ChangeBrightness(seekBar.getProgress());
+            public void onRangeChanged(RangeSeekBar view, float min, float max, boolean isFromUser) {
+                //
+                Log.e(TAG, "The brightness value is " + (int)min+"view.getCurrentRange()="+view.getCurrentRange()[0]);
+                int brightnessInt = mCurrentDevice.ChangeBrightness((int)min);
                 Log.e(TAG, "brightnessInt value is= " + brightnessInt);
-                deviceInfo.brightness = seekBar.getProgress();
+                deviceInfo.brightness = (int)min;
 
                 if (null != viewList && viewList.size() > 0) {
                     viewList.get(0).callOnClick();
@@ -273,6 +274,28 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
                 }
             }
         });
+//        brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                Log.e(TAG, "The brightness value is " + seekBar.getProgress());
+//                int brightnessInt = mCurrentDevice.ChangeBrightness(seekBar.getProgress());
+//                Log.e(TAG, "brightnessInt value is= " + brightnessInt);
+//                deviceInfo.brightness = seekBar.getProgress();
+//
+//                if (null != viewList && viewList.size() > 0) {
+//                    viewList.get(0).callOnClick();
+//                    mHorizontalScrollView.smoothScrollTo(0, 0);
+//                }
+//            }
+//        });
 
         /**
          *色温
@@ -374,7 +397,8 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
 
                 intValue = msg.getData().getInt("BR", -255);
                 if (intValue != -255) {
-                    brightnessSeekBar.setProgress(intValue);
+//                    brightnessSeekBar.setProgress(intValue);
+                    brightnessSeekBar.setValue(intValue);
                 }
                 intValue = msg.getData().getInt("CCT", -255);
                 if (intValue != -255) {
@@ -647,7 +671,8 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         }
 //        powerSwitch.setChecked((1 == sceneInfo.ison) ? true : false);
         if (mCurrentDevice.isSunny()) {
-            brightnessSeekBar.setProgress(sceneInfo.brightness);
+//            brightnessSeekBar.setProgress(sceneInfo.brightness);
+            brightnessSeekBar.setValue(sceneInfo.brightness);
             mCurrentDevice.ChangeBrightness(sceneInfo.brightness);
             cctSeekBar.setProgress(sceneInfo.cct - 2700);
             mCurrentDevice.ChangeCCT(sceneInfo.cct - 2700);
@@ -731,7 +756,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
                 deviceringsObj.put("B", blue);
                 deviceringsObj.put("color", "rgb(" + red + "," + green + "," + blue + ")");
                 deviceringsObj.put("cct", cctSeekBar.getProgress() + 2700);
-                deviceringsObj.put("brightness", brightnessSeekBar.getProgress());
+                deviceringsObj.put("brightness", brightnessSeekBar.getCurrentRange()[0]);
             }
 
 
@@ -788,7 +813,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
             circleIcon.setColor(color);
             colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
 
-            int br = brightnessSeekBar.getProgress();
+            int br = (int)brightnessSeekBar.getCurrentRange()[0];
             int ww = 0;
             mCurrentDevice.ChangeColor(xltDevice.RING_ID_ALL, state, br, ww, red, green, blue);
             mCurrentDevice.setRed(xltDevice.RING_ID_ALL, red);

@@ -82,7 +82,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
     private static final String RING3_TEXT = "RING 3";
 
     private CheckBox powerSwitch;
-//    private SeekBar brightnessSeekBar;
+    //    private SeekBar brightnessSeekBar;
     private RangeSeekBar brightnessSeekBar;
 
     private SeekBar cctSeekBar;
@@ -258,19 +258,21 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
         /**
          * 亮度
          */
-        brightnessSeekBar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener(){
+        brightnessSeekBar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener() {
 
             @Override
             public void onRangeChanged(RangeSeekBar view, float min, float max, boolean isFromUser) {
-                //
-                Log.e(TAG, "The brightness value is " + (int)min+"view.getCurrentRange()="+view.getCurrentRange()[0]);
-                int brightnessInt = mCurrentDevice.ChangeBrightness((int)min);
-                Log.e(TAG, "brightnessInt value is= " + brightnessInt);
-                deviceInfo.brightness = (int)min;
+                if (!isFromUser) {
+                    //
+                    Log.e(TAG, "The brightness value is " + (int) min + "view.getCurrentRange()=" + view.getCurrentRange()[0]);
+                    int brightnessInt = mCurrentDevice.ChangeBrightness((int) min);
+                    Log.e(TAG, "brightnessInt value is= " + brightnessInt);
+                    deviceInfo.brightness = (int) min;
 
-                if (null != viewList && viewList.size() > 0) {
-                    viewList.get(0).callOnClick();
-                    mHorizontalScrollView.smoothScrollTo(0, 0);
+                    if (null != viewList && viewList.size() > 0) {
+                        viewList.get(0).callOnClick();
+                        mHorizontalScrollView.smoothScrollTo(0, 0);
+                    }
                 }
             }
         });
@@ -813,7 +815,7 @@ public class EditDeviceActivity extends BaseActivity implements View.OnClickList
             circleIcon.setColor(color);
             colorTextView.setText("RGB(" + red + "," + green + "," + blue + ")");
 
-            int br = (int)brightnessSeekBar.getCurrentRange()[0];
+            int br = (int) brightnessSeekBar.getCurrentRange()[0];
             int ww = 0;
             mCurrentDevice.ChangeColor(xltDevice.RING_ID_ALL, state, br, ww, red, green, blue);
             mCurrentDevice.setRed(xltDevice.RING_ID_ALL, red);

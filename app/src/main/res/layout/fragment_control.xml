@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -113,21 +115,21 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
                     android:layout_centerVertical="true"
+                    android:fontFamily="sans-serif-light"
                     android:text="@string/mingcheng"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColorPrimary" />
 
                 <TextView
                     android:id="@+id/scenarioName"
-                    android:layout_toRightOf="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:background="#00ffffff"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/tv_name"
+                    android:background="#00ffffff"
                     android:gravity="right"
                     android:hint="@string/living_room_lamp"
                     android:paddingRight="20dp" />
@@ -199,9 +201,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:fontFamily="sans-serif-light"
                         android:gravity="left|start"
-                        android:layout_centerVertical="true"
                         android:text="@string/power"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
@@ -274,10 +276,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/line1"
                     android:orientation="horizontal"
-                    android:paddingBottom="16dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="16dp">
+                    android:paddingRight="@dimen/activity_horizontal_margin">
 
                     <TextView
                         android:id="@+id/brightnessLabel"
@@ -292,14 +292,29 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColorPrimary" />
 
-                    <SeekBar
+                    <com.jaygoo.widget.RangeSeekBar
                         android:id="@+id/brightnessSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/brightnessLabel"
+                        android:layout_alignParentRight="true"
+                        app:cellMode="number"
+                        app:lineColorEdge="@color/colorSeekBarDefault"
+                        app:lineColorSelected="@color/bar_color"
+                        app:markTextArray="@array/markArray"
+                        app:seekBarMode="single"
+                        app:seekBarResId="@drawable/seekbar_thumb" />
+
+                    <SeekBar
+                        android:id="@+id/seekbar1brightnessSeekBar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="30dp"
+                        android:visibility="gone"
                         android:layout_toRightOf="@+id/brightnessLabel"
                         android:max="100"
                         android:maxHeight="5dp"

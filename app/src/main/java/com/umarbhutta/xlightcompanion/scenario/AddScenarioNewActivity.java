@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.jaygoo.widget.RangeSeekBar;
 import com.umarbhutta.xlightcompanion.R;
 import com.umarbhutta.xlightcompanion.Tools.AndroidBug54971Workaround;
 import com.umarbhutta.xlightcompanion.Tools.NetworkUtils;
@@ -41,7 +42,7 @@ import java.util.List;
 public class AddScenarioNewActivity extends BaseActivity {
 
     private static final String TAG = AddScenarioNewActivity.class.getSimpleName();
-    private SeekBar brightnessSeekBar;
+    private RangeSeekBar brightnessSeekBar;
     private TextView colorTextView;
     private Button addButton;
     private EditText nameEditText;
@@ -73,7 +74,7 @@ public class AddScenarioNewActivity extends BaseActivity {
 //        getSupportActionBar().hide();
 
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        brightnessSeekBar = (SeekBar) findViewById(R.id.brightnessSeekBar);
+        brightnessSeekBar = (RangeSeekBar) findViewById(R.id.brightnessSeekBar);
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         addButton = (Button) findViewById(R.id.addButton);
         cctLabelColor = (TextView) findViewById(R.id.cctLabelColor);
@@ -143,22 +144,33 @@ public class AddScenarioNewActivity extends BaseActivity {
                 onFabPressed();
             }
         });
-
-        brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+        /**
+         * 亮度
+         */
+        brightnessSeekBar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener(){
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Log.e(TAG, "The brightness value is " + seekBar.getProgress());
-                scenarioBrightness = seekBar.getProgress();
+            public void onRangeChanged(RangeSeekBar view, float min, float max, boolean isFromUser) {
+                //
+                Log.e(TAG, "The brightness value is " + (int)min+"view.getCurrentRange()="+view.getCurrentRange()[0]);
+                scenarioBrightness = (int)min;
             }
         });
+//        brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                Log.e(TAG, "The brightness value is " + seekBar.getProgress());
+//                scenarioBrightness = seekBar.getProgress();
+//            }
+//        });
         colorTemperatureSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -243,7 +255,7 @@ public class AddScenarioNewActivity extends BaseActivity {
     private void initViewState() {
         nameEditText.setText(mSceneInfo.scenarioname);
         colorTemperatureSeekBar.setProgress(mSceneInfo.cct - 2700);
-        brightnessSeekBar.setProgress(mSceneInfo.brightness);
+        brightnessSeekBar.setValue(mSceneInfo.brightness);
     }
 
     private void onFabPressed() {
@@ -403,7 +415,7 @@ public class AddScenarioNewActivity extends BaseActivity {
      * @return
      */
     private EditSceneParams getParams(int mType) {
-        int brightNess = brightnessSeekBar.getProgress();  // 亮度
+        int brightNess = (int)brightnessSeekBar.getCurrentRange()[0];  // 亮度
         int colorTemper = colorTemperatureSeekBar.getProgress() + 2700;  // 色温
         int type = mType;
         String sceneName = nameEditText.getText().toString();

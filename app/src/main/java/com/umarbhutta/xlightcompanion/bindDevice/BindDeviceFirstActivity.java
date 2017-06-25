@@ -190,7 +190,6 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-
             if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
                 //获取当前的wifi状态int类型数据
                 int mWifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
@@ -278,7 +277,6 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
         if (wifimanager.isWifiEnabled()) {
             return true;
         }
-
         return false;
     }
 
@@ -298,25 +296,28 @@ public class BindDeviceFirstActivity extends FragmentActivity implements View.On
      * wifi列表
      */
     private void getWifiList() {
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        listb.clear();
-        listb.addAll(wifiManager.getScanResults());
-        adapter.notifyDataSetChanged();
-        if (null != listb && listb.size() > 0) {
-            if (null == curWifi) {
-                curWifi = listb.get(0);
-                ssidEdit.setText(curWifi.SSID);
+        if (isWifiContect()) {
+            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            listb.clear();
+            listb.addAll(wifiManager.getScanResults());
+            adapter.notifyDataSetChanged();
+            if (null != listb && listb.size() > 0) {
+                if (null == curWifi) {
+                    curWifi = listb.get(0);
+                    ssidEdit.setText(curWifi.SSID);
+                }
+            } else {
+                initGPS();
             }
         } else {
-
             if (!isWifiContect() && !isShowOpenWifi) {
                 isShowOpenWifi = true;
                 ToastUtil.showToast(this, getString(R.string.please_open_wifi));
             } else {
                 initGPS();
             }
-
         }
+
     }
 
     boolean isShowOpenWifi = false;
